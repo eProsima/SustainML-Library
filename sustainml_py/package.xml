@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>sustainml_cpp</name>
+  <name>sustainml_py</name>
   <version>0.0.0</version>
   <description>
-     *SustainML* C++ API Module is a C++ API to implement Node interface.
+    *SustainML* Python Module to implement Node interface.
   </description>
   <maintainer email="RaulSanchezMateos@eprosima.com">Raul Sánchez-Mateos</maintainer>
   <maintainer email="mariodominguez@eprosima.com">Mario Domínguez</maintainer>

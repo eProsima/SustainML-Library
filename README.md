@@ -86,3 +86,12 @@ This repository is divided in sub-packages with different targets:
   * `fastrtps` Fast DDS library for DDS communication.
   * `cmake_utils` CMake utilities library.
   * `cpp_utils` C++ utilities library.
+
+## Getting Help
+
+If you need support you can reach us by mail at [sustainml@eprosima.com](mailto:sustainml@eprosima.com) or by phone at `+34 91 804 34 48`.
+
+---
+
+<a href="https://sustainml.eu"><img src=".figures/eu_funded.png" align="left" hspace="8" vspace="2" height="60" ></a>
+This project has received funding from the European Union’s Horizon Europe research and innovation programme (HORIZON-CL4-2021-HUMAN-01) under grant agreement No 101070408.
