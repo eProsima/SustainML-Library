@@ -16,8 +16,8 @@
  * @file QueuedNodeListener.hpp
  */
 
-#ifndef SUSTAINML_CPP__QUEUEDNODELISTENER_HPP
-#define SUSTAINML_CPP__QUEUEDNODELISTENER_HPP
+#ifndef SUSTAINMLCPP_CORE_QUEUEDNODELISTENER_HPP
+#define SUSTAINMLCPP_CORE_QUEUEDNODELISTENER_HPP
 
 #include <sustainml_cpp/core/NodeListener.hpp>
 #include <sustainml_cpp/core/SamplesQueue.hpp>
@@ -49,4 +49,4 @@ namespace sustainml {
 
 }
 
-#endif // SUSTAINML_CPP__QUEUEDNODELISTENER_HPP
+#endif // SUSTAINMLCPP_CORE_QUEUEDNODELISTENER_HPP

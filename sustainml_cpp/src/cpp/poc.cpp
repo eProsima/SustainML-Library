@@ -19,7 +19,7 @@ int main()
                 static_cast<void>(signum); sustainml::Node::terminate();
             });
 
-    sustainml::co2_tracker::CarbonFootprintNode n;
+    sustainml::co2_tracker_module::CarbonFootprintNode n;
 
     n.register_cb(&cb);
 

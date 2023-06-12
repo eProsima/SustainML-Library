@@ -17,8 +17,8 @@
  */
 
 
-#ifndef SUSTAINML_CPP__TASKENCODERNODE_HPP
-#define SUSTAINML_CPP__TASKENCODERNODE_HPP
+#ifndef SUSTAINMLCPP_NODES_TASKENCODERNODE_HPP
+#define SUSTAINMLCPP_NODES_TASKENCODERNODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/core/QueuedNodeListener.hpp>
@@ -29,7 +29,7 @@
 #include <memory>
 
 namespace sustainml {
-namespace task_encoding {
+namespace ml_task_encoding_module {
 
     class Node;
     class Dispatcher;
@@ -57,7 +57,7 @@ namespace task_encoding {
 
     };
 
-} // namespace task_encoding
+} // namespace ml_task_encoding_module
 } // namespace sustainml
 
-#endif // SUSTAINML_CPP__TASKENCODERNODE_HPP
+#endif // SUSTAINMLCPP_NODES_TASKENCODERNODE_HPP

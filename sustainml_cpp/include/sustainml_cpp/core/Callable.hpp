@@ -16,8 +16,8 @@
  * @file Callable.hpp
  */
 
-#ifndef SUSTAINML_CPP__CALLABLE_HPP
-#define SUSTAINML_CPP__CALLABLE_HPP
+#ifndef SUSTAINMLCPP_CORE_CALLABLE_HPP
+#define SUSTAINMLCPP_CORE_CALLABLE_HPP
 
 #include <functional>
 
@@ -37,4 +37,4 @@ namespace sustainml {
 
 }
 
-#endif // SUSTAINML_CPP__CALLABLE_HPP
+#endif // SUSTAINMLCPP_CORE_CALLABLE_HPP

@@ -17,8 +17,8 @@
  */
 
 
-#ifndef SUSTAINML_CPP__NODE_HPP
-#define SUSTAINML_CPP__NODE_HPP
+#ifndef SUSTAINMLCPP_CORE_NODE_HPP
+#define SUSTAINMLCPP_CORE_NODE_HPP
 
 #include <utility>
 #include <vector>
@@ -90,4 +90,4 @@ namespace sustainml {
 
 }
 
-#endif // SUSTAINML_CPP__NODE_HPP
+#endif // SUSTAINMLCPP_CORE_NODE_HPP

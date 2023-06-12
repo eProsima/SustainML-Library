@@ -16,8 +16,8 @@
  * @file QueueQueryable.hpp
  */
 
-#ifndef SUSTAINML_CPP__QUEUEQUERYABLE_HPP
-#define SUSTAINML_CPP__QUEUEQUERYABLE_HPP
+#ifndef SUSTAINMLCPP_INTERFACES_QUEUEQUERYABLE_HPP
+#define SUSTAINMLCPP_INTERFACES_QUEUEQUERYABLE_HPP
 
 #include <sustainml_cpp/core/SamplesQueue.hpp>
 
@@ -33,4 +33,4 @@ namespace sustainml {
 
 }
 
-#endif // SUSTAINML_CPP__QUEUEQUERYABLE_HPP
+#endif // SUSTAINMLCPP_INTERFACES_QUEUEQUERYABLE_HPP

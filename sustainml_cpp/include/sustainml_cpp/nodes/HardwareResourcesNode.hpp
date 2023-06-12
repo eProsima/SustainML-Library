@@ -17,8 +17,8 @@
  */
 
 
-#ifndef SUSTAINML_CPP__HARDWARERESOURCESNODE_HPP
-#define SUSTAINML_CPP__HARDWARERESOURCESNODE_HPP
+#ifndef SUSTAINMLCPP_NODES_HARDWARERESOURCESNODE_HPP
+#define SUSTAINMLCPP_NODES_HARDWARERESOURCESNODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/core/QueuedNodeListener.hpp>
@@ -29,7 +29,7 @@
 #include <memory>
 
 namespace sustainml {
-namespace hardware {
+namespace hardware_module {
 
     class Node;
     class Dispatcher;
@@ -57,7 +57,7 @@ namespace hardware {
 
     };
 
-} // namespace hardware
+} // namespace hardware_module
 } // namespace sustainml
 
-#endif // SUSTAINML_CPP__HARDWARERESOURCESNODE_HPP
+#endif // SUSTAINMLCPP_NODES_HARDWARERESOURCESNODE_HPP

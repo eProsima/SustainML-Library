@@ -17,8 +17,8 @@
  */
 
 
-#ifndef SUSTAINML_CPP__MLMODELNODE_HPP
-#define SUSTAINML_CPP__MLMODELNODE_HPP
+#ifndef SUSTAINMLCPP_NODES_MLMODELNODE_HPP
+#define SUSTAINMLCPP_NODES_MLMODELNODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/core/QueuedNodeListener.hpp>
@@ -29,7 +29,7 @@
 #include <memory>
 
 namespace sustainml {
-namespace ml {
+namespace ml_model_provider_module {
 
     class Node;
     class Dispatcher;
@@ -57,7 +57,7 @@ namespace ml {
 
     };
 
-} // namespace ml
+} // namespace ml_model_provider_module
 } // namespace sustainml
 
-#endif // SUSTAINML_CPP__MLMODELNODE_HPP
+#endif // SUSTAINMLCPP_NODES_MLMODELNODE_HPP

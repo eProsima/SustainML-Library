@@ -16,8 +16,8 @@
  * @file Dispatcher.hpp
  */
 
-#ifndef SUSTAINML_CPP__DISPATCHER_HPP
-#define SUSTAINML_CPP__DISPATCHER_HPP
+#ifndef SUSTAINMLCPP_CORE_DISPATCHER_HPP
+#define SUSTAINMLCPP_CORE_DISPATCHER_HPP
 
 #include <functional>
 #include <iostream>
@@ -85,4 +85,4 @@ namespace sustainml {
 
 }
 
-#endif // SUSTAINML_CPP__DISPATCHER_HPP
+#endif // SUSTAINMLCPP_CORE_DISPATCHER_HPP

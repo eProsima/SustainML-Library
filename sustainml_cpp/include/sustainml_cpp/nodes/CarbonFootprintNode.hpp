@@ -17,8 +17,8 @@
  */
 
 
-#ifndef SUSTAINML_CPP__CARBONFOOTPRINTNODE_HPP
-#define SUSTAINML_CPP__CARBONFOOTPRINTNODE_HPP
+#ifndef SUSTAINMLCPP_NODES_CARBONFOOTPRINTNODE_HPP
+#define SUSTAINMLCPP_NODES_CARBONFOOTPRINTNODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/core/QueuedNodeListener.hpp>
@@ -29,7 +29,7 @@
 #include <memory>
 
 namespace sustainml {
-namespace co2_tracker {
+namespace co2_tracker_module {
 
     class Node;
     class Dispatcher;
@@ -59,7 +59,7 @@ namespace co2_tracker {
 
     };
 
-} // namespace co2_tracker
+} // namespace co2_tracker_module
 } // namespace sustainml
 
-#endif // SUSTAINML_CPP__CARBONFOOTPRINTNODE_HPP
+#endif // SUSTAINMLCPP_NODES_CARBONFOOTPRINTNODE_HPP

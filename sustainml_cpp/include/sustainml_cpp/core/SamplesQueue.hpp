@@ -17,8 +17,8 @@
  */
 
 
-#ifndef SUSTAINML_CPP__SAMPLESQUEUEHPP
-#define SUSTAINML_CPP__SAMPLESQUEUEHPP
+#ifndef SUSTAINMLCPP_CORE_SAMPLESQUEUEHPP
+#define SUSTAINMLCPP_CORE_SAMPLESQUEUEHPP
 
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/interfaces/SampleQueryable.hpp>
@@ -62,4 +62,4 @@ namespace sustainml {
 
 }
 
-#endif // SUSTAINML_CPP__SAMPLESQUEUEHPP
+#endif // SUSTAINMLCPP_CORE_SAMPLESQUEUEHPP

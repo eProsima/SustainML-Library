@@ -17,8 +17,8 @@
  */
 
 
-#ifndef SUSTAINML_CPP__NODELISTENER_HPP
-#define SUSTAINML_CPP__NODELISTENER_HPP
+#ifndef SUSTAINMLCPP_CORE_NODELISTENER_HPP
+#define SUSTAINMLCPP_CORE_NODELISTENER_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/interfaces/QueueQueryable.hpp>
@@ -64,4 +64,4 @@ namespace sustainml {
 
 }
 
-#endif // SUSTAINML_CPP__NODELISTENER_HPP
+#endif // SUSTAINMLCPP_CORE_NODELISTENER_HPP
