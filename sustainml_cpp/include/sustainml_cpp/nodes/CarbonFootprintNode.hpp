@@ -34,6 +34,14 @@ namespace co2_tracker_module {
     class Node;
     class Dispatcher;
 
+    /**
+    * @brief Carbon Footprint Node Implementation
+    * It requires the
+    * - User Input
+    * - ML Model
+    * - HW Resource
+    * as inputs
+    */
     class CarbonFootprintNode : public Callable<MLModel, UserInput, HWResource, NodeStatus, CO2Footprint>,
                                 public ::sustainml::Node
     {
@@ -44,11 +52,16 @@ namespace co2_tracker_module {
 
         ~CarbonFootprintNode();
 
-        void publish_to_user(const std::vector<void*> inputs) override;
-
     private:
 
-        std::unique_ptr<Dispatcher> dispatcher_;
+        /**
+        * @brief Invokes the user callback with the provided inputs.
+        *
+        * @param inputs A vector containing the required samples. All the samples
+        * must correspond to the same task_id.
+        */
+        void publish_to_user(const std::vector<void*> inputs) override;
+
 
         std::unique_ptr<QueuedNodeListener<MLModel>> listener_ml_model_queue_;
         std::unique_ptr<QueuedNodeListener<UserInput>> listener_user_input_queue_;

@@ -34,6 +34,12 @@ namespace ml_task_encoding_module {
     class Node;
     class Dispatcher;
 
+    /**
+    * @brief Task Encoder Node Implementation
+    * It requires the
+    * - User Input
+    * as input
+    */
     class TaskEncoderNode : public Callable<UserInput, NodeStatus, EncodedTask>,
                             public ::sustainml::Node
     {
@@ -46,9 +52,14 @@ namespace ml_task_encoding_module {
 
     private:
 
+        /**
+        * @brief Invokes the user callback with the provided inputs.
+        *
+        * @param inputs A vector containing the required samples. All the samples
+        * must correspond to the same task_id.
+        */
         void publish_to_user(const std::vector<void*> inputs) override;
 
-        std::unique_ptr<Dispatcher> dispatcher_;
 
         std::unique_ptr<QueuedNodeListener<UserInput>> listener_enc_task_queue_;
 

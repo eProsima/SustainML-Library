@@ -27,6 +27,11 @@ namespace sustainml {
 
     class Node;
 
+    /**
+    * @brief Aggregates the core components for receving and storing
+    * a sample of a particular type in a queue.
+    * It can also be queried for a particular sample.
+    */
     template <typename T>
     class QueuedNodeListener : public NodeListener<T>,
                                public SamplesQueue<T>,
@@ -40,6 +45,11 @@ namespace sustainml {
 
         ~QueuedNodeListener();
 
+        /**
+        * @brief Retrieves the queue of the particular type.
+        *
+        * @return Pointer to the queue.
+        */
         SamplesQueue<T>* get_queue() override
         {
             return SamplesQueue<T>::get_queue();

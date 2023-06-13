@@ -29,6 +29,11 @@ namespace sustainml {
 
     class Node;
 
+    /**
+    * @brief Aggregates a sample queue in which to place new incoming
+    * samples and notifies the Dispatcher.
+    * Implements the DataReaderListener callbacks.
+    */
     template <typename T>
     class NodeListener : public eprosima::fastdds::dds::DataReaderListener
     {
@@ -41,12 +46,23 @@ namespace sustainml {
 
         ~NodeListener();
 
+        /**
+        * @brief Callback executed when a new sample is available on the DataReader.
+        *
+        * @param reader The DataReader having new available samples.
+        */
         void on_data_available(
             eprosima::fastdds::dds::DataReader* reader)
         {
             //! TODO
         }
 
+        /**
+        * @brief Callback executed when a DataReader matching status change.
+        *
+        * @param reader The DataReader.
+        * @param status The status of the subscription.
+        */
         void on_subscription_matched(
             eprosima::fastdds::dds::DataReader* reader,
             const eprosima::fastdds::dds::SubscriptionMatchedStatus & status)
@@ -56,7 +72,6 @@ namespace sustainml {
 
     private:
 
-        T data_;
         Node* node_;
         QueueQueryable<T>* queue_queryable_;
 

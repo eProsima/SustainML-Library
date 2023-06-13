@@ -47,9 +47,10 @@ namespace sustainml {
     }
 
     template <typename T>
-    std::shared_ptr<T> SamplesQueue<T>::get_input_sample_from_taskid(const int &id)
+    void* SamplesQueue<T>::retrieve_sample_from_taskid(const int &id)
     {
         //! TODO
+        return nullptr;
     }
 
 } // namespace sustainml

@@ -34,6 +34,12 @@ namespace ml_model_provider_module {
     class Node;
     class Dispatcher;
 
+    /**
+    * @brief Machine Learning Model Node Implementation
+    * It requires the
+    * - Encoded Task
+    * as input
+    */
     class MLModelNode : public Callable<EncodedTask, NodeStatus, MLModel>,
                         public ::sustainml::Node
     {
@@ -46,9 +52,14 @@ namespace ml_model_provider_module {
 
     private:
 
+        /**
+        * @brief Invokes the user callback with the provided inputs.
+        *
+        * @param inputs A vector containing the required samples. All the samples
+        * must correspond to the same task_id.
+        */
         void publish_to_user(const std::vector<void*> inputs) override;
 
-        std::unique_ptr<Dispatcher> dispatcher_;
 
         std::unique_ptr<QueuedNodeListener<EncodedTask>> listener_enc_task_queue_;
 

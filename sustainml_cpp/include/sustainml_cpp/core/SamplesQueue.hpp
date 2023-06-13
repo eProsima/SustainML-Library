@@ -31,6 +31,10 @@ namespace sustainml {
 
     class Node;
 
+    /**
+    * @brief Queue implementation for storing samples.
+    * Samplesa are stored in a map indexed by the task_id.
+    */
     template <typename T>
     class SamplesQueue : public SampleQueryable<T>
     {
@@ -42,11 +46,31 @@ namespace sustainml {
 
         ~SamplesQueue();
 
+        /**
+        * @brief Inserts an element into the queue.
+        *
+        * Thread safe operation.
+        *
+        * @param elem element to insert.
+        */
         void insert_element(const std::shared_ptr<T> &elem);
 
+        /**
+        * @brief Remove an element from the queue.
+        *
+        * Thread safe operation.
+        *
+        * @param id Sample key to remove.
+        */
         void remove_element_by_taskid(const int& id);
 
-        std::shared_ptr<T> get_input_sample_from_taskid(const int &id);
+        /**
+        * @brief Retrieves a type-erased pointer of a sample by id.
+        * Implements the SampleQueryable interface
+        *
+        * @param id task_id key of the sample.
+        */
+        void* retrieve_sample_from_taskid(const int &id) override;
 
     private:
 

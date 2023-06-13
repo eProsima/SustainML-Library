@@ -25,7 +25,11 @@ namespace sustainml {
     template <typename T>
     struct SampleQueryable
     {
-
+        /**
+        * @brief Retrieves a void-casted pointer of a sample by id.
+        *
+        * @param id task_id key of the sample.
+        */
         virtual void* retrieve_sample_from_taskid(const int &id) = 0;
 
     };

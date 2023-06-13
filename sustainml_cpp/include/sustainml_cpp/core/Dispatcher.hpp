@@ -39,6 +39,15 @@ namespace sustainml {
     class Node;
     class SamplesQueryable;
 
+    /**
+    * @brief This class tracks the number of times a sample of a particular
+    * task_id has been received in different queues. When a task_id has
+    * received the expected number of samples, is in charge of retrieving
+    * the samples so that the Node can invoke the user callback.
+    *
+    * It is served by a Thread Pool that simultaneously executes the routine()
+    * when a new task_id is received.
+    */
     class Dispatcher
     {
 
@@ -48,18 +57,47 @@ namespace sustainml {
 
         ~Dispatcher();
 
+        /**
+        * @brief Starts spinning the thread pool.
+        */
         void start();
 
+        /**
+        * @brief Stops the Dispatcher execution.
+        */
         void stop();
 
+        /**
+        * @brief Register a new Queue from which to take samples. The expected
+        * number of samples for a task_id is the number of SamplesQueryable registered.
+        *
+        * @param sr Interface from which to retrieve the samples of a particular task_id.
+        */
         void register_retriever(SamplesQueryable* sr);
 
+        /**
+        * @brief Method used to notify the Dispatcher that a new sample for that task_id
+        * has been received.
+        *
+        * @param task_id Task identifier
+        */
         void notify(const int &task_id);
 
     private:
 
+        /**
+        * @brief Implements the main logic of the Dispatcher.
+        * Increments the counter for that task_id and, if all the samples are received, it
+        * retrieves the samples from the queues and invokes the user callback.
+        *
+        * @param task_id Task identifier
+        */
         void process(const int& task_id);
 
+        /**
+        * @brief Function that each thread executes. In a thread-safe fashion, pops
+        * a task_id from the taskid_buffer and processes it.
+        */
         void routine();
 
         eprosima::utils::SlotThreadPool thread_pool_;
@@ -75,7 +113,7 @@ namespace sustainml {
         std::queue<int> taskid_buffer_;
 
         // collection of <taskid, number_times>
-        // No task can be received twice
+        // No task_id can be received twice in a queue
         std::map<int, int> taskid_tracker_;
 
         std::vector<SamplesQueryable*> sample_queryables_;

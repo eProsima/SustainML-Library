@@ -34,6 +34,12 @@ namespace hardware_module {
     class Node;
     class Dispatcher;
 
+    /**
+    * @brief Hardware Resources Node Implementation
+    * It requires the
+    * - ML Model
+    * as input
+    */
     class HardwareResourcesNode : public Callable<MLModel, NodeStatus, HWResource>,
                         public ::sustainml::Node
     {
@@ -46,9 +52,14 @@ namespace hardware_module {
 
     private:
 
+        /**
+        * @brief Invokes the user callback with the provided inputs.
+        *
+        * @param inputs A vector containing the required samples. All the samples
+        * must correspond to the same task_id.
+        */
         void publish_to_user(const std::vector<void*> inputs) override;
 
-        std::unique_ptr<Dispatcher> dispatcher_;
 
         std::unique_ptr<QueuedNodeListener<MLModel>> listener_enc_task_queue_;
 

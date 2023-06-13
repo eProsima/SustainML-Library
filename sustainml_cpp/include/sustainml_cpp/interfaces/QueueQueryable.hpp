@@ -26,7 +26,11 @@ namespace sustainml {
     template <typename T>
     struct QueueQueryable
     {
-
+        /**
+        * @brief Retrieves a shared pointer to the queue.
+        *
+        * @return Queue pointer.
+        */
         virtual SamplesQueue<T> get_queue() = 0;
 
     };

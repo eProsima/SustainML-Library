@@ -23,10 +23,22 @@
 
 namespace sustainml {
 
+    /**
+    * @brief This class is used for registering an input callback
+    * with a variable number of arguments and generic types.
+    *
+    * It is meant to be inherited by the actual SustainML nodes.
+    */
     template <typename ...Args>
     class Callable
     {
     public:
+
+        /**
+        * Method for registering the callback
+        *
+        * @param fn generic callback.
+        */
         void register_cb(std::function<void(Args...)> fn)
         {
             user_callback_ = fn;

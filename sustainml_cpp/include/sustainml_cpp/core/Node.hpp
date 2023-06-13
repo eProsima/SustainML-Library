@@ -35,6 +35,14 @@ namespace sustainml {
 
     class Dispatcher;
 
+    /**
+    * @brief This abstract class is the principal class of the project.
+    * Handles the DDS comunications, aggregates the dispatcher and provides
+    * the main methods for interacting with the user.
+    *
+    * This class is meant to be inherited by the different
+    * SustainML Nodes.
+    */
     class Node
     {
 
@@ -46,24 +54,54 @@ namespace sustainml {
 
         ~Node();
 
+        /**
+        * @brief Called by the user to run the run.
+        */
         void spin();
 
+        /**
+        * @brief Stops the execution of the node.
+        */
         static void terminate();
 
     protected:
 
+        /**
+        * @brief Getter for the dispatcher
+        *
+        * @return A weak pointer to the Dispatcher object
+        */
         std::weak_ptr<Dispatcher> get_dispatcher()
         {
             return dispatcher_;
         }
 
+        /**
+        * @brief Starts a new subscription (DataReader) in the
+        * given topic.
+        *
+        * @param topic The topic name
+        * @param listener Listener object inheriting from DataReaderListener
+        */
         void initialize_subscription(
             const char* topic,
             eprosima::fastdds::dds::DataReaderListener* listener);
 
+        /**
+        * @brief Starts a new publication (DataWriter) in the
+        * given topic.
+        *
+        * @param topic The topic name
+        */
         void initialize_publication(
             const char* topic);
 
+        /**
+        * @brief Invokes the user callback with the provided inputs.
+        *
+        * @param inputs A vector containing the required samples. All the samples
+        * must correspond to the same task_id.
+        */
         virtual void publish_to_user(const std::vector<void*> inputs) = 0;
 
         std::shared_ptr<Dispatcher> dispatcher_;
