@@ -46,9 +46,9 @@ namespace hardware_module {
 
     public:
 
-        HardwareResourcesNode();
+        SUSTAINML_CPP_DLL_API HardwareResourcesNode();
 
-        ~HardwareResourcesNode();
+        SUSTAINML_CPP_DLL_API ~HardwareResourcesNode();
 
     private:
 

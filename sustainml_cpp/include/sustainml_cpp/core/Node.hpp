@@ -20,6 +20,8 @@
 #ifndef SUSTAINMLCPP_CORE_NODE_HPP
 #define SUSTAINMLCPP_CORE_NODE_HPP
 
+#include <config/macros.hpp>
+
 #include <utility>
 #include <vector>
 #include <memory>
@@ -50,19 +52,19 @@ namespace sustainml {
 
     public:
 
-        Node();
+        SUSTAINML_CPP_DLL_API Node();
 
-        ~Node();
+        SUSTAINML_CPP_DLL_API ~Node();
 
         /**
         * @brief Called by the user to run the run.
         */
-        void spin();
+        SUSTAINML_CPP_DLL_API void spin();
 
         /**
         * @brief Stops the execution of the node.
         */
-        static void terminate();
+        SUSTAINML_CPP_DLL_API static void terminate();
 
     protected:
 
@@ -106,17 +108,17 @@ namespace sustainml {
 
         std::shared_ptr<Dispatcher> dispatcher_;
 
-        eprosima::fastdds::dds::DomainParticipant* participant_;
+        std::unique_ptr<eprosima::fastdds::dds::DomainParticipant> participant_;
 
-        eprosima::fastdds::dds::Publisher* publisher_;
+        std::unique_ptr<eprosima::fastdds::dds::Publisher> publisher_;
 
-        eprosima::fastdds::dds::Subscriber* subscriber_;
+        std::unique_ptr<eprosima::fastdds::dds::Subscriber> subscriber_;
 
-        std::vector<eprosima::fastdds::dds::Topic*> topics_;
+        std::vector<std::unique_ptr<eprosima::fastdds::dds::Topic>> topics_;
 
-        std::vector<eprosima::fastdds::dds::DataWriter*> writers_;
+        std::vector<std::unique_ptr<eprosima::fastdds::dds::DataWriter>> writers_;
 
-        std::vector<eprosima::fastdds::dds::DataReader*> readers_;
+        std::vector<std::unique_ptr<eprosima::fastdds::dds::DataReader>> readers_;
 
         std::mutex spin_mtx_;
 

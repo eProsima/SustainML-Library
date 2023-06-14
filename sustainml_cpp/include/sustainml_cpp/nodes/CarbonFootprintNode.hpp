@@ -48,9 +48,9 @@ namespace co2_tracker_module {
 
     public:
 
-        CarbonFootprintNode();
+        SUSTAINML_CPP_DLL_API CarbonFootprintNode();
 
-        ~CarbonFootprintNode();
+        SUSTAINML_CPP_DLL_API ~CarbonFootprintNode();
 
     private:
 

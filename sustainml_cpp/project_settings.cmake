@@ -22,6 +22,8 @@ set(MODULE_NAME
 set(MODULE_SUMMARY
     "C++ library for the SustainML Nodes implementation.")
 
+set(MODULE_CPP_VERSION 14)
+
 set(MODULE_FIND_PACKAGES
         fastcdr
         fastrtps

@@ -19,6 +19,8 @@
 #ifndef SUSTAINMLCPP_CORE_CALLABLE_HPP
 #define SUSTAINMLCPP_CORE_CALLABLE_HPP
 
+#include <config/macros.hpp>
+
 #include <functional>
 
 namespace sustainml {
@@ -39,7 +41,7 @@ namespace sustainml {
         *
         * @param fn generic callback.
         */
-        void register_cb(std::function<void(Args...)> fn)
+        SUSTAINML_CPP_DLL_API void register_cb(std::function<void(Args...)> fn)
         {
             user_callback_ = fn;
         }

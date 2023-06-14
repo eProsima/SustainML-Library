@@ -46,9 +46,9 @@ namespace ml_task_encoding_module {
 
     public:
 
-        TaskEncoderNode();
+        SUSTAINML_CPP_DLL_API TaskEncoderNode();
 
-        ~TaskEncoderNode();
+        SUSTAINML_CPP_DLL_API ~TaskEncoderNode();
 
     private:
 

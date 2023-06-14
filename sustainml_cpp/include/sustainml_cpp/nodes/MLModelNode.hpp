@@ -46,9 +46,9 @@ namespace ml_model_provider_module {
 
     public:
 
-        MLModelNode();
+        SUSTAINML_CPP_DLL_API MLModelNode();
 
-        ~MLModelNode();
+        SUSTAINML_CPP_DLL_API ~MLModelNode();
 
     private:
 
