@@ -37,7 +37,7 @@ namespace sustainml {
     public:
 
         /**
-        * Method for registering the callback
+        * @brief Method for registering the user callback
         *
         * @param fn generic callback.
         */
