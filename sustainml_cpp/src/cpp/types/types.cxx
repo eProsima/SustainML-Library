@@ -26,7 +26,7 @@ char dummy;
 }  // namespace
 #endif  // _WIN32
 
-#include "types.h"
+#include <sustainml_cpp/types/types.h>
 #include <fastcdr/Cdr.h>
 
 #include <fastcdr/exceptions/BadParamException.h>
@@ -419,10 +419,10 @@ size_t NodeStatus::getKeyMaxCdrSerializedSize(
 
      current_align += 4 + eprosima::fastcdr::Cdr::alignment(current_align, 4);
 
-     
+
 
      current_align += 4 + eprosima::fastcdr::Cdr::alignment(current_align, 4) + 255 + 1;
-     
+
 
     return current_align;
 }
@@ -438,7 +438,7 @@ void NodeStatus::serializeKey(
     (void) scdr;
         scdr << m_task_id;
         scdr << m_node_name.c_str();
-      
+
 }
 
 
@@ -777,7 +777,7 @@ size_t NodeControl::getKeyMaxCdrSerializedSize(
 
 
      current_align += 4 + eprosima::fastcdr::Cdr::alignment(current_align, 4) + 255 + 1;
-     
+
 
     return current_align;
 }
@@ -792,7 +792,7 @@ void NodeControl::serializeKey(
 {
     (void) scdr;
          scdr << m_source_node.c_str();
-      
+
 }
 
 GeoLocation::GeoLocation()
@@ -1000,7 +1000,7 @@ void GeoLocation::serializeKey(
         eprosima::fastcdr::Cdr& scdr) const
 {
     (void) scdr;
-      
+
 }
 
 UserInput::UserInput()
@@ -1238,7 +1238,7 @@ size_t UserInput::getKeyMaxCdrSerializedSize(
 
      current_align += 4 + eprosima::fastcdr::Cdr::alignment(current_align, 4);
 
-     
+
 
     return current_align;
 }
@@ -1253,7 +1253,7 @@ void UserInput::serializeKey(
 {
     (void) scdr;
        scdr << m_task_id;
-      
+
 }
 
 EncodedTask::EncodedTask()
@@ -1453,7 +1453,7 @@ size_t EncodedTask::getKeyMaxCdrSerializedSize(
 
      current_align += 4 + eprosima::fastcdr::Cdr::alignment(current_align, 4);
 
-     
+
 
     return current_align;
 }
@@ -1468,7 +1468,7 @@ void EncodedTask::serializeKey(
 {
     (void) scdr;
       scdr << m_task_id;
-      
+
 }
 
 MLModel::MLModel()
@@ -1810,7 +1810,7 @@ size_t MLModel::getKeyMaxCdrSerializedSize(
 
      current_align += 4 + eprosima::fastcdr::Cdr::alignment(current_align, 4);
 
-     
+
 
     return current_align;
 }
@@ -1825,7 +1825,7 @@ void MLModel::serializeKey(
 {
     (void) scdr;
          scdr << m_task_id;
-      
+
 }
 
 HWResource::HWResource()
@@ -2058,7 +2058,7 @@ size_t HWResource::getKeyMaxCdrSerializedSize(
 
      current_align += 4 + eprosima::fastcdr::Cdr::alignment(current_align, 4);
 
-     
+
 
     return current_align;
 }
@@ -2073,7 +2073,7 @@ void HWResource::serializeKey(
 {
     (void) scdr;
        scdr << m_task_id;
-      
+
 }
 
 CO2Footprint::CO2Footprint()
@@ -2343,7 +2343,7 @@ size_t CO2Footprint::getKeyMaxCdrSerializedSize(
 
      current_align += 4 + eprosima::fastcdr::Cdr::alignment(current_align, 4);
 
-     
+
 
     return current_align;
 }
@@ -2358,5 +2358,5 @@ void CO2Footprint::serializeKey(
 {
     (void) scdr;
         scdr << m_task_id;
-      
+
 }

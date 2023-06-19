@@ -23,8 +23,7 @@
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/core/QueuedNodeListener.hpp>
 #include <sustainml_cpp/core/Callable.hpp>
-#include <types/types.h>
-
+#include <sustainml_cpp/types/types.h>
 #include <vector>
 #include <memory>
 

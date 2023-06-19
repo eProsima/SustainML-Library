@@ -340,6 +340,13 @@ public:
     eProsima_user_DllExport void serializeKey(
             eprosima::fastcdr::Cdr& cdr) const;
 
+    /*!
+     * @brief This function updates and publish the new given status.
+     * @param new_status new status to be updated and published.
+     */
+    eProsima_user_DllExport void update(
+            Status new_status);
+
 private:
 
     Status m_node_status;
