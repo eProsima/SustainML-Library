@@ -21,6 +21,16 @@
 namespace sustainml {
 namespace ml_task_encoding_module {
 
+    TaskEncoderNode::TaskEncoderNode()
+    {
+        //! TODO
+    }
+
+    TaskEncoderNode::~TaskEncoderNode()
+    {
+        //! TODO
+    }
+
     void TaskEncoderNode::publish_to_user(const std::vector<void*> inputs)
     {
 

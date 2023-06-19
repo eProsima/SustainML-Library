@@ -23,32 +23,42 @@ namespace sustainml {
     std::atomic<bool> Node::terminate_(false);
     std::condition_variable Node::spin_cv_;
 
+    Node::Node()
+    {
+        //! TODO
+    }
+
+    Node::~Node()
+    {
+        //! TODO
+    }
+
     void Node::spin()
     {
-
+        //! TODO
     }
 
     void Node::initialize_subscription(
         const char* topic,
         eprosima::fastdds::dds::DataReaderListener* listener)
     {
-
+        //! TODO
     }
 
     void Node::initialize_publication(
         const char* topic)
     {
-
+        //! TODO
     }
 
     void Node::terminate()
     {
-
+        //! TODO
     }
 
     void Node::publish_to_user(const std::vector<void*> inputs)
     {
-
+        //! TODO
     }
 
 } // namespace sustainml

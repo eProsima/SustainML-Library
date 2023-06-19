@@ -65,6 +65,10 @@ compile_library(
     "${PROJECT_SOURCE_DIR}/include" # Include directory
 )
 
+# Compile C++ poc executable
+add_executable(${MODULE_NAME}_poc src/cpp/poc.cpp)
+target_link_libraries(${MODULE_NAME}_poc ${MODULE_NAME})
+
 ###############################################################################
 # Test
 ###############################################################################
