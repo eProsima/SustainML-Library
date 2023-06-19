@@ -21,6 +21,16 @@
 namespace sustainml {
 namespace ml_model_provider_module {
 
+    MLModelNode::MLModelNode()
+    {
+        //! TODO
+    }
+
+    MLModelNode::~MLModelNode()
+    {
+        //! TODO
+    }
+
     void MLModelNode::publish_to_user(const std::vector<void*> inputs)
     {
 

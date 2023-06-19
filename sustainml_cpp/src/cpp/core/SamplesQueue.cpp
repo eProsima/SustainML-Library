@@ -53,4 +53,10 @@ namespace sustainml {
         return nullptr;
     }
 
+    template <typename T>
+    SamplesQueue<T>* SamplesQueue<T>::get_queue()
+    {
+        return this;
+    }
+
 } // namespace sustainml

@@ -21,6 +21,16 @@
 namespace sustainml {
 namespace hardware_module {
 
+    HardwareResourcesNode::HardwareResourcesNode()
+    {
+        //! TODO
+    }
+
+    HardwareResourcesNode::~HardwareResourcesNode()
+    {
+        //! TODO
+    }
+
     void HardwareResourcesNode::publish_to_user(const std::vector<void*> inputs)
     {
 

@@ -21,6 +21,16 @@
 namespace sustainml {
 namespace co2_tracker_module {
 
+    CarbonFootprintNode::CarbonFootprintNode()
+    {
+        //! TODO
+    }
+
+    CarbonFootprintNode::~CarbonFootprintNode()
+    {
+        //! TODO
+    }
+
     void CarbonFootprintNode::publish_to_user(const std::vector<void*> inputs)
     {
 

@@ -31,7 +31,7 @@ namespace sustainml {
         *
         * @return Queue pointer.
         */
-        virtual SamplesQueue<T> get_queue() = 0;
+        virtual SamplesQueue<T>* get_queue() = 0;
 
     };
 

@@ -72,6 +72,8 @@ namespace sustainml {
         */
         void* retrieve_sample_from_taskid(const int &id) override;
 
+        SamplesQueue<T>* get_queue();
+
     private:
 
         Node* node_;
