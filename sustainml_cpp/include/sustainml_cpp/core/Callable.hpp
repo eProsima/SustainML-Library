@@ -19,12 +19,12 @@
 #ifndef SUSTAINMLCPP_CORE_CALLABLE_HPP
 #define SUSTAINMLCPP_CORE_CALLABLE_HPP
 
-#include <config/macros.hpp>
+#include <config/Macros.hpp>
 
 #include <functional>
 
 namespace sustainml {
-
+namespace core {
     /**
     * @brief This class is used for registering an input callback
     * with a variable number of arguments and generic types.
@@ -41,14 +41,15 @@ namespace sustainml {
         *
         * @param fn generic callback.
         */
-        SUSTAINML_CPP_DLL_API void register_cb(std::function<void(Args...)> fn)
+        SUSTAINML_CPP_DLL_API void register_cb(std::function<void(Args& ...)> fn)
         {
             user_callback_ = fn;
         }
 
-        std::function<void(Args...)> user_callback_;
+        std::function<void(Args&...)> user_callback_;
     };
 
-}
+} // namespace core
+} // namespace sustainml
 
 #endif // SUSTAINMLCPP_CORE_CALLABLE_HPP

@@ -19,6 +19,8 @@
 #ifndef SUSTAINMLCPP_CORE_DISPATCHER_HPP
 #define SUSTAINMLCPP_CORE_DISPATCHER_HPP
 
+#include <sustainml_cpp/interfaces/SampleQueryable.hpp>
+
 #include <functional>
 #include <iostream>
 #include <mutex>
@@ -33,11 +35,14 @@
 #include <cpp_utils/thread_pool/pool/SlotThreadPool.hpp>
 
 namespace sustainml {
+namespace core {
 
     constexpr int N_THREADS_DEFAULT = 2;
+    constexpr int INITIAL_N_QUEUES = 3;
+    constexpr eprosima::utils::TaskId DISPATCHER_ROUTINE_ID = 1;
 
     class Node;
-    class SamplesQueryable;
+    class SampleQueryable;
 
     /**
     * @brief This class tracks the number of times a sample of a particular
@@ -51,6 +56,8 @@ namespace sustainml {
     class Dispatcher
     {
 
+        friend Node;
+
     public:
 
         Dispatcher(Node *node);
@@ -63,17 +70,22 @@ namespace sustainml {
         void start();
 
         /**
+        * @brief Returns whether the Dispatcher has been started.
+        */
+        bool is_active();
+
+        /**
         * @brief Stops the Dispatcher execution.
         */
         void stop();
 
         /**
         * @brief Register a new Queue from which to take samples. The expected
-        * number of samples for a task_id is the number of SamplesQueryable registered.
+        * number of samples for a task_id is the number of SampleQueryable registered.
         *
         * @param sr Interface from which to retrieve the samples of a particular task_id.
         */
-        void register_retriever(SamplesQueryable* sr);
+        void register_sample_queryable(interfaces::SampleQueryable* sr);
 
         /**
         * @brief Method used to notify the Dispatcher that a new sample for that task_id
@@ -112,15 +124,21 @@ namespace sustainml {
 
         std::queue<int> taskid_buffer_;
 
-        // collection of <taskid, number_times>
-        // No task_id can be received twice in a queue
+        // collection of <taskid, std::vector<queue_id>>
+        // Current implementation assumes that no task_id
+        // can be received twice in a queue
+        // but it can be easily added by also tracking the
+        // queue_id
         std::map<int, int> taskid_tracker_;
 
-        std::vector<SamplesQueryable*> sample_queryables_;
+        std::vector<interfaces::SampleQueryable*> sample_queryables_;
 
         std::atomic<bool> stop_;
+
+        std::atomic<bool> started_;
     };
 
-}
+} // namespace core
+} // namespace sustainml
 
 #endif // SUSTAINMLCPP_CORE_DISPATCHER_HPP

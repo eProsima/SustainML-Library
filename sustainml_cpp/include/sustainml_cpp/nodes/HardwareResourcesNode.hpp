@@ -21,13 +21,16 @@
 #define SUSTAINMLCPP_NODES_HARDWARERESOURCESNODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
-#include <sustainml_cpp/core/QueuedNodeListener.hpp>
 #include <sustainml_cpp/core/Callable.hpp>
 #include <sustainml_cpp/types/types.h>
+
 #include <vector>
 #include <memory>
 
 namespace sustainml {
+namespace core {
+    template<class T> class QueuedNodeListener;
+}
 namespace hardware_module {
 
     class Node;
@@ -39,15 +42,21 @@ namespace hardware_module {
     * - ML Model
     * as input
     */
-    class HardwareResourcesNode : public Callable<MLModel, NodeStatus, HWResource>,
-                        public ::sustainml::Node
+    class HardwareResourcesNode : public core::Callable<MLModel, NodeStatus, HWResource>,
+                                  public ::sustainml::core::Node
     {
+
+        enum ExpectedInputs
+        {
+            ML_MODEL,
+            MAX
+        };
 
     public:
 
         SUSTAINML_CPP_DLL_API HardwareResourcesNode();
 
-        SUSTAINML_CPP_DLL_API ~HardwareResourcesNode();
+        SUSTAINML_CPP_DLL_API virtual ~HardwareResourcesNode();
 
     private:
 
@@ -57,11 +66,11 @@ namespace hardware_module {
         * @param inputs A vector containing the required samples. All the samples
         * must correspond to the same task_id.
         */
-        void publish_to_user(const std::vector<void*> inputs) override;
+        void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
 
+        std::unique_ptr<core::QueuedNodeListener<MLModel>> listener_ml_model_queue_;
 
-        std::unique_ptr<QueuedNodeListener<MLModel>> listener_enc_task_queue_;
-
+        std::mutex mtx_;
         //! task id to <NodeStatus, HWResource>
         std::map<int, std::pair<NodeStatus, HWResource>>  user_data_;
 

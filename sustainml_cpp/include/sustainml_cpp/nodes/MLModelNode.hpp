@@ -21,7 +21,6 @@
 #define SUSTAINMLCPP_NODES_MLMODELNODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
-#include <sustainml_cpp/core/QueuedNodeListener.hpp>
 #include <sustainml_cpp/core/Callable.hpp>
 #include <sustainml_cpp/types/types.h>
 
@@ -29,6 +28,9 @@
 #include <memory>
 
 namespace sustainml {
+namespace core {
+    template<class T> class QueuedNodeListener;
+}
 namespace ml_model_provider_module {
 
     class Node;
@@ -40,15 +42,20 @@ namespace ml_model_provider_module {
     * - Encoded Task
     * as input
     */
-    class MLModelNode : public Callable<EncodedTask, NodeStatus, MLModel>,
-                        public ::sustainml::Node
+    class MLModelNode : public core::Callable<EncodedTask, NodeStatus, MLModel>,
+                        public ::sustainml::core::Node
     {
+        enum ExpectedInputs
+        {
+            ENCODED_TASK,
+            MAX
+        };
 
     public:
 
         SUSTAINML_CPP_DLL_API MLModelNode();
 
-        SUSTAINML_CPP_DLL_API ~MLModelNode();
+        SUSTAINML_CPP_DLL_API virtual ~MLModelNode();
 
     private:
 
@@ -58,11 +65,11 @@ namespace ml_model_provider_module {
         * @param inputs A vector containing the required samples. All the samples
         * must correspond to the same task_id.
         */
-        void publish_to_user(const std::vector<void*> inputs) override;
+        void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
 
+        std::unique_ptr<core::QueuedNodeListener<EncodedTask>> listener_enc_task_queue_;
 
-        std::unique_ptr<QueuedNodeListener<EncodedTask>> listener_enc_task_queue_;
-
+        std::mutex mtx_;
         //! task id to <NodeStatus, MLModel>
         std::map<int, std::pair<NodeStatus, MLModel>>  user_data_;
 

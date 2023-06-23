@@ -21,7 +21,6 @@
 #define SUSTAINMLCPP_NODES_CARBONFOOTPRINTNODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
-#include <sustainml_cpp/core/QueuedNodeListener.hpp>
 #include <sustainml_cpp/core/Callable.hpp>
 #include <sustainml_cpp/types/types.h>
 
@@ -29,6 +28,9 @@
 #include <memory>
 
 namespace sustainml {
+namespace core {
+    template<class T> class QueuedNodeListener;
+}
 namespace co2_tracker_module {
 
     class Node;
@@ -42,15 +44,24 @@ namespace co2_tracker_module {
     * - HW Resource
     * as inputs
     */
-    class CarbonFootprintNode : public Callable<MLModel, UserInput, HWResource, NodeStatus, CO2Footprint>,
-                                public ::sustainml::Node
+
+    class CarbonFootprintNode : public core::Callable<MLModel, UserInput, HWResource, NodeStatus, CO2Footprint>,
+                                public ::sustainml::core::Node
     {
+
+        enum ExpectedInputs
+        {
+            ML_MODEL,
+            USER_INPUT,
+            HW_RESOURCE,
+            MAX
+        };
 
     public:
 
         SUSTAINML_CPP_DLL_API CarbonFootprintNode();
 
-        SUSTAINML_CPP_DLL_API ~CarbonFootprintNode();
+        SUSTAINML_CPP_DLL_API virtual ~CarbonFootprintNode();
 
     private:
 
@@ -60,16 +71,15 @@ namespace co2_tracker_module {
         * @param inputs A vector containing the required samples. All the samples
         * must correspond to the same task_id.
         */
-        void publish_to_user(const std::vector<void*> inputs) override;
+        void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
 
+        std::unique_ptr<core::QueuedNodeListener<MLModel>> listener_ml_model_queue_;
+        std::unique_ptr<core::QueuedNodeListener<UserInput>> listener_user_input_queue_;
+        std::unique_ptr<core::QueuedNodeListener<HWResource>> listener_hw_queue_;
 
-        std::unique_ptr<QueuedNodeListener<MLModel>> listener_ml_model_queue_;
-        std::unique_ptr<QueuedNodeListener<UserInput>> listener_user_input_queue_;
-        std::unique_ptr<QueuedNodeListener<HWResource>> listener_hw_queue_;
-
+        std::mutex mtx_;
         // task id to <NodeStatus, CO2Footprint>
         std::map<int, std::pair<NodeStatus, CO2Footprint>>  user_data_;
-
     };
 
 } // namespace co2_tracker_module
