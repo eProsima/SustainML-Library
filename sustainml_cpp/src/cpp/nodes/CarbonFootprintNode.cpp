@@ -54,17 +54,38 @@ namespace co2_tracker_module {
     void CarbonFootprintNode::publish_to_user(const std::vector<std::pair<int,void*>> input_samples)
     {
         //! Expected inputs are the number of reader minus the control reader
-        if (input_samples.size() == ExpectedInputs::MAX)
+        if (input_samples.size() == ExpectedInputSamples::MAX)
         {
-            std::tuple<MLModel*, UserInput*, HWResource*> user_inputs{nullptr, nullptr, nullptr};
+            size_t samples_retrieved{0};
+            common::pair_queue_id_with_sample_type(
+                    input_samples,
+                    Callable::get_user_cb_args(),
+                    ExpectedInputSamples::MAX,
+                    samples_retrieved);
 
-            common::pair_queue_id_with_sample_type(input_samples, user_inputs);
+            int task_id{-1};
+            auto first_sample_ptr = std::get<USER_INPUT_SAMPLE>(Callable::get_user_cb_args());
 
-            int task_id = std::get<0>(user_inputs)->task_id();
+            if (nullptr != first_sample_ptr)
+            {
+                task_id = first_sample_ptr->task_id();
+            }
+
+            if (task_id == common::INVALID_ID)
+            {
+                EPROSIMA_LOG_ERROR(CO2_NODE, "Error Retrieving the task_id of a sample");
+                return;
+            }
 
             {
                 std:std::unique_lock<std::mutex> lock (mtx_);
-                user_data_.insert({task_id, {NodeStatus(), CO2Footprint()}});
+                task_data_.insert({task_id, {NodeStatus(), CO2Footprint()}});
+
+                auto& status = std::get<TASK_STATUS_DATA>(Callable::get_user_cb_args());
+                auto& output = std::get<TASK_OUTPUT_DATA>(Callable::get_user_cb_args());
+
+                status = &task_data_[task_id].first;
+                output = &task_data_[task_id].second;
             }
 
             //! TODO: Manage task statuses individually
@@ -75,13 +96,10 @@ namespace co2_tracker_module {
                 publish_node_status();
             }
 
-            user_callback_(*std::get<0>(user_inputs),
-                           *std::get<1>(user_inputs),
-                           *std::get<2>(user_inputs),
-                           user_data_[task_id].first, user_data_[task_id].second);
+            Callable::invoke_user_cb(core::helper::gen_seq<size>{});
 
             //! TODO improve indexing
-            writers_[1]->write(&user_data_[task_id].second);
+            writers_[1]->write(&task_data_[task_id].second);
 
             listener_ml_model_queue_->remove_element_by_taskid(task_id);
             listener_hw_queue_->remove_element_by_taskid(task_id);
@@ -89,7 +107,7 @@ namespace co2_tracker_module {
 
             {
                 std::unique_lock<std::mutex> lock (mtx_);
-                auto task_it = user_data_.erase(task_id);
+                auto task_it = task_data_.erase(task_id);
             }
         }
         else

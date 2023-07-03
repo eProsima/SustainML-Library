@@ -44,17 +44,38 @@ namespace ml_model_provider_module {
     void MLModelNode::publish_to_user(const std::vector<std::pair<int,void*>> input_samples)
     {
         //! Expected inputs are the number of reader minus the control reader
-        if (input_samples.size() == ExpectedInputs::MAX)
+        if (input_samples.size() == ExpectedInputSamples::MAX)
         {
-            std::tuple<EncodedTask*> user_inputs{nullptr};
+            size_t samples_retrieved{0};
+            common::pair_queue_id_with_sample_type(
+                    input_samples,
+                    Callable::get_user_cb_args(),
+                    ExpectedInputSamples::MAX,
+                    samples_retrieved);
 
-            common::pair_queue_id_with_sample_type(input_samples, user_inputs);
+            int task_id{-1};
+            auto first_sample_ptr = std::get<ENCODED_TASK_SAMPLE>(Callable::get_user_cb_args());
 
-            int task_id = std::get<0>(user_inputs)->task_id();
+            if (nullptr != first_sample_ptr)
+            {
+                task_id = first_sample_ptr->task_id();
+            }
+
+            if (task_id == common::INVALID_ID)
+            {
+                EPROSIMA_LOG_ERROR(MLMODEL_NODE, "Error Retrieving the task_id of a sample");
+                return;
+            }
 
             {
                 std:std::unique_lock<std::mutex> lock (mtx_);
-                user_data_.insert({task_id, {NodeStatus(), MLModel()}});
+                task_data_.insert({task_id, {NodeStatus(), MLModel()}});
+
+                auto& status = std::get<TASK_STATUS_DATA>(Callable::get_user_cb_args());
+                auto& output = std::get<TASK_OUTPUT_DATA>(Callable::get_user_cb_args());
+
+                status = &task_data_[task_id].first;
+                output = &task_data_[task_id].second;
             }
 
             //! TODO: Manage task statuses individually
@@ -65,17 +86,16 @@ namespace ml_model_provider_module {
                 publish_node_status();
             }
 
-            user_callback_(*std::get<0>(user_inputs),
-                           user_data_[task_id].first, user_data_[task_id].second);
+            Callable::invoke_user_cb(core::helper::gen_seq<size>{});
 
             //! TODO improve indexing
-            writers_[1]->write(&user_data_[task_id].second);
+            writers_[1]->write(&task_data_[task_id].second);
 
             listener_enc_task_queue_->remove_element_by_taskid(task_id);
 
             {
                 std::unique_lock<std::mutex> lock (mtx_);
-                auto task_it = user_data_.erase(task_id);
+                auto task_it = task_data_.erase(task_id);
             }
         }
         else

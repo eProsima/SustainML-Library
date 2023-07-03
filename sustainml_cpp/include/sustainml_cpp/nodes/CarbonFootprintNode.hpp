@@ -49,12 +49,18 @@ namespace co2_tracker_module {
                                 public ::sustainml::core::Node
     {
 
-        enum ExpectedInputs
+        enum ExpectedInputSamples
         {
-            ML_MODEL,
-            USER_INPUT,
-            HW_RESOURCE,
+            ML_MODEL_SAMPLE,
+            USER_INPUT_SAMPLE,
+            HW_RESOURCE_SAMPLE,
             MAX
+        };
+
+        enum TaskData
+        {
+            TASK_STATUS_DATA = ExpectedInputSamples::MAX,
+            TASK_OUTPUT_DATA
         };
 
     public:
@@ -79,7 +85,7 @@ namespace co2_tracker_module {
 
         std::mutex mtx_;
         // task id to <NodeStatus, CO2Footprint>
-        std::map<int, std::pair<NodeStatus, CO2Footprint>>  user_data_;
+        std::map<int, std::pair<NodeStatus, CO2Footprint>>  task_data_;
     };
 
 } // namespace co2_tracker_module

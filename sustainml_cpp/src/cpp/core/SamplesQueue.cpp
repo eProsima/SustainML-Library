@@ -41,8 +41,6 @@ namespace core {
         {
             EPROSIMA_LOG_ERROR(SAMPLES_QUEUE, "Could not initialize Samples Queue " << queue_id);
         }
-
-        std::cout << "Queue with " << queue_id << " created " << std::endl;
     }
 
     template <typename T>

@@ -46,10 +46,16 @@ namespace hardware_module {
                                   public ::sustainml::core::Node
     {
 
-        enum ExpectedInputs
+        enum ExpectedInputSamples
         {
-            ML_MODEL,
+            ML_MODEL_SAMPLE,
             MAX
+        };
+
+        enum TaskData
+        {
+            TASK_STATUS_DATA = ExpectedInputSamples::MAX,
+            TASK_OUTPUT_DATA
         };
 
     public:
@@ -72,7 +78,7 @@ namespace hardware_module {
 
         std::mutex mtx_;
         //! task id to <NodeStatus, HWResource>
-        std::map<int, std::pair<NodeStatus, HWResource>>  user_data_;
+        std::map<int, std::pair<NodeStatus, HWResource>>  task_data_;
 
     };
 

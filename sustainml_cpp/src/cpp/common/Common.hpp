@@ -141,7 +141,11 @@ namespace common {
     }
 
     template<typename T>
-    inline bool pair_queue_id_with_sample_type(std::vector<std::pair<int,void*>> input_samples, T* &sample)
+    inline bool pair_queue_id_with_sample_type(
+            std::vector<std::pair<int,void*>> input_samples,
+            T* &sample,
+            const size_t &expected_samples,
+            size_t &n_samples_retrieved)
     {
         bool ret = false;
 
@@ -150,6 +154,7 @@ namespace common {
             if (sample_type_to_queue_id(sample) == input.first)
             {
                 sample = reinterpret_cast<decltype(sample)>(input.second);
+                ++n_samples_retrieved;
                 ret = true;
             }
         }
@@ -159,19 +164,38 @@ namespace common {
 
     template<std::size_t I = 0, typename... Tp>
     inline typename std::enable_if<I == sizeof...(Tp), void>::type
-    pair_queue_id_with_sample_type(const std::vector<std::pair<int,void*>> &input_samples, std::tuple<Tp...>& t)
+    pair_queue_id_with_sample_type(
+            const std::vector<std::pair<int,void*>> &input_samples,
+            std::tuple<Tp...>& t, const size_t &expected_samples,
+            size_t &n_samples_retrieved)
     { }
 
     template<std::size_t I = 0, typename... Tp>
     inline typename std::enable_if<I < sizeof...(Tp), void>::type
-    pair_queue_id_with_sample_type(const std::vector<std::pair<int,void*>> &input_samples, std::tuple<Tp...>& t)
+    pair_queue_id_with_sample_type(const std::vector<std::pair<int,void*>> &input_samples,
+            std::tuple<Tp...>& t_args,
+            const size_t &expected_samples,
+            size_t &n_samples_retrieved)
     {
-        if (!pair_queue_id_with_sample_type(input_samples, std::get<I>(t)))
+
+        if (!pair_queue_id_with_sample_type(
+                input_samples,
+                std::get<I>(t_args),
+                expected_samples,
+                n_samples_retrieved))
         {
-            EPROSIMA_LOG_ERROR(COMMON, "Expected sample type not found in retrieved samples");
+            if (n_samples_retrieved != expected_samples)
+            {
+                EPROSIMA_LOG_ERROR(COMMON, "Expected sample type not found in retrieved samples");
+            }
+
             return;
         }
-        pair_queue_id_with_sample_type<I + 1, Tp...>(input_samples, t);
+        pair_queue_id_with_sample_type<I + 1, Tp...>(
+                input_samples,
+                t_args,
+                expected_samples,
+                n_samples_retrieved);
     }
 
 } //common

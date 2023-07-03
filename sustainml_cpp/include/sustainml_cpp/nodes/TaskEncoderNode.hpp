@@ -46,10 +46,16 @@ namespace ml_task_encoding_module {
                             public ::sustainml::core::Node
     {
 
-        enum ExpectedInputs
+        enum ExpectedInputSamples
         {
-            USER_INPUT,
+            USER_INPUT_SAMPLE,
             MAX
+        };
+
+        enum TaskData
+        {
+            TASK_STATUS_DATA = ExpectedInputSamples::MAX,
+            TASK_OUTPUT_DATA
         };
 
     public:
@@ -72,7 +78,7 @@ namespace ml_task_encoding_module {
 
         std::mutex mtx_;
         //! task id to <NodeStatus, EncodedTask>
-        std::map<int, std::pair<NodeStatus, EncodedTask>>  user_data_;
+        std::map<int, std::pair<NodeStatus, EncodedTask>>  task_data_;
 
     };
 

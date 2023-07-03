@@ -45,10 +45,16 @@ namespace ml_model_provider_module {
     class MLModelNode : public core::Callable<EncodedTask, NodeStatus, MLModel>,
                         public ::sustainml::core::Node
     {
-        enum ExpectedInputs
+        enum ExpectedInputSamples
         {
-            ENCODED_TASK,
+            ENCODED_TASK_SAMPLE,
             MAX
+        };
+
+        enum TaskData
+        {
+            TASK_STATUS_DATA = ExpectedInputSamples::MAX,
+            TASK_OUTPUT_DATA
         };
 
     public:
@@ -71,7 +77,7 @@ namespace ml_model_provider_module {
 
         std::mutex mtx_;
         //! task id to <NodeStatus, MLModel>
-        std::map<int, std::pair<NodeStatus, MLModel>>  user_data_;
+        std::map<int, std::pair<NodeStatus, MLModel>>  task_data_;
 
     };
 
