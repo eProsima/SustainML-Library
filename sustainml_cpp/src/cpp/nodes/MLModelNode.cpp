@@ -24,7 +24,7 @@
 namespace sustainml {
 namespace ml_model_provider_module {
 
-    MLModelNode::MLModelNode() : Node("ML_MODEL_NODE")
+    MLModelNode::MLModelNode() : Node(common::ML_MODEL_NODE)
     {
         listener_enc_task_queue_.reset(new core::QueuedNodeListener<EncodedTask>(this));
 
@@ -88,8 +88,7 @@ namespace ml_model_provider_module {
 
             Callable::invoke_user_cb(core::helper::gen_seq<size>{});
 
-            //! TODO improve indexing
-            writers_[1]->write(&task_data_[task_id].second);
+            writers_[OUTPUT_WRITER_IDX]->write(&task_data_[task_id].second);
 
             listener_enc_task_queue_->remove_element_by_taskid(task_id);
 

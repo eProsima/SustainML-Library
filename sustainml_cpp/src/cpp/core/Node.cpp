@@ -16,6 +16,7 @@
  * @file Node.cpp
  */
 
+#include <sustainml_cpp/core/Node.hpp>
 
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
 #include <fastdds/dds/log/Log.hpp>
@@ -24,7 +25,6 @@
 #include <fastdds/dds/topic/TypeSupport.hpp>
 
 #include <sustainml_cpp/core/Dispatcher.hpp>
-#include <sustainml_cpp/core/Node.hpp>
 
 #include <common/Common.hpp>
 
@@ -196,7 +196,7 @@ namespace core {
     {
         if (!writers_.empty())
         {
-            writers_[0]->write(&node_status_);
+            writers_[STATUS_WRITER_IDX]->write(&node_status_);
         }
     }
 
@@ -222,32 +222,32 @@ namespace core {
         const eprosima::fastdds::dds::SubscriptionMatchedStatus & status)
     {
 
-        std::cout << "NodeControl Reader Suscription status ";
+        EPROSIMA_LOG_INFO(NODE, "NodeControl Reader Suscription status");
 
         // New remote DataWriter discovered
         if (status.current_count_change == 1)
         {
             matched_ = status.current_count;
-            std::cout << "Subscriber matched." << std::endl;
+            EPROSIMA_LOG_INFO(NODE, "Subscriber matched.");
         }
         // New remote DataWriter undiscovered
         else if (status.current_count_change == -1)
         {
             matched_ = status.current_count;
-            std::cout << "Subscriber unmatched." << std::endl;
+            EPROSIMA_LOG_INFO(NODE, "Subscriber unmatched.");
         }
         // Non-valid option
         else
         {
-            std::cout << status.current_count_change
-                    << " is not a valid value for SubscriptionMatchedStatus current count change" << std::endl;
+            EPROSIMA_LOG_INFO(NODE, status.current_count_change
+                    << " is not a valid value for SubscriptionMatchedStatus current count change");
         }
     }
 
     void Node::NodeControlListener::on_data_available(
         eprosima::fastdds::dds::DataReader* reader)
     {
-        std::cout << "NodeStatus has a new status " << std::endl;
+        EPROSIMA_LOG_INFO(NODE, "NodeStatus has a new status ");
     }
 
 } // namespace core

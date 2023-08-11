@@ -17,6 +17,7 @@
  */
 
 #include <sustainml_cpp/core/Dispatcher.hpp>
+
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/interfaces/SampleQueryable.hpp>
 
@@ -94,13 +95,13 @@ namespace core {
 
             if (it == taskid_tracker_.end())
             {
-                //std::cout << "Initializing task_id " << task_id << std::endl;
+                EPROSIMA_LOG_INFO(DISPATCHER, "Initializing task_id " << task_id);
                 taskid_tracker_[task_id] = 1;
             }
             else
             {
                 it->second +=1;
-                //std::cout << " Taskid_tracker_[task_id] " << task_id << " n_times " << it->second << std::endl;
+                EPROSIMA_LOG_ERROR(DISPATCHER, " Taskid_tracker_[task_id] " << task_id << " n_times " << it->second);
             }
 
             if (taskid_tracker_[task_id] == expected_hits)

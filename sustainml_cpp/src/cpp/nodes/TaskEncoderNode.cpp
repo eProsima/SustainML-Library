@@ -24,7 +24,7 @@
 namespace sustainml {
 namespace ml_task_encoding_module {
 
-    TaskEncoderNode::TaskEncoderNode() : Node("TASK_ENCODER_NODE")
+    TaskEncoderNode::TaskEncoderNode() : Node(common::TASK_ENCODER_NODE)
     {
         listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 
@@ -88,8 +88,7 @@ namespace ml_task_encoding_module {
 
             Callable::invoke_user_cb(core::helper::gen_seq<size>{});
 
-            //! TODO improve indexing
-            writers_[1]->write(&task_data_[task_id].second);
+            writers_[OUTPUT_WRITER_IDX]->write(&task_data_[task_id].second);
 
             listener_user_input_queue_->remove_element_by_taskid(task_id);
 

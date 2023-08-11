@@ -24,7 +24,7 @@
 namespace sustainml {
 namespace hardware_module {
 
-    HardwareResourcesNode::HardwareResourcesNode() : Node("HW_RESOURCES_NODE")
+    HardwareResourcesNode::HardwareResourcesNode() : Node(common::HW_RESOURCES_NODE)
     {
         listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
 
@@ -88,8 +88,7 @@ namespace hardware_module {
 
             Callable::invoke_user_cb(core::helper::gen_seq<size>{});
 
-            //! TODO improve indexing
-            writers_[1]->write(&task_data_[task_id].second);
+            writers_[OUTPUT_WRITER_IDX]->write(&task_data_[task_id].second);
 
             listener_ml_model_queue_->remove_element_by_taskid(task_id);
 

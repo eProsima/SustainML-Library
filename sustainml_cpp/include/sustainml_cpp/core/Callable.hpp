@@ -19,21 +19,24 @@
 #ifndef SUSTAINMLCPP_CORE_CALLABLE_HPP
 #define SUSTAINMLCPP_CORE_CALLABLE_HPP
 
-#include <config/Macros.hpp>
-#include <types/types.h>
-
 #include <functional>
 #include <iostream>
 #include <tuple>
+
+#include <config/Macros.hpp>
+#include <types/types.h>
+
+#include <fastrtps/log/Log.h>
+
 
 namespace sustainml {
 namespace core {
 namespace helper {
 
     template<typename T>
-    void seeType(T)
+    void see_type(T)
     {
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        EPROSIMA_LOG_INFO(CALLABLE, __PRETTY_FUNCTION__);
     }
 
     //! Expand the parameter pack in runtime
@@ -73,7 +76,7 @@ namespace helper {
         */
         SUSTAINML_CPP_DLL_API constexpr void register_cb(std::function<void(_TYPES& ...)> fn)
         {
-            //helper::seeType(fn);
+            //helper::see_type(fn);
             user_callback_ = fn;
         }
 

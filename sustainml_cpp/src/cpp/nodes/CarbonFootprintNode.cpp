@@ -24,7 +24,7 @@
 namespace sustainml {
 namespace co2_tracker_module {
 
-    CarbonFootprintNode::CarbonFootprintNode() : Node("CO2_TRACKER_NODE")
+    CarbonFootprintNode::CarbonFootprintNode() : Node(common::CO2_TRACKER_NODE)
     {
         listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
         listener_hw_queue_.reset(new core::QueuedNodeListener<HWResource>(this));
@@ -98,8 +98,7 @@ namespace co2_tracker_module {
 
             Callable::invoke_user_cb(core::helper::gen_seq<size>{});
 
-            //! TODO improve indexing
-            writers_[1]->write(&task_data_[task_id].second);
+            writers_[OUTPUT_WRITER_IDX]->write(&task_data_[task_id].second);
 
             listener_ml_model_queue_->remove_element_by_taskid(task_id);
             listener_hw_queue_->remove_element_by_taskid(task_id);

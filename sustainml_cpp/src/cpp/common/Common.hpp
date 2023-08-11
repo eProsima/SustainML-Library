@@ -32,6 +32,12 @@ namespace common {
 
     constexpr int INVALID_ID = -1;
 
+    //!Node Names
+    constexpr const char* TASK_ENCODER_NODE = "TASK_ENCODER_NODE";
+    constexpr const char* ML_MODEL_NODE = "ML_MODEL_NODE";
+    constexpr const char* HW_RESOURCES_NODE = "HW_RESOURCES_NODE";
+    constexpr const char* CO2_TRACKER_NODE = "CO2_TRACKER_NODE";
+
     enum Topics
     {
         NODE_CONTROL,

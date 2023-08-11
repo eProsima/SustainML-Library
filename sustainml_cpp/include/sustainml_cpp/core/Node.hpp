@@ -40,6 +40,8 @@
 #include <fastdds/dds/subscriber/qos/SubscriberQos.hpp>
 #include <fastdds/dds/subscriber/Subscriber.hpp>
 
+#define STATUS_WRITER_IDX 0
+#define OUTPUT_WRITER_IDX 1
 
 namespace sustainml {
 namespace core {
@@ -95,6 +97,7 @@ namespace core {
         * given topic.
         *
         * @param topic The topic name
+        * @param type_name The type name
         * @param listener Listener object inheriting from DataReaderListener
         */
         bool initialize_subscription(
@@ -107,6 +110,7 @@ namespace core {
         * given topic.
         *
         * @param topic The topic name
+        * @param type_name The type name
         */
         bool initialize_publication(
             const char* topic_name,
