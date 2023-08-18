@@ -20,14 +20,19 @@
 #ifndef SUSTAINMLCPP_CORE_SAMPLESQUEUEHPP
 #define SUSTAINMLCPP_CORE_SAMPLESQUEUEHPP
 
+#include <sustainml_cpp/core/Dispatcher.hpp>
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/interfaces/SampleQueryable.hpp>
 
 #include <map>
-#include <mutex>
 #include <memory>
+#include <mutex>
 
 namespace sustainml {
+namespace utils {
+    template<class T> class SamplePool;
+}
+namespace core {
 
     class Node;
 
@@ -36,7 +41,7 @@ namespace sustainml {
     * Samplesa are stored in a map indexed by the task_id.
     */
     template <typename T>
-    class SamplesQueue : public SampleQueryable<T>
+    class SamplesQueue : public interfaces::SampleQueryable
     {
 
     public:
@@ -44,7 +49,25 @@ namespace sustainml {
         SamplesQueue(
             Node* node);
 
-        ~SamplesQueue();
+        virtual ~SamplesQueue();
+
+        /**
+        * @brief Gets a free cache from the pool
+        *
+        * Thread safe operation.
+        *
+        * @return Pointer to the queue cache. nullptr if the pool is full
+        */
+        T* get_new_cache();
+
+        /**
+        * @brief Return a cache to the pool
+        *
+        * Thread safe operation.
+        *
+        * @param cache pointer to the cache.
+        */
+        void release_cache(T* cache);
 
         /**
         * @brief Inserts an element into the queue.
@@ -53,7 +76,7 @@ namespace sustainml {
         *
         * @param elem element to insert.
         */
-        void insert_element(const std::shared_ptr<T> &elem);
+        void insert_element(T* &elem);
 
         /**
         * @brief Remove an element from the queue.
@@ -72,20 +95,36 @@ namespace sustainml {
         */
         void* retrieve_sample_from_taskid(const int &id) override;
 
+        /**
+        * @brief Getter fot the queue
+        *
+        * @return The queue
+        */
         SamplesQueue<T>* get_queue();
+
+        /**
+        * @brief Getter for the queue
+        *
+        * @return The queue
+        */
+        const int& get_id() override;
 
     private:
 
         Node* node_;
 
-        std::map<int, std::shared_ptr<T>> queue_;
+        //task_id to <sample, sample_processed>
+        std::map<int, std::pair<T*, bool>> queue_;
+
+        sustainml::utils::SamplePool<T> *pool_;
 
         std::mutex mtx_;
 
-        const std::string name{std::string(typeid(T).name())};
+        const int queue_id;
 
     };
 
-}
+} // namespace core
+} // namespace sustainml
 
 #endif // SUSTAINMLCPP_CORE_SAMPLESQUEUEHPP

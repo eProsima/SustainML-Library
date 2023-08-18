@@ -19,21 +19,32 @@
 #ifndef SUSTAINMLCPP_INTERFACES_SAMPLEQUERYABLE_HPP
 #define SUSTAINMLCPP_INTERFACES_SAMPLEQUERYABLE_HPP
 
+#include <vector>
 
 namespace sustainml {
+namespace interfaces {
 
-    template <typename T>
     struct SampleQueryable
     {
         /**
         * @brief Retrieves a void-casted pointer of a sample by id.
         *
         * @param id task_id key of the sample.
+        *
+        * @return pointer to the sample
         */
         virtual void* retrieve_sample_from_taskid(const int &id) = 0;
 
+        /**
+        * @brief Retrieves the id of the sample queryable.
+        *
+        * @return Id of the queryable
+        */
+        virtual const int& get_id() = 0;
+
     };
 
-}
+} // namespace interfaces
+} // namespace sustainml
 
 #endif // SUSTAINMLCPP_SAMPLESQUERYABLE_HPP

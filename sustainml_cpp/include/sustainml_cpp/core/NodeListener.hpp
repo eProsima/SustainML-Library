@@ -26,6 +26,7 @@
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>
 
 namespace sustainml {
+namespace core {
 
     class Node;
 
@@ -42,9 +43,15 @@ namespace sustainml {
 
         NodeListener(
             Node* node,
-            QueueQueryable<T>* qq);
+            interfaces::QueueQueryable<T>* qq);
 
-        ~NodeListener();
+        virtual ~NodeListener();
+
+        /**
+        * @brief Stops the listener.
+        *
+        */
+        void stop();
 
         /**
         * @brief Callback executed when a new sample is available on the DataReader.
@@ -52,10 +59,7 @@ namespace sustainml {
         * @param reader The DataReader having new available samples.
         */
         void on_data_available(
-            eprosima::fastdds::dds::DataReader* reader)
-        {
-            //! TODO
-        }
+            eprosima::fastdds::dds::DataReader* reader);
 
         /**
         * @brief Callback executed when a DataReader matching status change.
@@ -65,18 +69,17 @@ namespace sustainml {
         */
         void on_subscription_matched(
             eprosima::fastdds::dds::DataReader* reader,
-            const eprosima::fastdds::dds::SubscriptionMatchedStatus & status)
-        {
-            //! TODO
-        }
+            const eprosima::fastdds::dds::SubscriptionMatchedStatus & status);
 
     private:
 
         Node* node_;
-        QueueQueryable<T>* queue_queryable_;
+        interfaces::QueueQueryable<T>* queue_queryable_;
+        std::atomic<bool> stop_;
 
     };
 
-}
+} // namespace core
+} // namespace sustainml
 
 #endif // SUSTAINMLCPP_CORE_NODELISTENER_HPP

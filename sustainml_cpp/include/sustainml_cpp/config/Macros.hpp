@@ -13,9 +13,8 @@
 // limitations under the License.
 
 /**
- * @file Node.hpp
+ * @file Macros.hpp
  */
-
 
 #ifndef SUSTAINMLCPP_CONFIG_MACROS_HPP
 #define SUSTAINMLCPP_CONFIG_MACROS_HPP

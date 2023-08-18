@@ -22,6 +22,7 @@
 #include <sustainml_cpp/core/SamplesQueue.hpp>
 
 namespace sustainml {
+namespace interfaces {
 
     template <typename T>
     struct QueueQueryable
@@ -31,10 +32,11 @@ namespace sustainml {
         *
         * @return Queue pointer.
         */
-        virtual SamplesQueue<T>* get_queue() = 0;
+        virtual core::SamplesQueue<T>* get_queue() = 0;
 
     };
 
-}
+} // namespace interfaces
+} // namespace sustainml
 
 #endif // SUSTAINMLCPP_INTERFACES_QUEUEQUERYABLE_HPP

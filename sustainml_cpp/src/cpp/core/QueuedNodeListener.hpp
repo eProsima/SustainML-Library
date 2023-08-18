@@ -23,7 +23,11 @@
 #include <sustainml_cpp/core/SamplesQueue.hpp>
 #include <sustainml_cpp/interfaces/QueueQueryable.hpp>
 
+#include <core/SamplesQueue.cpp>
+#include <core/NodeListener.cpp>
+
 namespace sustainml {
+namespace core {
 
     class Node;
 
@@ -35,15 +39,20 @@ namespace sustainml {
     template <typename T>
     class QueuedNodeListener : public NodeListener<T>,
                                public SamplesQueue<T>,
-                               public QueueQueryable<T>
+                               public interfaces::QueueQueryable<T>
     {
 
     public:
 
         QueuedNodeListener(
-            Node* node);
+            Node* node) :
+            NodeListener<T>(node, this),
+            SamplesQueue<T>(node)
+        {
 
-        ~QueuedNodeListener();
+        }
+
+        virtual ~QueuedNodeListener() = default;
 
         /**
         * @brief Retrieves the queue of the particular type.
@@ -57,6 +66,7 @@ namespace sustainml {
 
     };
 
-}
+} // namespace core
+} // namespace sustainml
 
 #endif // SUSTAINMLCPP_CORE_QUEUEDNODELISTENER_HPP

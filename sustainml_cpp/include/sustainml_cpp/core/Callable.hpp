@@ -19,11 +19,38 @@
 #ifndef SUSTAINMLCPP_CORE_CALLABLE_HPP
 #define SUSTAINMLCPP_CORE_CALLABLE_HPP
 
-#include <config/macros.hpp>
-
 #include <functional>
+#include <iostream>
+#include <tuple>
+
+#include <config/Macros.hpp>
+#include <types/types.h>
+
+#include <fastrtps/log/Log.h>
+
 
 namespace sustainml {
+namespace core {
+namespace helper {
+
+    template<typename T>
+    void see_type(T)
+    {
+        EPROSIMA_LOG_INFO(CALLABLE, __PRETTY_FUNCTION__);
+    }
+
+    //! Expand the parameter pack in runtime
+    //! It is mainly used before invoking user callback
+    template <std::size_t... Ts>
+    struct index {};
+
+    template <std::size_t N, std::size_t... Ts>
+    struct gen_seq : gen_seq<N - 1, N - 1, Ts...> {};
+
+    template <std::size_t... Ts>
+    struct gen_seq<0, Ts...> : index<Ts...> {};
+
+} // namespace helper
 
     /**
     * @brief This class is used for registering an input callback
@@ -31,24 +58,55 @@ namespace sustainml {
     *
     * It is meant to be inherited by the actual SustainML nodes.
     */
-    template <typename ...Args>
+    template <typename ..._TYPES>
     class Callable
     {
-    public:
+        using tuple = std::tuple<_TYPES*...>;
+
+        template <size_t N>
+        using get = typename std::tuple_element<N, tuple>::type;
+
+        public:
+
+        //! number of types in pack.
+        static constexpr auto size = sizeof...(_TYPES);
 
         /**
-        * @brief Method for registering the user callback
-        *
-        * @param fn generic callback.
+        * @brief Register the user's callback
         */
-        SUSTAINML_CPP_DLL_API void register_cb(std::function<void(Args...)> fn)
+        SUSTAINML_CPP_DLL_API constexpr void register_cb(std::function<void(_TYPES& ...)> fn)
         {
+            //helper::see_type(fn);
             user_callback_ = fn;
         }
 
-        std::function<void(Args...)> user_callback_;
+        /**
+        * @brief Invokes the user callback with the arguments stored in user_cb_args_
+        */
+        template <std::size_t... Is>
+        void invoke_user_cb(helper::index<Is...>)
+        {
+            user_callback_(*std::get<Is>(user_cb_args_)...);
+        }
+
+        /**
+        * @brief Returns the arguments with which the user callback
+        * will be later invoked
+        *
+        * @return Reference to the user callback args
+        */
+        tuple& get_user_cb_args()
+        {
+            return user_cb_args_;
+        }
+
+        private:
+
+        std::function<void(_TYPES&...)> user_callback_;
+        tuple user_cb_args_;
     };
 
-}
+} // namespace core
+} // namespace sustainml
 
 #endif // SUSTAINMLCPP_CORE_CALLABLE_HPP
