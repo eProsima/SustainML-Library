@@ -12,11 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Required CMake minimum version
-cmake_minimum_required(VERSION 3.15)
+###############################################################################
+# CMake build rules for Submodule
+###############################################################################
+cmake_minimum_required(VERSION 3.5)
 
-# Set module name
 set(MODULE_NAME sustainml_modules)
+
+# Done this to set machine architecture and be able to call cmake_utils
+enable_language(CXX)
 
 ###############################################################################
 # Find package cmake_utils
@@ -25,6 +29,26 @@ set(MODULE_NAME sustainml_modules)
 find_package(cmake_utils REQUIRED)
 find_package(sustainml_cpp REQUIRED)
 find_package(cpp_utils REQUIRED)
+
+###############################################################################
+# Project
+###############################################################################
+# Configure project by info set in project_settings.cmake
+# - Load project_settings variables
+# - Read version
+# - Set installation paths
+#configure_project()
+#
+## Call explictly project
+#project(
+#    ${MODULE_NAME}
+#    VERSION
+#    ${MODULE_VERSION}
+#    DESCRIPTION
+#    ${MODULE_DESCRIPTION}
+#    LANGUAGES
+#    CXX
+#)
 
 configure_project_cpp()
 
