@@ -20,8 +20,8 @@
 #ifndef SUSTAINMLCPP_CORE_NODE_HPP
 #define SUSTAINMLCPP_CORE_NODE_HPP
 
-#include <config/Macros.hpp>
-#include <types/typesPubSubTypes.h>
+#include <sustainml_cpp/config/Macros.hpp>
+#include <sustainml_cpp/types/typesPubSubTypes.h>
 
 #include <utility>
 #include <vector>
