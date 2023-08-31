@@ -1,36 +1,205 @@
+#include <chrono>
 #include <csignal>
 #include <cstdlib>
 #include <functional>
+#include <future>
+#include <iostream>
+#include <thread>
 #include <unistd.h>
 
+#include <fastdds/dds/domain/DomainParticipantFactory.hpp>
+#include <fastdds/dds/domain/DomainParticipant.hpp>
+#include <fastdds/dds/publisher/DataWriter.hpp>
+#include <fastdds/dds/publisher/DataWriterListener.hpp>
+#include <fastdds/dds/publisher/Publisher.hpp>
+#include <fastdds/dds/subscriber/DataReader.hpp>
+#include <fastdds/dds/subscriber/DataReaderListener.hpp>
+#include <fastdds/dds/subscriber/Subscriber.hpp>
+#include <fastdds/dds/topic/TypeSupport.hpp>
+#include <fastdds/dds/common/InstanceHandle.hpp>
+#include <fastrtps/types/TypesBase.h>
 #include <sustainml_cpp/nodes/TaskEncoderNode.hpp>
 #include <sustainml_cpp/nodes/MLModelNode.hpp>
 #include <sustainml_cpp/nodes/HardwareResourcesNode.hpp>
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
+#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/types/typesPubSubTypes.h>
 
-#include "PubSubWriterReader.hpp"
+#define DEBUG_MODE true
 
-#define DEBUG_MODE false
+namespace fdds = eprosima::fastdds::dds;
+namespace frtps = eprosima::fastdds::rtps;
+namespace ftypes = eprosima::fastrtps::types;
 
-std::list<UserInput> user_input_data_generator(
-        uint16_t task_id)
-{
-    std::list<UserInput> returnedValue(1);
+class WriterListener: public fdds::DataWriterListener {
 
-    std::generate(returnedValue.begin(), returnedValue.end(), [&task_id]
-            {
-                UserInput ui;
-                GeoLocation geo;
-                geo.continent("Continent of task id " + std::to_string(task_id));
-                geo.region("Region of task id " + std::to_string(task_id));
-                ui.geo_location(geo);
-                ui.problem_description("Problem definition of task id " + std::to_string(task_id));
-                ui.task_id(task_id);
-                return ui;
-            });
+public:
 
-    return returnedValue;
-}
+    void on_publication_matched(fdds::DataWriter *writer,
+                                const fdds::PublicationMatchedStatus &info) override
+    {
+        if (info.current_count_change >= 1) {
+            std::cout << "publication matched topic: " << writer->get_topic()->get_name()
+                      << ", current_count: " << info.current_count
+                      << ", current_count_change: " << info.current_count_change
+                      << std::endl;
+        }
+        else if (info.current_count_change <= -1) {
+            std::cout << "publication unmatched topic: " << writer->get_topic()->get_name()
+                      << ", current_count: " << info.current_count
+                      << ", current_count_change: " << info.current_count_change
+                      << std::endl;
+        }
+        else {
+            std::cout << "publication matched unchanged: " << writer->get_topic()->get_name()
+                      << ", current_count: " << info.current_count
+                      << ", current_count_change: " << info.current_count_change
+                      << std::endl;
+        }
+    }
+};
+
+class ReaderListener: public fdds::DataReaderListener {
+
+public:
+
+    virtual void on_data_available(fdds::DataReader *reader) override
+    {
+        NodeStatus status;
+        fdds::SampleInfo info;
+
+        std::cout << "on_data_available" << std::endl;
+
+        while (1) {
+            auto ret = reader->take_next_sample(&status, &info);
+            if (ret == ReturnCode_t::RETCODE_NO_DATA) {
+                break;
+            }
+            else if (ret != ReturnCode_t::RETCODE_OK) {
+                std::cerr << "take_next_sample() failed!" << std::endl;
+                break;
+            }
+            else {
+                std::cout << "take_next_sample() success: instance_state["
+                          << ((info.instance_state & fdds::ALIVE_INSTANCE_STATE) ? "Alive" :
+                             ((info.instance_state & fdds::NOT_ALIVE_DISPOSED_INSTANCE_STATE) ? "Disposed" :
+                              ((info.instance_state & fdds::NOT_ALIVE_NO_WRITERS_INSTANCE_STATE) ? "No writers" : "")))
+                          << "]"
+                          << std::endl;
+                if (info.valid_data) {
+                    std::cout << "name:\n\tid: " << status.node_name()
+                              << "\nstatus: " << status.node_status()
+                              << std::endl;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+    }
+
+    virtual void on_subscription_matched(fdds::DataReader *reader,
+                                         const fdds::SubscriptionMatchedStatus &info) override
+    {
+        if (info.current_count_change >= 1) {
+            std::cout << "subscription matched on topic: " << reader->get_topicdescription()->get_name()
+                      << ", current_count: " << info.current_count
+                      << ", current_count_change: " << info.current_count_change
+                      << std::endl;
+        }
+        else if (info.current_count_change <= -1) {
+            std::cout << "subscription unmatched on topic: " << reader->get_topicdescription()->get_name()
+                      << ", current_count: " << info.current_count
+                      << ", current_count_change: " << info.current_count_change
+                      << std::endl;
+        }
+        else {
+            std::cout << "publication matched unchanged on topic: " << reader->get_topicdescription()->get_name()
+                      << ", current_count: " << info.current_count
+                      << ", current_count_change: " << info.current_count_change
+                      << std::endl;
+        }
+    }
+};
+
+class UserInputPublisher {
+public:
+
+    UserInputPublisher()
+    {
+        participant = fdds::DomainParticipantFactory::get_instance()->create_participant(
+                                0, eprosima::fastdds::dds::PARTICIPANT_QOS_DEFAULT);
+        publisher = participant->create_publisher(fdds::PUBLISHER_QOS_DEFAULT);
+        type = static_cast<eprosima::fastdds::dds::TypeSupport>(new UserInputPubSubType);
+        type.register_type(participant);
+        topic = participant->create_topic("/sustainml/user_input", "UserInput", fdds::TOPIC_QOS_DEFAULT);
+        listener = new WriterListener();
+        writer = publisher->create_datawriter(topic, eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT, listener);
+    }
+
+    ~UserInputPublisher()
+    {
+        publisher->delete_datawriter(writer);
+        participant->delete_publisher(publisher);
+        participant->delete_topic(topic);
+        fdds::DomainParticipantFactory::get_instance()->delete_participant(participant);
+    }
+
+    void send_sample(int task_id)
+    {
+        UserInput ui;
+        GeoLocation geo;
+        geo.continent("Continent of task id " + std::to_string(task_id));
+        geo.region("Region of task id " + std::to_string(task_id));
+        ui.geo_location(geo);
+        ui.problem_description("Problem definition of task id " + std::to_string(task_id));
+        ui.task_id(task_id);
+
+        // publish new sample
+        writer->write(&ui);
+    }
+
+private:
+    fdds::DomainParticipant* participant;
+    fdds::Publisher* publisher;
+    fdds::DataWriter* writer;
+    fdds::TypeSupport type;
+    fdds::Topic* topic;
+    WriterListener* listener;
+};
+
+class CO2FootprintSubscriber {
+public:
+
+    CO2FootprintSubscriber()
+    {
+        participant = fdds::DomainParticipantFactory::get_instance()->create_participant(
+                                0, eprosima::fastdds::dds::PARTICIPANT_QOS_DEFAULT);
+        subscriber = participant->create_subscriber(fdds::SUBSCRIBER_QOS_DEFAULT);
+        type = static_cast<eprosima::fastdds::dds::TypeSupport>(new CO2FootprintPubSubType);
+        type.register_type(participant);
+        topic = participant->create_topic("/sustainml/carbon_tracker/output", "CO2Footprint", fdds::TOPIC_QOS_DEFAULT);
+        listener = new ReaderListener();
+        reader = subscriber->create_datareader(topic, eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT, listener);
+
+    }
+
+    ~CO2FootprintSubscriber()
+    {
+        subscriber->delete_datareader(reader);
+        participant->delete_subscriber(subscriber);
+        participant->delete_topic(topic);
+        fdds::DomainParticipantFactory::get_instance()->delete_participant(participant);
+    }
+
+private:
+    fdds::DomainParticipant* participant;
+    fdds::Subscriber* subscriber;
+    fdds::DataReader* reader;
+    fdds::TypeSupport type;
+    fdds::Topic* topic;
+    ReaderListener* listener;
+};
 
 int main()
 {
@@ -40,26 +209,12 @@ int main()
     sustainml::hardware_module::HardwareResourcesNode hardware_node_mock;
     sustainml::co2_tracker_module::CarbonFootprintNode co2_tracker_node_mock;
 
-    // Register writer for user input and readers for each output
-    PubSubWriterReader<UserInput> ui_writer("UserInput");
-    PubSubWriterReader<EncodedTask> et_reader("EncodedTask");
-    PubSubWriterReader<MLModel> ml_reader("MLModel");
-    PubSubWriterReader<HWResource> hw_reader("HWResource");
-    PubSubWriterReader<CO2Footprint> co_reader("CO2Footprint");
-    ui_writer.init();
-    et_reader.init();
-    ml_reader.init();
-    hw_reader.init();
-    co_reader.init();
+    // Register user input publisher, which would trigger the modules in cascade
+    UserInputPublisher user_input_publisher;
+    // Register final user data subscriber, which would print Carbon footprint output
+    CO2FootprintSubscriber co2_footprint_subscriber;
 
-    // Wait for discovery.
-    ui_writer.wait_discovery();
-    et_reader.wait_discovery();
-    ml_reader.wait_discovery();
-    hw_reader.wait_discovery();
-    co_reader.wait_discovery();
-
-        // Register SIGINT signal handler to stop app execution and all nodes
+    // Register SIGINT signal handler to stop app execution and all nodes
     signal(SIGINT, [](int signum)
     {
         std::cout << "SIGINT received, stopping execution." << std::endl;
@@ -72,9 +227,9 @@ int main()
 
     // Assign each node their main method callback
     ml_task_encoding_node_mock.register_cb([] (
-        UserInput user_input,
-        NodeStatus status,
-        EncodedTask output)
+        UserInput& user_input,
+        NodeStatus& status,
+        EncodedTask& output)
         {
             // Set up node
             status.update(Status::NODE_INITIALIZING);
@@ -120,10 +275,10 @@ int main()
             status.update(Status::NODE_IDLE);
         }
     );
-        ml_model_provider_node_mock.register_cb([] (
-        EncodedTask encoded_task,
-        NodeStatus status,
-        MLModel output)
+    ml_model_provider_node_mock.register_cb([] (
+        EncodedTask& encoded_task,
+        NodeStatus& status,
+        MLModel& output)
         {
             // Set up node
             status.update(Status::NODE_INITIALIZING);
@@ -169,9 +324,9 @@ int main()
         }
     );
     hardware_node_mock.register_cb([] (
-        MLModel model,
-        NodeStatus status,
-        HWResource output)
+        MLModel& model,
+        NodeStatus& status,
+        HWResource& output)
         {
             // Set up node
             status.update(Status::NODE_INITIALIZING);
@@ -208,11 +363,11 @@ int main()
         }
     );
     co2_tracker_node_mock.register_cb([] (
-        MLModel model,
-        UserInput user_input,
-        HWResource hardware_resources,
-        NodeStatus status,
-        CO2Footprint output)
+        MLModel& model,
+        UserInput& user_input,
+        HWResource& hardware_resources,
+        NodeStatus& status,
+        CO2Footprint& output)
         {
             // Set up node
             status.update(Status::NODE_INITIALIZING);
@@ -249,30 +404,28 @@ int main()
     );
 
     // Spin all nodes
-    ml_task_encoding_node_mock.spin();
-    ml_model_provider_node_mock.spin();
-    hardware_node_mock.spin();
-    co2_tracker_node_mock.spin();
+    auto p_task_encoding = std::async([&ml_task_encoding_node_mock](){ ml_task_encoding_node_mock.spin(); });
+    auto p_ml_model_provider = std::async([&ml_model_provider_node_mock](){ ml_model_provider_node_mock.spin(); });
+    auto p_hardware = std::async([&hardware_node_mock](){ hardware_node_mock.spin(); });
+    auto p_carbon_tracker = std::async([&co2_tracker_node_mock](){ co2_tracker_node_mock.spin(); });
 
-    // Block reader until reception finished or timeout.
-    et_reader.block_for_all();
-    ml_reader.block_for_all();
-    hw_reader.block_for_all();
-    co_reader.block_for_all();
+    // Wait for spin
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    // Wait until user press enter
+    // Input loop
     uint16_t task_id = 1;
-    do
-    {
-        std::cout << "\nPress a key to continue..." << std::endl;
+    char input = 0;
 
-        // Create UserInput sample
-        auto data = user_input_data_generator(task_id);
-        ++task_id;
+    do {
+        std::cout << "<--- Press a key and enter to continue, or q/Q plus enter to exit: ";
+        std::cin >> input;
+
         // Publish sample
-        ui_writer.send(data);
-    }
-    while (std::cin.get() != '\n');
+        user_input_publisher.send_sample(task_id);
+
+        task_id++;
+
+    } while ((input != 'q') && (input != 'Q'));
 
     return EXIT_SUCCESS;
 }
