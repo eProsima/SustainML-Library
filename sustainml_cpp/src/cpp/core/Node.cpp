@@ -66,6 +66,14 @@ namespace core {
     Node::~Node()
     {
         EPROSIMA_LOG_INFO(NODE, "Destroying Node");
+
+        if (nullptr != participant_)
+        {
+            participant_->delete_contained_entities();
+            auto dpf = DomainParticipantFactory::get_instance();
+            dpf->delete_participant(participant_);
+        }
+
         dispatcher_->stop();
     }
 
