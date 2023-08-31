@@ -55,7 +55,7 @@ namespace core {
 
         if (nullptr == data_cache)
         {
-            EPROSIMA_LOG_ERROR(NODE_LISTENER, "Could not get a new cache. Queue is full");
+            EPROSIMA_LOG_ERROR(NODE_LISTENER, node_->node_status_.node_name() << " Could not get a new cache. Queue is full");
             return;
         }
 
@@ -66,7 +66,7 @@ namespace core {
                 if (info.instance_state == eprosima::fastdds::dds::ALIVE_INSTANCE_STATE)
                 {
                     // Print your structure data here.
-                    std::cout << "Message " << data_cache->task_id() << " in " << reader->guid() << " RECEIVED" << std::endl;
+                    std::cout << node_->node_status_.node_name() << " Message with task_id: " << data_cache->task_id() << " in " << reader->guid() << " RECEIVED" << std::endl;
                     queue->insert_element(data_cache);
 
                     // notify dispatcher
@@ -80,7 +80,7 @@ namespace core {
 
                     if (nullptr == data_cache)
                     {
-                        EPROSIMA_LOG_ERROR(NODE_LISTENER, "Could not get a new cache. Queue is full");
+                        EPROSIMA_LOG_ERROR(NODE_LISTENER, node_->node_status_.node_name() << " Could not get a new cache. Queue is full");
                         break;
                     }
                 }

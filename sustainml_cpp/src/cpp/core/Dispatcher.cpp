@@ -95,13 +95,13 @@ namespace core {
 
             if (it == taskid_tracker_.end())
             {
-                EPROSIMA_LOG_INFO(DISPATCHER, "Initializing task_id " << task_id);
+                EPROSIMA_LOG_INFO(DISPATCHER, node_->node_status_.node_name() << " Initializing task_id " << task_id);
                 taskid_tracker_[task_id] = 1;
             }
             else
             {
                 it->second +=1;
-                EPROSIMA_LOG_ERROR(DISPATCHER, " Taskid_tracker_[task_id] " << task_id << " n_times " << it->second);
+                EPROSIMA_LOG_INFO(DISPATCHER,node_->node_status_.node_name() << " Taskid_tracker_[task_id] " << task_id << " n_times " << it->second);
             }
 
             if (taskid_tracker_[task_id] == expected_hits)

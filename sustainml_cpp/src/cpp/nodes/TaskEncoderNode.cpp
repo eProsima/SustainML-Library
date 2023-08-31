@@ -88,6 +88,9 @@ namespace ml_task_encoding_module {
 
             Callable::invoke_user_cb(core::helper::gen_seq<size>{});
 
+            //! Ensure task_id is forwarded to the output
+            task_data_[task_id].second.task_id(task_id);
+
             writers_[OUTPUT_WRITER_IDX]->write(&task_data_[task_id].second);
 
             listener_user_input_queue_->remove_element_by_taskid(task_id);
