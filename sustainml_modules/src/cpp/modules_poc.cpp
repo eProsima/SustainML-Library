@@ -65,13 +65,13 @@ public:
 
     virtual void on_data_available(fdds::DataReader *reader) override
     {
-        NodeStatus status;
+        CO2Footprint co2_f;
         fdds::SampleInfo info;
 
         std::cout << "on_data_available" << std::endl;
 
         while (1) {
-            auto ret = reader->take_next_sample(&status, &info);
+            auto ret = reader->take_next_sample(&co2_f, &info);
             if (ret == ReturnCode_t::RETCODE_NO_DATA) {
                 break;
             }
@@ -87,8 +87,8 @@ public:
                           << "]"
                           << std::endl;
                 if (info.valid_data) {
-                    std::cout << "name:\n\tid: " << status.node_name()
-                              << "\nstatus: " << status.node_status()
+                    std::cout << "carbon_intensity:\n\tid: " << co2_f.carbon_intensity()
+                              << "\nco2_footprint: " << co2_f.co2_footprint()
                               << std::endl;
                 }
                 else {
@@ -420,12 +420,29 @@ int main()
         std::cout << "<--- Press a key and enter to continue, or q/Q plus enter to exit: ";
         std::cin >> input;
 
+        if((input == 'q') || (input == 'Q'))
+        {
+            break;
+        }
+
         // Publish sample
         user_input_publisher.send_sample(task_id);
 
         task_id++;
 
-    } while ((input != 'q') && (input != 'Q'));
+    } while (1);
+
+    sustainml::ml_task_encoding_module::TaskEncoderNode::terminate();
+    sustainml::ml_model_provider_module::MLModelNode::terminate();
+    sustainml::hardware_module::HardwareResourcesNode::terminate();
+    sustainml::co2_tracker_module::CarbonFootprintNode::terminate();
+
+    p_task_encoding.get();
+    p_ml_model_provider.get();
+    p_hardware.get();
+    p_carbon_tracker.get();
+
+    std::cout << "EXITING !!" << std::endl;
 
     return EXIT_SUCCESS;
 }
