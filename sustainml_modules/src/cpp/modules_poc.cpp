@@ -25,7 +25,7 @@
 #include <sustainml_cpp/types/types.h>
 #include <sustainml_cpp/types/typesPubSubTypes.h>
 
-#define DEBUG_MODE true
+bool DEBUG_MODE  = false;
 
 namespace fdds = eprosima::fastdds::dds;
 namespace frtps = eprosima::fastdds::rtps;
@@ -68,7 +68,10 @@ public:
         CO2Footprint co2_f;
         fdds::SampleInfo info;
 
-        std::cout << "on_data_available" << std::endl;
+        if (DEBUG_MODE)
+        {
+            std::cout << "on_data_available" << std::endl;
+        }
 
         while (1) {
             auto ret = reader->take_next_sample(&co2_f, &info);
@@ -80,19 +83,22 @@ public:
                 break;
             }
             else {
-                std::cout << "take_next_sample() success: instance_state["
-                          << ((info.instance_state & fdds::ALIVE_INSTANCE_STATE) ? "Alive" :
-                             ((info.instance_state & fdds::NOT_ALIVE_DISPOSED_INSTANCE_STATE) ? "Disposed" :
-                              ((info.instance_state & fdds::NOT_ALIVE_NO_WRITERS_INSTANCE_STATE) ? "No writers" : "")))
-                          << "]"
-                          << std::endl;
-                if (info.valid_data) {
-                    std::cout << "carbon_intensity:\n\tid: " << co2_f.carbon_intensity()
-                              << "\nco2_footprint: " << co2_f.co2_footprint()
-                              << std::endl;
-                }
-                else {
-                    break;
+                if (DEBUG_MODE)
+                {
+                    std::cout << "take_next_sample() success: instance_state["
+                            << ((info.instance_state & fdds::ALIVE_INSTANCE_STATE) ? "Alive" :
+                                ((info.instance_state & fdds::NOT_ALIVE_DISPOSED_INSTANCE_STATE) ? "Disposed" :
+                                ((info.instance_state & fdds::NOT_ALIVE_NO_WRITERS_INSTANCE_STATE) ? "No writers" : "")))
+                            << "]"
+                            << std::endl;
+                    if (info.valid_data) {
+                        std::cout << "carbon_intensity:\n\tid: " << co2_f.carbon_intensity()
+                                << "\nco2_footprint: " << co2_f.co2_footprint()
+                                << std::endl;
+                    }
+                    else {
+                        break;
+                    }
                 }
             }
         }
@@ -201,18 +207,217 @@ private:
     ReaderListener* listener;
 };
 
-int main()
+void print_usage()
 {
-    // Register the nodes
-    sustainml::ml_task_encoding_module::TaskEncoderNode ml_task_encoding_node_mock;
-    sustainml::ml_model_provider_module::MLModelNode ml_model_provider_node_mock;
-    sustainml::hardware_module::HardwareResourcesNode hardware_node_mock;
-    sustainml::co2_tracker_module::CarbonFootprintNode co2_tracker_node_mock;
+    std::cout << "SustainML modules mock requires the following arguments:" << std::endl;
+    std::cout << "./sustainml_modules_poc <module> <print_mode>" << std::endl;
+    std::cout << "    <module> options are:" << std::endl;
+    std::cout << "        all:  all modules are executed in the same process." << std::endl;
+    std::cout << "        ui:   execute a user input node." << std::endl;
+    std::cout << "        task: execute a task encoder node." << std::endl;
+    std::cout << "        ml:   execute a ML model provider node." << std::endl;
+    std::cout << "        hw:   execute a hardware resources provider node." << std::endl;
+    std::cout << "        co2:  execute a CO2 footprint provider node." << std::endl;
+    std::cout << "    <print_mode> options are:" << std::endl;
+    std::cout << "        true:  print extended information of the selected node(s)." << std::endl;
+    std::cout << "        false: print minimal information of the selected node(s)" << std::endl;
+}
 
-    // Register user input publisher, which would trigger the modules in cascade
-    UserInputPublisher user_input_publisher;
-    // Register final user data subscriber, which would print Carbon footprint output
-    CO2FootprintSubscriber co2_footprint_subscriber;
+void task_encoder_cb(
+    UserInput& user_input,
+    NodeStatus& status,
+    EncodedTask& output)
+{
+    // Set up node
+    status.update(Status::NODE_INITIALIZING);
+
+    // Print task id input
+    if (DEBUG_MODE)
+    {
+        std::cout << "ML task encoding received task ID: " << std::endl;
+        std::cout << " User input task: " << user_input.task_id() << std::endl;
+    }
+
+    // Wait the time it takes the node to initialize
+    usleep(400000);
+
+    // Update the status to running
+    status.update(Status::NODE_RUNNING);
+
+    // Populate output
+    output.keywords(std::vector<std::string>
+            {"keywords", "from", "task", std::to_string(user_input.task_id())});
+
+    // Wait the time it takes the node to generate the output
+    usleep(400000);
+    // Print node output
+    if (DEBUG_MODE)
+    {
+        std::cout << "ML task encoding output generated: " << std::endl;
+        std::cout << " Keywords: ";
+        int count = 0;
+        for (std::vector<std::string>::iterator it = output.keywords().begin(); it != output.keywords().end(); ++it, count++)
+        {
+            if (count != 0)
+            {
+                std::cout << ", ";
+            }
+            std::cout << "'" << *it << "'";
+        }
+        std::cout << std::endl;
+    }
+
+    // Update the status when finished
+    status.update(Status::NODE_IDLE);
+}
+
+void ml_model_cb (
+    EncodedTask& encoded_task,
+    NodeStatus& status,
+    MLModel& output)
+{
+    // Set up node
+    status.update(Status::NODE_INITIALIZING);
+
+    // Print task id input
+    if (DEBUG_MODE)
+    {
+        std::cout << "ML model provider received task ID: " << std::endl;
+        std::cout << " ML encoded task: " << encoded_task.task_id() << std::endl;
+    }
+
+    // Wait the time it takes the node to initialize
+    usleep(400000);
+
+    // Update the status to running
+    status.update(Status::NODE_RUNNING);
+
+    // Populate output
+    output.model("ML model #" + std::to_string(encoded_task.task_id())
+            + " ONNX would go here, parsed to string");
+    output.model_path("/opt/sustainml/ml_model/" + std::to_string(encoded_task.task_id())
+            + "/model.onnx");
+    output.model_properties("ML model #" + std::to_string(encoded_task.task_id())
+            + " properties would go here, parsed to string");
+    output.model_path("/opt/sustainml/ml_model/" + std::to_string(encoded_task.task_id())
+            + "/properties.json");
+
+    // Wait the time it takes the node to generate the output
+    usleep(400000);
+
+    // Print node output
+    if (DEBUG_MODE)
+    {
+        std::cout << "ML model provider output generated: " << std::endl;
+        std::cout << " ML model ONNX:            " << output.model() << std::endl;
+        std::cout << " ML model path:            " << output.model_path() << std::endl;
+        std::cout << " ML model properties:      " << output.model_properties() << std::endl;
+        std::cout << " ML model properties path: " << output.model_properties_path() << std::endl;
+    }
+
+    // Update the status when finished
+    status.update(Status::NODE_IDLE);
+}
+
+void hw_resources_cb (
+    MLModel& model,
+    NodeStatus& status,
+    HWResource& output)
+{
+    // Set up node
+    status.update(Status::NODE_INITIALIZING);
+
+    // Print task id input
+    if (DEBUG_MODE)
+    {
+        std::cout << "HW resource received task ID: " << std::endl;
+        std::cout << " ML model provider: " << model.task_id()  << std::endl;
+    }
+
+    // Wait the time it takes the node to initialize
+    usleep(400000);
+
+    // Update the status to running
+    status.update(Status::NODE_RUNNING);
+
+    // Populate output
+    output.hw_description("HW descr. of task #" + std::to_string(model.task_id()));
+    output.power_consumption(model.task_id()+1000.3);
+
+    // Wait the time it takes the node to generate the output
+    usleep(400000);
+
+    // Print node output
+    if (DEBUG_MODE)
+    {
+        std::cout << "HW resource output generated: " << std::endl;
+        std::cout << " hardware description: " << output.hw_description() << std::endl;
+        std::cout << " power consumption:    " << std::to_string(output.power_consumption()) << std::endl;
+    }
+    // Update the status when finished
+    status.update(Status::NODE_IDLE);
+}
+
+void co2_footprint_cb (
+    MLModel& model,
+    UserInput& user_input,
+    HWResource& hardware_resources,
+    NodeStatus& status,
+    CO2Footprint& output)
+{
+    // Set up node
+    status.update(Status::NODE_INITIALIZING);
+
+    // Print task id input
+    std::cout << "CO2 Footprint received task IDs: " << std::endl;
+    std::cout << " ML model provider: " << model.task_id() << std::endl;
+    std::cout << " User input:        " << user_input.task_id() << std::endl;
+    std::cout << " HW resource:       " << hardware_resources.task_id() << std::endl;
+
+    // Wait the time it takes the node to initialize
+    usleep(400000);
+
+    // Update the status to running
+    status.update(Status::NODE_RUNNING);
+
+    // Populate output
+    output.carbon_intensity  (model.task_id()+0.1);
+    output.co2_footprint     (model.task_id()+100.2);
+    output.energy_consumption(model.task_id()+1000.3);
+
+    // Wait the time it takes the node to generate the output
+    usleep(400000);
+
+    // Print node output
+    std::cout << "CO2 Footprint output generated: " << std::endl;
+    std::cout << " carbon intensity:   " << std::to_string(output.carbon_intensity()) << std::endl;
+    std::cout << " co2 footprint:      " << std::to_string(output.co2_footprint()) << std::endl;
+    std::cout << " energy consumption: " << std::to_string(output.energy_consumption()) << std::endl;
+
+    // Update the status when finished
+    status.update(Status::NODE_IDLE);
+}
+
+int main (int argc, char **argv)
+{
+    if (argc != 3)
+    {
+        print_usage();
+        return EXIT_FAILURE;
+    }
+    else if (!(std::strcmp(argv[1],"all") == 0 || std::strcmp(argv[1],"ui") == 0 || std::strcmp(argv[1],"task") == 0
+        || std::strcmp(argv[1],"ml") == 0 || std::strcmp(argv[1],"hw") == 0 || std::strcmp(argv[1],"co2") == 0)
+        || !(std::strcmp(argv[2],"true") == 0 || std::strcmp(argv[2],"false") == 0))
+    {
+        print_usage();
+        return EXIT_FAILURE;
+    }
+
+    // check print mode
+    if (std::strcmp(argv[2],"true") == 0)
+    {
+        DEBUG_MODE = true;
+    }
 
     // Register SIGINT signal handler to stop app execution and all nodes
     signal(SIGINT, [](int signum)
@@ -225,222 +430,124 @@ int main()
         sustainml::co2_tracker_module::CarbonFootprintNode::terminate();
     });
 
-    // Assign each node their main method callback
-    ml_task_encoding_node_mock.register_cb([] (
-        UserInput& user_input,
-        NodeStatus& status,
-        EncodedTask& output)
-        {
-            // Set up node
-            status.update(Status::NODE_INITIALIZING);
+    // All nodes workflow
+    if (std::strcmp(argv[1],"all") == 0)
+    {
+        // Register the nodes
+        UserInputPublisher user_input_publisher;
+        sustainml::ml_task_encoding_module::TaskEncoderNode ml_task_encoding_node_mock;
+        sustainml::ml_model_provider_module::MLModelNode ml_model_provider_node_mock;
+        sustainml::hardware_module::HardwareResourcesNode hardware_node_mock;
+        sustainml::co2_tracker_module::CarbonFootprintNode co2_tracker_node_mock;
+        CO2FootprintSubscriber co2_footprint_subscriber;
 
-            // Print task id input
-            if (DEBUG_MODE)
+        // Assign each node their main method callback
+        ml_task_encoding_node_mock.register_cb(task_encoder_cb);
+        ml_model_provider_node_mock.register_cb(ml_model_cb);
+        hardware_node_mock.register_cb(hw_resources_cb);
+        co2_tracker_node_mock.register_cb(co2_footprint_cb);
+
+        // Spin nodes
+        auto p_task_encoding = std::async([&ml_task_encoding_node_mock](){ ml_task_encoding_node_mock.spin(); });
+        auto p_ml_model_provider = std::async([&ml_model_provider_node_mock](){ ml_model_provider_node_mock.spin(); });
+        auto p_hardware = std::async([&hardware_node_mock](){ hardware_node_mock.spin(); });
+        auto p_carbon_tracker = std::async([&co2_tracker_node_mock](){ co2_tracker_node_mock.spin(); });
+
+        // Wait for spin
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        // Input loop
+        uint16_t task_id = 1;
+        char input = 0;
+
+        do {
+            std::cout << "<--- Press a key and enter to continue, or q/Q plus enter to exit: " << std::endl;
+            std::cin >> input;
+
+            if((input == 'q') || (input == 'Q'))
             {
-                std::cout << "ML task encoding received task ID: " << std::endl;
-                std::cout << " User input task: " << user_input.task_id() << std::endl;
+                break;
             }
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            // Wait the time it takes the node to initialize
-            sleep(1);
+            // Publish sample
+            user_input_publisher.send_sample(task_id);
 
-            // Update the status to running
-            status.update(Status::NODE_RUNNING);
+            task_id++;
 
-            // Populate output
-            output.keywords(std::vector<std::string>
-                    {"keywords", "from", "task", std::to_string(user_input.task_id())});
-
-            // Wait the time it takes the node to generate the output
-            sleep(1);
-
-            // Print node output
-            if (DEBUG_MODE)
-            {
-                std::cout << "ML task encoding output generated: " << std::endl;
-                std::cout << " Keywords: ";
-                int count = 0;
-                for (std::vector<std::string>::iterator it = output.keywords().begin(); it != output.keywords().end(); ++it, count++)
-                {
-                    if (count != 0)
-                    {
-                        std::cout << ", ";
-                    }
-                    std::cout << "'" << *it << "'";
-                }
-                std::cout << std::endl;
-            }
-
-            // Update the status when finished
-            status.update(Status::NODE_IDLE);
-        }
-    );
-    ml_model_provider_node_mock.register_cb([] (
-        EncodedTask& encoded_task,
-        NodeStatus& status,
-        MLModel& output)
-        {
-            // Set up node
-            status.update(Status::NODE_INITIALIZING);
-
-            // Print task id input
-            if (DEBUG_MODE)
-            {
-                std::cout << "ML model provider received task ID: " << std::endl;
-                std::cout << " ML encoded task: " << encoded_task.task_id() << std::endl;
-            }
-
-            // Wait the time it takes the node to initialize
-            sleep(1);
-
-            // Update the status to running
-            status.update(Status::NODE_RUNNING);
-
-            // Populate output
-            output.model("ML model #" + std::to_string(encoded_task.task_id())
-                    + " ONNX would go here, parsed to string");
-            output.model_path("/opt/sustainml/ml_model/" + std::to_string(encoded_task.task_id())
-                    + "/model.onnx");
-            output.model_properties("ML model #" + std::to_string(encoded_task.task_id())
-                    + " properties would go here, parsed to string");
-            output.model_path("/opt/sustainml/ml_model/" + std::to_string(encoded_task.task_id())
-                    + "/properties.json");
-
-            // Wait the time it takes the node to generate the output
-            sleep(6);
-
-            // Print node output
-            if (DEBUG_MODE)
-            {
-                std::cout << "ML model provider output generated: " << std::endl;
-                std::cout << " ML model ONNX:            " << output.model() << std::endl;
-                std::cout << " ML model path:            " << output.model_path() << std::endl;
-                std::cout << " ML model properties:      " << output.model_properties() << std::endl;
-                std::cout << " ML model properties path: " << output.model_properties_path() << std::endl;
-            }
-
-            // Update the status when finished
-            status.update(Status::NODE_IDLE);
-        }
-    );
-    hardware_node_mock.register_cb([] (
-        MLModel& model,
-        NodeStatus& status,
-        HWResource& output)
-        {
-            // Set up node
-            status.update(Status::NODE_INITIALIZING);
-
-            // Print task id input
-            if (DEBUG_MODE)
-            {
-                std::cout << "HW resource received task ID: " << std::endl;
-                std::cout << " ML model provider: " << model.task_id()  << std::endl;
-            }
-
-            // Wait the time it takes the node to initialize
-            sleep(1);
-
-            // Update the status to running
-            status.update(Status::NODE_RUNNING);
-
-            // Populate output
-            output.hw_description("HW descr. of task #" + std::to_string(model.task_id()));
-            output.power_consumption(model.task_id()+1000.3);
-
-            // Wait the time it takes the node to generate the output
-            sleep(2);
-
-            // Print node output
-            if (DEBUG_MODE)
-            {
-                std::cout << "HW resource output generated: " << std::endl;
-                std::cout << " hardware description: " << output.hw_description() << std::endl;
-                std::cout << " power consumption:    " << std::to_string(output.power_consumption()) << std::endl;
-            }
-            // Update the status when finished
-            status.update(Status::NODE_IDLE);
-        }
-    );
-    co2_tracker_node_mock.register_cb([] (
-        MLModel& model,
-        UserInput& user_input,
-        HWResource& hardware_resources,
-        NodeStatus& status,
-        CO2Footprint& output)
-        {
-            // Set up node
-            status.update(Status::NODE_INITIALIZING);
-
-            // Print task id input
-            std::cout << "CO2 Footprint received task IDs: " << std::endl;
-            std::cout << " ML model provider: " << model.task_id() << std::endl;
-            std::cout << " User input:        " << user_input.task_id() << std::endl;
-            std::cout << " HW resource:       " << hardware_resources.task_id() << std::endl;
-
-            // Wait the time it takes the node to initialize
-            sleep(1);
-
-            // Update the status to running
-            status.update(Status::NODE_RUNNING);
-
-            // Populate output
-            output.carbon_intensity  (model.task_id()+0.1);
-            output.co2_footprint     (model.task_id()+100.2);
-            output.energy_consumption(model.task_id()+1000.3);
-
-            // Wait the time it takes the node to generate the output
+            // Wait the time stdout
             sleep(4);
 
-            // Print node output
-            std::cout << "CO2 Footprint output generated: " << std::endl;
-            std::cout << " carbon intensity:   " << std::to_string(output.carbon_intensity()) << std::endl;
-            std::cout << " co2 footprint:      " << std::to_string(output.co2_footprint()) << std::endl;
-            std::cout << " energy consumption: " << std::to_string(output.energy_consumption()) << std::endl;
+        } while (1);
 
-            // Update the status when finished
-            status.update(Status::NODE_IDLE);
-        }
-    );
+        sustainml::ml_task_encoding_module::TaskEncoderNode::terminate();
+        sustainml::ml_model_provider_module::MLModelNode::terminate();
+        sustainml::hardware_module::HardwareResourcesNode::terminate();
+        sustainml::co2_tracker_module::CarbonFootprintNode::terminate();
 
-    // Spin all nodes
-    auto p_task_encoding = std::async([&ml_task_encoding_node_mock](){ ml_task_encoding_node_mock.spin(); });
-    auto p_ml_model_provider = std::async([&ml_model_provider_node_mock](){ ml_model_provider_node_mock.spin(); });
-    auto p_hardware = std::async([&hardware_node_mock](){ hardware_node_mock.spin(); });
-    auto p_carbon_tracker = std::async([&co2_tracker_node_mock](){ co2_tracker_node_mock.spin(); });
+        p_task_encoding.get();
+        p_ml_model_provider.get();
+        p_hardware.get();
+        p_carbon_tracker.get();
+    }
+    else if (std::strcmp(argv[1],"ui") == 0)
+    {
+        // Input loop
+        uint16_t task_id = 1;
+        char input = 0;
+        UserInputPublisher user_input_publisher;
 
-    // Wait for spin
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+        do {
+            std::cout << "<--- Press a key and enter to continue, or q/Q plus enter to exit: " << std::endl;
+            std::cin >> input;
 
-    // Input loop
-    uint16_t task_id = 1;
-    char input = 0;
+            if((input == 'q') || (input == 'Q'))
+            {
+                break;
+            }
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    do {
-        std::cout << "<--- Press a key and enter to continue, or q/Q plus enter to exit: ";
-        std::cin >> input;
+            // Publish sample
+            user_input_publisher.send_sample(task_id);
 
-        if((input == 'q') || (input == 'Q'))
-        {
-            break;
-        }
+            task_id++;
 
-        // Publish sample
-        user_input_publisher.send_sample(task_id);
+            // Wait the time stdout
+            usleep(500000);
 
-        task_id++;
+        } while (1);
+    }
 
-    } while (1);
 
-    sustainml::ml_task_encoding_module::TaskEncoderNode::terminate();
-    sustainml::ml_model_provider_module::MLModelNode::terminate();
-    sustainml::hardware_module::HardwareResourcesNode::terminate();
-    sustainml::co2_tracker_module::CarbonFootprintNode::terminate();
-
-    p_task_encoding.get();
-    p_ml_model_provider.get();
-    p_hardware.get();
-    p_carbon_tracker.get();
+    // Assign each node their main method callback
+    if (std::strcmp(argv[1],"task") == 0)
+    {
+        std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
+        sustainml::ml_task_encoding_module::TaskEncoderNode ml_task_encoding_node_mock;
+        ml_task_encoding_node_mock.register_cb(task_encoder_cb);
+        ml_task_encoding_node_mock.spin();
+    }
+    if (std::strcmp(argv[1],"ml") == 0)
+    {
+        std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
+        sustainml::ml_model_provider_module::MLModelNode ml_model_provider_node_mock;
+        ml_model_provider_node_mock.register_cb(ml_model_cb);
+        ml_model_provider_node_mock.spin();
+    }
+    if (std::strcmp(argv[1],"hw") == 0)
+    {
+        std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
+        sustainml::hardware_module::HardwareResourcesNode hardware_node_mock;
+        hardware_node_mock.register_cb(hw_resources_cb);
+        hardware_node_mock.spin();
+    }
+    if (std::strcmp(argv[1],"co2") == 0)
+    {
+        std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
+        sustainml::co2_tracker_module::CarbonFootprintNode co2_tracker_node_mock;
+        co2_tracker_node_mock.register_cb(co2_footprint_cb);
+        co2_tracker_node_mock.spin();
+    }
 
     std::cout << "EXITING !!" << std::endl;
 
