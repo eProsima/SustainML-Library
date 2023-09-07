@@ -441,7 +441,14 @@ void NodeStatus::serializeKey(
 
 }
 
+void NodeStatus::update(
+        Status new_status)
+{
+    // update local status
+    m_node_status = new_status;
 
+    // TODO publish new status
+}
 
 NodeControl::NodeControl()
 {
