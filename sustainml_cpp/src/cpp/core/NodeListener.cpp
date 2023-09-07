@@ -66,7 +66,7 @@ namespace core {
                 if (info.instance_state == eprosima::fastdds::dds::ALIVE_INSTANCE_STATE)
                 {
                     // Print your structure data here.
-                    std::cout << node_->node_status_.node_name() << " Message with task_id: " << data_cache->task_id() << " in " << reader->guid() << " RECEIVED" << std::endl;
+                    EPROSIMA_LOG_INFO(NODE_LISTENER, node_->node_status_.node_name() << " Message with task_id: " << data_cache->task_id() << " in " << reader->guid() << " RECEIVED");
                     queue->insert_element(data_cache);
 
                     // notify dispatcher
@@ -100,16 +100,16 @@ namespace core {
     {
         if (status.current_count_change == 1)
         {
-            std::cout << "Subscriber matched [ " << iHandle2GUID(status.last_publication_handle) << " ]." << std::endl;
+            EPROSIMA_LOG_INFO(NODE_LISTENER, "Subscriber matched [ " << iHandle2GUID(status.last_publication_handle) << " ].");
         }
         else if (status.current_count_change == -1)
         {
-            std::cout << "Subscriber unmatched [ " << iHandle2GUID(status.last_publication_handle) << " ]." << std::endl;
+            EPROSIMA_LOG_INFO(NODE_LISTENER, "Subscriber unmatched [ " << iHandle2GUID(status.last_publication_handle) << " ].");
         }
         else
         {
-            std::cout << status.current_count_change
-                    << " is not a valid value for SubscriptionMatchedStatus current count change" << std::endl;
+            EPROSIMA_LOG_INFO(NODE_LISTENER, status.current_count_change
+                    << " is not a valid value for SubscriptionMatchedStatus current count change");
         }
     }
 
