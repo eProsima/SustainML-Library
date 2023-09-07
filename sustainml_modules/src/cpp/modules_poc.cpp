@@ -239,7 +239,7 @@ void task_encoder_cb(
     }
 
     // Wait the time it takes the node to initialize
-    usleep(400000);
+    sleep(1);
 
     // Update the status to running
     status.update(Status::NODE_RUNNING);
@@ -249,7 +249,7 @@ void task_encoder_cb(
             {"keywords", "from", "task", std::to_string(user_input.task_id())});
 
     // Wait the time it takes the node to generate the output
-    usleep(400000);
+    sleep(1);
     // Print node output
     if (DEBUG_MODE)
     {
@@ -287,7 +287,7 @@ void ml_model_cb (
     }
 
     // Wait the time it takes the node to initialize
-    usleep(400000);
+    sleep(2);
 
     // Update the status to running
     status.update(Status::NODE_RUNNING);
@@ -303,7 +303,7 @@ void ml_model_cb (
             + "/properties.json");
 
     // Wait the time it takes the node to generate the output
-    usleep(400000);
+    usleep(2);
 
     // Print node output
     if (DEBUG_MODE)
@@ -335,7 +335,7 @@ void hw_resources_cb (
     }
 
     // Wait the time it takes the node to initialize
-    usleep(400000);
+    sleep(3);
 
     // Update the status to running
     status.update(Status::NODE_RUNNING);
@@ -345,7 +345,7 @@ void hw_resources_cb (
     output.power_consumption(model.task_id()+1000.3);
 
     // Wait the time it takes the node to generate the output
-    usleep(400000);
+    sleep(3);
 
     // Print node output
     if (DEBUG_MODE)
@@ -375,7 +375,7 @@ void co2_footprint_cb (
     std::cout << " HW resource:       " << hardware_resources.task_id() << std::endl;
 
     // Wait the time it takes the node to initialize
-    usleep(400000);
+    sleep(4);
 
     // Update the status to running
     status.update(Status::NODE_RUNNING);
@@ -386,7 +386,7 @@ void co2_footprint_cb (
     output.energy_consumption(model.task_id()+1000.3);
 
     // Wait the time it takes the node to generate the output
-    usleep(400000);
+    sleep(3);
 
     // Print node output
     std::cout << "CO2 Footprint output generated: " << std::endl;
@@ -476,7 +476,7 @@ int main (int argc, char **argv)
             task_id++;
 
             // Wait the time stdout
-            sleep(4);
+            sleep(20);
 
         } while (1);
 
@@ -548,8 +548,5 @@ int main (int argc, char **argv)
         co2_tracker_node_mock.register_cb(co2_footprint_cb);
         co2_tracker_node_mock.spin();
     }
-
-    std::cout << "EXITING !!" << std::endl;
-
     return EXIT_SUCCESS;
 }
