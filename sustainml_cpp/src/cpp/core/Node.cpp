@@ -18,137 +18,32 @@
 
 #include <sustainml_cpp/core/Node.hpp>
 
-#include <fastdds/dds/domain/DomainParticipantFactory.hpp>
-#include <fastdds/dds/log/Log.hpp>
-#include <fastdds/dds/subscriber/DataReader.hpp>
-#include <fastdds/dds/topic/Topic.hpp>
-#include <fastdds/dds/topic/TypeSupport.hpp>
-
-#include <sustainml_cpp/core/Dispatcher.hpp>
-
-#include <common/Common.hpp>
+#include <core/NodeImpl.hpp>
 
 using namespace eprosima::fastdds::dds;
 
 namespace sustainml {
 namespace core {
 
-    std::atomic<bool> Node::terminate_(false);
-    std::condition_variable Node::spin_cv_;
-
-    Node::Node(const std::string &name) :
-        dispatcher_(new Dispatcher(this)),
-        control_listener_(this),
-        participant_(nullptr),
-        subscriber_(nullptr),
-        publisher_(nullptr)
+    Node::Node(const std::string &name)
     {
-        if (!init(name))
-        {
-            EPROSIMA_LOG_ERROR(NODE, "Initialization Failed");
-        }
+        impl_ = new NodeImpl(this, name);
     }
 
     Node::Node(const std::string &name,
-               const Options& opts) :
-        dispatcher_(new Dispatcher(this)),
-        control_listener_(this),
-        participant_(nullptr),
-        subscriber_(nullptr),
-        publisher_(nullptr)
+               const Options& opts)
     {
-        if (!init(name, opts))
-        {
-            EPROSIMA_LOG_ERROR(NODE, "Initialization Failed with the provided Options");
-        }
+        impl_ = new NodeImpl(this, name, opts);
     }
 
     Node::~Node()
     {
-        EPROSIMA_LOG_INFO(NODE, "Destroying Node");
-
-        if (nullptr != participant_)
-        {
-            participant_->delete_contained_entities();
-            auto dpf = DomainParticipantFactory::get_instance();
-            dpf->delete_participant(participant_);
-        }
-
-        dispatcher_->stop();
-    }
-
-    bool Node::init(const std::string& name, const Options& opts)
-    {
-        auto dpf = DomainParticipantFactory::get_instance();
-
-        //! Initialize entities
-
-        participant_ = dpf->create_participant(opts.domain, opts.pqos);
-
-        if (participant_ == nullptr)
-        {
-            return false;
-        }
-
-        subscriber_ = participant_->create_subscriber(opts.subqos);
-
-        if (subscriber_ == nullptr)
-        {
-            return false;
-        }
-
-        publisher_ = participant_->create_publisher(opts.pubqos);
-
-        if (publisher_ == nullptr)
-        {
-            return false;
-        }
-
-        //! Register Common Types
-
-        std::vector<eprosima::fastdds::dds::TypeSupport> sustainml_types;
-        sustainml_types.reserve(common::Topics::MAX);
-
-        sustainml_types.push_back(static_cast<TypeSupport>(new NodeStatusPubSubType()));
-        sustainml_types.push_back(static_cast<TypeSupport>(new NodeControlPubSubType()));
-        sustainml_types.push_back(static_cast<TypeSupport>(new UserInputPubSubType()));
-        sustainml_types.push_back(static_cast<TypeSupport>(new EncodedTaskPubSubType()));
-        sustainml_types.push_back(static_cast<TypeSupport>(new MLModelPubSubType()));
-        sustainml_types.push_back(static_cast<TypeSupport>(new HWResourcePubSubType()));
-        sustainml_types.push_back(static_cast<TypeSupport>(new CO2FootprintPubSubType()));
-
-        for (auto &&type : sustainml_types)
-        {
-            participant_->register_type(type);
-        }
-
-        //! Initialize common topics
-        initialize_subscription(common::TopicCollection::get()[common::Topics::NODE_CONTROL].first.c_str(),
-                                common::TopicCollection::get()[common::Topics::NODE_CONTROL].second.c_str(),
-                                &control_listener_);
-
-        initialize_publication(common::TopicCollection::get()[common::Topics::NODE_STATUS].first.c_str(),
-                                common::TopicCollection::get()[common::Topics::NODE_STATUS].second.c_str());
-
-        //! Initialize node
-        node_status_.node_name(name);
-        node_status_.node_status(NODE_INITIALIZING);
-
-        publish_node_status();
-
-        return true;
+        delete impl_;
     }
 
     void Node::spin()
     {
-        EPROSIMA_LOG_INFO(NODE, "Spinning Node... ");
-        dispatcher_->start();
-
-        node_status_.node_status(NODE_IDLE);
-        publish_node_status();
-
-        std::unique_lock<std::mutex> lock(spin_mtx_);
-        spin_cv_.wait(lock, [&]{ return terminate_.load();});
+        impl_->spin();
     }
 
     bool Node::initialize_subscription(
@@ -156,106 +51,49 @@ namespace core {
         const char* type_name,
         eprosima::fastdds::dds::DataReaderListener* listener)
     {
-        Topic* topic = participant_->create_topic(topic_name, type_name, TOPIC_QOS_DEFAULT);
-
-        if (topic == nullptr)
-        {
-            return false;
-        }
-
-        DataReader* reader = subscriber_->create_datareader(topic, DATAREADER_QOS_DEFAULT, listener);
-
-        if (reader == nullptr)
-        {
-            return false;
-        }
-
-        topics_.emplace_back(topic);
-        readers_.emplace_back(reader);
-
-        return true;
+        return impl_->initialize_subscription(topic_name, type_name, listener);
     }
 
     bool Node::initialize_publication(
         const char* topic_name,
         const char* type_name)
     {
-        Topic* topic = participant_->create_topic(topic_name, type_name, TOPIC_QOS_DEFAULT);
-
-        if (topic == nullptr)
-        {
-            return false;
-        }
-
-        DataWriter* writer = publisher_->create_datawriter(topic, DATAWRITER_QOS_DEFAULT);
-
-        if (writer == nullptr)
-        {
-            return false;
-        }
-
-        topics_.emplace_back(topic);
-        writers_.emplace_back(writer);
-
-        return true;
+        return impl_->initialize_publication(topic_name, type_name);
     }
 
     void Node::publish_node_status()
     {
-        if (!writers_.empty())
-        {
-            writers_[STATUS_WRITER_IDX]->write(&node_status_);
-        }
+        impl_->publish_node_status();
     }
 
     void Node::terminate()
     {
-        terminate_.store(true);
-        spin_cv_.notify_all();
+        NodeImpl::terminate();
     }
 
-    Node::NodeControlListener::NodeControlListener(Node *node)
-        : node_(node)
+    const std::string& Node::name()
     {
-
+        return impl_->node_status_.node_name();
     }
 
-    Node::NodeControlListener::~NodeControlListener()
+    const Status& Node::status()
     {
-
+        return impl_->node_status_.node_status();
     }
 
-    void Node::NodeControlListener::on_subscription_matched(
-        eprosima::fastdds::dds::DataReader* reader,
-        const eprosima::fastdds::dds::SubscriptionMatchedStatus & status)
+    void Node::status(const Status &status)
     {
-
-        EPROSIMA_LOG_INFO(NODE, "NodeControl Reader Suscription status");
-
-        // New remote DataWriter discovered
-        if (status.current_count_change == 1)
-        {
-            matched_ = status.current_count;
-            EPROSIMA_LOG_INFO(NODE, "Subscriber matched.");
-        }
-        // New remote DataWriter undiscovered
-        else if (status.current_count_change == -1)
-        {
-            matched_ = status.current_count;
-            EPROSIMA_LOG_INFO(NODE, "Subscriber unmatched.");
-        }
-        // Non-valid option
-        else
-        {
-            EPROSIMA_LOG_INFO(NODE, status.current_count_change
-                    << " is not a valid value for SubscriptionMatchedStatus current count change");
-        }
+        impl_->node_status_.node_status(status);
     }
 
-    void Node::NodeControlListener::on_data_available(
-        eprosima::fastdds::dds::DataReader* reader)
+    std::weak_ptr<Dispatcher> Node::get_dispatcher()
     {
-        EPROSIMA_LOG_INFO(NODE, "NodeStatus has a new status ");
+        return impl_->get_dispatcher();
+    }
+
+    const std::vector<eprosima::fastdds::dds::DataWriter*>& Node::writers()
+    {
+        return impl_->writers_;
     }
 
 } // namespace core

@@ -19,7 +19,7 @@ enum ErrorCode {
     INTERNAL_ERROR
 };
 
-struct NodeStatus
+struct NodeStatusImpl
 {
     Status node_status;
     TaskStatus task_status;
@@ -45,7 +45,7 @@ enum CmdTask {
     CMD_TERMINATE_TASK
 };
 
-struct NodeControl
+struct NodeControlImpl
 {
     CmdNode cmd_node;
     CmdTask cmd_task;
@@ -54,26 +54,26 @@ struct NodeControl
     @Key string source_node;
 };
 
-struct GeoLocation
+struct GeoLocationImpl
 {
     string continent;
     string region;
 };
 
-struct UserInput
+struct UserInputImpl
 {
     string problem_description;
-    GeoLocation geo_location;
+    GeoLocationImpl geo_location;
     @Key long task_id;
 };
 
-struct EncodedTask
+struct EncodedTaskImpl
 {
     sequence<string> keywords;
     @Key long task_id;
 };
 
-struct MLModel
+struct MLModelImpl
 {
     string model_path;
     string model; // In case of remote approach
@@ -82,14 +82,14 @@ struct MLModel
     @Key long task_id;
 };
 
-struct HWResource
+struct HWResourceImpl
 {
     string hw_description;
     double power_consumption;
     @Key long task_id;
 };
 
-struct CO2Footprint
+struct CO2FootprintImpl
 {
     double co2_footprint;
     double energy_consumption;

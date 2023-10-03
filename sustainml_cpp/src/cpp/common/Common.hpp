@@ -60,13 +60,13 @@ namespace common {
             static std::map<Topics, std::pair<std::string, std::string>>& get()
             {
                 static std::map<Topics, std::pair<std::string, std::string>>  topics {
-                    {NODE_CONTROL, {"/sustainml/control", "NodeControl"}},
-                    {NODE_STATUS, {"/sustainml/status", "NodeStatus"}},
-                    {USER_INPUT, {"/sustainml/user_input", "UserInput"}},
-                    {ENCODED_TASK, {"/sustainml/task_encoder/output", "EncodedTask"}},
-                    {ML_MODEL, {"/sustainml/ml_model_provider/output", "MLModel"}},
-                    {HW_RESOURCE, {"/sustainml/hw_resources/output", "HWResource"}},
-                    {CO2_FOOTPRINT, {"/sustainml/carbon_tracker/output", "CO2Footprint"}}
+                    {NODE_CONTROL, {"/sustainml/control", "NodeControlImpl"}},
+                    {NODE_STATUS, {"/sustainml/status", "NodeStatusImpl"}},
+                    {USER_INPUT, {"/sustainml/user_input", "UserInputImpl"}},
+                    {ENCODED_TASK, {"/sustainml/task_encoder/output", "EncodedTaskImpl"}},
+                    {ML_MODEL, {"/sustainml/ml_model_provider/output", "MLModelImpl"}},
+                    {HW_RESOURCE, {"/sustainml/hw_resources/output", "HWResourceImpl"}},
+                    {CO2_FOOTPRINT, {"/sustainml/carbon_tracker/output", "CO2FootprintImpl"}}
                 };
 
                 return topics;
@@ -122,23 +122,23 @@ namespace common {
     template<typename T>
     inline int sample_type_to_queue_id(T* sample)
     {
-        if (typeid(sample) == typeid(EncodedTask*))
+        if (typeid(sample) == typeid(types::EncodedTask*))
         {
             return ENCODED_TASK_QUEUE;
         }
-        else if (typeid(sample) == typeid(UserInput*))
+        else if (typeid(sample) == typeid(types::UserInput*))
         {
             return USER_INPUT_QUEUE;
         }
-        else if (typeid(sample) == typeid(MLModel*))
+        else if (typeid(sample) == typeid(types::MLModel*))
         {
             return ML_MODEL_QUEUE;
         }
-        else if (typeid(sample) == typeid(HWResource*))
+        else if (typeid(sample) == typeid(types::HWResource*))
         {
             return HW_RESOURCE_QUEUE;
         }
-        else if (typeid(sample) == typeid(CO2Footprint*))
+        else if (typeid(sample) == typeid(types::CO2Footprint*))
         {
             return CO2_FOOTPRINT_QUEUE;
         }

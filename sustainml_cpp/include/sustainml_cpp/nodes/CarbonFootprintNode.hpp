@@ -27,6 +27,8 @@
 #include <vector>
 #include <memory>
 
+using namespace types;
+
 namespace sustainml {
 namespace core {
     template<class T> class QueuedNodeListener;

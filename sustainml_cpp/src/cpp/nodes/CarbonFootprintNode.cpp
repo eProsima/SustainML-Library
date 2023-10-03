@@ -18,8 +18,11 @@
 
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
 
+#include <fastdds/dds/publisher/DataWriter.hpp>
+
 #include <common/Common.hpp>
 #include <core/QueuedNodeListener.hpp>
+#include <types/typesImpl.h>
 
 namespace sustainml {
 namespace co2_tracker_module {
@@ -90,9 +93,9 @@ namespace co2_tracker_module {
 
             //! TODO: Manage task statuses individually
 
-            if (node_status_.node_status() != NODE_RUNNING)
+            if (status() != NODE_RUNNING)
             {
-                node_status_.node_status(NODE_RUNNING);
+                status(NODE_RUNNING);
                 publish_node_status();
             }
 
@@ -101,7 +104,7 @@ namespace co2_tracker_module {
             //! Ensure task_id is forwarded to the output
             task_data_[task_id].second.task_id(task_id);
 
-            writers_[OUTPUT_WRITER_IDX]->write(&task_data_[task_id].second);
+            writers()[OUTPUT_WRITER_IDX]->write(task_data_[task_id].second.get_impl());
 
             listener_ml_model_queue_->remove_element_by_taskid(task_id);
             listener_hw_queue_->remove_element_by_taskid(task_id);

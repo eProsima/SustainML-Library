@@ -42,7 +42,7 @@ namespace ml_task_encoding_module {
     * - User Input
     * as input
     */
-    class TaskEncoderNode : public core::Callable<UserInput, NodeStatus, EncodedTask>,
+    class TaskEncoderNode : public core::Callable<types::UserInput, types::NodeStatus, types::EncodedTask>,
                             public ::sustainml::core::Node
     {
 
@@ -74,11 +74,11 @@ namespace ml_task_encoding_module {
         */
         void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
 
-        std::unique_ptr<core::QueuedNodeListener<UserInput>> listener_user_input_queue_;
+        std::unique_ptr<core::QueuedNodeListener<types::UserInput>> listener_user_input_queue_;
 
         std::mutex mtx_;
         //! task id to <NodeStatus, EncodedTask>
-        std::map<int, std::pair<NodeStatus, EncodedTask>>  task_data_;
+        std::map<int, std::pair<types::NodeStatus, types::EncodedTask>>  task_data_;
 
     };
 

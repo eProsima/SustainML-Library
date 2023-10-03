@@ -20,7 +20,6 @@
 #ifndef SUSTAINMLCPP_CORE_SAMPLESQUEUEHPP
 #define SUSTAINMLCPP_CORE_SAMPLESQUEUEHPP
 
-#include <sustainml_cpp/core/Dispatcher.hpp>
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/interfaces/SampleQueryable.hpp>
 

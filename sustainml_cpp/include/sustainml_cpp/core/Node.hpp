@@ -21,7 +21,7 @@
 #define SUSTAINMLCPP_CORE_NODE_HPP
 
 #include <sustainml_cpp/config/Macros.hpp>
-#include <sustainml_cpp/types/typesPubSubTypes.h>
+#include <sustainml_cpp/types/types.h>
 
 #include <utility>
 #include <vector>
@@ -30,31 +30,27 @@
 #include <condition_variable>
 #include <atomic>
 
-#include <fastdds/dds/domain/DomainParticipant.hpp>
-#include <fastdds/dds/domain/DomainParticipantFactory.hpp>
-#include <fastdds/dds/domain/qos/DomainParticipantQos.hpp>
-#include <fastdds/dds/publisher/DataWriter.hpp>
-#include <fastdds/dds/publisher/Publisher.hpp>
-#include <fastdds/dds/publisher/qos/PublisherQos.hpp>
-#include <fastdds/dds/subscriber/DataReader.hpp>
-#include <fastdds/dds/subscriber/qos/SubscriberQos.hpp>
-#include <fastdds/dds/subscriber/Subscriber.hpp>
-
 #define STATUS_WRITER_IDX 0
 #define OUTPUT_WRITER_IDX 1
+
+namespace eprosima {
+namespace fastdds {
+namespace dds {
+
+class DataWriter;
+class DataReaderListener;
+
+} // namespace dds
+} // namespace fastdds
+} // namespace eprosima
 
 namespace sustainml {
 namespace core {
 
+    class NodeImpl;
+    class NodeControlListener;
     class Dispatcher;
-
-    struct Options
-    {
-        eprosima::fastdds::dds::DomainId_t domain{0};
-        eprosima::fastdds::dds::DomainParticipantQos pqos;
-        eprosima::fastdds::dds::SubscriberQos subqos;
-        eprosima::fastdds::dds::PublisherQos pubqos;
-    };
+    struct Options;
 
     /**
     * @brief This abstract class is the principal class of the project.
@@ -89,6 +85,16 @@ namespace core {
         * @brief Stops the execution of the node.
         */
         SUSTAINML_CPP_DLL_API static void terminate();
+
+        /**
+        * @brief Retrieves the node name
+        */
+        SUSTAINML_CPP_DLL_API const std::string& name();
+
+        /**
+        * @brief Retrieves the node status
+        */
+        SUSTAINML_CPP_DLL_API const Status& status();
 
     protected:
 
@@ -129,28 +135,15 @@ namespace core {
         */
         void publish_node_status();
 
-        std::shared_ptr<Dispatcher> dispatcher_;
+        /**
+        * @brief Retrieves the node status
+        */
+        void status(const Status& status);
 
-        eprosima::fastdds::dds::DomainParticipant* participant_;
-
-        eprosima::fastdds::dds::Publisher* publisher_;
-
-        eprosima::fastdds::dds::Subscriber* subscriber_;
-
-        std::vector<eprosima::fastdds::dds::Topic*> topics_;
-
-        // Status writer is always the first
-        std::vector<eprosima::fastdds::dds::DataWriter*> writers_;
-
-        std::vector<eprosima::fastdds::dds::DataReader*> readers_;
-
-        std::mutex spin_mtx_;
-
-        static std::condition_variable spin_cv_;
-
-        static std::atomic<bool> terminate_;
-
-        NodeStatus node_status_;
+        /**
+        * @brief Retrieves the inner writers
+        */
+        const std::vector<eprosima::fastdds::dds::DataWriter*>& writers();
 
     private:
 
@@ -159,52 +152,11 @@ namespace core {
         *
         * @return A weak pointer to the Dispatcher object
         */
-        std::weak_ptr<Dispatcher> get_dispatcher()
-        {
-            return dispatcher_;
-        }
+        std::weak_ptr<Dispatcher> get_dispatcher();
 
-        /**
-        * @brief Initialize the class optionally from a set of Options
-        *
-        * @param opts Desired options
-        */
-        bool init(const std::string &name,
-                  const Options& opts = Options());
+        //! Impl
+        NodeImpl* impl_;
 
-        class NodeControlListener : public eprosima::fastdds::dds::DataReaderListener
-        {
-            public:
-
-                NodeControlListener(
-                    Node* node);
-
-                virtual ~NodeControlListener();
-
-                /**
-                * @brief Callback executed when a new sample is available on the DataReader.
-                *
-                * @param reader The DataReader having new available samples.
-                */
-                void on_data_available(
-                    eprosima::fastdds::dds::DataReader* reader);
-
-                /**
-                * @brief Callback executed when a DataReader matching status change.
-                *
-                * @param reader The DataReader.
-                * @param status The status of the subscription.
-                */
-                void on_subscription_matched(
-                    eprosima::fastdds::dds::DataReader* reader,
-                    const eprosima::fastdds::dds::SubscriptionMatchedStatus & status);
-
-            private:
-
-            Node* node_;
-            size_t matched_;
-
-        } control_listener_;
     };
 
 } // namespace core

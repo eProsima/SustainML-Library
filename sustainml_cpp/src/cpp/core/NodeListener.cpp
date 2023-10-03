@@ -16,6 +16,10 @@
  * @file NodeListener.cpp
  */
 
+#include <fastdds/dds/subscriber/DataReader.hpp>
+#include <fastdds/dds/subscriber/SampleInfo.hpp>
+
+#include <core/Dispatcher.hpp>
 #include <core/NodeListener.hpp>
 
 namespace sustainml {
@@ -55,18 +59,18 @@ namespace core {
 
         if (nullptr == data_cache)
         {
-            EPROSIMA_LOG_ERROR(NODE_LISTENER, node_->node_status_.node_name() << " Could not get a new cache. Queue is full");
+            EPROSIMA_LOG_ERROR(NODE_LISTENER, node_->name() << " Could not get a new cache. Queue is full");
             return;
         }
 
         while (!stop_.load(std::memory_order_relaxed))
         {
-            if (reader->take_next_sample(data_cache, &info) == ReturnCode_t::RETCODE_OK)
+            if (reader->take_next_sample(data_cache->get_impl(), &info) == eprosima::fastrtps::types::ReturnCode_t::RETCODE_OK)
             {
                 if (info.instance_state == eprosima::fastdds::dds::ALIVE_INSTANCE_STATE)
                 {
                     // Print your structure data here.
-                    EPROSIMA_LOG_INFO(NODE_LISTENER, node_->node_status_.node_name() << " Message with task_id: " << data_cache->task_id() << " in " << reader->guid() << " RECEIVED");
+                    EPROSIMA_LOG_INFO(NODE_LISTENER, node_->name() << " Message with task_id: " << data_cache->task_id() << " in " << reader->guid() << " RECEIVED");
                     queue->insert_element(data_cache);
 
                     // notify dispatcher
@@ -80,7 +84,7 @@ namespace core {
 
                     if (nullptr == data_cache)
                     {
-                        EPROSIMA_LOG_ERROR(NODE_LISTENER, node_->node_status_.node_name() << " Could not get a new cache. Queue is full");
+                        EPROSIMA_LOG_ERROR(NODE_LISTENER, node_->name() << " Could not get a new cache. Queue is full");
                         break;
                     }
                 }
