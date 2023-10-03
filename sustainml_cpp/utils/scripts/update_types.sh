@@ -10,7 +10,7 @@
 
 #idl location | headers location | sources location
 files_needing_output_dir=(
-    './include/sustainml_cpp/idl/types.idl|../types|../../../src/cpp/types'
+    './include/sustainml_cpp/idl/typesImpl.idl|../../../src/cpp/types'
     )
 
 
@@ -42,7 +42,6 @@ for idl_file in "${idl_files[@]}"; do
     cd "${idl_dir}"
 
     # Detect if needs output directory.
-    od_include=""
     od_src=""
     for od_entry in ${files_needing_output_dir[@]}; do
         echo od_entry
@@ -54,36 +53,15 @@ for idl_file in "${idl_files[@]}"; do
             od_entry_split=(${od_entry//\|/ })
             echo $od_entry_split
             echo ${od_entry_split[1]}
-            echo ${od_entry_split[2]}
-            od_include=${od_entry_split[1]}
-            od_src=${od_entry_split[2]}
+            od_src=${od_entry_split[1]}
             break
         fi
     done
 
     echo $file_from_gen
     echo $od_src
-    echo $od_include
 
-    fastddsgen $file_from_gen
-    mv *.h* ${od_include}
-    mv *.ip* ${od_include}
-
-    echo "sdafa "${file_from_gen%.*}.h
-
-    for source in *.cxx; do
-
-        sed_subarg="s:${source%.*}.h:sustainml_cpp/types/${source%.*}.h:g"
-        sed_arg='/^#include/'${sed_subarg}
-        echo "sed arg "$sed_arg
-        sed -i $sed_arg ${source%.*}.cxx
-
-        sed_subarg="s:${file_from_gen%.*}CdrAux:sustainml_cpp/types/${file_from_gen%.*}CdrAux:g"
-        sed_arg='/^#include/'${sed_subarg}
-        sed -i $sed_arg ${source%.*}.cxx
-    done
-
-    mv *.cxx ${od_src}
+    fastddsgen -replace -d $od_src "$file_from_gen"
 
     if [[ $? != 0 ]]; then
         ret_value=-1
