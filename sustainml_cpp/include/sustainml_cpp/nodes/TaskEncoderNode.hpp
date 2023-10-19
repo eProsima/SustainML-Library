@@ -77,6 +77,9 @@ namespace ml_task_encoding_module {
 
         SUSTAINML_CPP_DLL_API TaskEncoderNode(TaskEncoderTaskListener& user_listener);
 
+        SUSTAINML_CPP_DLL_API TaskEncoderNode(
+                sustainml::core::Options opts);
+
         SUSTAINML_CPP_DLL_API virtual ~TaskEncoderNode();
 
     private:

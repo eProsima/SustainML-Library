@@ -21,6 +21,7 @@
 #include <fastdds/dds/publisher/DataWriter.hpp>
 
 #include <common/Common.hpp>
+#include <core/Options.hpp>
 #include <core/QueuedNodeListener.hpp>
 #include <types/typesImpl.h>
 
@@ -36,12 +37,34 @@ namespace ml_model_provider_module {
     {
         listener_enc_task_queue_.reset(new core::QueuedNodeListener<EncodedTask>(this));
 
+        sustainml::core::Options opts;
+        opts.rqos.resource_limits().max_instances = 500;
+        opts.rqos.resource_limits().max_samples_per_instance = 1;
+        opts.wqos.resource_limits().max_instances = 500;
+        opts.wqos.resource_limits().max_samples_per_instance = 1;
+
         initialize_subscription(sustainml::common::TopicCollection::get()[common::ENCODED_TASK].first.c_str(),
                                 sustainml::common::TopicCollection::get()[common::ENCODED_TASK].second.c_str(),
-                                &(*listener_enc_task_queue_));
+                                &(*listener_enc_task_queue_), opts);
 
         initialize_publication(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
-                               sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str());
+                               sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
+                               opts);
+    }
+
+
+    MLModelNode::MLModelNode(
+            sustainml::core::Options opts) : Node(common::ML_MODEL_NODE, opts)
+    {
+        listener_enc_task_queue_.reset(new core::QueuedNodeListener<EncodedTask>(this));
+
+        initialize_subscription(sustainml::common::TopicCollection::get()[common::ENCODED_TASK].first.c_str(),
+                                sustainml::common::TopicCollection::get()[common::ENCODED_TASK].second.c_str(),
+                                &(*listener_enc_task_queue_), opts);
+
+        initialize_publication(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
+                               sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
+                               opts);
     }
 
     MLModelNode::~MLModelNode()

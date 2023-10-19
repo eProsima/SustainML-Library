@@ -21,6 +21,7 @@
 #include <fastdds/dds/publisher/DataWriter.hpp>
 
 #include <common/Common.hpp>
+#include <core/Options.hpp>
 #include <core/QueuedNodeListener.hpp>
 #include <types/typesImpl.h>
 
@@ -36,12 +37,33 @@ namespace hardware_module {
     {
         listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
 
+        sustainml::core::Options opts;
+        opts.rqos.resource_limits().max_instances = 500;
+        opts.rqos.resource_limits().max_samples_per_instance = 1;
+        opts.wqos.resource_limits().max_instances = 500;
+        opts.wqos.resource_limits().max_samples_per_instance = 1;
+
         initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
                                 sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
-                                &(*listener_ml_model_queue_));
+                                &(*listener_ml_model_queue_), opts);
 
         initialize_publication(sustainml::common::TopicCollection::get()[common::HW_RESOURCE].first.c_str(),
-                               sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str());
+                               sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str(),
+                               opts);
+    }
+
+    HardwareResourcesNode::HardwareResourcesNode(
+            sustainml::core::Options opts) : Node(common::HW_RESOURCES_NODE, opts)
+    {
+        listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
+
+        initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
+                                sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
+                                &(*listener_ml_model_queue_), opts);
+
+        initialize_publication(sustainml::common::TopicCollection::get()[common::HW_RESOURCE].first.c_str(),
+                               sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str(),
+                               opts);
     }
 
     HardwareResourcesNode::~HardwareResourcesNode()

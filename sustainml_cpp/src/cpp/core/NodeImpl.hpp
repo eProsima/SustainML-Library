@@ -22,6 +22,7 @@
 #include <sustainml_cpp/config/Macros.hpp>
 #include <sustainml_cpp/types/types.h>
 
+#include <core/Options.hpp>
 #include <types/typesImplPubSubTypes.h>
 
 #include <utility>
@@ -36,8 +37,10 @@
 #include <fastdds/dds/domain/qos/DomainParticipantQos.hpp>
 #include <fastdds/dds/publisher/DataWriter.hpp>
 #include <fastdds/dds/publisher/Publisher.hpp>
+#include <fastdds/dds/publisher/qos/DataWriterQos.hpp>
 #include <fastdds/dds/publisher/qos/PublisherQos.hpp>
 #include <fastdds/dds/subscriber/DataReader.hpp>
+#include <fastdds/dds/subscriber/qos/DataReaderQos.hpp>
 #include <fastdds/dds/subscriber/qos/SubscriberQos.hpp>
 #include <fastdds/dds/subscriber/Subscriber.hpp>
 
@@ -49,14 +52,7 @@ namespace core {
 
     class Dispatcher;
     class Node;
-
-    struct Options
-    {
-        eprosima::fastdds::dds::DomainId_t domain{0};
-        eprosima::fastdds::dds::DomainParticipantQos pqos;
-        eprosima::fastdds::dds::SubscriberQos subqos;
-        eprosima::fastdds::dds::PublisherQos pubqos;
-    };
+    struct Options;
 
     /**
     * @brief This abstract class is the principal class of the project.
@@ -104,11 +100,13 @@ namespace core {
         * @param topic The topic name
         * @param type_name The type name
         * @param listener Listener object inheriting from DataReaderListener
+        * @param rqos DataReaderQos object with the DataReader configuration
         */
         bool initialize_subscription(
-            const char* topic_name,
-            const char* type_name,
-            eprosima::fastdds::dds::DataReaderListener* listener);
+                const char* topic_name,
+                const char* type_name,
+                eprosima::fastdds::dds::DataReaderListener* listener,
+                const Options &opts);
 
         /**
         * @brief Starts a new publication (DataWriter) in the
@@ -118,8 +116,9 @@ namespace core {
         * @param type_name The type name
         */
         bool initialize_publication(
-            const char* topic_name,
-            const char* type_name);
+                const char* topic_name,
+                const char* type_name,
+                const Options &opts);
 
         /**
         * @brief Publishes the internal status of the node to DDS.

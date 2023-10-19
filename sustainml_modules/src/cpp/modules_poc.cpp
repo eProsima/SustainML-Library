@@ -10,9 +10,11 @@
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/publisher/DataWriter.hpp>
+#include <fastdds/dds/publisher/qos/DataWriterQos.hpp>
 #include <fastdds/dds/publisher/DataWriterListener.hpp>
 #include <fastdds/dds/publisher/Publisher.hpp>
 #include <fastdds/dds/subscriber/DataReader.hpp>
+#include <fastdds/dds/subscriber/qos/DataReaderQos.hpp>
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>
 #include <fastdds/dds/subscriber/Subscriber.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
@@ -138,7 +140,10 @@ public:
         type.register_type(participant);
         topic = participant->create_topic("/sustainml/user_input", "UserInputImpl", fdds::TOPIC_QOS_DEFAULT);
         listener = new WriterListener();
-        writer = publisher->create_datawriter(topic, eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT, listener);
+        fdds::DataWriterQos wqos = eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT;
+        wqos.resource_limits().max_instances = 500;
+        wqos.resource_limits().max_samples_per_instance = 1;
+        writer = publisher->create_datawriter(topic, wqos, listener);
     }
 
     ~UserInputPublisher()
@@ -184,7 +189,10 @@ public:
         type.register_type(participant);
         topic = participant->create_topic("/sustainml/carbon_tracker/output", "CO2FootprintImpl", fdds::TOPIC_QOS_DEFAULT);
         listener = new ReaderListener();
-        reader = subscriber->create_datareader(topic, eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT, listener);
+        fdds::DataReaderQos rqos = eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT;
+        rqos.resource_limits().max_instances = 500;
+        rqos.resource_limits().max_samples_per_instance = 1;
+        reader = subscriber->create_datareader(topic, rqos, listener);
 
     }
 

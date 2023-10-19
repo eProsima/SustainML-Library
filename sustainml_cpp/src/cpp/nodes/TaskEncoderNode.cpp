@@ -21,6 +21,7 @@
 #include <fastdds/dds/publisher/DataWriter.hpp>
 
 #include <common/Common.hpp>
+#include <core/Options.hpp>
 #include <core/QueuedNodeListener.hpp>
 #include <types/typesImpl.h>
 
@@ -36,12 +37,33 @@ namespace ml_task_encoding_module {
     {
         listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 
+        sustainml::core::Options opts;
+        opts.rqos.resource_limits().max_instances = 500;
+        opts.rqos.resource_limits().max_samples_per_instance = 1;
+        opts.wqos.resource_limits().max_instances = 500;
+        opts.wqos.resource_limits().max_samples_per_instance = 1;
+
         initialize_subscription(sustainml::common::TopicCollection::get()[common::USER_INPUT].first.c_str(),
                                 sustainml::common::TopicCollection::get()[common::USER_INPUT].second.c_str(),
-                                &(*listener_user_input_queue_));
+                                &(*listener_user_input_queue_), opts);
 
         initialize_publication(sustainml::common::TopicCollection::get()[common::ENCODED_TASK].first.c_str(),
-                               sustainml::common::TopicCollection::get()[common::ENCODED_TASK].second.c_str());
+                               sustainml::common::TopicCollection::get()[common::ENCODED_TASK].second.c_str(),
+                               opts);
+    }
+
+    TaskEncoderNode::TaskEncoderNode(
+            sustainml::core::Options opts) : Node(common::TASK_ENCODER_NODE, opts)
+    {
+        listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
+
+        initialize_subscription(sustainml::common::TopicCollection::get()[common::USER_INPUT].first.c_str(),
+                                sustainml::common::TopicCollection::get()[common::USER_INPUT].second.c_str(),
+                                &(*listener_user_input_queue_), opts);
+
+        initialize_publication(sustainml::common::TopicCollection::get()[common::ENCODED_TASK].first.c_str(),
+                               sustainml::common::TopicCollection::get()[common::ENCODED_TASK].second.c_str(),
+                               opts);
     }
 
     TaskEncoderNode::~TaskEncoderNode()
