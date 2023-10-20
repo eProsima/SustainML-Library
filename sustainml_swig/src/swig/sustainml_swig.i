@@ -56,12 +56,14 @@
 #define SUSTAINML_CPP_DllAPI
 
 // SWIG helper modules
-%include "stdint.i"
-%include "std_array.i"
-%include "std_list.i"
-%include "std_string.i"
-%include "std_shared_ptr.i"
-%include "std_vector.i"
+%include cpointer.i
+%include stdint.i
+%include std_array.i
+%include std_list.i
+%include std_string.i
+%include std_shared_ptr.i
+%include std_vector.i
+%include typemaps.i
 
 // Definition of internal types
 typedef short int16_t;
@@ -73,4 +75,12 @@ typedef unsigned int uint32_t;
 typedef unsigned long uint64_t;
 
 // IMPORTANT: the order of these includes is relevant, and must keep same order of cpp declarations.
-//%include "sustainml_swig/node/MainNode.i"
+%include "sustainml_swig/types/types.i"
+
+%include "sustainml_swig/core/Callable.i"
+%include "sustainml_swig/core/Node.i"
+
+%include "sustainml_swig/nodes/CarbonFootprintNode.i"
+%include "sustainml_swig/nodes/HardwareResourcesNode.i"
+%include "sustainml_swig/nodes/MLModelNode.i"
+%include "sustainml_swig/nodes/TaskEncoderNode.i"

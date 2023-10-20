@@ -38,6 +38,9 @@ SWIG_ADD_LIBRARY(${PROJECT_NAME}
         SOURCES ${${PROJECT_NAME}_FILES}
     )
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY SWIG_COMPILE_OPTIONS -w401,509)
+set_property(TARGET ${PROJECT_NAME} PROPERTY COMPILE_FLAGS -Wno-deprecated-declarations)
+
 if(UNIX AND CMAKE_SIZEOF_VOID_P EQUAL 8)
     set_property(TARGET ${PROJECT_NAME} PROPERTY SWIG_COMPILE_DEFINITIONS SWIGWORDSIZE64)
 endif()
@@ -48,7 +51,7 @@ SWIG_LINK_LIBRARIES(${PROJECT_NAME}
     )
 
 # Find the installation path
-execute_process(COMMAND ${Python3_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}' ) )"
+execute_process(COMMAND ${Python3_EXECUTABLE} -W ignore -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}' ) )"
         OUTPUT_VARIABLE _ABS_PYTHON_MODULE_PATH
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
