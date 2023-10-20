@@ -56,3 +56,9 @@ configure_project_cpp()
 # Compile C++ poc executable
 add_executable(${MODULE_NAME}_poc src/cpp/modules_poc.cpp)
 target_link_libraries(${MODULE_NAME}_poc sustainml_cpp cpp_utils)
+
+###############################################################################
+# Packaging
+###############################################################################
+# Install package
+eprosima_packaging()
