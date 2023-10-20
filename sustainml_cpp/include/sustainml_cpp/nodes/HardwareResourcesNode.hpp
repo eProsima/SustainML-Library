@@ -36,14 +36,28 @@ namespace hardware_module {
     class Node;
     class Dispatcher;
 
+    using HardwareResourcesCallable = core::Callable<types::MLModel, types::NodeStatus, types::HWResource>;
+    struct HardwareResourcesTaskListener : public HardwareResourcesCallable
+    {
+        virtual ~HardwareResourcesTaskListener()
+        {
+        }
+
+        virtual void on_new_task_available(
+                types::MLModel& model,
+                types::NodeStatus& status,
+                types::HWResource& output) override
+        {
+        }
+    };
+
     /**
     * @brief Hardware Resources Node Implementation
     * It requires the
     * - ML Model
     * as input
     */
-    class HardwareResourcesNode : public core::Callable<types::MLModel, types::NodeStatus, types::HWResource>,
-                                  public ::sustainml::core::Node
+    class HardwareResourcesNode : public ::sustainml::core::Node
     {
 
         enum ExpectedInputSamples
@@ -60,7 +74,7 @@ namespace hardware_module {
 
     public:
 
-        SUSTAINML_CPP_DLL_API HardwareResourcesNode();
+        SUSTAINML_CPP_DLL_API HardwareResourcesNode(HardwareResourcesTaskListener& user_listener);
 
         SUSTAINML_CPP_DLL_API virtual ~HardwareResourcesNode();
 
@@ -73,6 +87,8 @@ namespace hardware_module {
         * must correspond to the same task_id.
         */
         void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
+
+        HardwareResourcesTaskListener& user_listener_;
 
         std::unique_ptr<core::QueuedNodeListener<types::MLModel>> listener_ml_model_queue_;
 

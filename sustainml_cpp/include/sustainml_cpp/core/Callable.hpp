@@ -28,83 +28,96 @@
 
 #include <fastrtps/log/Log.h>
 
-
 namespace sustainml {
 namespace core {
 namespace helper {
 
-    template<typename T>
-    void see_type(T)
-    {
-        EPROSIMA_LOG_INFO(CALLABLE, __PRETTY_FUNCTION__);
-    }
+template<typename T>
+void see_type(
+        T)
+{
+    EPROSIMA_LOG_INFO(CALLABLE, __PRETTY_FUNCTION__);
+}
 
-    //! Expand the parameter pack in runtime
-    //! It is mainly used before invoking user callback
-    template <std::size_t... Ts>
-    struct index {};
+#ifndef SWIG_WRAPPER
+//! Expand the parameter pack in runtime
+//! It is mainly used before invoking user callback
+template <std::size_t... Ts>
+struct index {};
 
-    template <std::size_t N, std::size_t... Ts>
-    struct gen_seq : gen_seq<N - 1, N - 1, Ts...> {};
+template <std::size_t N, std::size_t... Ts>
+struct gen_seq : gen_seq<N - 1, N - 1, Ts...> {};
 
-    template <std::size_t... Ts>
-    struct gen_seq<0, Ts...> : index<Ts...> {};
+template <std::size_t... Ts>
+struct gen_seq<0, Ts...> : index<Ts...> {};
+#endif //SWIG_WRAPPER
 
 } // namespace helper
 
+/**
+ * @brief This class is used for registering an input callback
+ * with a variable number of arguments and generic types.
+ *
+ * It is meant to be inherited by the actual SustainML nodes.
+ */
+template <typename ... _TYPES>
+class Callable
+{
+
+#ifndef SWIG_WRAPPER
+    using tuple = std::tuple<_TYPES*...>;
+
+    template <size_t N>
+    using get = typename std::tuple_element<N, tuple>::type;
+
+public:
+
+    //! number of types in pack.
+    static constexpr auto size = sizeof...(_TYPES);
+
     /**
-    * @brief This class is used for registering an input callback
-    * with a variable number of arguments and generic types.
-    *
-    * It is meant to be inherited by the actual SustainML nodes.
-    */
-    template <typename ..._TYPES>
-    class Callable
+     * @brief User callback
+     */
+    virtual void on_new_task_available(
+            _TYPES& ... fn) = 0;
+
+    /**
+     * @brief Invokes the user callback with the arguments stored in user_cb_args_
+     */
+    template <std::size_t... Is>
+    void invoke_user_cb(
+            helper::index<Is...>)
     {
-        using tuple = std::tuple<_TYPES*...>;
+        on_new_task_available(*std::get<Is>(user_cb_args_)...);
+    }
 
-        template <size_t N>
-        using get = typename std::tuple_element<N, tuple>::type;
+    /**
+     * @brief Returns the arguments with which the user callback
+     * will be later invoked
+     *
+     * @return Reference to the user callback args
+     */
+    tuple& get_user_cb_args()
+    {
+        return user_cb_args_;
+    }
 
-        public:
+private:
 
-        //! number of types in pack.
-        static constexpr auto size = sizeof...(_TYPES);
+    tuple user_cb_args_;
+#else
 
-        /**
-        * @brief Register the user's callback
-        */
-        SUSTAINML_CPP_DLL_API constexpr void register_cb(std::function<void(_TYPES& ...)> fn)
-        {
-            //helper::see_type(fn);
-            user_callback_ = fn;
-        }
+public:
 
-        /**
-        * @brief Invokes the user callback with the arguments stored in user_cb_args_
-        */
-        template <std::size_t... Is>
-        void invoke_user_cb(helper::index<Is...>)
-        {
-            user_callback_(*std::get<Is>(user_cb_args_)...);
-        }
+    /**
+     * @brief user's callback to be implemented by the user
+     */
+    SUSTAINML_CPP_DLL_API virtual void on_new_task_available(
+            _TYPES& ... fn) = 0;
 
-        /**
-        * @brief Returns the arguments with which the user callback
-        * will be later invoked
-        *
-        * @return Reference to the user callback args
-        */
-        tuple& get_user_cb_args()
-        {
-            return user_cb_args_;
-        }
+#endif //SWIG_WRAPPER
 
-        private:
-
-        std::function<void(_TYPES&...)> user_callback_;
-        tuple user_cb_args_;
-    };
+};
 
 } // namespace core
 } // namespace sustainml

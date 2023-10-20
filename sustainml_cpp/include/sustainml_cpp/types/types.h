@@ -243,7 +243,7 @@ public:
      * @brief This function returns a reference to member error_description
      * @return Reference to member error_description
      */
-    eProsima_user_DllExport std::string& error_description();
+    eProsima_user_DllExport std::string error_description();
 
 
     /*!
@@ -270,7 +270,7 @@ public:
      * @brief This function returns a reference to member node_name
      * @return Reference to member node_name
      */
-    eProsima_user_DllExport std::string& node_name();
+    eProsima_user_DllExport std::string node_name();
 
     /*!
      * @brief This function updates and publish the new given status.
@@ -410,7 +410,7 @@ public:
      * @brief This function returns a reference to member target_node
      * @return Reference to member target_node
      */
-    eProsima_user_DllExport std::string& target_node();
+    eProsima_user_DllExport std::string target_node();
 
 
     /*!
@@ -457,7 +457,7 @@ public:
      * @brief This function returns a reference to member source_node
      * @return Reference to member source_node
      */
-    eProsima_user_DllExport std::string& source_node();
+    eProsima_user_DllExport std::string source_node();
 
 protected:
 
@@ -549,7 +549,7 @@ public:
      * @brief This function returns a reference to member continent
      * @return Reference to member continent
      */
-    eProsima_user_DllExport std::string& continent();
+    eProsima_user_DllExport std::string continent();
 
 
     /*!
@@ -576,7 +576,7 @@ public:
      * @brief This function returns a reference to member region
      * @return Reference to member region
      */
-    eProsima_user_DllExport std::string& region();
+    eProsima_user_DllExport std::string region();
 
 protected:
 
@@ -669,8 +669,7 @@ public:
      * @brief This function returns a reference to member problem_description
      * @return Reference to member problem_description
      */
-    eProsima_user_DllExport std::string& problem_description();
-
+    eProsima_user_DllExport std::string problem_description();
 
     /*!
      * @brief This function copies the value in member geo_location
@@ -946,7 +945,7 @@ public:
      * @brief This function returns a reference to member model_path
      * @return Reference to member model_path
      */
-    eProsima_user_DllExport std::string& model_path();
+    eProsima_user_DllExport std::string model_path();
 
 
     /*!
@@ -973,7 +972,7 @@ public:
      * @brief This function returns a reference to member model
      * @return Reference to member model
      */
-    eProsima_user_DllExport std::string& model();
+    eProsima_user_DllExport std::string model();
 
 
     /*!
@@ -1000,7 +999,7 @@ public:
      * @brief This function returns a reference to member model_properties_path
      * @return Reference to member model_properties_path
      */
-    eProsima_user_DllExport std::string& model_properties_path();
+    eProsima_user_DllExport std::string model_properties_path();
 
 
     /*!
@@ -1027,7 +1026,7 @@ public:
      * @brief This function returns a reference to member model_properties
      * @return Reference to member model_properties
      */
-    eProsima_user_DllExport std::string& model_properties();
+    eProsima_user_DllExport std::string model_properties();
 
 
     /*!
@@ -1151,7 +1150,7 @@ public:
      * @brief This function returns a reference to member hw_description
      * @return Reference to member hw_description
      */
-    eProsima_user_DllExport std::string& hw_description();
+    eProsima_user_DllExport std::string hw_description();
 
 
     /*!

@@ -29,7 +29,7 @@ using namespace types;
 namespace sustainml {
 namespace co2_tracker_module {
 
-    CarbonFootprintNode::CarbonFootprintNode() : Node(common::CO2_TRACKER_NODE)
+    CarbonFootprintNode::CarbonFootprintNode(CarbonFootprintTaskListener& user_listener) : Node(common::CO2_TRACKER_NODE), user_listener_(user_listener)
     {
         listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
         listener_hw_queue_.reset(new core::QueuedNodeListener<HWResource>(this));
@@ -61,15 +61,17 @@ namespace co2_tracker_module {
         //! Expected inputs are the number of reader minus the control reader
         if (input_samples.size() == ExpectedInputSamples::MAX)
         {
+            auto& user_listener_args = user_listener_.get_user_cb_args();
+
             size_t samples_retrieved{0};
             common::pair_queue_id_with_sample_type(
                     input_samples,
-                    Callable::get_user_cb_args(),
+                    user_listener_args,
                     ExpectedInputSamples::MAX,
                     samples_retrieved);
 
             int task_id{-1};
-            auto first_sample_ptr = std::get<USER_INPUT_SAMPLE>(Callable::get_user_cb_args());
+            auto first_sample_ptr = std::get<USER_INPUT_SAMPLE>(user_listener_args);
 
             if (nullptr != first_sample_ptr)
             {
@@ -86,8 +88,8 @@ namespace co2_tracker_module {
                 std:std::unique_lock<std::mutex> lock (mtx_);
                 task_data_.insert({task_id, {NodeStatus(), CO2Footprint()}});
 
-                auto& status = std::get<TASK_STATUS_DATA>(Callable::get_user_cb_args());
-                auto& output = std::get<TASK_OUTPUT_DATA>(Callable::get_user_cb_args());
+                auto& status = std::get<TASK_STATUS_DATA>(user_listener_args);
+                auto& output = std::get<TASK_OUTPUT_DATA>(user_listener_args);
 
                 status = &task_data_[task_id].first;
                 output = &task_data_[task_id].second;
@@ -101,7 +103,7 @@ namespace co2_tracker_module {
                 publish_node_status();
             }
 
-            Callable::invoke_user_cb(core::helper::gen_seq<size>{});
+            user_listener_.invoke_user_cb(core::helper::gen_seq<CarbonFootprintCallable::size>{});
 
             //! Ensure task_id is forwarded to the output
             task_data_[task_id].second.task_id(task_id);

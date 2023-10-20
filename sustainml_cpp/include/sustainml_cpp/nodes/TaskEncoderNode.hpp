@@ -36,14 +36,29 @@ namespace ml_task_encoding_module {
     class Node;
     class Dispatcher;
 
+    using TaskEncoderCallable = core::Callable<types::UserInput, types::NodeStatus, types::EncodedTask>;
+
+    struct TaskEncoderTaskListener : public TaskEncoderCallable
+    {
+        virtual ~TaskEncoderTaskListener()
+        {
+        }
+
+        virtual void on_new_task_available(
+                types::UserInput& user_input,
+                types::NodeStatus& status,
+                types::EncodedTask& output) override
+        {
+        }
+    };
+
     /**
     * @brief Task Encoder Node Implementation
     * It requires the
     * - User Input
     * as input
     */
-    class TaskEncoderNode : public core::Callable<types::UserInput, types::NodeStatus, types::EncodedTask>,
-                            public ::sustainml::core::Node
+    class TaskEncoderNode : public ::sustainml::core::Node
     {
 
         enum ExpectedInputSamples
@@ -60,7 +75,7 @@ namespace ml_task_encoding_module {
 
     public:
 
-        SUSTAINML_CPP_DLL_API TaskEncoderNode();
+        SUSTAINML_CPP_DLL_API TaskEncoderNode(TaskEncoderTaskListener& user_listener);
 
         SUSTAINML_CPP_DLL_API virtual ~TaskEncoderNode();
 
@@ -73,6 +88,8 @@ namespace ml_task_encoding_module {
         * must correspond to the same task_id.
         */
         void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
+
+        TaskEncoderTaskListener& user_listener_;
 
         std::unique_ptr<core::QueuedNodeListener<types::UserInput>> listener_user_input_queue_;
 

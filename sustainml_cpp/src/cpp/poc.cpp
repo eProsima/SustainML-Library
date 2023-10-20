@@ -22,11 +22,22 @@
 
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
 
-void cb(types::MLModel& model, types::UserInput& ui, types::HWResource& hw, types::NodeStatus& status, types::CO2Footprint& output)
+class CustomListener : public sustainml::co2_tracker_module::CarbonFootprintTaskListener
 {
-    std::cout << "User Received task IDs: " << model.task_id()  << " " << ui.task_id() << " " << hw.task_id()
-    << " DATA -> " << model.task_id() << " " << ui.task_id() << " " << hw.task_id() << std::endl;
-}
+public:
+
+    void on_new_task_available(
+            types::MLModel& model,
+            types::UserInput& ui,
+            types::HWResource& hw,
+            types::NodeStatus& status,
+            types::CO2Footprint& output) override
+    {
+        std::cout << "User Received task IDs: " << model.task_id()  << " " << ui.task_id() << " " << hw.task_id()
+                  << " DATA -> " << model.task_id() << " " << ui.task_id() << " " << hw.task_id() << std::endl;
+    }
+
+};
 
 int main()
 {
@@ -36,9 +47,8 @@ int main()
                 static_cast<void>(signum); sustainml::core::Node::terminate();
             });
 
-    sustainml::co2_tracker_module::CarbonFootprintNode n;
-
-    n.register_cb(&cb);
+    CustomListener l;
+    sustainml::co2_tracker_module::CarbonFootprintNode n(l);
 
     n.spin();
 

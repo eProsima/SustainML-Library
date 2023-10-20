@@ -36,6 +36,25 @@ namespace co2_tracker_module {
     class Node;
     class Dispatcher;
 
+    using CarbonFootprintCallable = core::Callable<types::MLModel, types::UserInput, types::HWResource, types::NodeStatus, types::CO2Footprint>;
+
+    struct CarbonFootprintTaskListener : public CarbonFootprintCallable
+    {
+        virtual ~CarbonFootprintTaskListener()
+        {
+        }
+
+        virtual void on_new_task_available(
+                types::MLModel& model,
+                types::UserInput& ui,
+                types::HWResource& hw,
+                types::NodeStatus& status,
+                types::CO2Footprint& output) override
+        {
+        }
+
+    };
+
     /**
     * @brief Carbon Footprint Node Implementation
     * It requires the
@@ -45,10 +64,8 @@ namespace co2_tracker_module {
     * as inputs
     */
 
-    class CarbonFootprintNode : public core::Callable<types::MLModel, types::UserInput, types::HWResource, types::NodeStatus, types::CO2Footprint>,
-                                public ::sustainml::core::Node
+    class CarbonFootprintNode : public ::sustainml::core::Node
     {
-
         enum ExpectedInputSamples
         {
             ML_MODEL_SAMPLE,
@@ -65,7 +82,7 @@ namespace co2_tracker_module {
 
     public:
 
-        SUSTAINML_CPP_DLL_API CarbonFootprintNode();
+        SUSTAINML_CPP_DLL_API CarbonFootprintNode(CarbonFootprintTaskListener& listener);
 
         SUSTAINML_CPP_DLL_API virtual ~CarbonFootprintNode();
 
@@ -78,6 +95,8 @@ namespace co2_tracker_module {
         * must correspond to the same task_id.
         */
         void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
+
+        CarbonFootprintTaskListener& user_listener_;
 
         std::unique_ptr<core::QueuedNodeListener<types::MLModel>> listener_ml_model_queue_;
         std::unique_ptr<core::QueuedNodeListener<types::UserInput>> listener_user_input_queue_;
