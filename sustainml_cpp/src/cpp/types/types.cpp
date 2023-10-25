@@ -262,34 +262,34 @@ bool NodeControl::operator !=(const NodeControl& x) const
 }
 
 
-void NodeControl::cmd_node(::CmdNode _cmd_node)
+void NodeControl::cmd_node(CmdNode _cmd_node)
 {
     impl_->cmd_node(_cmd_node);
 }
 
 
-::CmdNode NodeControl::cmd_node() const
+CmdNode NodeControl::cmd_node() const
 {
     return impl_->cmd_node();
 }
 
-::CmdNode& NodeControl::cmd_node()
+CmdNode& NodeControl::cmd_node()
 {
     return impl_->cmd_node();
 }
 
-void NodeControl::cmd_task(::CmdTask _cmd_task)
+void NodeControl::cmd_task(CmdTask _cmd_task)
 {
     impl_->cmd_task(_cmd_task);
 }
 
-::CmdTask NodeControl::cmd_task() const
+CmdTask NodeControl::cmd_task() const
 {
     return impl_->cmd_task();
 }
 
 
-::CmdTask& NodeControl::cmd_task()
+CmdTask& NodeControl::cmd_task()
 {
     return impl_->cmd_task();
 }

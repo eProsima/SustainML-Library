@@ -24,6 +24,8 @@
 #include <core/QueuedNodeListener.hpp>
 #include <types/typesImpl.h>
 
+using namespace types;
+
 namespace sustainml {
 namespace co2_tracker_module {
 

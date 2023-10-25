@@ -22,7 +22,7 @@
 
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
 
-void cb(MLModel& model, UserInput& ui, HWResource& hw, NodeStatus& status, CO2Footprint& output)
+void cb(types::MLModel& model, types::UserInput& ui, types::HWResource& hw, types::NodeStatus& status, types::CO2Footprint& output)
 {
     std::cout << "User Received task IDs: " << model.task_id()  << " " << ui.task_id() << " " << hw.task_id()
     << " DATA -> " << model.task_id() << " " << ui.task_id() << " " << hw.task_id() << std::endl;

@@ -351,19 +351,19 @@ public:
      * @param _cmd_node New value for member cmd_node
      */
     eProsima_user_DllExport void cmd_node(
-            ::CmdNode _cmd_node);
+            CmdNode _cmd_node);
 
     /*!
      * @brief This function returns the value of member cmd_node
      * @return Value of member cmd_node
      */
-    eProsima_user_DllExport ::CmdNode cmd_node() const;
+    eProsima_user_DllExport CmdNode cmd_node() const;
 
     /*!
      * @brief This function returns a reference to member cmd_node
      * @return Reference to member cmd_node
      */
-    eProsima_user_DllExport ::CmdNode& cmd_node();
+    eProsima_user_DllExport CmdNode& cmd_node();
 
 
     /*!
@@ -371,19 +371,19 @@ public:
      * @param _cmd_task New value for member cmd_task
      */
     eProsima_user_DllExport void cmd_task(
-            ::CmdTask _cmd_task);
+            CmdTask _cmd_task);
 
     /*!
      * @brief This function returns the value of member cmd_task
      * @return Value of member cmd_task
      */
-    eProsima_user_DllExport ::CmdTask cmd_task() const;
+    eProsima_user_DllExport CmdTask cmd_task() const;
 
     /*!
      * @brief This function returns a reference to member cmd_task
      * @return Reference to member cmd_task
      */
-    eProsima_user_DllExport ::CmdTask& cmd_task();
+    eProsima_user_DllExport CmdTask& cmd_task();
 
 
     /*!

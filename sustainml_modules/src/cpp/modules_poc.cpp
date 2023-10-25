@@ -222,9 +222,9 @@ void print_usage()
 }
 
 void task_encoder_cb(
-    UserInput& user_input,
-    NodeStatus& status,
-    EncodedTask& output)
+    types::UserInput& user_input,
+    types::NodeStatus& status,
+    types::EncodedTask& output)
 {
     // Set up node
     status.update(Status::NODE_INITIALIZING);
@@ -270,9 +270,9 @@ void task_encoder_cb(
 }
 
 void ml_model_cb (
-    EncodedTask& encoded_task,
-    NodeStatus& status,
-    MLModel& output)
+    types::EncodedTask& encoded_task,
+    types::NodeStatus& status,
+    types::MLModel& output)
 {
     // Set up node
     status.update(Status::NODE_INITIALIZING);
@@ -318,9 +318,9 @@ void ml_model_cb (
 }
 
 void hw_resources_cb (
-    MLModel& model,
-    NodeStatus& status,
-    HWResource& output)
+    types::MLModel& model,
+    types::NodeStatus& status,
+    types::HWResource& output)
 {
     // Set up node
     status.update(Status::NODE_INITIALIZING);
@@ -357,11 +357,11 @@ void hw_resources_cb (
 }
 
 void co2_footprint_cb (
-    MLModel& model,
-    UserInput& user_input,
-    HWResource& hardware_resources,
-    NodeStatus& status,
-    CO2Footprint& output)
+    types::MLModel& model,
+    types::UserInput& user_input,
+    types::HWResource& hardware_resources,
+    types::NodeStatus& status,
+    types::CO2Footprint& output)
 {
     // Set up node
     status.update(Status::NODE_INITIALIZING);
