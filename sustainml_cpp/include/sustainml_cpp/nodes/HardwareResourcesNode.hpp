@@ -42,7 +42,7 @@ namespace hardware_module {
     * - ML Model
     * as input
     */
-    class HardwareResourcesNode : public core::Callable<MLModel, NodeStatus, HWResource>,
+    class HardwareResourcesNode : public core::Callable<types::MLModel, types::NodeStatus, types::HWResource>,
                                   public ::sustainml::core::Node
     {
 
@@ -74,11 +74,11 @@ namespace hardware_module {
         */
         void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
 
-        std::unique_ptr<core::QueuedNodeListener<MLModel>> listener_ml_model_queue_;
+        std::unique_ptr<core::QueuedNodeListener<types::MLModel>> listener_ml_model_queue_;
 
         std::mutex mtx_;
         //! task id to <NodeStatus, HWResource>
-        std::map<int, std::pair<NodeStatus, HWResource>>  task_data_;
+        std::map<int, std::pair<types::NodeStatus, types::HWResource>>  task_data_;
 
     };
 

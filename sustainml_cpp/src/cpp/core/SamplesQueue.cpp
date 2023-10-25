@@ -19,6 +19,7 @@
 #include <sustainml_cpp/core/SamplesQueue.hpp>
 
 #include <common/Common.hpp>
+#include <core/Dispatcher.hpp>
 #include <utils/SamplePool.hpp>
 
 namespace sustainml {
@@ -27,7 +28,7 @@ namespace core {
     template <typename T>
     SamplesQueue<T>::SamplesQueue(
             Node* node) :
-            queue_id(common::queue_name_to_id(std::string(typeid(T).name()))),
+            queue_id(common::queue_name_to_id(std::string(T::impl_typeinfo().name()))),
             node_(node),
             pool_(new sustainml::utils::SamplePool<T>())
     {

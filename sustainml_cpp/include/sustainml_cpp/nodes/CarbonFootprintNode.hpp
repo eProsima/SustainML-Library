@@ -45,7 +45,7 @@ namespace co2_tracker_module {
     * as inputs
     */
 
-    class CarbonFootprintNode : public core::Callable<MLModel, UserInput, HWResource, NodeStatus, CO2Footprint>,
+    class CarbonFootprintNode : public core::Callable<types::MLModel, types::UserInput, types::HWResource, types::NodeStatus, types::CO2Footprint>,
                                 public ::sustainml::core::Node
     {
 
@@ -79,13 +79,13 @@ namespace co2_tracker_module {
         */
         void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
 
-        std::unique_ptr<core::QueuedNodeListener<MLModel>> listener_ml_model_queue_;
-        std::unique_ptr<core::QueuedNodeListener<UserInput>> listener_user_input_queue_;
-        std::unique_ptr<core::QueuedNodeListener<HWResource>> listener_hw_queue_;
+        std::unique_ptr<core::QueuedNodeListener<types::MLModel>> listener_ml_model_queue_;
+        std::unique_ptr<core::QueuedNodeListener<types::UserInput>> listener_user_input_queue_;
+        std::unique_ptr<core::QueuedNodeListener<types::HWResource>> listener_hw_queue_;
 
         std::mutex mtx_;
         // task id to <NodeStatus, CO2Footprint>
-        std::map<int, std::pair<NodeStatus, CO2Footprint>>  task_data_;
+        std::map<int, std::pair<types::NodeStatus, types::CO2Footprint>>  task_data_;
     };
 
 } // namespace co2_tracker_module

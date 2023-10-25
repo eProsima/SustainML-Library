@@ -22,14 +22,12 @@
 #include <sustainml_cpp/nodes/MLModelNode.hpp>
 #include <sustainml_cpp/nodes/HardwareResourcesNode.hpp>
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
-#include <sustainml_cpp/types/types.h>
-#include <sustainml_cpp/types/typesPubSubTypes.h>
+
+#include "typesImplPubSubTypes.h"
 
 bool DEBUG_MODE  = false;
 
 namespace fdds = eprosima::fastdds::dds;
-namespace frtps = eprosima::fastdds::rtps;
-namespace ftypes = eprosima::fastrtps::types;
 
 class WriterListener: public fdds::DataWriterListener {
 
@@ -65,7 +63,7 @@ public:
 
     virtual void on_data_available(fdds::DataReader *reader) override
     {
-        CO2Footprint co2_f;
+        CO2FootprintImpl co2_f;
         fdds::SampleInfo info;
 
         if (DEBUG_MODE)
@@ -136,9 +134,9 @@ public:
         participant = fdds::DomainParticipantFactory::get_instance()->create_participant(
                                 0, eprosima::fastdds::dds::PARTICIPANT_QOS_DEFAULT);
         publisher = participant->create_publisher(fdds::PUBLISHER_QOS_DEFAULT);
-        type = static_cast<eprosima::fastdds::dds::TypeSupport>(new UserInputPubSubType);
+        type = static_cast<eprosima::fastdds::dds::TypeSupport>(new UserInputImplPubSubType);
         type.register_type(participant);
-        topic = participant->create_topic("/sustainml/user_input", "UserInput", fdds::TOPIC_QOS_DEFAULT);
+        topic = participant->create_topic("/sustainml/user_input", "UserInputImpl", fdds::TOPIC_QOS_DEFAULT);
         listener = new WriterListener();
         writer = publisher->create_datawriter(topic, eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT, listener);
     }
@@ -153,8 +151,8 @@ public:
 
     void send_sample(int task_id)
     {
-        UserInput ui;
-        GeoLocation geo;
+        UserInputImpl ui;
+        GeoLocationImpl geo;
         geo.continent("Continent of task id " + std::to_string(task_id));
         geo.region("Region of task id " + std::to_string(task_id));
         ui.geo_location(geo);
@@ -182,9 +180,9 @@ public:
         participant = fdds::DomainParticipantFactory::get_instance()->create_participant(
                                 0, eprosima::fastdds::dds::PARTICIPANT_QOS_DEFAULT);
         subscriber = participant->create_subscriber(fdds::SUBSCRIBER_QOS_DEFAULT);
-        type = static_cast<eprosima::fastdds::dds::TypeSupport>(new CO2FootprintPubSubType);
+        type = static_cast<eprosima::fastdds::dds::TypeSupport>(new CO2FootprintImplPubSubType);
         type.register_type(participant);
-        topic = participant->create_topic("/sustainml/carbon_tracker/output", "CO2Footprint", fdds::TOPIC_QOS_DEFAULT);
+        topic = participant->create_topic("/sustainml/carbon_tracker/output", "CO2FootprintImpl", fdds::TOPIC_QOS_DEFAULT);
         listener = new ReaderListener();
         reader = subscriber->create_datareader(topic, eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT, listener);
 
@@ -224,9 +222,9 @@ void print_usage()
 }
 
 void task_encoder_cb(
-    UserInput& user_input,
-    NodeStatus& status,
-    EncodedTask& output)
+    types::UserInput& user_input,
+    types::NodeStatus& status,
+    types::EncodedTask& output)
 {
     // Set up node
     status.update(Status::NODE_INITIALIZING);
@@ -272,9 +270,9 @@ void task_encoder_cb(
 }
 
 void ml_model_cb (
-    EncodedTask& encoded_task,
-    NodeStatus& status,
-    MLModel& output)
+    types::EncodedTask& encoded_task,
+    types::NodeStatus& status,
+    types::MLModel& output)
 {
     // Set up node
     status.update(Status::NODE_INITIALIZING);
@@ -320,9 +318,9 @@ void ml_model_cb (
 }
 
 void hw_resources_cb (
-    MLModel& model,
-    NodeStatus& status,
-    HWResource& output)
+    types::MLModel& model,
+    types::NodeStatus& status,
+    types::HWResource& output)
 {
     // Set up node
     status.update(Status::NODE_INITIALIZING);
@@ -359,11 +357,11 @@ void hw_resources_cb (
 }
 
 void co2_footprint_cb (
-    MLModel& model,
-    UserInput& user_input,
-    HWResource& hardware_resources,
-    NodeStatus& status,
-    CO2Footprint& output)
+    types::MLModel& model,
+    types::UserInput& user_input,
+    types::HWResource& hardware_resources,
+    types::NodeStatus& status,
+    types::CO2Footprint& output)
 {
     // Set up node
     status.update(Status::NODE_INITIALIZING);

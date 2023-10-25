@@ -42,7 +42,7 @@ namespace ml_model_provider_module {
     * - Encoded Task
     * as input
     */
-    class MLModelNode : public core::Callable<EncodedTask, NodeStatus, MLModel>,
+    class MLModelNode : public core::Callable<types::EncodedTask, types::NodeStatus, types::MLModel>,
                         public ::sustainml::core::Node
     {
         enum ExpectedInputSamples
@@ -73,11 +73,11 @@ namespace ml_model_provider_module {
         */
         void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
 
-        std::unique_ptr<core::QueuedNodeListener<EncodedTask>> listener_enc_task_queue_;
+        std::unique_ptr<core::QueuedNodeListener<types::EncodedTask>> listener_enc_task_queue_;
 
         std::mutex mtx_;
         //! task id to <NodeStatus, MLModel>
-        std::map<int, std::pair<NodeStatus, MLModel>>  task_data_;
+        std::map<int, std::pair<types::NodeStatus, types::MLModel>>  task_data_;
 
     };
 

@@ -37,18 +37,19 @@ find_package(cpp_utils REQUIRED)
 # - Load project_settings variables
 # - Read version
 # - Set installation paths
-#configure_project()
+configure_project()
+
 #
 ## Call explictly project
-#project(
-#    ${MODULE_NAME}
-#    VERSION
-#    ${MODULE_VERSION}
-#    DESCRIPTION
-#    ${MODULE_DESCRIPTION}
-#    LANGUAGES
-#    CXX
-#)
+project(
+    ${MODULE_NAME}
+    VERSION
+    ${MODULE_VERSION}
+    DESCRIPTION
+    ${MODULE_DESCRIPTION}
+    LANGUAGES
+    CXX
+)
 
 configure_project_cpp()
 

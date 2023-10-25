@@ -56,7 +56,7 @@ namespace core {
     class Dispatcher
     {
 
-        friend Node;
+        friend class Node;
 
     public:
 
