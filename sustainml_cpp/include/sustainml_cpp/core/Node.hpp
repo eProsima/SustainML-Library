@@ -105,6 +105,7 @@ namespace core {
         * @param topic The topic name
         * @param type_name The type name
         * @param listener Listener object inheriting from DataReaderListener
+        * @param opts Options to configure subscription QoS
         */
         bool initialize_subscription(
             const char* topic_name,
@@ -118,6 +119,7 @@ namespace core {
         *
         * @param topic The topic name
         * @param type_name The type name
+        * @param opts Options to configure publication QoS
         */
         bool initialize_publication(
             const char* topic_name,
