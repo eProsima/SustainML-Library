@@ -1,16 +1,3 @@
-import sustainml_swig
-import signal
-import threading
-import time
-
-global running
-running = False
-
-def signal_handler(sig, frame):
-    print("\nExiting")
-    sustainml_swig.TaskEncoderNode.terminate()
-    running = False
-
 # Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +12,20 @@ def signal_handler(sig, frame):
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """SustainML SWIG Example Node API."""
+
+import sustainml_swig
+import signal
+import threading
+import time
+
+global running
+running = False
+
+def signal_handler(sig, frame):
+    print("\nExiting")
+    sustainml_swig.TaskEncoderNode.terminate()
+    running = False
+
 class MyListener(sustainml_swig.CarbonFootprintTaskListener):
     def __init__(
             self):
