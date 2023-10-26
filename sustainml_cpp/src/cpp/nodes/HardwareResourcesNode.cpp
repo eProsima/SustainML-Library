@@ -29,7 +29,10 @@ using namespace types;
 namespace sustainml {
 namespace hardware_module {
 
-    HardwareResourcesNode::HardwareResourcesNode(HardwareResourcesTaskListener& user_listener) : user_listener_(user_listener), Node(common::HW_RESOURCES_NODE)
+    HardwareResourcesNode::HardwareResourcesNode(
+            HardwareResourcesTaskListener& user_listener)
+            : user_listener_(user_listener)
+            , Node(common::HW_RESOURCES_NODE)
     {
         listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
 

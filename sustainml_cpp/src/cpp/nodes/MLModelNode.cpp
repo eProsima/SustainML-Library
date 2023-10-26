@@ -29,7 +29,10 @@ using namespace types;
 namespace sustainml {
 namespace ml_model_provider_module {
 
-    MLModelNode::MLModelNode(MLModelTaskListener& user_listener) : user_listener_(user_listener), Node(common::ML_MODEL_NODE)
+    MLModelNode::MLModelNode(
+            MLModelTaskListener& user_listener)
+            : user_listener_(user_listener)
+            , Node(common::ML_MODEL_NODE)
     {
         listener_enc_task_queue_.reset(new core::QueuedNodeListener<EncodedTask>(this));
 

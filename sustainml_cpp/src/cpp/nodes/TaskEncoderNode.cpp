@@ -29,7 +29,10 @@ using namespace types;
 namespace sustainml {
 namespace ml_task_encoding_module {
 
-    TaskEncoderNode::TaskEncoderNode(TaskEncoderTaskListener& user_listener) : user_listener_(user_listener), Node(common::TASK_ENCODER_NODE)
+    TaskEncoderNode::TaskEncoderNode(
+            TaskEncoderTaskListener& user_listener)
+            : user_listener_(user_listener)
+            , Node(common::TASK_ENCODER_NODE)
     {
         listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 

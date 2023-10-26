@@ -240,8 +240,8 @@ public:
     eProsima_user_DllExport const std::string& error_description() const;
 
     /*!
-     * @brief This function returns a reference to member error_description
-     * @return Reference to member error_description
+     * @brief This function returns a copy of the error_description member
+     * @return Copy of the error_description member
      */
     eProsima_user_DllExport std::string error_description();
 
@@ -267,8 +267,8 @@ public:
     eProsima_user_DllExport const std::string& node_name() const;
 
     /*!
-     * @brief This function returns a reference to member node_name
-     * @return Reference to member node_name
+     * @brief This function returns a copy of the node_name member
+     * @return Copy of the node_name member
      */
     eProsima_user_DllExport std::string node_name();
 
@@ -407,8 +407,8 @@ public:
     eProsima_user_DllExport const std::string& target_node() const;
 
     /*!
-     * @brief This function returns a reference to member target_node
-     * @return Reference to member target_node
+     * @brief This function returns a copy of the target_node member
+     * @return Copy of the target_node member
      */
     eProsima_user_DllExport std::string target_node();
 
@@ -454,8 +454,8 @@ public:
     eProsima_user_DllExport const std::string& source_node() const;
 
     /*!
-     * @brief This function returns a reference to member source_node
-     * @return Reference to member source_node
+     * @brief This function returns a copy of the source_node member
+     * @return Copy of the source_node member
      */
     eProsima_user_DllExport std::string source_node();
 
@@ -546,8 +546,8 @@ public:
     eProsima_user_DllExport const std::string& continent() const;
 
     /*!
-     * @brief This function returns a reference to member continent
-     * @return Reference to member continent
+     * @brief This function returns a copy of the continent member
+     * @return Copy of the continent member
      */
     eProsima_user_DllExport std::string continent();
 
@@ -573,8 +573,8 @@ public:
     eProsima_user_DllExport const std::string& region() const;
 
     /*!
-     * @brief This function returns a reference to member region
-     * @return Reference to member region
+     * @brief This function returns a copy of the region member
+     * @return Copy of the region member
      */
     eProsima_user_DllExport std::string region();
 
@@ -666,8 +666,8 @@ public:
     eProsima_user_DllExport const std::string& problem_description() const;
 
     /*!
-     * @brief This function returns a reference to member problem_description
-     * @return Reference to member problem_description
+     * @brief This function returns a copy of the problem_description member
+     * @return Copy of the problem_description member
      */
     eProsima_user_DllExport std::string problem_description();
 
@@ -942,8 +942,8 @@ public:
     eProsima_user_DllExport const std::string& model_path() const;
 
     /*!
-     * @brief This function returns a reference to member model_path
-     * @return Reference to member model_path
+     * @brief This function returns a copy of the model_path member
+     * @return Copy of the model_path member
      */
     eProsima_user_DllExport std::string model_path();
 
@@ -969,8 +969,8 @@ public:
     eProsima_user_DllExport const std::string& model() const;
 
     /*!
-     * @brief This function returns a reference to member model
-     * @return Reference to member model
+     * @brief This function returns a copy of the model member
+     * @return Copy of the model member
      */
     eProsima_user_DllExport std::string model();
 
@@ -996,8 +996,8 @@ public:
     eProsima_user_DllExport const std::string& model_properties_path() const;
 
     /*!
-     * @brief This function returns a reference to member model_properties_path
-     * @return Reference to member model_properties_path
+     * @brief This function returns a copy of the model_properties_path member
+     * @return Copy of the model_properties_path member
      */
     eProsima_user_DllExport std::string model_properties_path();
 
@@ -1023,8 +1023,8 @@ public:
     eProsima_user_DllExport const std::string& model_properties() const;
 
     /*!
-     * @brief This function returns a reference to member model_properties
-     * @return Reference to member model_properties
+     * @brief This function returns a copy of the model_properties member
+     * @return Copy of the model_properties member
      */
     eProsima_user_DllExport std::string model_properties();
 
@@ -1147,8 +1147,8 @@ public:
     eProsima_user_DllExport const std::string& hw_description() const;
 
     /*!
-     * @brief This function returns a reference to member hw_description
-     * @return Reference to member hw_description
+     * @brief This function returns a copy of the hw_description member
+     * @return Copy of the hw_description member
      */
     eProsima_user_DllExport std::string hw_description();
 
