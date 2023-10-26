@@ -35,31 +35,13 @@ namespace co2_tracker_module {
             : Node(common::CO2_TRACKER_NODE)
             , user_listener_(user_listener)
     {
-        listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
-        listener_hw_queue_.reset(new core::QueuedNodeListener<HWResource>(this));
-        listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
-
         sustainml::core::Options opts;
         opts.rqos.resource_limits().max_instances = 500;
         opts.rqos.resource_limits().max_samples_per_instance = 1;
         opts.wqos.resource_limits().max_instances = 500;
         opts.wqos.resource_limits().max_samples_per_instance = 1;
 
-        initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
-                                sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
-                                &(*listener_ml_model_queue_), opts);
-
-        initialize_subscription(sustainml::common::TopicCollection::get()[common::HW_RESOURCE].first.c_str(),
-                                sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str(),
-                                &(*listener_hw_queue_), opts);
-
-        initialize_subscription(sustainml::common::TopicCollection::get()[common::USER_INPUT].first.c_str(),
-                                sustainml::common::TopicCollection::get()[common::USER_INPUT].second.c_str(),
-                                &(*listener_user_input_queue_), opts);
-
-        initialize_publication(sustainml::common::TopicCollection::get()[common::CO2_FOOTPRINT].first.c_str(),
-                               sustainml::common::TopicCollection::get()[common::CO2_FOOTPRINT].second.c_str(),
-                               opts);
+        init(opts);
     }
 
     CarbonFootprintNode::CarbonFootprintNode(
@@ -68,6 +50,16 @@ namespace co2_tracker_module {
         : user_listener_(user_listener)
         , Node(common::CO2_TRACKER_NODE, opts)
     {
+        init(opts);
+    }
+
+    CarbonFootprintNode::~CarbonFootprintNode()
+    {
+
+    }
+
+    void CarbonFootprintNode::init (const sustainml::core::Options& opts)
+    {
         listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
         listener_hw_queue_.reset(new core::QueuedNodeListener<HWResource>(this));
         listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
@@ -87,11 +79,6 @@ namespace co2_tracker_module {
         initialize_publication(sustainml::common::TopicCollection::get()[common::CO2_FOOTPRINT].first.c_str(),
                                sustainml::common::TopicCollection::get()[common::CO2_FOOTPRINT].second.c_str(),
                                opts);
-    }
-
-    CarbonFootprintNode::~CarbonFootprintNode()
-    {
-
     }
 
     void CarbonFootprintNode::publish_to_user(const std::vector<std::pair<int,void*>> input_samples)

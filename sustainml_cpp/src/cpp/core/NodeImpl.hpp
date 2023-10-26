@@ -100,7 +100,7 @@ namespace core {
         * @param topic The topic name
         * @param type_name The type name
         * @param listener Listener object inheriting from DataReaderListener
-        * @param rqos DataReaderQos object with the DataReader configuration
+        * @param opts Options object with the Subscription configuration
         */
         bool initialize_subscription(
                 const char* topic_name,
@@ -114,6 +114,7 @@ namespace core {
         *
         * @param topic The topic name
         * @param type_name The type name
+        * @param opts Options object with the Publication configuration
         */
         bool initialize_publication(
                 const char* topic_name,

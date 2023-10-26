@@ -29,6 +29,10 @@
 namespace sustainml {
 namespace core {
 
+    /**
+     * @brief Options structure to define Node entities QoS (Participant, Subscriber, Publisher, DataWriter
+     * and DataReader). Those QoS are set in initialize_publication and initialize_subscription methods.
+     */
     struct Options
     {
         eprosima::fastdds::dds::DomainId_t domain{0};

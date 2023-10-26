@@ -35,21 +35,13 @@ namespace hardware_module {
             : user_listener_(user_listener)
             , Node(common::HW_RESOURCES_NODE)
     {
-        listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
-
         sustainml::core::Options opts;
         opts.rqos.resource_limits().max_instances = 500;
         opts.rqos.resource_limits().max_samples_per_instance = 1;
         opts.wqos.resource_limits().max_instances = 500;
         opts.wqos.resource_limits().max_samples_per_instance = 1;
 
-        initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
-                                sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
-                                &(*listener_ml_model_queue_), opts);
-
-        initialize_publication(sustainml::common::TopicCollection::get()[common::HW_RESOURCE].first.c_str(),
-                               sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str(),
-                               opts);
+        init(opts);
     }
 
     HardwareResourcesNode::HardwareResourcesNode(
@@ -58,6 +50,16 @@ namespace hardware_module {
             : user_listener_(user_listener)
             , Node(common::HW_RESOURCES_NODE, opts)
     {
+        init(opts);
+    }
+
+    HardwareResourcesNode::~HardwareResourcesNode()
+    {
+
+    }
+
+    void HardwareResourcesNode::init (const sustainml::core::Options& opts)
+    {
         listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
 
         initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
@@ -67,11 +69,6 @@ namespace hardware_module {
         initialize_publication(sustainml::common::TopicCollection::get()[common::HW_RESOURCE].first.c_str(),
                                sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str(),
                                opts);
-    }
-
-    HardwareResourcesNode::~HardwareResourcesNode()
-    {
-
     }
 
     void HardwareResourcesNode::publish_to_user(const std::vector<std::pair<int,void*>> input_samples)
