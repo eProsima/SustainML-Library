@@ -225,9 +225,9 @@ class CustomTaskEncoderListener : public sustainml::ml_task_encoding_module::Tas
 {
 
     void on_new_task_available(
-        UserInput& user_input,
-        NodeStatus& status,
-        EncodedTask& output) override
+        types::UserInput& user_input,
+        types::NodeStatus& status,
+        types::EncodedTask& output) override
     {
         // Set up node
         status.update(Status::NODE_INITIALIZING);
@@ -278,9 +278,9 @@ class CustomMLModelListener : public sustainml::ml_model_provider_module::MLMode
 {
 
     void on_new_task_available (
-        EncodedTask& encoded_task,
-        NodeStatus& status,
-        MLModel& output) override
+        types::EncodedTask& encoded_task,
+        types::NodeStatus& status,
+        types::MLModel& output) override
     {
         // Set up node
         status.update(Status::NODE_INITIALIZING);
@@ -336,9 +336,9 @@ class CustomHardwareResourcesListener : public sustainml::hardware_module::Hardw
 {
 
     void on_new_task_available (
-        MLModel& model,
-        NodeStatus& status,
-        HWResource& output) override
+        types::MLModel& model,
+        types::NodeStatus& status,
+        types::HWResource& output) override
     {
         // Set up node
         status.update(Status::NODE_INITIALIZING);
@@ -379,11 +379,11 @@ class CustomCarbonFootprintListener : public sustainml::co2_tracker_module::Carb
 {
 
     void on_new_task_available (
-        MLModel& model,
-        UserInput& user_input,
-        HWResource& hardware_resources,
-        NodeStatus& status,
-        CO2Footprint& output) override
+        types::MLModel& model,
+        types::UserInput& user_input,
+        types::HWResource& hardware_resources,
+        types::NodeStatus& status,
+        types::CO2Footprint& output) override
     {
         // Set up node
         status.update(Status::NODE_INITIALIZING);
