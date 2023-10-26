@@ -74,9 +74,11 @@ namespace hardware_module {
 
     public:
 
-        SUSTAINML_CPP_DLL_API HardwareResourcesNode(HardwareResourcesTaskListener& user_listener);
+        SUSTAINML_CPP_DLL_API HardwareResourcesNode(
+                HardwareResourcesTaskListener& user_listener);
 
         SUSTAINML_CPP_DLL_API HardwareResourcesNode(
+                HardwareResourcesTaskListener& user_listener,
                 sustainml::core::Options opts);
 
         SUSTAINML_CPP_DLL_API virtual ~HardwareResourcesNode();

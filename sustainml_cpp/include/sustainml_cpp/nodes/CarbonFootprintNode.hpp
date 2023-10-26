@@ -82,9 +82,11 @@ namespace co2_tracker_module {
 
     public:
 
-        SUSTAINML_CPP_DLL_API CarbonFootprintNode(CarbonFootprintTaskListener& listener);
+        SUSTAINML_CPP_DLL_API CarbonFootprintNode(
+                CarbonFootprintTaskListener& listener);
 
         SUSTAINML_CPP_DLL_API CarbonFootprintNode(
+                CarbonFootprintTaskListener& listener,
                 sustainml::core::Options opts);
 
         SUSTAINML_CPP_DLL_API virtual ~CarbonFootprintNode();

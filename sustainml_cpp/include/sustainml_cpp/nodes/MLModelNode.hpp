@@ -74,9 +74,11 @@ namespace ml_model_provider_module {
 
     public:
 
-        SUSTAINML_CPP_DLL_API MLModelNode(MLModelTaskListener& user_listener);
+        SUSTAINML_CPP_DLL_API MLModelNode(
+                MLModelTaskListener& user_listener);
 
         SUSTAINML_CPP_DLL_API MLModelNode(
+                MLModelTaskListener& user_listener,
                 sustainml::core::Options opts);
 
         SUSTAINML_CPP_DLL_API virtual ~MLModelNode();

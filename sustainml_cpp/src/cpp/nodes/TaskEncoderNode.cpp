@@ -53,7 +53,10 @@ namespace ml_task_encoding_module {
     }
 
     TaskEncoderNode::TaskEncoderNode(
-            sustainml::core::Options opts) : Node(common::TASK_ENCODER_NODE, opts)
+            TaskEncoderTaskListener& user_listener,
+            sustainml::core::Options opts)
+            : user_listener_(user_listener)
+            , Node(common::TASK_ENCODER_NODE, opts)
     {
         listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 

@@ -54,7 +54,10 @@ namespace ml_model_provider_module {
 
 
     MLModelNode::MLModelNode(
-            sustainml::core::Options opts) : Node(common::ML_MODEL_NODE, opts)
+            MLModelTaskListener& user_listener,
+            sustainml::core::Options opts)
+            : user_listener_(user_listener)
+            , Node(common::ML_MODEL_NODE, opts)
     {
         listener_enc_task_queue_.reset(new core::QueuedNodeListener<EncodedTask>(this));
 

@@ -53,7 +53,10 @@ namespace hardware_module {
     }
 
     HardwareResourcesNode::HardwareResourcesNode(
-            sustainml::core::Options opts) : Node(common::HW_RESOURCES_NODE, opts)
+            HardwareResourcesTaskListener& user_listener,
+            sustainml::core::Options opts)
+            : user_listener_(user_listener)
+            , Node(common::HW_RESOURCES_NODE, opts)
     {
         listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
 

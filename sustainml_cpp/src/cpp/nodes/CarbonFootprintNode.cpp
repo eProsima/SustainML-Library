@@ -63,8 +63,10 @@ namespace co2_tracker_module {
     }
 
     CarbonFootprintNode::CarbonFootprintNode(
+            CarbonFootprintTaskListener& user_listener,
             sustainml::core::Options opts)
-        : Node(common::CO2_TRACKER_NODE, opts)
+        : user_listener_(user_listener)
+        , Node(common::CO2_TRACKER_NODE, opts)
     {
         listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
         listener_hw_queue_.reset(new core::QueuedNodeListener<HWResource>(this));
