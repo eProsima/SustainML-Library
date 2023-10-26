@@ -29,7 +29,10 @@ using namespace types;
 namespace sustainml {
 namespace ml_model_provider_module {
 
-    MLModelNode::MLModelNode() : Node(common::ML_MODEL_NODE)
+    MLModelNode::MLModelNode(
+            MLModelTaskListener& user_listener)
+            : user_listener_(user_listener)
+            , Node(common::ML_MODEL_NODE)
     {
         listener_enc_task_queue_.reset(new core::QueuedNodeListener<EncodedTask>(this));
 
@@ -51,15 +54,17 @@ namespace ml_model_provider_module {
         //! Expected inputs are the number of reader minus the control reader
         if (input_samples.size() == ExpectedInputSamples::MAX)
         {
+            auto& user_listener_args = user_listener_.get_user_cb_args();
+
             size_t samples_retrieved{0};
             common::pair_queue_id_with_sample_type(
                     input_samples,
-                    Callable::get_user_cb_args(),
+                    user_listener_args,
                     ExpectedInputSamples::MAX,
                     samples_retrieved);
 
             int task_id{-1};
-            auto first_sample_ptr = std::get<ENCODED_TASK_SAMPLE>(Callable::get_user_cb_args());
+            auto first_sample_ptr = std::get<ENCODED_TASK_SAMPLE>(user_listener_args);
 
             if (nullptr != first_sample_ptr)
             {
@@ -76,8 +81,8 @@ namespace ml_model_provider_module {
                 std:std::unique_lock<std::mutex> lock (mtx_);
                 task_data_.insert({task_id, {NodeStatus(), MLModel()}});
 
-                auto& status = std::get<TASK_STATUS_DATA>(Callable::get_user_cb_args());
-                auto& output = std::get<TASK_OUTPUT_DATA>(Callable::get_user_cb_args());
+                auto& status = std::get<TASK_STATUS_DATA>(user_listener_args);
+                auto& output = std::get<TASK_OUTPUT_DATA>(user_listener_args);
 
                 status = &task_data_[task_id].first;
                 output = &task_data_[task_id].second;
@@ -91,7 +96,7 @@ namespace ml_model_provider_module {
                 publish_node_status();
             }
 
-            Callable::invoke_user_cb(core::helper::gen_seq<size>{});
+            user_listener_.invoke_user_cb(core::helper::gen_seq<MLModelCallable::size>{});
 
             //! Ensure task_id is forwarded to the output
             task_data_[task_id].second.task_id(task_id);

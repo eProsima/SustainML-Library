@@ -29,7 +29,10 @@ using namespace types;
 namespace sustainml {
 namespace ml_task_encoding_module {
 
-    TaskEncoderNode::TaskEncoderNode() : Node(common::TASK_ENCODER_NODE)
+    TaskEncoderNode::TaskEncoderNode(
+            TaskEncoderTaskListener& user_listener)
+            : user_listener_(user_listener)
+            , Node(common::TASK_ENCODER_NODE)
     {
         listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 
@@ -51,15 +54,17 @@ namespace ml_task_encoding_module {
         //! Expected inputs are the number of reader minus the control reader
         if (input_samples.size() == ExpectedInputSamples::MAX)
         {
+            auto& user_listener_args = user_listener_.get_user_cb_args();
+
             size_t samples_retrieved{0};
             common::pair_queue_id_with_sample_type(
                     input_samples,
-                    Callable::get_user_cb_args(),
+                    user_listener_args,
                     ExpectedInputSamples::MAX,
                     samples_retrieved);
 
             int task_id{-1};
-            auto first_sample_ptr = std::get<USER_INPUT_SAMPLE>(Callable::get_user_cb_args());
+            auto first_sample_ptr = std::get<USER_INPUT_SAMPLE>(user_listener_args);
 
             if (nullptr != first_sample_ptr)
             {
@@ -76,8 +81,8 @@ namespace ml_task_encoding_module {
                 std:std::unique_lock<std::mutex> lock (mtx_);
                 task_data_.insert({task_id, {NodeStatus(), EncodedTask()}});
 
-                auto& status = std::get<TASK_STATUS_DATA>(Callable::get_user_cb_args());
-                auto& output = std::get<TASK_OUTPUT_DATA>(Callable::get_user_cb_args());
+                auto& status = std::get<TASK_STATUS_DATA>(user_listener_args);
+                auto& output = std::get<TASK_OUTPUT_DATA>(user_listener_args);
 
                 status = &task_data_[task_id].first;
                 output = &task_data_[task_id].second;
@@ -91,7 +96,7 @@ namespace ml_task_encoding_module {
                 publish_node_status();
             }
 
-            Callable::invoke_user_cb(core::helper::gen_seq<size>{});
+            user_listener_.invoke_user_cb(core::helper::gen_seq<TaskEncoderCallable::size>{});
 
             //! Ensure task_id is forwarded to the output
             task_data_[task_id].second.task_id(task_id);

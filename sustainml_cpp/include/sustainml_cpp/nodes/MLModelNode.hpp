@@ -36,14 +36,29 @@ namespace ml_model_provider_module {
     class Node;
     class Dispatcher;
 
+    using MLModelCallable = core::Callable<types::EncodedTask, types::NodeStatus, types::MLModel>;
+
+    struct MLModelTaskListener : public MLModelCallable
+    {
+        virtual ~MLModelTaskListener()
+        {
+        }
+
+        virtual void on_new_task_available(
+                types::EncodedTask& encoded_task,
+                types::NodeStatus& status,
+                types::MLModel& output) override
+        {
+        }
+    };
+
     /**
     * @brief Machine Learning Model Node Implementation
     * It requires the
     * - Encoded Task
     * as input
     */
-    class MLModelNode : public core::Callable<types::EncodedTask, types::NodeStatus, types::MLModel>,
-                        public ::sustainml::core::Node
+    class MLModelNode : public ::sustainml::core::Node
     {
         enum ExpectedInputSamples
         {
@@ -59,7 +74,7 @@ namespace ml_model_provider_module {
 
     public:
 
-        SUSTAINML_CPP_DLL_API MLModelNode();
+        SUSTAINML_CPP_DLL_API MLModelNode(MLModelTaskListener& user_listener);
 
         SUSTAINML_CPP_DLL_API virtual ~MLModelNode();
 
@@ -72,6 +87,8 @@ namespace ml_model_provider_module {
         * must correspond to the same task_id.
         */
         void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
+
+        MLModelTaskListener& user_listener_;
 
         std::unique_ptr<core::QueuedNodeListener<types::EncodedTask>> listener_enc_task_queue_;
 
