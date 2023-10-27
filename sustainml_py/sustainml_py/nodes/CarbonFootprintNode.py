@@ -65,5 +65,3 @@ class CarbonFootprintNode:
     def terminate():
 
         cpp_CarbonFootprintNode.terminate()
-
-
