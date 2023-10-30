@@ -77,9 +77,11 @@ namespace ml_model_provider_module {
         SUSTAINML_CPP_DLL_API MLModelNode(
                 MLModelTaskListener& user_listener);
 
+#ifndef SWIG_WRAPPER
         SUSTAINML_CPP_DLL_API MLModelNode(
                 MLModelTaskListener& user_listener,
                 sustainml::core::Options opts);
+#endif // SWIG_WRAPPER
 
         SUSTAINML_CPP_DLL_API virtual ~MLModelNode();
 

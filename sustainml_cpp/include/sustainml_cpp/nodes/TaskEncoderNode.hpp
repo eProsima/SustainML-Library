@@ -78,9 +78,11 @@ namespace ml_task_encoding_module {
         SUSTAINML_CPP_DLL_API TaskEncoderNode(
                 TaskEncoderTaskListener& user_listener);
 
+#ifndef SWIG_WRAPPER
         SUSTAINML_CPP_DLL_API TaskEncoderNode(
                 TaskEncoderTaskListener& user_listener,
                 sustainml::core::Options opts);
+#endif // SWIG_WRAPPER
 
         SUSTAINML_CPP_DLL_API virtual ~TaskEncoderNode();
 

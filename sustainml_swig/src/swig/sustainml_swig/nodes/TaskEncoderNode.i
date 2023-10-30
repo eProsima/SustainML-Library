@@ -18,6 +18,7 @@
 
 // Any macro used on the header files will give an error if it is not redefined here
 #define SUSTAINML_CPP_DLL_API
+#define SWIG_WRAPPER
 #define GEN_API_VER 2
 
 %feature("director") sustainml::ml_task_encoding_module::TaskEncoderTaskListener;
