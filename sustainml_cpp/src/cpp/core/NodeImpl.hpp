@@ -20,9 +20,9 @@
 #define SUSTAINMLCPP_CORE_NODE_IMPL_HPP
 
 #include <sustainml_cpp/config/Macros.hpp>
+#include <sustainml_cpp/core/Options.hpp>
 #include <sustainml_cpp/types/types.h>
 
-#include <core/Options.hpp>
 #include <types/typesImplPubSubTypes.h>
 
 #include <utility>

@@ -27,10 +27,11 @@ namespace core {
 
     template <typename T>
     SamplesQueue<T>::SamplesQueue(
-            Node* node) :
+            Node* node,
+            const Options& opts) :
             queue_id(common::queue_name_to_id(std::string(T::impl_typeinfo().name()))),
             node_(node),
-            pool_(new sustainml::utils::SamplePool<T>())
+            pool_(new sustainml::utils::SamplePool<T>(opts))
     {
         auto dispatcher = node_->get_dispatcher();
 

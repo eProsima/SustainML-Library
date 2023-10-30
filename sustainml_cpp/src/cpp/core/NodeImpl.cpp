@@ -24,6 +24,7 @@
 
 #include <common/Common.hpp>
 #include <core/NodeImpl.hpp>
+#include <sustainml_cpp/core/Options.hpp>
 #include <core/Dispatcher.hpp>
 #include <types/typesImplPubSubTypes.h>
 
@@ -90,21 +91,21 @@ namespace core {
 
         //! Initialize entities
 
-        participant_ = dpf->create_participant(opts.domain, opts.pqos);
+        participant_ = dpf->create_participant(opts.domain, *(opts.pqos));
 
         if (participant_ == nullptr)
         {
             return false;
         }
 
-        subscriber_ = participant_->create_subscriber(opts.subqos);
+        subscriber_ = participant_->create_subscriber(*(opts.subqos));
 
         if (subscriber_ == nullptr)
         {
             return false;
         }
 
-        publisher_ = participant_->create_publisher(opts.pubqos);
+        publisher_ = participant_->create_publisher(*(opts.pubqos));
 
         if (publisher_ == nullptr)
         {
@@ -172,7 +173,7 @@ namespace core {
             return false;
         }
 
-        DataReader* reader = subscriber_->create_datareader(topic, opts.rqos, listener);
+        DataReader* reader = subscriber_->create_datareader(topic, *(opts.rqos), listener);
 
         if (reader == nullptr)
         {
@@ -197,7 +198,7 @@ namespace core {
             return false;
         }
 
-        DataWriter* writer = publisher_->create_datawriter(topic, opts.wqos);
+        DataWriter* writer = publisher_->create_datawriter(topic, *(opts.wqos));
 
         if (writer == nullptr)
         {

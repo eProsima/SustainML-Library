@@ -19,30 +19,39 @@
 #ifndef SUSTAINMLCPP_CORE_OPTIONS_HPP
 #define SUSTAINMLCPP_CORE_OPTIONS_HPP
 
-#include <fastdds/dds/domain/qos/DomainParticipantQos.hpp>
-#include <fastdds/dds/publisher/qos/DataWriterQos.hpp>
-#include <fastdds/dds/publisher/qos/PublisherQos.hpp>
-#include <fastdds/dds/subscriber/qos/DataReaderQos.hpp>
-#include <fastdds/dds/subscriber/qos/SubscriberQos.hpp>
-#include <fastrtps/types/TypesBase.h>
+#include <iostream>
+
+namespace eprosima {
+namespace fastdds {
+namespace dds {
+
+class DomainParticipantQos;
+class SubscriberQos;
+class PublisherQos;
+class DataReaderQos;
+class DataWriterQos;
+} // namespace dds
+} // namespace fastdds
+} // namespace eprosima
 
 namespace sustainml {
 namespace core {
-
     /**
      * @brief Options structure to define Node entities QoS (Participant, Subscriber, Publisher, DataWriter
      * and DataReader). Those QoS are set in initialize_publication and initialize_subscription methods.
      */
     struct Options
     {
-        eprosima::fastdds::dds::DomainId_t domain{0};
-        eprosima::fastdds::dds::DomainParticipantQos pqos;
-        eprosima::fastdds::dds::SubscriberQos subqos;
-        eprosima::fastdds::dds::PublisherQos pubqos;
-        eprosima::fastdds::dds::DataReaderQos rqos = eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT;
-        eprosima::fastdds::dds::DataWriterQos wqos = eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT;
-    };
+        Options();
 
+        uint32_t domain;
+        eprosima::fastdds::dds::DomainParticipantQos* pqos;
+        eprosima::fastdds::dds::SubscriberQos* subqos;
+        eprosima::fastdds::dds::PublisherQos* pubqos;
+        eprosima::fastdds::dds::DataReaderQos* rqos;
+        eprosima::fastdds::dds::DataWriterQos* wqos;
+        std::size_t sample_pool_size;
+    };
 } // namespace core
 } // namespace sustainml
 

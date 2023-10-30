@@ -17,9 +17,8 @@
  */
 
 #include <sustainml_cpp/core/Node.hpp>
-
+#include <sustainml_cpp/core/Options.hpp>
 #include <core/NodeImpl.hpp>
-#include <core/Options.hpp>
 
 using namespace eprosima::fastdds::dds;
 

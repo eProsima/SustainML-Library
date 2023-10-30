@@ -21,6 +21,7 @@
 #define SUSTAINMLCPP_CORE_SAMPLESQUEUEHPP
 
 #include <sustainml_cpp/core/Node.hpp>
+#include <sustainml_cpp/core/Options.hpp>
 #include <sustainml_cpp/interfaces/SampleQueryable.hpp>
 
 #include <map>
@@ -46,7 +47,8 @@ namespace core {
     public:
 
         SamplesQueue(
-            Node* node);
+            Node* node,
+            const Options& opts);
 
         virtual ~SamplesQueue();
 

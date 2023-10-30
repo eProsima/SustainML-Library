@@ -21,7 +21,7 @@
 #include <fastdds/dds/publisher/DataWriter.hpp>
 
 #include <common/Common.hpp>
-#include <core/Options.hpp>
+#include <core/Options.cpp>
 #include <core/QueuedNodeListener.hpp>
 #include <types/typesImpl.h>
 
@@ -36,10 +36,10 @@ namespace hardware_module {
             , Node(common::HW_RESOURCES_NODE)
     {
         sustainml::core::Options opts;
-        opts.rqos.resource_limits().max_instances = 500;
-        opts.rqos.resource_limits().max_samples_per_instance = 1;
-        opts.wqos.resource_limits().max_instances = 500;
-        opts.wqos.resource_limits().max_samples_per_instance = 1;
+        opts.rqos->resource_limits().max_instances = 500;
+        opts.rqos->resource_limits().max_samples_per_instance = 1;
+        opts.wqos->resource_limits().max_instances = 500;
+        opts.wqos->resource_limits().max_samples_per_instance = 1;
 
         init(opts);
     }

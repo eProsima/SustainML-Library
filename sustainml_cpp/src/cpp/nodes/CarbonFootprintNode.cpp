@@ -21,8 +21,8 @@
 #include <fastdds/dds/publisher/DataWriter.hpp>
 
 #include <common/Common.hpp>
-#include <core/Options.hpp>
 #include <core/QueuedNodeListener.hpp>
+#include <core/Options.cpp>
 #include <types/typesImpl.h>
 
 using namespace types;
@@ -36,10 +36,10 @@ namespace co2_tracker_module {
             , user_listener_(user_listener)
     {
         sustainml::core::Options opts;
-        opts.rqos.resource_limits().max_instances = 500;
-        opts.rqos.resource_limits().max_samples_per_instance = 1;
-        opts.wqos.resource_limits().max_instances = 500;
-        opts.wqos.resource_limits().max_samples_per_instance = 1;
+        opts.rqos->resource_limits().max_instances = 500;
+        opts.rqos->resource_limits().max_samples_per_instance = 1;
+        opts.wqos->resource_limits().max_instances = 500;
+        opts.wqos->resource_limits().max_samples_per_instance = 1;
 
         init(opts);
     }

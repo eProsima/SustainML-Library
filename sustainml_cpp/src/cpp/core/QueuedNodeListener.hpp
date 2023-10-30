@@ -45,9 +45,10 @@ namespace core {
     public:
 
         QueuedNodeListener(
-            Node* node) :
+            Node* node,
+            const Options& opts = Options()) :
             NodeListener<T>(node, this),
-            SamplesQueue<T>(node)
+            SamplesQueue<T>(node, opts)
         {
 
         }
