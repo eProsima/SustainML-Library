@@ -41,6 +41,7 @@ namespace core {
         eprosima::fastdds::dds::PublisherQos pubqos;
         eprosima::fastdds::dds::DataReaderQos rqos = eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT;
         eprosima::fastdds::dds::DataWriterQos wqos = eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT;
+        std::size_t sample_pool_size{50};
     };
 
 } // namespace core
