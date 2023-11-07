@@ -11,6 +11,8 @@ with open(f'{os.path.dirname(os.path.realpath(__file__))}/README.md', 'r') as f:
 
 file_packages = [
     package_name,
+    package_name + '/nodes',
+    'examples'
 ]
 
 setup(
