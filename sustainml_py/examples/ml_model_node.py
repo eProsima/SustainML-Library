@@ -21,13 +21,13 @@ import threading
 import time
 
 # Whether to go on spinning or interrupt
-global running
 running = False
 
 # Signal handler
 def signal_handler(sig, frame):
     print("\nExiting")
     MLModelNode.terminate()
+    global running
     running = False
 
 # User Callback implementation
@@ -42,6 +42,8 @@ def task_callback(encoded_task, node_status, ml_model):
 # Main workflow routine
 def run():
     node = MLModelNode(callback=task_callback)
+    global running
+    running = True
     node.spin()
 
 # Call main in program execution

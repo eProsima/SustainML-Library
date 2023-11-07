@@ -21,13 +21,13 @@ import threading
 import time
 
 # Whether to go on spinning or interrupt
-global running
 running = False
 
 # Signal handler
 def signal_handler(sig, frame):
     print("\nExiting")
     CarbonFootprintNode.terminate()
+    global running
     running = False
 
 # User Callback implementation
@@ -42,6 +42,8 @@ def task_callback(ml_model, user_input, hw, node_status, co2):
 
 # Main workflow routine
 def run():
+    global running
+    running = True
     node = CarbonFootprintNode(callback=task_callback)
     node.spin()
 
