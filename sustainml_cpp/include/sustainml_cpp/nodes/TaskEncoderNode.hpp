@@ -75,11 +75,25 @@ namespace ml_task_encoding_module {
 
     public:
 
-        SUSTAINML_CPP_DLL_API TaskEncoderNode(TaskEncoderTaskListener& user_listener);
+        SUSTAINML_CPP_DLL_API TaskEncoderNode(
+                TaskEncoderTaskListener& user_listener);
+
+#ifndef SWIG_WRAPPER
+        SUSTAINML_CPP_DLL_API TaskEncoderNode(
+                TaskEncoderTaskListener& user_listener,
+                sustainml::core::Options opts);
+#endif // SWIG_WRAPPER
 
         SUSTAINML_CPP_DLL_API virtual ~TaskEncoderNode();
 
     private:
+
+        /**
+         * @brief Initialize the DDS entities contained in the Node
+         *
+         * @param opts opts Options object with the QoS configuration
+         */
+        void init(const sustainml::core::Options& opts);
 
         /**
         * @brief Invokes the user callback with the provided inputs.

@@ -105,11 +105,13 @@ namespace core {
         * @param topic The topic name
         * @param type_name The type name
         * @param listener Listener object inheriting from DataReaderListener
+        * @param opts Options to configure subscription QoS
         */
         bool initialize_subscription(
             const char* topic_name,
             const char* type_name,
-            eprosima::fastdds::dds::DataReaderListener* listener);
+            eprosima::fastdds::dds::DataReaderListener* listener,
+            const Options &opts);
 
         /**
         * @brief Starts a new publication (DataWriter) in the
@@ -117,10 +119,12 @@ namespace core {
         *
         * @param topic The topic name
         * @param type_name The type name
+        * @param opts Options to configure publication QoS
         */
         bool initialize_publication(
             const char* topic_name,
-            const char* type_name);
+            const char* type_name,
+            const Options &opts);
 
         /**
         * @brief Invokes the user callback with the provided inputs.

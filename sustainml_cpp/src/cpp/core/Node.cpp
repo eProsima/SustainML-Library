@@ -19,6 +19,7 @@
 #include <sustainml_cpp/core/Node.hpp>
 
 #include <core/NodeImpl.hpp>
+#include <core/Options.hpp>
 
 using namespace eprosima::fastdds::dds;
 
@@ -49,16 +50,18 @@ namespace core {
     bool Node::initialize_subscription(
         const char* topic_name,
         const char* type_name,
-        eprosima::fastdds::dds::DataReaderListener* listener)
+        eprosima::fastdds::dds::DataReaderListener* listener,
+        const Options &opts)
     {
-        return impl_->initialize_subscription(topic_name, type_name, listener);
+        return impl_->initialize_subscription(topic_name, type_name, listener, opts);
     }
 
     bool Node::initialize_publication(
         const char* topic_name,
-        const char* type_name)
+        const char* type_name,
+        const Options &opts)
     {
-        return impl_->initialize_publication(topic_name, type_name);
+        return impl_->initialize_publication(topic_name, type_name, opts);
     }
 
     void Node::publish_node_status()

@@ -20,6 +20,7 @@
 #define SUSTAINMLCPP_UTILS_SAMPLEPOOL_HPP
 
 #include <fastrtps/log/Log.h>
+#include <core/Options.hpp>
 
 #include <memory>
 #include <vector>
@@ -28,12 +29,6 @@
 
 namespace sustainml {
 namespace utils {
-
-    struct PoolOpts
-    {
-        std::size_t size{10};
-    };
-
     /*!
     *  @brief Helper class that stores samples until they are processed.
     *
@@ -45,12 +40,12 @@ namespace utils {
 
     public:
 
-        explicit SamplePool(const PoolOpts &opts = PoolOpts()) :
-            caches_(new T[opts.size])
+        explicit SamplePool(const core::Options &opts = core::Options()) :
+            caches_(new T[opts.sample_pool_size])
         {
-            free_caches_.reserve(opts.size);
+            free_caches_.reserve(opts.sample_pool_size);
 
-            for( std::size_t i = 0; i < opts.size; ++i )
+            for( std::size_t i = 0; i < opts.sample_pool_size; ++i )
             {
                 free_caches_.push_back( &caches_[i] );
             }

@@ -82,11 +82,24 @@ namespace co2_tracker_module {
 
     public:
 
-        SUSTAINML_CPP_DLL_API CarbonFootprintNode(CarbonFootprintTaskListener& listener);
+        SUSTAINML_CPP_DLL_API CarbonFootprintNode(
+                CarbonFootprintTaskListener& listener);
 
+#ifndef SWIG_WRAPPER
+        SUSTAINML_CPP_DLL_API CarbonFootprintNode(
+                CarbonFootprintTaskListener& listener,
+                sustainml::core::Options opts);
+#endif // SWIG_WRAPPER
         SUSTAINML_CPP_DLL_API virtual ~CarbonFootprintNode();
 
     private:
+
+        /**
+         * @brief Initialize the DDS entities contained in the Node
+         *
+         * @param opts opts Options object with the QoS configuration
+         */
+        void init(const sustainml::core::Options& opts);
 
         /**
         * @brief Invokes the user callback with the provided inputs.

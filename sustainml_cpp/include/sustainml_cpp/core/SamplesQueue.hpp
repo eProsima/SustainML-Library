@@ -27,6 +27,8 @@
 #include <memory>
 #include <mutex>
 
+#include <core/Options.hpp>
+
 namespace sustainml {
 namespace utils {
     template<class T> class SamplePool;
@@ -46,7 +48,8 @@ namespace core {
     public:
 
         SamplesQueue(
-            Node* node);
+            Node* node,
+            const Options& opts = Options());
 
         virtual ~SamplesQueue();
 

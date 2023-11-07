@@ -35,7 +35,9 @@ namespace core {
     std::atomic<bool> NodeImpl::terminate_(false);
     std::condition_variable NodeImpl::spin_cv_;
 
-    NodeImpl::NodeImpl(Node* node, const std::string &name) :
+    NodeImpl::NodeImpl(
+            Node* node,
+            const std::string &name) :
         node_(node),
         dispatcher_(new Dispatcher(node_)),
         control_listener_(this),
@@ -49,9 +51,10 @@ namespace core {
         }
     }
 
-    NodeImpl::NodeImpl(Node* node,
-               const std::string &name,
-               const Options& opts) :
+    NodeImpl::NodeImpl(
+            Node* node,
+            const std::string &name,
+            const Options& opts) :
         node_(node),
         dispatcher_(new Dispatcher(node_)),
         control_listener_(this),
@@ -79,7 +82,9 @@ namespace core {
         dispatcher_->stop();
     }
 
-    bool NodeImpl::init(const std::string& name, const Options& opts)
+    bool NodeImpl::init(
+            const std::string& name,
+            const Options& opts)
     {
         auto dpf = DomainParticipantFactory::get_instance();
 
@@ -127,10 +132,11 @@ namespace core {
         //! Initialize common topics
         initialize_subscription(common::TopicCollection::get()[common::Topics::NODE_CONTROL].first.c_str(),
                                 common::TopicCollection::get()[common::Topics::NODE_CONTROL].second.c_str(),
-                                &control_listener_);
+                                &control_listener_, opts);
 
         initialize_publication(common::TopicCollection::get()[common::Topics::NODE_STATUS].first.c_str(),
-                                common::TopicCollection::get()[common::Topics::NODE_STATUS].second.c_str());
+                                common::TopicCollection::get()[common::Topics::NODE_STATUS].second.c_str(),
+                                opts);
 
         //! Initialize node
         node_status_.node_name(name);
@@ -154,9 +160,10 @@ namespace core {
     }
 
     bool NodeImpl::initialize_subscription(
-        const char* topic_name,
-        const char* type_name,
-        eprosima::fastdds::dds::DataReaderListener* listener)
+            const char* topic_name,
+            const char* type_name,
+            eprosima::fastdds::dds::DataReaderListener* listener,
+            const Options& opts)
     {
         Topic* topic = participant_->create_topic(topic_name, type_name, TOPIC_QOS_DEFAULT);
 
@@ -165,7 +172,7 @@ namespace core {
             return false;
         }
 
-        DataReader* reader = subscriber_->create_datareader(topic, DATAREADER_QOS_DEFAULT, listener);
+        DataReader* reader = subscriber_->create_datareader(topic, opts.rqos, listener);
 
         if (reader == nullptr)
         {
@@ -179,8 +186,9 @@ namespace core {
     }
 
     bool NodeImpl::initialize_publication(
-        const char* topic_name,
-        const char* type_name)
+            const char* topic_name,
+            const char* type_name,
+            const Options& opts)
     {
         Topic* topic = participant_->create_topic(topic_name, type_name, TOPIC_QOS_DEFAULT);
 
@@ -189,7 +197,7 @@ namespace core {
             return false;
         }
 
-        DataWriter* writer = publisher_->create_datawriter(topic, DATAWRITER_QOS_DEFAULT);
+        DataWriter* writer = publisher_->create_datawriter(topic, opts.wqos);
 
         if (writer == nullptr)
         {
