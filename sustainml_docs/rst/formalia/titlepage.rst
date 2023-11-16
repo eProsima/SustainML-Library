@@ -4,12 +4,13 @@
     eProsima SustainML Documentation
   </h1>
 
-.. image:: /rst/figures/logo.png
-  :height: 100px
-  :width: 100px
-  :align: left
-  :alt: eProsima
-  :target: http://www.eprosima.com/
+.. image:: /rst/figures/SustainML_GitHub.png
+  :align: center
+  :alt: SustainML
+  :target: http://www.sustainml.eu/
+
+SustainML
+*********
 
 Application Aware, Life-Cycle Oriented Model-Hardware Co-Design Framework for Sustainable, Energy Efficient ML
 Systems project.
@@ -25,3 +26,14 @@ It will also collect both previously scattered efficiency-oriented research, as 
 AI developers from all experience levels can make use of the framework through its emphasis on human-centric
 interactive transparent design and functional knowledge cores, instead of the common blackbox and fully automated
 optimization approaches in AutoML.
+
+.. raw:: html
+
+   <hr>
+
+.. image:: /rst/figures/eu_flag.png
+  :height: 45px
+  :align: left
+
+This project has received funding from the European Union's Horizon Europe research and innovation programme
+(HORIZON-CL4-2021-HUMAN-01) under grant agreement No 101070408.

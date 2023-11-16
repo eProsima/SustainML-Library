@@ -2,17 +2,37 @@
 
 **Application Aware, Life-Cycle Oriented Model-Hardware Co-Design Framework for Sustainable, Energy Efficient ML Systems** project.
 
-<a href="http://www.eprosima.com"><img src=".figures/logo.png" height="120" align="left" hspace="8" vspace="2" />
-<a href="https://alma-ai.eu/"><img src=".figures/sustainml_logo.png" height="120" style="background-color:white;" align="left" hspace="18" vspace="2" />
 
-[![License](https://img.shields.io/github/license/eProsima/SustainML.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Releases](https://img.shields.io/github/v/release/eProsima/SustainML?sort=semver)](https://github.com/eProsima/SustainML/releases)
-[![Issues](https://img.shields.io/github/issues/eProsima/SustainML.svg)](https://github.com/eProsima/SustainML/issues)
-[![Forks](https://img.shields.io/github/forks/eProsima/SustainML.svg)](https://github.com/eProsima/SustainML/network/members)
-[![Stars](https://img.shields.io/github/stars/eProsima/SustainML.svg)](https://github.com/eProsima/SustainML/stargazers)
-[![test](https://github.com/eProsima/SustainML/actions/workflows/test.yml/badge.svg)](https://github.com/eProsima/SustainML/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/eProsima/SustainML/branch/main/graph/badge.svg?token=M5Y82MGCO7)](https://codecov.io/gh/eProsima/SustainML)
-[![Documentation Status](https://readthedocs.org/projects/sustainmL/badge/?version=latest)](https://SustainML.readthedocs.io/en/latest/)
+[![SustainML](sustainml_docs/rst/figures/SustainML_GitHub.png)](https://sustainml.eu/)
+
+<br>
+
+<div class="menu" align="center">
+    <strong>
+        <a href="https://eprosima.com/index.php/downloads-all">Download</a>
+        <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+        <a href="https://sustainml.readthedocs.io/en/latest">Docs</a>
+        <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+        <a href="https://sustainml.eu/index.php/news">News</a>
+        <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+        <a href="https://twitter.com/EProsima">Twitter</a>
+        <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+        <a href="mailto:info@eprosima.com">Contact Us</a>
+    </strong>
+</div>
+
+<br><br>
+
+<div class="badges" align="center">
+    <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License Robotics" src="https://img.shields.io/github/license/eProsima/SustainML.svg"/></a>
+    <a href="https://github.com/eProsima/SustainML/releases"><img alt="Releases" src="https://img.shields.io/github/v/release/eProsima/SustainML?sort=semver"/></a>
+    <a href="https://github.com/eProsima/SustainML/issues"><img alt="Issues" src="https://img.shields.io/github/issues/eProsima/SustainML.svg"/></a>
+    <a href="https://github.com/eProsima/SustainML/network/memberss"><img alt="Forks" src="https://img.shields.io/github/forks/eProsima/SustainML.svg"/></a>
+    <a href="https://github.com/eProsima/SustainML/stargazerss"><img alt="Stars" src="https://img.shields.io/github/stars/eProsima/SustainML.svg"/></a>
+    <a href="https://SustainML.readthedocs.io/en/latest/"><img alt="Documentation Status" src="https://readthedocs.org/projects/SustainML/badge/?version=latest"/></a>
+</div>
+
+<br><br>
 
 *SustainML* is a framework and an associated toolkit that will foster energy efficiency throughout the whole life-cycle of ML applications: from the design and exploration phase that includes exploratory iterations of training, testing and optimizing different system versions through the final training of the production systems (which often involves huge amounts of data, computation and epochs) and (where appropriate) continuous online re-training during deployment for the inference process.
 The framework will optimize the ML solutions based on the application tasks, across levels from hardware to model architecture.
