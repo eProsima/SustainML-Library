@@ -1,0 +1,9 @@
+[submodule "sustainml_modules/sustainml_modules/sustainml-wp1"]
+	path = sustainml_modules/sustainml_modules/sustainml-wp1
+	url = https://github.com/eProsima/sustainml-wp1
+[submodule "sustainml_modules/sustainml_modules/sustainml-wp2"]
+	path = sustainml_modules/sustainml_modules/sustainml-wp2
+	url = https://github.com/eProsima/sustainml-wp2
+[submodule "sustainml_modules/sustainml_modules/sustainml-wp3"]
+	path = sustainml_modules/sustainml_modules/sustainml-wp3
+	url = https://github.com/eProsima/sustainml-wp3

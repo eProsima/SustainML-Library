@@ -70,6 +70,15 @@ add_executable(${MODULE_NAME}_poc src/cpp/poc.cpp)
 target_link_libraries(${MODULE_NAME}_poc ${MODULE_NAME})
 
 ###############################################################################
+# Examples
+###############################################################################
+option(COMPILE_EXAMPLES "Build examples" OFF)
+
+if(COMPILE_EXAMPLES)
+    add_subdirectory(examples)
+endif()
+
+###############################################################################
 # Test
 ###############################################################################
 # Compile tests if CMake options requires it

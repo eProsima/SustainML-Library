@@ -1,3 +1,3 @@
-# SustainML Modules testing
+# SustainML Modules
 
 > :warning: **TODO**

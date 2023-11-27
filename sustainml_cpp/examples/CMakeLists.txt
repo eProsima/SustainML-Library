@@ -12,14 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-###############################################################################
-# This file sets settings for project sustainml_modules
-###############################################################################
-
-set(MODULE_NAME
-    sustainml_modules)
-
-set(MODULE_SUMMARY
-    "C++ module mock for the SustainML Nodes implementation.")
-
-set(MODULE_CPP_VERSION 14)
+set(sustainml_cpp_FOUND TRUE)
+add_subdirectory(CliModules)
