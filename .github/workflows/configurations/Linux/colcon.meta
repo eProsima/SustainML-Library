@@ -1,0 +1,20 @@
+{
+    "names":
+    {
+        "fastrtps":
+        {
+            "cmake-args":
+            [
+                "-DFASTDDS_STATISTICS=ON",
+            ]
+        },
+        "sustainml_cpp":
+        {
+            "cmake-args":
+            [
+                "-DBUILD_DOCUMENTATION=ON",
+                "-DBUILD_TESTS=ON"
+            ]
+        }
+    }
+}
