@@ -74,7 +74,7 @@ namespace core {
         SUSTAINML_CPP_DLL_API Node(const std::string &name,
                                    const Options &opts);
 
-        SUSTAINML_CPP_DLL_API ~Node();
+        SUSTAINML_CPP_DLL_API virtual ~Node();
 
         /**
         * @brief Called by the user to run the run.
