@@ -40,10 +40,10 @@ namespace core {
             const std::string &name) :
         node_(node),
         dispatcher_(new Dispatcher(node_)),
-        control_listener_(this),
         participant_(nullptr),
+        publisher_(nullptr),
         subscriber_(nullptr),
-        publisher_(nullptr)
+        control_listener_(this)
     {
         if (!init(name))
         {
@@ -57,10 +57,10 @@ namespace core {
             const Options& opts) :
         node_(node),
         dispatcher_(new Dispatcher(node_)),
-        control_listener_(this),
         participant_(nullptr),
+        publisher_(nullptr),
         subscriber_(nullptr),
-        publisher_(nullptr)
+        control_listener_(this)
     {
         if (!init(name, opts))
         {

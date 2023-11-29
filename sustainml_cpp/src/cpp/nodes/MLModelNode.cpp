@@ -32,8 +32,8 @@ namespace ml_model_provider_module {
 
     MLModelNode::MLModelNode(
             MLModelTaskListener& user_listener)
-            : user_listener_(user_listener)
-            , Node(common::ML_MODEL_NODE)
+            : Node(common::ML_MODEL_NODE)
+            , user_listener_(user_listener)
     {
         sustainml::core::Options opts;
         opts.rqos.resource_limits().max_instances = 500;
@@ -48,8 +48,8 @@ namespace ml_model_provider_module {
     MLModelNode::MLModelNode(
             MLModelTaskListener& user_listener,
             sustainml::core::Options opts)
-            : user_listener_(user_listener)
-            , Node(common::ML_MODEL_NODE, opts)
+            : Node(common::ML_MODEL_NODE, opts)
+            , user_listener_(user_listener)
     {
         init(opts);
     }
@@ -101,7 +101,7 @@ namespace ml_model_provider_module {
             }
 
             {
-                std:std::unique_lock<std::mutex> lock (mtx_);
+                std::unique_lock<std::mutex> lock (mtx_);
                 task_data_.insert({task_id, {NodeStatus(), MLModel()}});
 
                 auto& status = std::get<TASK_STATUS_DATA>(user_listener_args);
@@ -130,7 +130,7 @@ namespace ml_model_provider_module {
 
             {
                 std::unique_lock<std::mutex> lock (mtx_);
-                auto task_it = task_data_.erase(task_id);
+                task_data_.erase(task_id);
             }
         }
         else
