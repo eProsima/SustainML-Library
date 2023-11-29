@@ -27,9 +27,9 @@ namespace sustainml {
 namespace core {
 
     Dispatcher::Dispatcher(Node *node) :
+        thread_pool_(N_THREADS_DEFAULT),
         node_(node),
         stop_(false),
-        thread_pool_(N_THREADS_DEFAULT),
         started_(false)
     {
         sample_queryables_.reserve(INITIAL_N_QUEUES);

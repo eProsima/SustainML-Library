@@ -47,8 +47,8 @@ namespace co2_tracker_module {
     CarbonFootprintNode::CarbonFootprintNode(
             CarbonFootprintTaskListener& user_listener,
             sustainml::core::Options opts)
-        : user_listener_(user_listener)
-        , Node(common::CO2_TRACKER_NODE, opts)
+        : Node(common::CO2_TRACKER_NODE, opts)
+        , user_listener_(user_listener)
     {
         init(opts);
     }
@@ -110,7 +110,7 @@ namespace co2_tracker_module {
             }
 
             {
-                std:std::unique_lock<std::mutex> lock (mtx_);
+                std::unique_lock<std::mutex> lock (mtx_);
                 task_data_.insert({task_id, {NodeStatus(), CO2Footprint()}});
 
                 auto& status = std::get<TASK_STATUS_DATA>(user_listener_args);
@@ -141,7 +141,7 @@ namespace co2_tracker_module {
 
             {
                 std::unique_lock<std::mutex> lock (mtx_);
-                auto task_it = task_data_.erase(task_id);
+                task_data_.erase(task_id);
             }
         }
         else

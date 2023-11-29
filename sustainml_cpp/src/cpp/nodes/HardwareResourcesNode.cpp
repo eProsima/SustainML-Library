@@ -32,8 +32,8 @@ namespace hardware_module {
 
     HardwareResourcesNode::HardwareResourcesNode(
             HardwareResourcesTaskListener& user_listener)
-            : user_listener_(user_listener)
-            , Node(common::HW_RESOURCES_NODE)
+            : Node(common::HW_RESOURCES_NODE)
+            , user_listener_(user_listener)
     {
         sustainml::core::Options opts;
         opts.rqos.resource_limits().max_instances = 500;
@@ -47,8 +47,8 @@ namespace hardware_module {
     HardwareResourcesNode::HardwareResourcesNode(
             HardwareResourcesTaskListener& user_listener,
             sustainml::core::Options opts)
-            : user_listener_(user_listener)
-            , Node(common::HW_RESOURCES_NODE, opts)
+            : Node(common::HW_RESOURCES_NODE, opts)
+            , user_listener_(user_listener)
     {
         init(opts);
     }
@@ -100,7 +100,7 @@ namespace hardware_module {
             }
 
             {
-                std:std::unique_lock<std::mutex> lock (mtx_);
+                std::unique_lock<std::mutex> lock (mtx_);
                 task_data_.insert({task_id, {NodeStatus(), HWResource()}});
 
                 auto& status = std::get<TASK_STATUS_DATA>(user_listener_args);
@@ -129,7 +129,7 @@ namespace hardware_module {
 
             {
                 std::unique_lock<std::mutex> lock (mtx_);
-                auto task_it = task_data_.erase(task_id);
+                task_data_.erase(task_id);
             }
         }
         else
