@@ -32,7 +32,5 @@ setup(
     maintainer_email='RaulSanchezMateos@eprosima.com',
     description=description,
     license='Apache License, Version 2.0',
-    tests_require=['pytest'],
-    test_suite='test',
     entry_points={},
 )

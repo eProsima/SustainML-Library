@@ -19,7 +19,7 @@
   <depend>py_utils</depend>
 
   <export>
-    <build_type>ament_python</build_type>
+    <build_type>cmake</build_type>
   </export>
 
 </package>
