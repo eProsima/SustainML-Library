@@ -92,15 +92,18 @@ eprosima_packaging()
 if (Python3_FOUND)
 
     # Build
-    execute_process(
-        COMMAND ${Python3_EXECUTABLE} setup.py build --build-base ${PROJECT_BINARY_DIR}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+    add_custom_target(
+        cmake_python_build_${package_name} ALL
+        COMMAND ${Python3_EXECUTABLE} setup.py build --build-base ${PROJECT_BINARY_DIR} -f
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+      )
 
     # Copy to Build ...
     add_custom_target(
         cmake_python_copy_${package_name}_setup ALL
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_CURRENT_SOURCE_DIR}/setup.py ${PROJECT_BINARY_DIR}
+        DEPENDS cmake_python_build_${package_name}
       )
 
     add_custom_target(
