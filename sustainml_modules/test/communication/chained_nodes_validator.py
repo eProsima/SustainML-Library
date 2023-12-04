@@ -1,4 +1,4 @@
-# Copyright 2020 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+# Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Script to test the communication among different Python Module Nodes"""
+"""Script to test the communication among different SustainML Python Nodes"""
 
 import argparse
 import os
@@ -35,62 +35,72 @@ class ParseOptions():
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=True,
             description=(
-                'Script to test the secure communication with encrypted RTPS'
-                'messages.'),
+                'Script to test the communication among different SustainML Python Nodes'),
         )
         parser.add_argument(
-            '-p',
-            '--pub',
+            '-ps',
+            '--pub-sub',
             type=str,
             required=True,
-            help='Path to the Publisher executable.'
+            help='Path to the SimpleTaskPubSub executable.'
         )
         parser.add_argument(
-            '-s',
-            '--sub',
+            '-tp',
+            '--topic-pub',
             type=str,
             required=True,
-            help='Path to the Subscriber executable.'
+            help='String identifying the publisher topic.'
         )
         parser.add_argument(
-            '-P',
-            '--xml-pub',
+            '-ttp',
+            '--topic-type-pub',
             type=str,
-            help='Path to the publisher xml configuration file.'
+            required=True,
+            help='String identifying the publisher topic type [ui, task, ml, hw, co2].'
         )
         parser.add_argument(
-            '-S',
-            '--xml-sub',
+            '-ts',
+            '--topic-sub',
             type=str,
-            help='Path to the subscriber xml configuration file.'
+            required=True,
+            help='String identifying the subscriber topic.'
         )
         parser.add_argument(
-            '-w',
-            '--wait',
-            type=int,
-            help='Number of participants being discovered by the publisher to start publishing'
+            '-tts',
+            '--topic-type-sub',
+            type=str,
+            required=True,
+            help='String identifying the publisher topic type [ui, task, ml, hw, co2].'
         )
         parser.add_argument(
             '-a',
             '--samples',
             type=int,
-            help='Number of samples sent by the publisher.'
+            help='Number of samples sent by the publisher and received by the subscriber.'
         )
         parser.add_argument(
-            '-ds',
-            '--servers',
-            required=True,
-            nargs='*',
+            '-te',
+            '--task-encoder',
             type=str,
-            help='Path to the discovery server executable.'
+            help='Executable name of a TaskEncoderNode in the sustainml-wp1 directory'
         )
         parser.add_argument(
-            '-DS',
-            '--xml-servers',
-            required=True,
-            nargs='*',
+            '-ml',
+            '--machine-learning',
             type=str,
-            help='Path to the xml configuration file containing discovery server.'
+            help='Executable name of a MLModelNode in the sustainml-wp1 directory'
+        )
+        parser.add_argument(
+            '-hw',
+            '--hardware',
+            type=str,
+            help='Executable name of a HWResourcesNode in the sustainml-wp2 directory'
+        )
+        parser.add_argument(
+            '-co2',
+            '--co2-footprint',
+            type=str,
+            help='Executable name of a CarbonFootprintNode in the sustainml-wp3 directory'
         )
 
         return parser.parse_args()
@@ -98,102 +108,115 @@ class ParseOptions():
 
 def run(args):
     """
-    Run the publisher, subscriber and secure discovery_servers.
+    Run the required nodes
 
     :param args: The input parameters.
 
-    :return: The return code resulting from the publisher, subscriber
-        and discovery servers execution. It is the number of failed processes.
+    :return: The return code resulting. It is the number of failed processes.
     """
     pub_command = []
     sub_command = []
+    node_commands = []
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
+    nodes_base_dir = script_dir+'/../../lib/sustainml_modules/'
+    print (nodes_base_dir)
 
-    if not os.path.isfile(args.pub):
-        print(f'Publisher executable file does not exists: {args.pub}')
+    if not os.path.isfile(args.pub_sub):
+        print(f'PublisherSubscriber executable file does not exists: {args.pub}')
         sys.exit(1)
 
-    if not os.access(args.pub, os.X_OK):
+    if not os.access(args.pub_sub, os.X_OK):
         print(
-            'Publisher executable does not have execution permissions:'
-            f'{args.pub}')
+            'PublisherSubscriber executable does not have execution permissions:'
+            f'{args.pub_sub}')
 
-    pub_command.append(args.pub)
+    pub_command.append(os.path.join(script_dir, args.pub_sub))
+    sub_command.append(os.path.join(script_dir, args.pub_sub))
 
-    if not os.path.isfile(args.sub):
-        print(f'Subscriber executable file does not exists: {args.sub}')
-        sys.exit(1)
-
-    if not os.access(args.sub, os.X_OK):
-        print(
-            'Subscriber executable does not have execution permissions:'
-            f'{args.sub}')
-        sys.exit(1)
-
-    sub_command.append(args.sub)
-
-    if args.xml_pub and args.xml_sub:
-        if args.xml_pub:
-            xml_file_pub = os.path.join(script_dir, args.xml_pub)
-        if args.xml_sub:
-            xml_file_sub = os.path.join(script_dir, args.xml_sub)
+    if args.topic_pub and args.topic_sub:
+        pub_command.append('publisher')
+        pub_command.extend(['--topic', str(args.topic_pub)])
+        sub_command.append('subscriber')
+        sub_command.extend(['--topic', str(args.topic_sub)])
     else:
-        print('Not provided xml configuration files.')
+        print('Not provided simple task pubsub topic names.')
         sys.exit(1)
 
-    pub_command.extend(['--xmlfile', xml_file_pub])
-    sub_command.extend(['--xmlfile', xml_file_sub])
-
-    pub_command.extend(['--seed', str(os.getpid())])
-    sub_command.extend(['--seed', str(os.getpid())])
-
-    if args.wait:
-        pub_command.extend(['--wait', str(args.wait)])
+    if args.topic_type_pub and args.topic_type_sub:
+        pub_command.append(str('--'+ str(args.topic_type_pub)))
+        sub_command.append(str('--'+ str(args.topic_type_sub)))
+    else:
+        print('Not provided simple task pubsub topic names.')
+        sys.exit(1)
 
     if args.samples:
         pub_command.extend(['--samples', str(args.samples)])
         sub_command.extend(['--samples', str(args.samples)])
 
-    if len(args.servers) != len(args.xml_servers):
+    print (args.task_encoder)
+    if args.task_encoder or args.machine_learning or args.hardware or args.co2_footprint:
+
+        if args.task_encoder:
+            te_command = ['python3']
+            te_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp1/' + args.task_encoder)
+
+            if not os.path.isfile(te_exec_file):
+                print(f'TaskEncoder executable file does not exists: {te_exec_file}')
+                sys.exit(1)
+
+            te_command.extend([te_exec_file])
+            node_commands.append(te_command)
+
+        if args.machine_learning:
+            ml_command = ['python3']
+            ml_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp1/' + args.machine_learning)
+
+            if not os.path.isfile(ml_exec_file):
+                print(f'MachineLearning executable file does not exists: {ml_exec_file}')
+                sys.exit(1)
+
+            ml_command.extend([ml_exec_file])
+            node_commands.append(ml_command)
+
+        if args.hardware:
+            hw_command = ['python3']
+            hw_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp2/' + args.hardware)
+
+            if not os.path.isfile(hw_exec_file):
+                print(f'HardwareResources executable file does not exists: {hw_exec_file}')
+                sys.exit(1)
+
+            hw_command.extend([hw_exec_file])
+            node_commands.append(hw_command)
+
+        if args.co2_footprint:
+            co2_command = ['python3']
+            co2_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp3/' + args.co2_footprint)
+
+            if not os.path.isfile(co2_exec_file):
+                print(f'CarbonFootprint executable file does not exists: {co2_exec_file}')
+                sys.exit(1)
+
+            co2_command.extend([co2_exec_file])
+            node_commands.append(co2_command)
+
+    node_procs = []
+    for node_cmd in node_commands:
+
+        node_proc = subprocess.Popen(node_cmd)
         print(
-            'Number of servers arguments should be equal to the number of xmls provided.')
-        sys.exit(1)
+           'Running Node - commmand:  ' + str(node_cmd))
 
-    ds_procs = []
-    for i in range(0, len(args.servers)):
-        server_cmd = []
-
-        if not os.path.isfile(args.servers[i]):
-            print(f'Discovery server executable file does not exists: {args.servers[i]}')
-            sys.exit(1)
-
-        if not os.access(args.servers[i], os.X_OK):
-            print(
-                'Discovery server executable does not have execution permissions:'
-                f'{args.servers[i]}')
-            sys.exit(1)
-
-        server_cmd.append(args.servers[i])
-        server_cmd.extend(['--xml-file', args.xml_servers[i]])
-        server_cmd.extend(['--server-id', str(i)])
-
-        ds_proc = subprocess.Popen(server_cmd)
-        print(
-            'Running Discovery Server - commmand:  ',
-            ' '.join(map(str, server_cmd)))
-
-        ds_procs.append(ds_proc)
+        node_procs.append(node_proc)
 
     sub_proc = subprocess.Popen(sub_command)
     print(
-            f'Running Subscriber - commmand:  ',
-            ' '.join(map(str, sub_command)))
+           f'Running Subscriber - commmand:  ' + str(sub_command))
 
     pub_proc = subprocess.Popen(pub_command)
     print(
-        'Running Publisher - commmand:  ',
-        ' '.join(map(str, pub_command)))
+        'Running Publisher - commmand:  ' + str(pub_command))
 
     try:
         outs, errs = sub_proc.communicate(timeout=15)
@@ -201,7 +224,7 @@ def run(args):
         print('Subscriber process timed out, terminating...')
         sub_proc.kill()
         pub_proc.kill()
-        [ds_proc.kill() for ds_proc in ds_procs]
+        [node_proc.kill() for node_proc in node_procs]
         try:
             sys.exit(os.EX_SOFTWARE)
         except AttributeError:
@@ -209,17 +232,15 @@ def run(args):
 
 
     pub_proc.kill()
-    ds_proc.kill()
-    [ds_proc.kill() for ds_proc in ds_procs]
+    sub_proc.kill()
+    [node_proc.kill() for node_proc in node_procs]
     try:
         sys.exit(os.EX_OK)
     except AttributeError:
         sys.exit(0)
 
-
 if __name__ == '__main__':
 
     # Parse arguments
     args = ParseOptions()
-
     run(args.args)
