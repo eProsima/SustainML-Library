@@ -86,6 +86,8 @@ namespace core {
             const std::string& name,
             const Options& opts)
     {
+        dispatcher_->start();
+
         auto dpf = DomainParticipantFactory::get_instance();
 
         //! Initialize entities
@@ -150,7 +152,6 @@ namespace core {
     void NodeImpl::spin()
     {
         EPROSIMA_LOG_INFO(NODE, "Spinning Node... ");
-        dispatcher_->start();
 
         node_status_.node_status(::NODE_IDLE);
         publish_node_status();
