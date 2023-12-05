@@ -29,15 +29,16 @@ class SimpleTaskPublisher : public SimpleTaskBase
 {
     struct SimpleTaskPublisherListener : public eprosima::fastdds::dds::DataWriterListener
     {
-        SimpleTaskPublisherListener(SimpleTaskPublisher* task_pub) :
-            task_pub_(task_pub)
+        SimpleTaskPublisherListener(
+                SimpleTaskPublisher* task_pub)
+            : task_pub_(task_pub)
         {
 
         }
 
         virtual void on_publication_matched(
-            eprosima::fastdds::dds::DataWriter* writer,
-            const eprosima::fastdds::dds::PublicationMatchedStatus& info)
+                eprosima::fastdds::dds::DataWriter* writer,
+                const eprosima::fastdds::dds::PublicationMatchedStatus& info)
         {
             if (info.current_count_change == 1)
             {

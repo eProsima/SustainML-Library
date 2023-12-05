@@ -28,7 +28,8 @@ struct TypeFactory
     TypeFactory() = delete;
     ~TypeFactory() = delete;
 
-    static eprosima::fastdds::dds::TypeSupport make_type(std::bitset<TopicType::MAX> &type_opts)
+    static eprosima::fastdds::dds::TypeSupport make_type(
+            std::bitset<TopicType::MAX>& type_opts)
     {
         if (type_opts[USER_INPUT])
         {
@@ -54,7 +55,10 @@ struct TypeFactory
         return eprosima::fastdds::dds::TypeSupport();
     }
 
-    static void set_data_task_id(eprosima::fastdds::dds::TypeSupport& ts, void* data, const size_t & task_id)
+    static void set_data_task_id(
+            eprosima::fastdds::dds::TypeSupport& ts,
+            void* data,
+            const size_t& task_id)
     {
         if (ts.get_type_name() == "UserInputImpl")
         {
@@ -86,6 +90,7 @@ struct TypeFactory
             std::cout << "ERROR, Unknown DataType" << std::endl;
         }
     }
+
 };
 
 #endif // _TEST_COMMUNICATION_UTILS_TYPEFACTORY_HPP_

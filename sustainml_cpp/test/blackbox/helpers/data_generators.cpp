@@ -118,9 +118,9 @@ std::list<CO2FootprintImpl> default_co2footprint_data_generator(
                 co2f.task_id(index);
                 std::stringstream ss;
                 ss << "co2fWorld " << index;
-                co2f.co2_footprint(index*1.0);
+                co2f.co2_footprint(index * 1.0);
                 co2f.carbon_intensity(22.0);
-                co2f.energy_consumption(index*30.0);
+                co2f.energy_consumption(index * 30.0);
                 ++index;
                 return co2f;
             });

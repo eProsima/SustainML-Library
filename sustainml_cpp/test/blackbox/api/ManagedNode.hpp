@@ -27,11 +27,12 @@
 #include <sustainml_cpp/nodes/MLModelNode.hpp>
 #include <sustainml_cpp/nodes/TaskEncoderNode.hpp>
 
-template <size_t n_inputs, typename ...PACK>
+template <size_t n_inputs, typename ... PACK>
 struct GenericTaskListener : public sustainml::core::Callable<PACK...>
 {
 
-    GenericTaskListener(std::function<void(PACK&...)> &fn)
+    GenericTaskListener(
+            std::function<void(PACK&...)>& fn)
         : functor_(fn)
     {
 
@@ -50,23 +51,25 @@ struct GenericTaskListener : public sustainml::core::Callable<PACK...>
     std::function<void(PACK&...)> functor_;
 };
 
-template <typename _NODE_TYPE, typename _LISTENER_TYPE, typename ...Args>
+template <typename _NODE_TYPE, typename _LISTENER_TYPE, typename ... Args>
 class ManagedNode
 {
-    using functor_t = std::function<void(Args&...)>;
+    using functor_t = std::function<void (Args&...)>;
     friend class ManagedNodeListener;
 
     struct ManagedNodeListener : public _LISTENER_TYPE
     {
-        ManagedNodeListener(ManagedNode* parent, const functor_t& functor = nullptr) :
-        functor_(functor),
-        managed_node_(parent)
+        ManagedNodeListener(
+                ManagedNode* parent,
+                const functor_t& functor = nullptr)
+            : functor_(functor)
+            , managed_node_(parent)
         {
 
         }
 
         virtual void on_new_task_available(
-            Args&... args) override
+                Args&... args) override
         {
             std::cout << "New task available in " << managed_node_->node_.name() << std::endl;
             managed_node_->received_samples_.fetch_add(1);
@@ -78,16 +81,19 @@ class ManagedNode
 
             managed_node_->cv_.notify_all();
         }
+
         std::function<void(Args&...)> functor_;
         ManagedNode* managed_node_;
     };
 
 public:
-    ManagedNode(const functor_t &callback = nullptr) :
-    listener_(this, callback),
-    node_(listener_),
-    received_samples_(0),
-    expected_samples_(0)
+
+    ManagedNode(
+            const functor_t& callback = nullptr)
+        : listener_(this, callback)
+        , node_(listener_)
+        , received_samples_(0)
+        , expected_samples_(0)
     {
 
     }
@@ -100,9 +106,10 @@ public:
 
     void start()
     {
-        std::packaged_task<void()> task ([&](){
-            node_.spin();
-        });
+        std::packaged_task<void()> task ([&]()
+                {
+                    node_.spin();
+                });
 
         th_.reset(new std::thread(std::move(task)));
     }
@@ -112,7 +119,8 @@ public:
         _NODE_TYPE::terminate();
     }
 
-    void prepare_expected_samples(const size_t &expected_samples)
+    void prepare_expected_samples(
+            const size_t& expected_samples)
     {
         expected_samples_.store(expected_samples);
     }
@@ -145,7 +153,7 @@ public:
 
 private:
 
-     ManagedNodeListener listener_;
+    ManagedNodeListener listener_;
     _NODE_TYPE node_;
 
     std::mutex mtx_;

@@ -22,18 +22,18 @@ SimpleTaskBase::~SimpleTaskBase()
         participant_->delete_topic(topic_);
     }
     eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->
-        delete_participant(participant_);
+            delete_participant(participant_);
 }
 
 bool SimpleTaskBase::init(
-    uint32_t &,
-    std::string &topic_name,
-    eprosima::fastdds::dds::TypeSupport &ts)
+        uint32_t&,
+        std::string& topic_name,
+        eprosima::fastdds::dds::TypeSupport& ts)
 {
     eprosima::fastdds::dds::DomainParticipantQos pqos = eprosima::fastdds::dds::PARTICIPANT_QOS_DEFAULT;
 
     auto factory =
-        eprosima::fastdds::dds::DomainParticipantFactory::get_instance();
+            eprosima::fastdds::dds::DomainParticipantFactory::get_instance();
 
     participant_ = factory->create_participant(0, pqos);
 
@@ -49,7 +49,7 @@ bool SimpleTaskBase::init(
 
     //CREATE THE TOPIC
     eprosima::fastdds::dds::TopicQos tqos =
-        eprosima::fastdds::dds::TOPIC_QOS_DEFAULT;
+            eprosima::fastdds::dds::TOPIC_QOS_DEFAULT;
 
     topic_ = participant_->create_topic(
         topic_name,

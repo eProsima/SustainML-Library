@@ -22,12 +22,12 @@
 #include "EnumTypes.hpp"
 
 inline bool parse_cli_args(
-    const int& argc,
-    char** argv,
-    bool& publisher,
-    uint32_t& samples,
-    std::string& topic_name,
-    std::bitset<TopicType::MAX>& type_opts)
+        const int& argc,
+        char** argv,
+        bool& publisher,
+        uint32_t& samples,
+        std::string& topic_name,
+        std::bitset<TopicType::MAX>& type_opts)
 {
     bool ret = true;
     int arg_count = 1;

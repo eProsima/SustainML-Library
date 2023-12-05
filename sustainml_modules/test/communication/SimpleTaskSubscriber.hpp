@@ -43,7 +43,8 @@ public:
     {
     public:
 
-        SimpleTaskSubscriberListener(SimpleTaskSubscriber* task_sub)
+        SimpleTaskSubscriberListener(
+                SimpleTaskSubscriber* task_sub)
             : matched_(0)
             , samples_(0)
             , task_sub_(task_sub)

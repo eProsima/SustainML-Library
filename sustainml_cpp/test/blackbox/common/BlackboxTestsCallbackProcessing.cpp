@@ -17,24 +17,26 @@
 TEST(BlackboxTestsCallbackProcessing, TasksCorrectlyFinishDespiteDifferentProcessingTimes)
 {
     TaskEncoderCallbackSignature te_cb =
-    [](types::UserInput& ui, types::NodeStatus&, types::EncodedTask&){
-        std::srand(std::time(nullptr));
-        //! Depending on the task_id, simulate different processing times
-        std::this_thread::sleep_for(std::chrono::seconds(std::rand() % (ui.task_id() + 2)));
-    };
+            [](types::UserInput& ui, types::NodeStatus&, types::EncodedTask&)
+            {
+                std::srand(std::time(nullptr));
+                //! Depending on the task_id, simulate different processing times
+                std::this_thread::sleep_for(std::chrono::seconds(std::rand() % (ui.task_id() + 2)));
+            };
 
     TaskEncoderManagedNode te_node(te_cb);
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
 
-    CarbonFootprintCallbackSignature co2_cb =[](
-        types::MLModel& ,
-        types::UserInput& ,
+    CarbonFootprintCallbackSignature co2_cb = [](
+        types::MLModel&,
+        types::UserInput&,
         types::HWResource& hardware_resources,
-        types::NodeStatus& ,
-        types::CO2Footprint& ){
-        std::cout << "Received CO2 Callback for task_id " << hardware_resources.task_id() << std::endl;
-    };
+        types::NodeStatus&,
+        types::CO2Footprint& )
+            {
+                std::cout << "Received CO2 Callback for task_id " << hardware_resources.task_id() << std::endl;
+            };
 
     CarbonFootprintManagedNode co2_node(co2_cb);
 

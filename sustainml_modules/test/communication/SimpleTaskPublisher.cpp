@@ -16,11 +16,11 @@
 
 #include "utils/TypeFactory.hpp"
 
-SimpleTaskPublisher::SimpleTaskPublisher() :
- samples_(0),
- publisher_(nullptr),
- datawriter_(nullptr) ,
- listener_(this)
+SimpleTaskPublisher::SimpleTaskPublisher()
+    : samples_(0)
+    , publisher_(nullptr)
+    , datawriter_(nullptr)
+    , listener_(this)
 {
 
 }
@@ -38,9 +38,9 @@ SimpleTaskPublisher::~SimpleTaskPublisher()
 }
 
 bool SimpleTaskPublisher::init(
-    uint32_t &samples,
-    std::string &topic_name,
-    eprosima::fastdds::dds::TypeSupport &ts)
+        uint32_t& samples,
+        std::string& topic_name,
+        eprosima::fastdds::dds::TypeSupport& ts)
 {
     SimpleTaskBase::init(samples, topic_name, ts);
 
@@ -48,7 +48,7 @@ bool SimpleTaskPublisher::init(
 
     //CREATE THE PUBLISHER
     eprosima::fastdds::dds::PublisherQos pubqos =
-        eprosima::fastdds::dds::PUBLISHER_QOS_DEFAULT;
+            eprosima::fastdds::dds::PUBLISHER_QOS_DEFAULT;
 
     publisher_ = participant_->create_publisher(
         pubqos,
@@ -61,7 +61,7 @@ bool SimpleTaskPublisher::init(
 
     // CREATE THE WRITER
     eprosima::fastdds::dds::DataWriterQos wqos =
-        eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT;
+            eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT;
 
     wqos.resource_limits().max_instances = 500;
     wqos.resource_limits().max_samples_per_instance = 1;

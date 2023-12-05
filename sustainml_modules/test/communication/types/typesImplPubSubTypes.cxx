@@ -128,8 +128,8 @@ std::function<uint32_t()> NodeStatusImplPubSubType::getSerializedSizeProvider(
                    eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
                size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<NodeStatusImpl*>(data), current_alignment)) +
-                       4u /*encapsulation*/;
+                          *static_cast<NodeStatusImpl*>(data), current_alignment)) +
+                      4u /*encapsulation*/;
            };
 }
 
@@ -182,8 +182,6 @@ bool NodeStatusImplPubSubType::getKey(
     }
     return true;
 }
-
-
 
 NodeControlImplPubSubType::NodeControlImplPubSubType()
 {
@@ -282,8 +280,8 @@ std::function<uint32_t()> NodeControlImplPubSubType::getSerializedSizeProvider(
                    eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
                size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<NodeControlImpl*>(data), current_alignment)) +
-                       4u /*encapsulation*/;
+                          *static_cast<NodeControlImpl*>(data), current_alignment)) +
+                      4u /*encapsulation*/;
            };
 }
 
@@ -434,8 +432,8 @@ std::function<uint32_t()> GeoLocationImplPubSubType::getSerializedSizeProvider(
                    eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
                size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<GeoLocationImpl*>(data), current_alignment)) +
-                       4u /*encapsulation*/;
+                          *static_cast<GeoLocationImpl*>(data), current_alignment)) +
+                      4u /*encapsulation*/;
            };
 }
 
@@ -586,8 +584,8 @@ std::function<uint32_t()> UserInputImplPubSubType::getSerializedSizeProvider(
                    eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
                size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<UserInputImpl*>(data), current_alignment)) +
-                       4u /*encapsulation*/;
+                          *static_cast<UserInputImpl*>(data), current_alignment)) +
+                      4u /*encapsulation*/;
            };
 }
 
@@ -738,8 +736,8 @@ std::function<uint32_t()> EncodedTaskImplPubSubType::getSerializedSizeProvider(
                    eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
                size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<EncodedTaskImpl*>(data), current_alignment)) +
-                       4u /*encapsulation*/;
+                          *static_cast<EncodedTaskImpl*>(data), current_alignment)) +
+                      4u /*encapsulation*/;
            };
 }
 
@@ -890,8 +888,8 @@ std::function<uint32_t()> MLModelImplPubSubType::getSerializedSizeProvider(
                    eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
                size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MLModelImpl*>(data), current_alignment)) +
-                       4u /*encapsulation*/;
+                          *static_cast<MLModelImpl*>(data), current_alignment)) +
+                      4u /*encapsulation*/;
            };
 }
 
@@ -1042,8 +1040,8 @@ std::function<uint32_t()> HWResourceImplPubSubType::getSerializedSizeProvider(
                    eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
                size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<HWResourceImpl*>(data), current_alignment)) +
-                       4u /*encapsulation*/;
+                          *static_cast<HWResourceImpl*>(data), current_alignment)) +
+                      4u /*encapsulation*/;
            };
 }
 
@@ -1194,8 +1192,8 @@ std::function<uint32_t()> CO2FootprintImplPubSubType::getSerializedSizeProvider(
                    eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
                size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<CO2FootprintImpl*>(data), current_alignment)) +
-                       4u /*encapsulation*/;
+                          *static_cast<CO2FootprintImpl*>(data), current_alignment)) +
+                      4u /*encapsulation*/;
            };
 }
 
@@ -1248,4 +1246,3 @@ bool CO2FootprintImplPubSubType::getKey(
     }
     return true;
 }
-

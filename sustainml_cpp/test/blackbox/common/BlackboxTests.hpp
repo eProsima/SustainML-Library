@@ -70,7 +70,7 @@ std::list<CO2FootprintImpl> default_co2footprint_data_generator(
 
 using TaskEncoderManagedNode = ManagedNode<ml_task_encoding_module::TaskEncoderNode,
                 ml_task_encoding_module::TaskEncoderTaskListener,
-                types::UserInput,types::NodeStatus, types::EncodedTask>;
+                types::UserInput, types::NodeStatus, types::EncodedTask>;
 
 using MLModelManagedNode = ManagedNode<ml_model_provider_module::MLModelNode,
                 ml_model_provider_module::MLModelTaskListener,
@@ -86,27 +86,27 @@ using CarbonFootprintManagedNode = ManagedNode<co2_tracker_module::CarbonFootpri
                 types::NodeStatus, types::CO2Footprint>;
 
 /******* Auxiliary Signature aliases *****/
-using TaskEncoderCallbackSignature = std::function<void(
-        types::UserInput& user_input,
-        types::NodeStatus& status,
-        types::EncodedTask& output)>;
+using TaskEncoderCallbackSignature = std::function<void (
+                    types::UserInput& user_input,
+                    types::NodeStatus& status,
+                    types::EncodedTask& output)>;
 
-using MLModelCallbackSignature = std::function<void(
-        types::EncodedTask& encoded_task,
-        types::NodeStatus& status,
-        types::MLModel& output)>;
+using MLModelCallbackSignature = std::function<void (
+                    types::EncodedTask& encoded_task,
+                    types::NodeStatus& status,
+                    types::MLModel& output)>;
 
-using HWResourcesCallbackSignature = std::function<void(
-        types::MLModel& model,
-        types::NodeStatus& status,
-        types::HWResource& output)>;
+using HWResourcesCallbackSignature = std::function<void (
+                    types::MLModel& model,
+                    types::NodeStatus& status,
+                    types::HWResource& output)>;
 
-using CarbonFootprintCallbackSignature = std::function<void(
-        types::MLModel& model,
-        types::UserInput& user_input,
-        types::HWResource& hardware_resources,
-        types::NodeStatus& status,
-        types::CO2Footprint& output)>;
+using CarbonFootprintCallbackSignature = std::function<void (
+                    types::MLModel& model,
+                    types::UserInput& user_input,
+                    types::HWResource& hardware_resources,
+                    types::NodeStatus& status,
+                    types::CO2Footprint& output)>;
 
 
 #endif // __BLACKBOX_BLACKBOX_HPP__

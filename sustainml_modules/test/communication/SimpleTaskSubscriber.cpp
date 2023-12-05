@@ -19,11 +19,11 @@
 std::atomic<bool> SimpleTaskSubscriber::stop_(false);
 std::condition_variable SimpleTaskSubscriber::cv_;
 
-SimpleTaskSubscriber::SimpleTaskSubscriber() :
- expected_samples_(0),
- subscriber_(nullptr),
- datareader_(nullptr),
- listener_(this)
+SimpleTaskSubscriber::SimpleTaskSubscriber()
+    : expected_samples_(0)
+    , subscriber_(nullptr)
+    , datareader_(nullptr)
+    , listener_(this)
 {
 
 }
@@ -41,9 +41,9 @@ SimpleTaskSubscriber::~SimpleTaskSubscriber()
 }
 
 bool SimpleTaskSubscriber::init(
-    uint32_t &samples,
-    std::string &topic_name,
-    eprosima::fastdds::dds::TypeSupport &ts)
+        uint32_t& samples,
+        std::string& topic_name,
+        eprosima::fastdds::dds::TypeSupport& ts)
 {
     SimpleTaskBase::init(samples, topic_name, ts);
 
@@ -51,7 +51,7 @@ bool SimpleTaskSubscriber::init(
 
     //CREATE THE SUBSCRIBER
     eprosima::fastdds::dds::SubscriberQos subqos =
-        eprosima::fastdds::dds::SUBSCRIBER_QOS_DEFAULT;
+            eprosima::fastdds::dds::SUBSCRIBER_QOS_DEFAULT;
 
     subscriber_ = participant_->create_subscriber(
         subqos,
@@ -64,7 +64,7 @@ bool SimpleTaskSubscriber::init(
 
     // CREATE THE READER
     eprosima::fastdds::dds::DataReaderQos rqos =
-        eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT;
+            eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT;
 
     //! Accept a high number of instances
     rqos.resource_limits().max_instances = 500;

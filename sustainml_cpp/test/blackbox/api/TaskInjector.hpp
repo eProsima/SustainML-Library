@@ -39,15 +39,16 @@ class TaskInjector
 
     struct TaskInjectorListener : public eprosima::fastdds::dds::DataWriterListener
     {
-        TaskInjectorListener(TaskInjector* task_injector) :
-            task_inj_(task_injector)
+        TaskInjectorListener(
+                TaskInjector* task_injector)
+            : task_inj_(task_injector)
         {
 
         }
 
         virtual void on_publication_matched(
-            eprosima::fastdds::dds::DataWriter* writer,
-            const eprosima::fastdds::dds::PublicationMatchedStatus& info)
+                eprosima::fastdds::dds::DataWriter* writer,
+                const eprosima::fastdds::dds::PublicationMatchedStatus& info)
         {
             if (info.current_count_change == 1)
             {
@@ -69,20 +70,20 @@ class TaskInjector
 public:
 
     TaskInjector(
-        const std::string &topic_name
-    ) :
-      participant_(nullptr)
-    , publisher_(nullptr)
-    , topic_(nullptr)
-    , datawriter_(nullptr)
-    , type_(new T())
-    , listener_(this)
-    , matched_(0)
+            const std::string& topic_name
+            )
+        : participant_(nullptr)
+        , publisher_(nullptr)
+        , topic_(nullptr)
+        , datawriter_(nullptr)
+        , type_(new T())
+        , listener_(this)
+        , matched_(0)
     {
         eprosima::fastdds::dds::DomainParticipantQos pqos = eprosima::fastdds::dds::PARTICIPANT_QOS_DEFAULT;
         pqos.name("TaskInjector_Participant");
         auto factory =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance();
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance();
 
         participant_ = factory->create_participant(0, pqos);
 
@@ -96,7 +97,7 @@ public:
 
         //CREATE THE PUBLISHER
         eprosima::fastdds::dds::PublisherQos pubqos =
-            eprosima::fastdds::dds::PUBLISHER_QOS_DEFAULT;
+                eprosima::fastdds::dds::PUBLISHER_QOS_DEFAULT;
 
         publisher_ = participant_->create_publisher(
             pubqos,
@@ -109,7 +110,7 @@ public:
 
         //CREATE THE TOPIC
         eprosima::fastdds::dds::TopicQos tqos =
-            eprosima::fastdds::dds::TOPIC_QOS_DEFAULT;
+                eprosima::fastdds::dds::TOPIC_QOS_DEFAULT;
 
         topic_ = participant_->create_topic(
             topic_name,
@@ -123,7 +124,7 @@ public:
 
         // CREATE THE WRITER
         eprosima::fastdds::dds::DataWriterQos wqos =
-            eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT;
+                eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT;
 
         wqos.resource_limits().max_instances = 500;
         wqos.resource_limits().max_samples_per_instance = 1;
@@ -154,11 +155,11 @@ public:
             participant_->delete_topic(topic_);
         }
         eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->
-            delete_participant(participant_);
+                delete_participant(participant_);
     }
 
     bool wait_discovery(
-            const size_t &expected_matches,
+            const size_t& expected_matches,
             std::chrono::seconds timeout = std::chrono::seconds::zero())
     {
         std::unique_lock<std::mutex> lock(mtx_);
@@ -185,8 +186,9 @@ public:
         return matched_ == expected_matches;
     }
 
-    void inject(std::list<typename T::type>& msgs,
-                const int& ms_period = 50)
+    void inject(
+            std::list<typename T::type>& msgs,
+            const int& ms_period = 50)
     {
         auto it = msgs.begin();
 
