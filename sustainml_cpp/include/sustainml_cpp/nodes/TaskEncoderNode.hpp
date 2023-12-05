@@ -29,94 +29,98 @@
 
 namespace sustainml {
 namespace core {
-    template<class T> class QueuedNodeListener;
-}
+template<class T> class QueuedNodeListener;
+} // namespace core
 
 namespace utils {
-    template<class T> class SamplePool;
-}
+template<class T> class SamplePool;
+} // namespace utils
 
 namespace ml_task_encoding_module {
 
-    class Node;
-    class Dispatcher;
+class Node;
+class Dispatcher;
 
-    using TaskEncoderCallable = core::Callable<types::UserInput, types::NodeStatus, types::EncodedTask>;
+using TaskEncoderCallable = core::Callable<types::UserInput, types::NodeStatus, types::EncodedTask>;
 
-    struct TaskEncoderTaskListener : public TaskEncoderCallable
+struct TaskEncoderTaskListener : public TaskEncoderCallable
+{
+    virtual ~TaskEncoderTaskListener()
     {
-        virtual ~TaskEncoderTaskListener()
-        {
-        }
+    }
 
-        virtual void on_new_task_available(
-                types::UserInput& user_input,
-                types::NodeStatus& status,
-                types::EncodedTask& output) override
-        {
-        }
+    virtual void on_new_task_available(
+            types::UserInput& user_input,
+            types::NodeStatus& status,
+            types::EncodedTask& output) override
+    {
+    }
+
+};
+
+/**
+ * @brief Task Encoder Node Implementation
+ * It requires the
+ * - User Input
+ * as input
+ */
+class TaskEncoderNode : public ::sustainml::core::Node
+{
+
+    enum ExpectedInputSamples
+    {
+        USER_INPUT_SAMPLE,
+        MAX
     };
 
-    /**
-    * @brief Task Encoder Node Implementation
-    * It requires the
-    * - User Input
-    * as input
-    */
-    class TaskEncoderNode : public ::sustainml::core::Node
+    enum TaskData
     {
+        TASK_STATUS_DATA = ExpectedInputSamples::MAX,
+        TASK_OUTPUT_DATA
+    };
 
-        enum ExpectedInputSamples
-        {
-            USER_INPUT_SAMPLE,
-            MAX
-        };
+public:
 
-        enum TaskData
-        {
-            TASK_STATUS_DATA = ExpectedInputSamples::MAX,
-            TASK_OUTPUT_DATA
-        };
-
-    public:
-
-        SUSTAINML_CPP_DLL_API TaskEncoderNode(
-                TaskEncoderTaskListener& user_listener);
+    SUSTAINML_CPP_DLL_API TaskEncoderNode(
+            TaskEncoderTaskListener& user_listener);
 
 #ifndef SWIG_WRAPPER
-        SUSTAINML_CPP_DLL_API TaskEncoderNode(
-                TaskEncoderTaskListener& user_listener,
-                sustainml::core::Options opts);
+    SUSTAINML_CPP_DLL_API TaskEncoderNode(
+            TaskEncoderTaskListener& user_listener,
+            sustainml::core::Options opts);
 #endif // SWIG_WRAPPER
 
-        SUSTAINML_CPP_DLL_API virtual ~TaskEncoderNode();
+    SUSTAINML_CPP_DLL_API virtual ~TaskEncoderNode();
 
-    private:
+private:
 
-        /**
-         * @brief Initialize the DDS entities contained in the Node
-         *
-         * @param opts opts Options object with the QoS configuration
-         */
-        void init(const sustainml::core::Options& opts);
+    /**
+     * @brief Initialize the DDS entities contained in the Node
+     *
+     * @param opts opts Options object with the QoS configuration
+     */
+    void init(
+            const sustainml::core::Options& opts);
 
-        /**
-        * @brief Invokes the user callback with the provided inputs.
-        *
-        * @param inputs A vector containing the required samples. All the samples
-        * must correspond to the same task_id.
-        */
-        void publish_to_user(const int& task_id, const std::vector<std::pair<int, void*>> inputs) override;
+    /**
+     * @brief Invokes the user callback with the provided inputs.
+     *
+     * @param inputs A vector containing the required samples. All the samples
+     * must correspond to the same task_id.
+     */
+    void publish_to_user(
+            const int& task_id,
+            const std::vector<std::pair<int, void*>> inputs) override;
 
-        TaskEncoderTaskListener& user_listener_;
+    TaskEncoderTaskListener& user_listener_;
 
-        std::unique_ptr<core::QueuedNodeListener<types::UserInput>> listener_user_input_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::UserInput>> listener_user_input_queue_;
 
-        std::mutex mtx_;
+    std::mutex mtx_;
 
-        std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::EncodedTask>>> task_data_pool_;
+    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::EncodedTask>>> task_data_pool_;
 
-    };
+};
 
 } // namespace ml_task_encoding_module
 } // namespace sustainml

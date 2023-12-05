@@ -87,7 +87,8 @@ public:
      */
     template <std::size_t... Is>
     void invoke_user_cb(
-            int task_id, helper::index<Is...>)
+            int task_id,
+            helper::index<Is...>)
     {
         tuple* args;
         {
@@ -103,7 +104,8 @@ public:
      *
      * @return Reference to the user callback args (simple pointers)
      */
-    tuple& create_and_get_user_cb_args(const int& task_id)
+    tuple& create_and_get_user_cb_args(
+            const int& task_id)
     {
         std::lock_guard<std::mutex> lock (mtx_);
         user_cb_args_.insert({task_id, tuple()});
@@ -114,7 +116,8 @@ public:
      * @brief Erases the element from the map by key
      *
      */
-    void remove_task_args(const int& task_id)
+    void remove_task_args(
+            const int& task_id)
     {
         std::lock_guard<std::mutex> lock (mtx_);
         user_cb_args_.erase(task_id);

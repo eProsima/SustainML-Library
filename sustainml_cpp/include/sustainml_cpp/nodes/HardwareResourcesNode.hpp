@@ -29,93 +29,97 @@
 
 namespace sustainml {
 namespace core {
-    template<class T> class QueuedNodeListener;
-}
+template<class T> class QueuedNodeListener;
+} // namespace core
 
 namespace utils {
-    template<class T> class SamplePool;
-}
+template<class T> class SamplePool;
+} // namespace utils
 
 namespace hardware_module {
 
-    class Node;
-    class Dispatcher;
+class Node;
+class Dispatcher;
 
-    using HardwareResourcesCallable = core::Callable<types::MLModel, types::NodeStatus, types::HWResource>;
-    struct HardwareResourcesTaskListener : public HardwareResourcesCallable
+using HardwareResourcesCallable = core::Callable<types::MLModel, types::NodeStatus, types::HWResource>;
+struct HardwareResourcesTaskListener : public HardwareResourcesCallable
+{
+    virtual ~HardwareResourcesTaskListener()
     {
-        virtual ~HardwareResourcesTaskListener()
-        {
-        }
+    }
 
-        virtual void on_new_task_available(
-                types::MLModel& model,
-                types::NodeStatus& status,
-                types::HWResource& output) override
-        {
-        }
+    virtual void on_new_task_available(
+            types::MLModel& model,
+            types::NodeStatus& status,
+            types::HWResource& output) override
+    {
+    }
+
+};
+
+/**
+ * @brief Hardware Resources Node Implementation
+ * It requires the
+ * - ML Model
+ * as input
+ */
+class HardwareResourcesNode : public ::sustainml::core::Node
+{
+
+    enum ExpectedInputSamples
+    {
+        ML_MODEL_SAMPLE,
+        MAX
     };
 
-    /**
-    * @brief Hardware Resources Node Implementation
-    * It requires the
-    * - ML Model
-    * as input
-    */
-    class HardwareResourcesNode : public ::sustainml::core::Node
+    enum TaskData
     {
+        TASK_STATUS_DATA = ExpectedInputSamples::MAX,
+        TASK_OUTPUT_DATA
+    };
 
-        enum ExpectedInputSamples
-        {
-            ML_MODEL_SAMPLE,
-            MAX
-        };
+public:
 
-        enum TaskData
-        {
-            TASK_STATUS_DATA = ExpectedInputSamples::MAX,
-            TASK_OUTPUT_DATA
-        };
-
-    public:
-
-        SUSTAINML_CPP_DLL_API HardwareResourcesNode(
-                HardwareResourcesTaskListener& user_listener);
+    SUSTAINML_CPP_DLL_API HardwareResourcesNode(
+            HardwareResourcesTaskListener& user_listener);
 
 #ifndef SWIG_WRAPPER
-        SUSTAINML_CPP_DLL_API HardwareResourcesNode(
-                HardwareResourcesTaskListener& user_listener,
-                sustainml::core::Options opts);
+    SUSTAINML_CPP_DLL_API HardwareResourcesNode(
+            HardwareResourcesTaskListener& user_listener,
+            sustainml::core::Options opts);
 #endif // SWIG_WRAPPER
 
-        SUSTAINML_CPP_DLL_API virtual ~HardwareResourcesNode();
+    SUSTAINML_CPP_DLL_API virtual ~HardwareResourcesNode();
 
-    private:
+private:
 
-        /**
-         * @brief Initialize the DDS entities contained in the Node
-         *
-         * @param opts opts Options object with the QoS configuration
-         */
-        void init(const sustainml::core::Options& opts);
+    /**
+     * @brief Initialize the DDS entities contained in the Node
+     *
+     * @param opts opts Options object with the QoS configuration
+     */
+    void init(
+            const sustainml::core::Options& opts);
 
-        /**
-        * @brief Invokes the user callback with the provided inputs.
-        *
-        * @param inputs A vector containing the required samples. All the samples
-        * must correspond to the same task_id.
-        */
-        void publish_to_user(const int& task_id, const std::vector<std::pair<int, void*>> inputs) override;
+    /**
+     * @brief Invokes the user callback with the provided inputs.
+     *
+     * @param inputs A vector containing the required samples. All the samples
+     * must correspond to the same task_id.
+     */
+    void publish_to_user(
+            const int& task_id,
+            const std::vector<std::pair<int, void*>> inputs) override;
 
-        HardwareResourcesTaskListener& user_listener_;
+    HardwareResourcesTaskListener& user_listener_;
 
-        std::unique_ptr<core::QueuedNodeListener<types::MLModel>> listener_ml_model_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::MLModel>> listener_ml_model_queue_;
 
-        std::mutex mtx_;
+    std::mutex mtx_;
 
-        std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::HWResource>>> task_data_pool_;
+    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::HWResource>>> task_data_pool_;
 
-    };
+};
 
 } // namespace hardware_module
 } // namespace sustainml
