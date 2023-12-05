@@ -132,7 +132,7 @@ namespace core {
         * @param inputs A vector containing the required samples. All the samples
         * must correspond to the same task_id.
         */
-        virtual void publish_to_user(const std::vector<std::pair<int,void*>> inputs) = 0;
+        virtual void publish_to_user(const int& task_id, const std::vector<std::pair<int,void*>> inputs) = 0;
 
         /**
         * @brief Publishes the internal status of the node to DDS.

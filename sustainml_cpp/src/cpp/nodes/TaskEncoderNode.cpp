@@ -66,6 +66,8 @@ namespace ml_task_encoding_module {
     {
         listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 
+        task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, EncodedTask>>(opts));
+
         initialize_subscription(sustainml::common::TopicCollection::get()[common::USER_INPUT].first.c_str(),
                                 sustainml::common::TopicCollection::get()[common::USER_INPUT].second.c_str(),
                                 &(*listener_user_input_queue_), opts);
@@ -75,12 +77,12 @@ namespace ml_task_encoding_module {
                                opts);
     }
 
-    void TaskEncoderNode::publish_to_user(const std::vector<std::pair<int,void*>> input_samples)
+    void TaskEncoderNode::publish_to_user(const int& task_id, const std::vector<std::pair<int, void*>> input_samples)
     {
         //! Expected inputs are the number of reader minus the control reader
         if (input_samples.size() == ExpectedInputSamples::MAX)
         {
-            auto& user_listener_args = user_listener_.get_user_cb_args();
+            auto& user_listener_args = user_listener_.create_and_get_user_cb_args(task_id);
 
             size_t samples_retrieved{0};
             common::pair_queue_id_with_sample_type(
@@ -89,29 +91,18 @@ namespace ml_task_encoding_module {
                     ExpectedInputSamples::MAX,
                     samples_retrieved);
 
-            int task_id{-1};
-            auto first_sample_ptr = std::get<USER_INPUT_SAMPLE>(user_listener_args);
-
-            if (nullptr != first_sample_ptr)
-            {
-                task_id = first_sample_ptr->task_id();
-            }
-
-            if (task_id == common::INVALID_ID)
-            {
-                EPROSIMA_LOG_ERROR(TASKENC_NODE, "Error Retrieving the task_id of a sample");
-                return;
-            }
+            std::pair<NodeStatus, EncodedTask>* task_data_cache;
 
             {
-                std::unique_lock<std::mutex> lock (mtx_);
-                task_data_.insert({task_id, {NodeStatus(), EncodedTask()}});
+                std::lock_guard<std::mutex> lock (mtx_);
 
                 auto& status = std::get<TASK_STATUS_DATA>(user_listener_args);
                 auto& output = std::get<TASK_OUTPUT_DATA>(user_listener_args);
 
-                status = &task_data_[task_id].first;
-                output = &task_data_[task_id].second;
+                task_data_cache = task_data_pool_->get_new_cache_nts();
+
+                status = &task_data_cache->first;
+                output = &task_data_cache->second;
             }
 
             //! TODO: Manage task statuses individually
@@ -122,19 +113,19 @@ namespace ml_task_encoding_module {
                 publish_node_status();
             }
 
-            user_listener_.invoke_user_cb(core::helper::gen_seq<TaskEncoderCallable::size>{});
+            user_listener_.invoke_user_cb(task_id, core::helper::gen_seq<TaskEncoderCallable::size>{});
 
             //! Ensure task_id is forwarded to the output
-            task_data_[task_id].second.task_id(task_id);
+            task_data_cache->second.task_id(task_id);
 
-            writers()[OUTPUT_WRITER_IDX]->write(task_data_[task_id].second.get_impl());
+            writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->second.get_impl());
 
             listener_user_input_queue_->remove_element_by_taskid(task_id);
 
-            //! TODO improve deletion condition
             {
-                std::unique_lock<std::mutex> lock (mtx_);
-                task_data_.erase(task_id);
+                std::lock_guard<std::mutex> lock (mtx_);
+                task_data_pool_->release_cache_nts(task_data_cache);
+                user_listener_.remove_task_args(task_id);
             }
         }
         else

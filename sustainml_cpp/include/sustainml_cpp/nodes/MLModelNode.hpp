@@ -31,6 +31,11 @@ namespace sustainml {
 namespace core {
     template<class T> class QueuedNodeListener;
 }
+
+namespace utils {
+    template<class T> class SamplePool;
+}
+
 namespace ml_model_provider_module {
 
     class Node;
@@ -100,15 +105,15 @@ namespace ml_model_provider_module {
         * @param inputs A vector containing the required samples. All the samples
         * must correspond to the same task_id.
         */
-        void publish_to_user(const std::vector<std::pair<int, void*>> inputs) override;
+        void publish_to_user(const int& task_id, const std::vector<std::pair<int, void*>> inputs) override;
 
         MLModelTaskListener& user_listener_;
 
         std::unique_ptr<core::QueuedNodeListener<types::EncodedTask>> listener_enc_task_queue_;
 
         std::mutex mtx_;
-        //! task id to <NodeStatus, MLModel>
-        std::map<int, std::pair<types::NodeStatus, types::MLModel>>  task_data_;
+
+        std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::MLModel>>> task_data_pool_;
 
     };
 

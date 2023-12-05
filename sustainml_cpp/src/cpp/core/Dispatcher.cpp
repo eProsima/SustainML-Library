@@ -81,6 +81,10 @@ namespace core {
 
             thread_pool_.emit(DISPATCHER_ROUTINE_ID);
         }
+        else
+        {
+            EPROSIMA_LOG_ERROR(DISPATCHER, node_->name() << " Dispatcher discarding sample with task_id " << task_id << ", not initialized");
+        }
     }
 
     void Dispatcher::process(const int& task_id)
@@ -129,8 +133,7 @@ namespace core {
                     return;
                 }
             }
-
-            node_->publish_to_user(samples);
+            node_->publish_to_user(task_id, samples);
         }
     }
 
