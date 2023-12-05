@@ -38,6 +38,10 @@ namespace co2_tracker_module {
         sustainml::core::Options opts;
         opts.rqos.resource_limits().max_instances = 500;
         opts.rqos.resource_limits().max_samples_per_instance = 1;
+        opts.rqos.reliability().kind = eprosima::fastdds::dds::RELIABLE_RELIABILITY_QOS;
+        opts.rqos.history().kind = eprosima::fastdds::dds::KEEP_LAST_HISTORY_QOS;
+        opts.rqos.history().depth = 1;
+
         opts.wqos.resource_limits().max_instances = 500;
         opts.wqos.resource_limits().max_samples_per_instance = 1;
 
