@@ -21,6 +21,7 @@
 
 #include <functional>
 #include <iostream>
+#include <mutex>
 #include <tuple>
 
 #include <sustainml_cpp/config/Macros.hpp>
@@ -86,25 +87,46 @@ public:
      */
     template <std::size_t... Is>
     void invoke_user_cb(
+            int task_id,
             helper::index<Is...>)
     {
-        on_new_task_available(*std::get<Is>(user_cb_args_)...);
+        tuple* args;
+        {
+            std::lock_guard<std::mutex> lock (mtx_);
+            args = &user_cb_args_[task_id];
+        }
+        on_new_task_available(*std::get<Is>(*args)...);
     }
 
     /**
      * @brief Returns the arguments with which the user callback
      * will be later invoked
      *
-     * @return Reference to the user callback args
+     * @return Reference to the user callback args (simple pointers)
      */
-    tuple& get_user_cb_args()
+    tuple& create_and_get_user_cb_args(
+            const int& task_id)
     {
-        return user_cb_args_;
+        std::lock_guard<std::mutex> lock (mtx_);
+        user_cb_args_.insert({task_id, tuple()});
+        return user_cb_args_[task_id];
+    }
+
+    /**
+     * @brief Erases the element from the map by key
+     *
+     */
+    void remove_task_args(
+            const int& task_id)
+    {
+        std::lock_guard<std::mutex> lock (mtx_);
+        user_cb_args_.erase(task_id);
     }
 
 private:
 
-    tuple user_cb_args_;
+    std::mutex mtx_;
+    std::map<int, tuple> user_cb_args_;
 #else
 
 public:
