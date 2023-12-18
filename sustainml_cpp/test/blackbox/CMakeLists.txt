@@ -15,8 +15,8 @@
 
 file(GLOB BLACKBOXTESTS_TEST_SOURCE "common/BlackboxTests*.cpp")
 set(BLACKBOXTESTS_SOURCE ${BLACKBOXTESTS_TEST_SOURCE}
-    types/typesImpl.cxx
-    types/typesImplPubSubTypes.cxx
+    ${PROJECT_SOURCE_DIR}/src/cpp/types/typesImpl.cxx
+    ${PROJECT_SOURCE_DIR}/src/cpp/types/typesImplPubSubTypes.cxx
 
     helpers/data_generators.cpp
     )

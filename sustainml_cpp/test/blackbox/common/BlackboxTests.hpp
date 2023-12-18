@@ -1,4 +1,4 @@
-// Copyright 2018, 2020 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@
 #include "../api/ManagedNode.hpp"
 #include "../api/TaskInjector.hpp"
 
-#include "../types/typesImplPubSubTypes.h"
 #include <sustainml_cpp/types/types.h>
+#include <types/typesImplPubSubTypes.h>
 
 #include <algorithm>
 #include <cstddef>
