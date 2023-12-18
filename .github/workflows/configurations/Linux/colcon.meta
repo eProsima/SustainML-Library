@@ -15,6 +15,13 @@
                 "-DBUILD_DOCUMENTATION=ON",
                 "-DBUILD_TESTS=ON"
             ]
+        },
+        "sustainml_modules":
+        {
+            "cmake-args":
+            [
+                "-DBUILD_TESTS=ON"
+            ]
         }
     }
 }

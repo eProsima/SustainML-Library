@@ -12,6 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Add subdirectory with tests
-add_subdirectory(blackbox)
-add_subdirectory(unittest)
+
+file(GLOB BLACKBOXTESTS_TEST_SOURCE "common/BlackboxTests*.cpp")
+set(BLACKBOXTESTS_SOURCE ${BLACKBOXTESTS_TEST_SOURCE}
+    ${PROJECT_SOURCE_DIR}/src/cpp/types/typesImpl.cxx
+    ${PROJECT_SOURCE_DIR}/src/cpp/types/typesImplPubSubTypes.cxx
+
+    helpers/data_generators.cpp
+    )
+add_executable(BlackboxTests ${BLACKBOXTESTS_SOURCE})
+
+target_link_libraries(BlackboxTests
+    sustainml_cpp
+    fastrtps
+    fastcdr
+    foonathan_memory
+    GTest::gtest)
+
+gtest_discover_tests(BlackboxTests)

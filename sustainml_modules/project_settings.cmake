@@ -12,6 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Add subdirectory with tests
-add_subdirectory(blackbox)
-add_subdirectory(unittest)
+###############################################################################
+# This file sets settings for project sustainml_modules
+###############################################################################
+
+set(MODULE_NAME
+    sustainml_modules)
+
+set(MODULE_SUMMARY
+    "C++ library for the SustainML Nodes implementation.")
+
+set(MODULE_CPP_VERSION 14)
+
+set(MODULE_FIND_PACKAGES
+        fastcdr
+        fastrtps
+        cpp_utils
+    )
