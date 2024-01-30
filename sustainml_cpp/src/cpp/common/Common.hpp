@@ -19,9 +19,11 @@
 #ifndef SUSTAINMLCPP_COMMON_COMMON_HPP
 #define SUSTAINMLCPP_COMMON_COMMON_HPP
 
+#include <sustainml_cpp/core/Constants.hpp>
 #include <types/types.h>
 
 #include <fastrtps/log/Log.h>
+#include <fastrtps/utils/fixed_size_string.hpp>
 
 #include <iostream>
 #include <map>
@@ -38,6 +40,29 @@ namespace common {
     constexpr const char* HW_RESOURCES_NODE = "HW_RESOURCES_NODE";
     constexpr const char* CO2_TRACKER_NODE = "CO2_TRACKER_NODE";
 
+    inline NodeID get_node_id_from_name(const eprosima::fastrtps::string_255 &name)
+    {
+        NodeID id = NodeID::UNKNOWN;
+
+        if (name == TASK_ENCODER_NODE)
+        {
+            id = NodeID::ID_TASK_ENCODER;
+        }
+        else if (name == ML_MODEL_NODE)
+        {
+            id = NodeID::ID_MACHINE_LEARNING;
+        }
+        else if (name == HW_RESOURCES_NODE)
+        {
+            id = NodeID::ID_HARDWARE_RESOURCES;
+        }
+        else if (name == CO2_TRACKER_NODE)
+        {
+            id = NodeID::ID_CARBON_FOOTPRINT;
+        }
+        return id;
+    }
+
     enum Topics
     {
         NODE_CONTROL,
@@ -49,6 +74,29 @@ namespace common {
         CO2_FOOTPRINT,
         MAX
     };
+
+    inline Topics get_topic_from_name(const char *name)
+    {
+        Topics output = Topics::MAX;
+
+        if (name == TASK_ENCODER_NODE)
+        {
+            output = Topics::ENCODED_TASK;
+        }
+        else if (name == ML_MODEL_NODE)
+        {
+            output = Topics::ML_MODEL;
+        }
+        else if (name == HW_RESOURCES_NODE)
+        {
+            output = Topics::HW_RESOURCE;
+        }
+        else if (name == CO2_TRACKER_NODE)
+        {
+            output = Topics::CO2_FOOTPRINT;
+        }
+        return output;
+    }
 
     /*!
     * @brief Map in which to store all the topics, name and typename
