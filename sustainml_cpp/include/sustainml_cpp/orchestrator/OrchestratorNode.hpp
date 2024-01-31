@@ -59,12 +59,12 @@ struct OrchestratorNodeHandle
     /**
     * @brief Callback to notify the user that new output data is available in one node.
     */
-    virtual void on_new_node_output(const NodeID &id, void* data) const = 0;
+    virtual void on_new_node_output(const NodeID &id, void* data) = 0;
 
     /**
     * @brief Callback to notify the user that the status of a node has changed.
     */
-    virtual void on_node_status_change(const NodeID &id, const types::NodeStatus& status) const = 0;
+    virtual void on_node_status_change(const NodeID &id, const types::NodeStatus& status) = 0;
 };
 
 class OrchestratorNode
