@@ -26,6 +26,7 @@
 #include <core/NodeImpl.hpp>
 #include <core/Dispatcher.hpp>
 #include <types/typesImplPubSubTypes.h>
+#include <types/typesImplTypeObject.h>
 
 using namespace eprosima::fastdds::dds;
 
@@ -91,8 +92,9 @@ bool NodeImpl::init(
     auto dpf = DomainParticipantFactory::get_instance();
 
     //! Initialize entities
-
-    participant_ = dpf->create_participant(opts.domain, opts.pqos);
+    DomainParticipantQos pqos = opts.pqos;
+    pqos.name(name);
+    participant_ = dpf->create_participant(opts.domain, pqos);
 
     if (participant_ == nullptr)
     {
@@ -130,6 +132,8 @@ bool NodeImpl::init(
     {
         participant_->register_type(type);
     }
+
+    registertypesImplTypes();
 
     //! Initialize common topics
     initialize_subscription(common::TopicCollection::get()[common::Topics::NODE_CONTROL].first.c_str(),
