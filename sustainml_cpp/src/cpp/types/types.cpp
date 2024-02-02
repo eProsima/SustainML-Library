@@ -199,6 +199,11 @@ void NodeStatus::update(
     impl_->node_status((Status)new_status);
 }
 
+NodeStatusImpl* NodeStatus::get_impl()
+{
+    return impl_;
+}
+
 NodeControl::NodeControl()
 {
     impl_ = new NodeControlImpl;
