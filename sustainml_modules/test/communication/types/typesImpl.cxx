@@ -140,6 +140,7 @@ Status& NodeStatusImpl::node_status()
     return m_node_status;
 }
 
+
 /*!
  * @brief This function sets a value in member task_status
  * @param _task_status New value for member task_status
@@ -167,6 +168,7 @@ TaskStatus& NodeStatusImpl::task_status()
 {
     return m_task_status;
 }
+
 
 /*!
  * @brief This function sets a value in member error_code
@@ -196,6 +198,7 @@ ErrorCode& NodeStatusImpl::error_code()
     return m_error_code;
 }
 
+
 /*!
  * @brief This function sets a value in member task_id
  * @param _task_id New value for member task_id
@@ -223,6 +226,7 @@ int32_t& NodeStatusImpl::task_id()
 {
     return m_task_id;
 }
+
 
 /*!
  * @brief This function copies the value in member error_description
@@ -262,6 +266,7 @@ std::string& NodeStatusImpl::error_description()
     return m_error_description;
 }
 
+
 /*!
  * @brief This function copies the value in member node_name
  * @param _node_name New value to be copied in member node_name
@@ -299,6 +304,9 @@ std::string& NodeStatusImpl::node_name()
 {
     return m_node_name;
 }
+
+
+
 
 NodeControlImpl::NodeControlImpl()
 {
@@ -399,6 +407,7 @@ CmdNode& NodeControlImpl::cmd_node()
     return m_cmd_node;
 }
 
+
 /*!
  * @brief This function sets a value in member cmd_task
  * @param _cmd_task New value for member cmd_task
@@ -426,6 +435,7 @@ CmdTask& NodeControlImpl::cmd_task()
 {
     return m_cmd_task;
 }
+
 
 /*!
  * @brief This function copies the value in member target_node
@@ -465,6 +475,7 @@ std::string& NodeControlImpl::target_node()
     return m_target_node;
 }
 
+
 /*!
  * @brief This function sets a value in member task_id
  * @param _task_id New value for member task_id
@@ -492,6 +503,7 @@ int32_t& NodeControlImpl::task_id()
 {
     return m_task_id;
 }
+
 
 /*!
  * @brief This function copies the value in member source_node
@@ -530,6 +542,7 @@ std::string& NodeControlImpl::source_node()
 {
     return m_source_node;
 }
+
 
 GeoLocationImpl::GeoLocationImpl()
 {
@@ -625,6 +638,7 @@ std::string& GeoLocationImpl::continent()
     return m_continent;
 }
 
+
 /*!
  * @brief This function copies the value in member region
  * @param _region New value to be copied in member region
@@ -662,6 +676,7 @@ std::string& GeoLocationImpl::region()
 {
     return m_region;
 }
+
 
 UserInputImpl::UserInputImpl()
 {
@@ -762,6 +777,7 @@ std::string& UserInputImpl::problem_description()
     return m_problem_description;
 }
 
+
 /*!
  * @brief This function copies the value in member geo_location
  * @param _geo_location New value to be copied in member geo_location
@@ -800,6 +816,7 @@ GeoLocationImpl& UserInputImpl::geo_location()
     return m_geo_location;
 }
 
+
 /*!
  * @brief This function sets a value in member task_id
  * @param _task_id New value for member task_id
@@ -827,6 +844,7 @@ int32_t& UserInputImpl::task_id()
 {
     return m_task_id;
 }
+
 
 EncodedTaskImpl::EncodedTaskImpl()
 {
@@ -922,6 +940,7 @@ std::vector<std::string>& EncodedTaskImpl::keywords()
     return m_keywords;
 }
 
+
 /*!
  * @brief This function sets a value in member task_id
  * @param _task_id New value for member task_id
@@ -949,6 +968,7 @@ int32_t& EncodedTaskImpl::task_id()
 {
     return m_task_id;
 }
+
 
 MLModelImpl::MLModelImpl()
 {
@@ -1059,6 +1079,7 @@ std::string& MLModelImpl::model_path()
     return m_model_path;
 }
 
+
 /*!
  * @brief This function copies the value in member model
  * @param _model New value to be copied in member model
@@ -1096,6 +1117,7 @@ std::string& MLModelImpl::model()
 {
     return m_model;
 }
+
 
 /*!
  * @brief This function copies the value in member model_properties_path
@@ -1135,6 +1157,7 @@ std::string& MLModelImpl::model_properties_path()
     return m_model_properties_path;
 }
 
+
 /*!
  * @brief This function copies the value in member model_properties
  * @param _model_properties New value to be copied in member model_properties
@@ -1173,6 +1196,7 @@ std::string& MLModelImpl::model_properties()
     return m_model_properties;
 }
 
+
 /*!
  * @brief This function sets a value in member task_id
  * @param _task_id New value for member task_id
@@ -1200,6 +1224,7 @@ int32_t& MLModelImpl::task_id()
 {
     return m_task_id;
 }
+
 
 HWResourceImpl::HWResourceImpl()
 {
@@ -1300,6 +1325,7 @@ std::string& HWResourceImpl::hw_description()
     return m_hw_description;
 }
 
+
 /*!
  * @brief This function sets a value in member power_consumption
  * @param _power_consumption New value for member power_consumption
@@ -1328,6 +1354,7 @@ double& HWResourceImpl::power_consumption()
     return m_power_consumption;
 }
 
+
 /*!
  * @brief This function sets a value in member task_id
  * @param _task_id New value for member task_id
@@ -1355,6 +1382,7 @@ int32_t& HWResourceImpl::task_id()
 {
     return m_task_id;
 }
+
 
 CO2FootprintImpl::CO2FootprintImpl()
 {
@@ -1450,6 +1478,7 @@ double& CO2FootprintImpl::co2_footprint()
     return m_co2_footprint;
 }
 
+
 /*!
  * @brief This function sets a value in member energy_consumption
  * @param _energy_consumption New value for member energy_consumption
@@ -1477,6 +1506,7 @@ double& CO2FootprintImpl::energy_consumption()
 {
     return m_energy_consumption;
 }
+
 
 /*!
  * @brief This function sets a value in member carbon_intensity
@@ -1506,6 +1536,7 @@ double& CO2FootprintImpl::carbon_intensity()
     return m_carbon_intensity;
 }
 
+
 /*!
  * @brief This function sets a value in member task_id
  * @param _task_id New value for member task_id
@@ -1533,6 +1564,7 @@ int32_t& CO2FootprintImpl::task_id()
 {
     return m_task_id;
 }
+
 
 // Include auxiliary functions like for serializing/deserializing.
 #include "typesImplCdrAux.ipp"
