@@ -40,15 +40,15 @@ namespace sustainml {
 namespace orchestrator {
 
 OrchestratorNode::OrchestratorParticipantListener::OrchestratorParticipantListener(
-    OrchestratorNode* orchestrator) :
-    orchestrator_(orchestrator)
+        OrchestratorNode* orchestrator)
+    : orchestrator_(orchestrator)
 {
 
 }
 
 void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery(
-    eprosima::fastdds::dds::DomainParticipant* participant,
-    eprosima::fastrtps::rtps::ParticipantDiscoveryInfo&& info)
+        eprosima::fastdds::dds::DomainParticipant* participant,
+        eprosima::fastrtps::rtps::ParticipantDiscoveryInfo&& info)
 {
     eprosima::fastrtps::string_255 participant_name = info.info.m_participantName;
     EPROSIMA_LOG_INFO(ORCHESTRATOR, "Orchestrator discovered a new Participant with name " << participant_name);
@@ -57,16 +57,17 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
     if (!orchestrator_->initialized_.load())
     {
         std::unique_lock<std::mutex> lock(orchestrator_->get_mutex());
-        orchestrator_->initialization_cv_.wait(lock, [&](){
-            return orchestrator_->initialized_.load();
-        });
+        orchestrator_->initialization_cv_.wait(lock, [&]()
+                {
+                    return orchestrator_->initialized_.load();
+                });
     }
 
     // create the proxy for this node
     NodeID node_id = common::get_node_id_from_name(participant_name);
 
     if (info.status == info.DISCOVERED_PARTICIPANT &&
-        orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] == nullptr)
+            orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] == nullptr)
     {
         EPROSIMA_LOG_INFO(ORCHESTRATOR, "Creating node proxy for " << participant_name << " node");
         ModuleNodeProxyFactory::make_node_proxy(
@@ -86,15 +87,17 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
     }
 }
 
-OrchestratorNode::OrchestratorNode(std::shared_ptr<OrchestratorNodeHandle> handle, uint32_t domain) :
-    domain_(domain),
-    handler_(handle),
-    node_proxies_({
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr
-    }),
+OrchestratorNode::OrchestratorNode(
+        std::shared_ptr<OrchestratorNodeHandle> handle,
+        uint32_t domain)
+    : domain_(domain)
+    , handler_(handle)
+    , node_proxies_({
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr
+        }),
     task_db_(new TaskDB_t()),
     task_man_(new TaskManager()),
     participant_listener_(new OrchestratorParticipantListener(this))
@@ -143,9 +146,9 @@ bool OrchestratorNode::init()
 
     //! Initialize entities
     participant_ = dpf->create_participant(domain_,
-        PARTICIPANT_QOS_DEFAULT,
-        participant_listener_.get(),
-        StatusMask::all() >> StatusMask::data_on_readers());
+                    PARTICIPANT_QOS_DEFAULT,
+                    participant_listener_.get(),
+                    StatusMask::all() >> StatusMask::data_on_readers());
 
     if (participant_ == nullptr)
     {
@@ -172,13 +175,16 @@ bool OrchestratorNode::init()
     // Register type objects
     registertypesImplTypes();
 
-    status_topic_ = participant_->create_topic(common::TopicCollection::get()[common::Topics::NODE_STATUS].first.c_str(),
+    status_topic_ = participant_->create_topic(
+        common::TopicCollection::get()[common::Topics::NODE_STATUS].first.c_str(),
         common::TopicCollection::get()[common::Topics::NODE_STATUS].second.c_str(), TOPIC_QOS_DEFAULT);
 
-    control_topic_ = participant_->create_topic(common::TopicCollection::get()[common::Topics::NODE_CONTROL].first.c_str(),
+    control_topic_ = participant_->create_topic(
+        common::TopicCollection::get()[common::Topics::NODE_CONTROL].first.c_str(),
         common::TopicCollection::get()[common::Topics::NODE_CONTROL].second.c_str(), TOPIC_QOS_DEFAULT);
 
-    user_input_topic_ = participant_->create_topic(common::TopicCollection::get()[common::Topics::USER_INPUT].first.c_str(),
+    user_input_topic_ = participant_->create_topic(
+        common::TopicCollection::get()[common::Topics::USER_INPUT].first.c_str(),
         common::TopicCollection::get()[common::Topics::USER_INPUT].second.c_str(), TOPIC_QOS_DEFAULT);
 
     if (status_topic_ == nullptr)
@@ -224,7 +230,6 @@ bool OrchestratorNode::init()
     return true;
 }
 
-
 std::pair<int, types::UserInput*> OrchestratorNode::prepare_new_task()
 {
     std::pair<int, types::UserInput*> output;
@@ -235,13 +240,18 @@ std::pair<int, types::UserInput*> OrchestratorNode::prepare_new_task()
     return output;
 }
 
-bool OrchestratorNode::start_task(const int &task_id, types::UserInput* ui)
+bool OrchestratorNode::start_task(
+        const int& task_id,
+        types::UserInput* ui)
 {
     user_input_writer_->write(ui->get_impl());
     return true;
 }
 
-RetCode_t OrchestratorNode::get_task_data(const int &task_id, const NodeID& node_id, void*& data)
+RetCode_t OrchestratorNode::get_task_data(
+        const int& task_id,
+        const NodeID& node_id,
+        void*& data)
 {
     RetCode_t ret = RetCode_t::RETCODE_NO_DATA;
 
@@ -306,7 +316,9 @@ RetCode_t OrchestratorNode::get_task_data(const int &task_id, const NodeID& node
     return ret;
 }
 
-RetCode_t OrchestratorNode::get_node_status(const NodeID &node_id, const types::NodeStatus* &status)
+RetCode_t OrchestratorNode::get_node_status(
+        const NodeID& node_id,
+        const types::NodeStatus*& status)
 {
     RetCode_t ret = RetCode_t::RETCODE_NO_DATA;
 

@@ -36,16 +36,31 @@ namespace orchestrator {
  */
 template <NodeID> struct MapFromNodeIDToType_t;
 
-template <> struct MapFromNodeIDToType_t<NodeID::ID_ORCHESTRATOR> { using type = types::UserInput;
-                                                                        using typeImpl = UserInputImpl;};
-template <> struct MapFromNodeIDToType_t<NodeID::ID_TASK_ENCODER> { using type = types::EncodedTask;
-                                                                    using typeImpl = EncodedTaskImpl; };
-template <> struct MapFromNodeIDToType_t<NodeID::ID_MACHINE_LEARNING> { using type = types::MLModel;
-                                                                        using typeImpl = MLModelImpl; };
-template <> struct MapFromNodeIDToType_t<NodeID::ID_HARDWARE_RESOURCES> { using type = types::HWResource;
-                                                                          using typeImpl = HWResourceImpl;};
-template <> struct MapFromNodeIDToType_t<NodeID::ID_CARBON_FOOTPRINT> { using type = types::CO2Footprint;
-                                                                        using typeImpl = CO2FootprintImpl;};
+template <> struct MapFromNodeIDToType_t<NodeID::ID_ORCHESTRATOR>
+{
+    using type = types::UserInput;
+    using typeImpl = UserInputImpl;
+};
+template <> struct MapFromNodeIDToType_t<NodeID::ID_TASK_ENCODER>
+{
+    using type = types::EncodedTask;
+    using typeImpl = EncodedTaskImpl;
+};
+template <> struct MapFromNodeIDToType_t<NodeID::ID_MACHINE_LEARNING>
+{
+    using type = types::MLModel;
+    using typeImpl = MLModelImpl;
+};
+template <> struct MapFromNodeIDToType_t<NodeID::ID_HARDWARE_RESOURCES>
+{
+    using type = types::HWResource;
+    using typeImpl = HWResourceImpl;
+};
+template <> struct MapFromNodeIDToType_t<NodeID::ID_CARBON_FOOTPRINT>
+{
+    using type = types::CO2Footprint;
+    using typeImpl = CO2FootprintImpl;
+};
 
 } // namespace orchestrator
 } // namespace sustainml

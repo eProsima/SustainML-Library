@@ -46,7 +46,7 @@ namespace sustainml {
 namespace orchestrator {
 
 class ModuleNodeProxy;
-template <typename ...Args> class TaskDB;
+template <typename ... Args> class TaskDB;
 class TaskManager;
 
 /**
@@ -60,72 +60,87 @@ struct OrchestratorNodeHandle
     virtual ~OrchestratorNodeHandle() = default;
 
     /**
-    * @brief Callback to notify the user that new output data is available in one node.
-    */
-    virtual void on_new_node_output(const NodeID &id, void* data) = 0;
+     * @brief Callback to notify the user that new output data is available in one node.
+     */
+    virtual void on_new_node_output(
+            const NodeID& id,
+            void* data) = 0;
 
     /**
-    * @brief Callback to notify the user that the status of a node has changed.
-    */
-    virtual void on_node_status_change(const NodeID &id, const types::NodeStatus& status) = 0;
+     * @brief Callback to notify the user that the status of a node has changed.
+     */
+    virtual void on_node_status_change(
+            const NodeID& id,
+            const types::NodeStatus& status) = 0;
 };
 
 class OrchestratorNode
 {
     friend class ModuleNodeProxy;
+
 public:
 
     using TaskDB_t =  TaskDB<
-                        types::UserInput,
-                        types::EncodedTask,
-                        types::MLModel,
-                        types::HWResource,
-                        types::CO2Footprint>;
+        types::UserInput,
+        types::EncodedTask,
+        types::MLModel,
+        types::HWResource,
+        types::CO2Footprint>;
 
-    OrchestratorNode(std::shared_ptr<OrchestratorNodeHandle> handler, uint32_t domain = 0);
+    OrchestratorNode(
+            std::shared_ptr<OrchestratorNodeHandle> handler,
+            uint32_t domain = 0);
 
     ~OrchestratorNode();
 
     /**
-    * @brief Get the task data from DB given the task_id and node identifier.
-    */
-    RetCode_t get_task_data(const int &task_id, const NodeID &node_id, void*& data);
+     * @brief Get the task data from DB given the task_id and node identifier.
+     */
+    RetCode_t get_task_data(
+            const int& task_id,
+            const NodeID& node_id,
+            void*& data);
 
     /**
-    * @brief Get the node status from DB given node identifier.
-    */
-    RetCode_t get_node_status(const NodeID &node_id, const types::NodeStatus* &status);
+     * @brief Get the node status from DB given node identifier.
+     */
+    RetCode_t get_node_status(
+            const NodeID& node_id,
+            const types::NodeStatus*& status);
 
     /**
-    * @brief This method reserves a new Task cache in the DB and returns the place
-    * where to fill the UserInput entry structure.
-    * @note It must be called before start_task()
-    */
+     * @brief This method reserves a new Task cache in the DB and returns the place
+     * where to fill the UserInput entry structure.
+     * @note It must be called before start_task()
+     */
     std::pair<int, types::UserInput*> prepare_new_task();
 
     /**
-    * @brief This method triggers a new task with a previously prepared task_id and
-    * a pointer to the UserInput data structure.
-    */
-    bool start_task(const int &task_id, types::UserInput* ui);
+     * @brief This method triggers a new task with a previously prepared task_id and
+     * a pointer to the UserInput data structure.
+     */
+    bool start_task(
+            const int& task_id,
+            types::UserInput* ui);
 
     /**
-    * @brief This method sends the specified Node Control command to the related node.
-    */
-    void send_control_command(const types::NodeControl& cmd);
+     * @brief This method sends the specified Node Control command to the related node.
+     */
+    void send_control_command(
+            const types::NodeControl& cmd);
 
     /**
-    * @brief Public method to get the mutex in order to correctly synchronise user
-    * handle calls.
-    */
+     * @brief Public method to get the mutex in order to correctly synchronise user
+     * handle calls.
+     */
     inline std::mutex& get_mutex()
     {
         return mtx_;
     }
 
     /**
-    * @brief Used to retrieve the associated OrchestratorNodeHandle.
-    */
+     * @brief Used to retrieve the associated OrchestratorNodeHandle.
+     */
     inline std::weak_ptr<OrchestratorNodeHandle> get_handler()
     {
         return handler_;
@@ -134,8 +149,8 @@ public:
 protected:
 
     /**
-    * @brief Used for intializing the Orchestrator
-    */
+     * @brief Used for intializing the Orchestrator
+     */
     bool init();
 
     uint32_t domain_;
@@ -171,12 +186,16 @@ protected:
     class OrchestratorParticipantListener : public eprosima::fastdds::dds::DomainParticipantListener
     {
     public:
-        OrchestratorParticipantListener(OrchestratorNode* orchestrator);
+
+        OrchestratorParticipantListener(
+                OrchestratorNode* orchestrator);
 
         virtual void on_participant_discovery(
-            eprosima::fastdds::dds::DomainParticipant* participant,
-            eprosima::fastrtps::rtps::ParticipantDiscoveryInfo&& info);
+                eprosima::fastdds::dds::DomainParticipant* participant,
+                eprosima::fastrtps::rtps::ParticipantDiscoveryInfo&& info);
+
     private:
+
         OrchestratorNode* orchestrator_{nullptr};
 
     };

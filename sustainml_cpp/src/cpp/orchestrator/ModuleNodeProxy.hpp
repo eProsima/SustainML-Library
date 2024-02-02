@@ -51,41 +51,45 @@ namespace orchestrator {
 class ModuleNodeProxy
 {
     /**
-    * @brief Listener for the Module Node output
-    */
+     * @brief Listener for the Module Node output
+     */
     struct ModuleNodeProxyListener : public DataReaderListener
     {
         ModuleNodeProxyListener(
-                    ModuleNodeProxy* parent);
+                ModuleNodeProxy* parent);
 
-        virtual ~ModuleNodeProxyListener(){}
+        virtual ~ModuleNodeProxyListener()
+        {
+        }
 
         void on_data_available(
-            eprosima::fastdds::dds::DataReader* reader) override;
+                eprosima::fastdds::dds::DataReader* reader) override;
 
         void on_subscription_matched(
-            eprosima::fastdds::dds::DataReader* reader,
-            const eprosima::fastdds::dds::SubscriptionMatchedStatus & status) override;
+                eprosima::fastdds::dds::DataReader* reader,
+                const eprosima::fastdds::dds::SubscriptionMatchedStatus& status) override;
 
         ModuleNodeProxy* proxy_parent_;
     };
 
     /**
-    * @brief Listener for the Module Node status
-    */
+     * @brief Listener for the Module Node status
+     */
     struct ModuleNodeProxyStatusListener : public DataReaderListener
     {
         ModuleNodeProxyStatusListener(
-                    ModuleNodeProxy* parent);
+                ModuleNodeProxy* parent);
 
-        virtual ~ModuleNodeProxyStatusListener(){};
+        virtual ~ModuleNodeProxyStatusListener()
+        {
+        }
 
         void on_data_available(
-            eprosima::fastdds::dds::DataReader* reader) override;
+                eprosima::fastdds::dds::DataReader* reader) override;
 
         void on_subscription_matched(
-            eprosima::fastdds::dds::DataReader* reader,
-            const eprosima::fastdds::dds::SubscriptionMatchedStatus & status) override;
+                eprosima::fastdds::dds::DataReader* reader,
+                const eprosima::fastdds::dds::SubscriptionMatchedStatus& status) override;
 
         ModuleNodeProxy* proxy_parent_;
     };
@@ -95,46 +99,48 @@ public:
     using TaskDB_t = orchestrator::OrchestratorNode::TaskDB_t;
 
     ModuleNodeProxy(
-        OrchestratorNode* orchestrator,
-        std::shared_ptr<TaskDB_t> task_db,
-        const char * name);
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<TaskDB_t> task_db,
+            const char* name);
 
     virtual ~ModuleNodeProxy();
 
     /**
-    * @brief Retrieves the Status of the node
-    */
+     * @brief Retrieves the Status of the node
+     */
     const types::NodeStatus& get_status();
 
     /**
-    * @brief Retrieves the Status of the node
-    */
-    void set_status(const types::NodeStatus&);
+     * @brief Retrieves the Status of the node
+     */
+    void set_status(
+            const types::NodeStatus&);
 
 protected:
 
     /**
-    * @brief Notifies the Orchestrator about
-    * a new change in the status of this Proxy
-    */
+     * @brief Notifies the Orchestrator about
+     * a new change in the status of this Proxy
+     */
     void notify_status_change();
 
     /**
-    * @brief Notifies the Orchestrator about
-    * a new output available in this node to store
-    * it into the db
-    */
-    void notify_new_node_ouput(void* data);
+     * @brief Notifies the Orchestrator about
+     * a new output available in this node to store
+     * it into the db
+     */
+    void notify_new_node_ouput(
+            void* data);
 
     /**
-    * @brief Stores an untyped data into the DB
-    */
+     * @brief Stores an untyped data into the DB
+     */
     virtual void store_data_in_db() = 0;
 
     /**
-    * @brief Get a pointer to a stack allocated
-    * temporary typed data
-    */
+     * @brief Get a pointer to a stack allocated
+     * temporary typed data
+     */
     virtual void* get_tmp_impl_typed_data() = 0;
 
     const char* name_;
@@ -156,8 +162,8 @@ protected:
 };
 
 /**
-* @brief TaskEncoder node proxy
-*/
+ * @brief TaskEncoder node proxy
+ */
 class TaskEncoderNodeProxy : public ModuleNodeProxy
 {
     static constexpr MapFromNodeIDToType_t<NodeID::ID_TASK_ENCODER> node_id_to_type_id_{};
@@ -165,12 +171,15 @@ class TaskEncoderNodeProxy : public ModuleNodeProxy
 public:
 
     TaskEncoderNodeProxy(
-        OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
 
-    virtual ~TaskEncoderNodeProxy(){}
+    virtual ~TaskEncoderNodeProxy()
+    {
+    }
 
 protected:
+
     void store_data_in_db() override;
 
     inline void* get_tmp_impl_typed_data() override
@@ -179,12 +188,13 @@ protected:
     }
 
 private:
+
     decltype(node_id_to_type_id_)::type tmp_data_;
 };
 
 /**
-* @brief Machine Learning node proxy
-*/
+ * @brief Machine Learning node proxy
+ */
 class MLModelProviderNodeProxy : public ModuleNodeProxy
 {
     static constexpr MapFromNodeIDToType_t<NodeID::ID_MACHINE_LEARNING> node_id_to_type_id_{};
@@ -192,12 +202,15 @@ class MLModelProviderNodeProxy : public ModuleNodeProxy
 public:
 
     MLModelProviderNodeProxy(
-        OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
 
-    virtual ~MLModelProviderNodeProxy(){}
+    virtual ~MLModelProviderNodeProxy()
+    {
+    }
 
 protected:
+
     void store_data_in_db() override;
 
     inline void* get_tmp_impl_typed_data() override
@@ -206,25 +219,30 @@ protected:
     }
 
 private:
+
     decltype(node_id_to_type_id_)::type tmp_data_;
 
 };
 
 /**
-* @brief Hardware Resources node proxy
-*/
+ * @brief Hardware Resources node proxy
+ */
 class HardwareResourcesProviderNodeProxy : public ModuleNodeProxy
 {
     static constexpr MapFromNodeIDToType_t<NodeID::ID_HARDWARE_RESOURCES> node_id_to_type_id_{};
 
 public:
-    HardwareResourcesProviderNodeProxy(
-        OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
 
-    virtual ~HardwareResourcesProviderNodeProxy(){}
+    HardwareResourcesProviderNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+
+    virtual ~HardwareResourcesProviderNodeProxy()
+    {
+    }
 
 protected:
+
     void store_data_in_db() override;
 
     inline void* get_tmp_impl_typed_data() override
@@ -233,24 +251,29 @@ protected:
     }
 
 private:
+
     decltype(node_id_to_type_id_)::type tmp_data_;
 };
 
 /**
-* @brief Carbon Footprint node proxy
-*/
+ * @brief Carbon Footprint node proxy
+ */
 class CarbonFootprintProviderNodeProxy : public ModuleNodeProxy
 {
     static constexpr MapFromNodeIDToType_t<NodeID::ID_CARBON_FOOTPRINT> node_id_to_type_id_{};
 
 public:
-    CarbonFootprintProviderNodeProxy(
-        OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
 
-    virtual ~CarbonFootprintProviderNodeProxy(){}
+    CarbonFootprintProviderNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+
+    virtual ~CarbonFootprintProviderNodeProxy()
+    {
+    }
 
 protected:
+
     void store_data_in_db() override;
 
     inline void* get_tmp_impl_typed_data() override
@@ -259,6 +282,7 @@ protected:
     }
 
 private:
+
     decltype(node_id_to_type_id_)::type tmp_data_;
 };
 

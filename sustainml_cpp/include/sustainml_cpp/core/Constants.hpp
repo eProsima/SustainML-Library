@@ -24,8 +24,8 @@
 namespace sustainml {
 
 /**
-* @brief Enum class that defines a series of node identifiers.
-*/
+ * @brief Enum class that defines a series of node identifiers.
+ */
 enum class NodeID
 {
     ID_TASK_ENCODER,
@@ -41,8 +41,8 @@ enum class NodeID
 };
 
 /**
-* @brief Class used to return different return code statuses.
-*/
+ * @brief Class used to return different return code statuses.
+ */
 class RetCode_t
 {
     uint32_t value_;

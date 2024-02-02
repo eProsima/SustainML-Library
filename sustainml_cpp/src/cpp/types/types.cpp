@@ -36,7 +36,8 @@ NodeStatus::~NodeStatus()
     }
 }
 
-NodeStatus::NodeStatus(const NodeStatus& x)
+NodeStatus::NodeStatus(
+        const NodeStatus& x)
 {
     impl_ = new NodeStatusImpl;
 
@@ -48,13 +49,15 @@ NodeStatus::NodeStatus(const NodeStatus& x)
     this->impl_->error_description() = x.impl_->error_description();
 }
 
-NodeStatus::NodeStatus(NodeStatus&& x) noexcept
+NodeStatus::NodeStatus(
+        NodeStatus&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
-NodeStatus& NodeStatus::operator =(const NodeStatus& x)
+NodeStatus& NodeStatus::operator =(
+        const NodeStatus& x)
 {
     this->impl_->node_status() = x.impl_->node_status();
     this->impl_->node_name() = x.impl_->node_name();
@@ -65,7 +68,8 @@ NodeStatus& NodeStatus::operator =(const NodeStatus& x)
     return *this;
 }
 
-NodeStatus& NodeStatus::operator =(NodeStatus&& x) noexcept
+NodeStatus& NodeStatus::operator =(
+        NodeStatus&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
@@ -77,17 +81,20 @@ NodeStatus& NodeStatus::operator =(NodeStatus&& x) noexcept
     return *this;
 }
 
-bool NodeStatus::operator ==(const NodeStatus& x) const
+bool NodeStatus::operator ==(
+        const NodeStatus& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
-bool NodeStatus::operator !=(const NodeStatus& x) const
+bool NodeStatus::operator !=(
+        const NodeStatus& x) const
 {
     return !(*this == x);
 }
 
-void NodeStatus::node_status(Status _node_status)
+void NodeStatus::node_status(
+        Status _node_status)
 {
     impl_->node_status(_node_status);
 }
@@ -102,7 +109,8 @@ Status& NodeStatus::node_status()
     return impl_->node_status();
 }
 
-void NodeStatus::task_status(TaskStatus _task_status)
+void NodeStatus::task_status(
+        TaskStatus _task_status)
 {
     impl_->task_status(_task_status);
 }
@@ -117,7 +125,8 @@ TaskStatus& NodeStatus::task_status()
     return impl_->task_status();
 }
 
-void NodeStatus::error_code(ErrorCode _error_code)
+void NodeStatus::error_code(
+        ErrorCode _error_code)
 {
     impl_->error_code(_error_code);
 }
@@ -132,7 +141,8 @@ ErrorCode& NodeStatus::error_code()
     return impl_->error_code();
 }
 
-void NodeStatus::task_id(int32_t _task_id)
+void NodeStatus::task_id(
+        int32_t _task_id)
 {
     impl_->task_id(_task_id);
 }
@@ -217,7 +227,8 @@ NodeControl::~NodeControl()
     }
 }
 
-NodeControl::NodeControl(const NodeControl& x)
+NodeControl::NodeControl(
+        const NodeControl& x)
 {
     impl_ = new NodeControlImpl;
 
@@ -228,13 +239,15 @@ NodeControl::NodeControl(const NodeControl& x)
     this->impl_->cmd_task() = this->impl_->cmd_task();
 }
 
-NodeControl::NodeControl(NodeControl&& x) noexcept
+NodeControl::NodeControl(
+        NodeControl&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
-NodeControl& NodeControl::operator =(const NodeControl& x)
+NodeControl& NodeControl::operator =(
+        const NodeControl& x)
 {
     this->impl_->cmd_node() = x.impl_->cmd_node();
     this->impl_->source_node() = x.impl_->source_node();
@@ -244,7 +257,8 @@ NodeControl& NodeControl::operator =(const NodeControl& x)
     return *this;
 }
 
-NodeControl& NodeControl::operator =(NodeControl&& x) noexcept
+NodeControl& NodeControl::operator =(
+        NodeControl&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
@@ -256,22 +270,23 @@ NodeControl& NodeControl::operator =(NodeControl&& x) noexcept
     return *this;
 }
 
-bool NodeControl::operator ==(const NodeControl& x) const
+bool NodeControl::operator ==(
+        const NodeControl& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
-bool NodeControl::operator !=(const NodeControl& x) const
+bool NodeControl::operator !=(
+        const NodeControl& x) const
 {
     return !(*this == x);
 }
 
-
-void NodeControl::cmd_node(CmdNode _cmd_node)
+void NodeControl::cmd_node(
+        CmdNode _cmd_node)
 {
     impl_->cmd_node(_cmd_node);
 }
-
 
 CmdNode NodeControl::cmd_node() const
 {
@@ -283,7 +298,8 @@ CmdNode& NodeControl::cmd_node()
     return impl_->cmd_node();
 }
 
-void NodeControl::cmd_task(CmdTask _cmd_task)
+void NodeControl::cmd_task(
+        CmdTask _cmd_task)
 {
     impl_->cmd_task(_cmd_task);
 }
@@ -293,19 +309,19 @@ CmdTask NodeControl::cmd_task() const
     return impl_->cmd_task();
 }
 
-
 CmdTask& NodeControl::cmd_task()
 {
     return impl_->cmd_task();
 }
 
-void NodeControl::target_node(const std::string& _target_node)
+void NodeControl::target_node(
+        const std::string& _target_node)
 {
     impl_->target_node(_target_node);
 }
 
-
-void NodeControl::target_node(std::string&& _target_node)
+void NodeControl::target_node(
+        std::string&& _target_node)
 {
     return impl_->target_node(std::forward<std::string>(_target_node));
 }
@@ -320,7 +336,8 @@ std::string NodeControl::target_node()
     return impl_->target_node();
 }
 
-void NodeControl::task_id(int32_t _task_id)
+void NodeControl::task_id(
+        int32_t _task_id)
 {
     impl_->task_id(_task_id);
 }
@@ -335,12 +352,14 @@ int32_t& NodeControl::task_id()
     return impl_->task_id();
 }
 
-void NodeControl::source_node(const std::string& _source_node)
+void NodeControl::source_node(
+        const std::string& _source_node)
 {
     impl_->source_node(_source_node);
 }
 
-void NodeControl::source_node(std::string&& _source_node)
+void NodeControl::source_node(
+        std::string&& _source_node)
 {
     impl_->source_node(std::forward<std::string>(_source_node));
 }
@@ -355,7 +374,6 @@ std::string NodeControl::source_node()
     return impl_->source_node();
 }
 
-
 GeoLocation::GeoLocation()
 {
     impl_ = new GeoLocationImpl();
@@ -369,7 +387,8 @@ GeoLocation::~GeoLocation()
     }
 }
 
-GeoLocation::GeoLocation(const GeoLocation& x)
+GeoLocation::GeoLocation(
+        const GeoLocation& x)
 {
     impl_ = new GeoLocationImpl;
 
@@ -377,20 +396,23 @@ GeoLocation::GeoLocation(const GeoLocation& x)
     this->impl_->region() = x.impl_->region();
 }
 
-GeoLocation::GeoLocation(GeoLocation&& x) noexcept
+GeoLocation::GeoLocation(
+        GeoLocation&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
-GeoLocation& GeoLocation::operator =(const GeoLocation& x)
+GeoLocation& GeoLocation::operator =(
+        const GeoLocation& x)
 {
     this->impl_->continent() = x.impl_->continent();
     this->impl_->region() = x.impl_->region();
     return *this;
 }
 
-GeoLocation& GeoLocation::operator =(GeoLocation&& x) noexcept
+GeoLocation& GeoLocation::operator =(
+        GeoLocation&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
@@ -402,12 +424,14 @@ GeoLocation& GeoLocation::operator =(GeoLocation&& x) noexcept
     return *this;
 }
 
-bool GeoLocation::operator ==(const GeoLocation& x) const
+bool GeoLocation::operator ==(
+        const GeoLocation& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
-bool GeoLocation::operator !=(const GeoLocation& x) const
+bool GeoLocation::operator !=(
+        const GeoLocation& x) const
 {
     return !(*this == x);
 }
@@ -417,7 +441,6 @@ void GeoLocation::continent(
 {
     impl_->continent(_continent);
 }
-
 
 void GeoLocation::continent(
         std::string&& _continent)
@@ -470,7 +493,8 @@ UserInput::~UserInput()
     }
 }
 
-UserInput::UserInput(const UserInput& x)
+UserInput::UserInput(
+        const UserInput& x)
 {
     impl_ = new UserInputImpl;
 
@@ -479,13 +503,15 @@ UserInput::UserInput(const UserInput& x)
     this->impl_->task_id() = x.impl_->task_id();
 }
 
-UserInput::UserInput(UserInput&& x) noexcept
+UserInput::UserInput(
+        UserInput&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
-UserInput& UserInput::operator =(const UserInput& x)
+UserInput& UserInput::operator =(
+        const UserInput& x)
 {
     this->impl_->geo_location() = x.impl_->geo_location();
     this->impl_->problem_description() = x.impl_->problem_description();
@@ -493,7 +519,8 @@ UserInput& UserInput::operator =(const UserInput& x)
     return *this;
 }
 
-UserInput& UserInput::operator =(UserInput&& x) noexcept
+UserInput& UserInput::operator =(
+        UserInput&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
@@ -505,12 +532,14 @@ UserInput& UserInput::operator =(UserInput&& x) noexcept
     return *this;
 }
 
-bool UserInput::operator ==(const UserInput& x) const
+bool UserInput::operator ==(
+        const UserInput& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
-bool UserInput::operator !=(const UserInput& x) const
+bool UserInput::operator !=(
+        const UserInput& x) const
 {
     return !(*this == x);
 }
@@ -598,7 +627,8 @@ EncodedTask::~EncodedTask()
     }
 }
 
-EncodedTask::EncodedTask(const EncodedTask& x)
+EncodedTask::EncodedTask(
+        const EncodedTask& x)
 {
     impl_ = new EncodedTaskImpl;
 
@@ -606,20 +636,23 @@ EncodedTask::EncodedTask(const EncodedTask& x)
     this->impl_->keywords() = x.impl_->keywords();
 }
 
-EncodedTask::EncodedTask(EncodedTask&& x) noexcept
+EncodedTask::EncodedTask(
+        EncodedTask&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
-EncodedTask& EncodedTask::operator =(const EncodedTask& x)
+EncodedTask& EncodedTask::operator =(
+        const EncodedTask& x)
 {
     this->impl_->task_id() = x.impl_->task_id();
     this->impl_->keywords() = x.impl_->keywords();
     return *this;
 }
 
-EncodedTask& EncodedTask::operator =(EncodedTask&& x) noexcept
+EncodedTask& EncodedTask::operator =(
+        EncodedTask&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
@@ -631,22 +664,26 @@ EncodedTask& EncodedTask::operator =(EncodedTask&& x) noexcept
     return *this;
 }
 
-bool EncodedTask::operator ==(const EncodedTask& x) const
+bool EncodedTask::operator ==(
+        const EncodedTask& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
-bool EncodedTask::operator !=(const EncodedTask& x) const
+bool EncodedTask::operator !=(
+        const EncodedTask& x) const
 {
     return !(*this == x);
 }
 
-void EncodedTask::keywords(const std::vector<std::string>& _keywords)
+void EncodedTask::keywords(
+        const std::vector<std::string>& _keywords)
 {
     impl_->keywords(_keywords);
 }
 
-void EncodedTask::keywords(std::vector<std::string>&& _keywords)
+void EncodedTask::keywords(
+        std::vector<std::string>&& _keywords)
 {
     impl_->keywords(std::forward<std::vector<std::string>>(_keywords));
 }
@@ -662,7 +699,7 @@ std::vector<std::string>& EncodedTask::keywords()
 }
 
 void EncodedTask::task_id(
-            int32_t _task_id)
+        int32_t _task_id)
 {
     impl_->task_id(_task_id);
 }
@@ -700,7 +737,8 @@ MLModel::~MLModel()
     }
 }
 
-MLModel::MLModel(const MLModel& x)
+MLModel::MLModel(
+        const MLModel& x)
 {
     impl_ = new MLModelImpl;
 
@@ -711,13 +749,15 @@ MLModel::MLModel(const MLModel& x)
     this->impl_->model_properties() = x.impl_->model_properties();
 }
 
-MLModel::MLModel(MLModel&& x) noexcept
+MLModel::MLModel(
+        MLModel&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
-MLModel& MLModel::operator =(const MLModel& x)
+MLModel& MLModel::operator =(
+        const MLModel& x)
 {
     this->impl_->task_id() = x.impl_->task_id();
     this->impl_->model() = x.impl_->model();
@@ -727,7 +767,8 @@ MLModel& MLModel::operator =(const MLModel& x)
     return *this;
 }
 
-MLModel& MLModel::operator =(MLModel&& x) noexcept
+MLModel& MLModel::operator =(
+        MLModel&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
@@ -739,24 +780,26 @@ MLModel& MLModel::operator =(MLModel&& x) noexcept
     return *this;
 }
 
-bool MLModel::operator ==(const MLModel& x) const
+bool MLModel::operator ==(
+        const MLModel& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
-bool MLModel::operator !=(const MLModel& x) const
+bool MLModel::operator !=(
+        const MLModel& x) const
 {
     return !(*this == x);
 }
 
 void MLModel::model_path(
-            const std::string& _model_path)
+        const std::string& _model_path)
 {
     impl_->model_path(_model_path);
 }
 
 void MLModel::model_path(
-            std::string&& _model_path)
+        std::string&& _model_path)
 {
     impl_->model_path(std::forward<std::string>(_model_path));
 }
@@ -772,13 +815,13 @@ std::string MLModel::model_path()
 }
 
 void MLModel::model(
-            const std::string& _model)
+        const std::string& _model)
 {
     impl_->model(_model);
 }
 
 void MLModel::model(
-            std::string&& _model)
+        std::string&& _model)
 {
     impl_->model(std::forward<std::string>(_model));
 }
@@ -793,12 +836,14 @@ std::string MLModel::model()
     return impl_->model();
 }
 
-void MLModel::model_properties_path(const std::string& _model_properties_path)
+void MLModel::model_properties_path(
+        const std::string& _model_properties_path)
 {
     impl_->model_properties_path(_model_properties_path);
 }
 
-void MLModel::model_properties_path(std::string&& _model_properties_path)
+void MLModel::model_properties_path(
+        std::string&& _model_properties_path)
 {
     impl_->model_properties_path(std::forward<std::string>(_model_properties_path));
 }
@@ -813,12 +858,14 @@ std::string MLModel::model_properties_path()
     return impl_->model_properties_path();
 }
 
-void MLModel::model_properties(const std::string& _model_properties)
+void MLModel::model_properties(
+        const std::string& _model_properties)
 {
     impl_->model_properties(_model_properties);
 }
 
-void MLModel::model_properties(std::string&& _model_properties)
+void MLModel::model_properties(
+        std::string&& _model_properties)
 {
     impl_->model_properties(std::forward<std::string>(_model_properties));
 }
@@ -834,7 +881,7 @@ std::string MLModel::model_properties()
 }
 
 void MLModel::task_id(
-            int32_t _task_id)
+        int32_t _task_id)
 {
     impl_->task_id(_task_id);
 }
@@ -872,7 +919,8 @@ HWResource::~HWResource()
     }
 }
 
-HWResource::HWResource(const HWResource& x)
+HWResource::HWResource(
+        const HWResource& x)
 {
     impl_ = new HWResourceImpl;
 
@@ -881,13 +929,15 @@ HWResource::HWResource(const HWResource& x)
     this->impl_->power_consumption() = x.impl_->power_consumption();
 }
 
-HWResource::HWResource(HWResource&& x) noexcept
+HWResource::HWResource(
+        HWResource&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
-HWResource& HWResource::operator =(const HWResource& x)
+HWResource& HWResource::operator =(
+        const HWResource& x)
 {
     this->impl_->task_id() = x.impl_->task_id();
     this->impl_->hw_description() = x.impl_->hw_description();
@@ -895,7 +945,8 @@ HWResource& HWResource::operator =(const HWResource& x)
     return *this;
 }
 
-HWResource& HWResource::operator =(HWResource&& x) noexcept
+HWResource& HWResource::operator =(
+        HWResource&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
@@ -907,22 +958,26 @@ HWResource& HWResource::operator =(HWResource&& x) noexcept
     return *this;
 }
 
-bool HWResource::operator ==(const HWResource& x) const
+bool HWResource::operator ==(
+        const HWResource& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
-bool HWResource::operator !=(const HWResource& x) const
+bool HWResource::operator !=(
+        const HWResource& x) const
 {
     return !(*this == x);
 }
 
-void HWResource::hw_description(const std::string& _hw_description)
+void HWResource::hw_description(
+        const std::string& _hw_description)
 {
     impl_->hw_description(_hw_description);
 }
 
-void HWResource::hw_description(std::string&& _hw_description)
+void HWResource::hw_description(
+        std::string&& _hw_description)
 {
     impl_->hw_description(std::forward<std::string>(_hw_description));
 }
@@ -937,7 +992,8 @@ std::string HWResource::hw_description()
     return impl_->hw_description();
 }
 
-void HWResource::power_consumption(double _power_consumption)
+void HWResource::power_consumption(
+        double _power_consumption)
 {
     impl_->power_consumption(_power_consumption);
 }
@@ -952,7 +1008,8 @@ double& HWResource::power_consumption()
     return impl_->power_consumption();
 }
 
-void HWResource::task_id(int32_t _task_id)
+void HWResource::task_id(
+        int32_t _task_id)
 {
     impl_->task_id(_task_id);
 }
@@ -990,7 +1047,8 @@ CO2Footprint::~CO2Footprint()
     }
 }
 
-CO2Footprint::CO2Footprint(const CO2Footprint& x)
+CO2Footprint::CO2Footprint(
+        const CO2Footprint& x)
 {
     impl_ = new CO2FootprintImpl;
 
@@ -1000,13 +1058,15 @@ CO2Footprint::CO2Footprint(const CO2Footprint& x)
     this->impl_->energy_consumption() = x.impl_->energy_consumption();
 }
 
-CO2Footprint::CO2Footprint(CO2Footprint&& x) noexcept
+CO2Footprint::CO2Footprint(
+        CO2Footprint&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
-CO2Footprint& CO2Footprint::operator =(const CO2Footprint& x)
+CO2Footprint& CO2Footprint::operator =(
+        const CO2Footprint& x)
 {
     this->impl_->task_id() = x.impl_->task_id();
     this->impl_->carbon_intensity() = x.impl_->carbon_intensity();
@@ -1015,7 +1075,8 @@ CO2Footprint& CO2Footprint::operator =(const CO2Footprint& x)
     return *this;
 }
 
-CO2Footprint& CO2Footprint::operator =(CO2Footprint&& x) noexcept
+CO2Footprint& CO2Footprint::operator =(
+        CO2Footprint&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
@@ -1029,17 +1090,20 @@ CO2Footprint& CO2Footprint::operator =(CO2Footprint&& x) noexcept
     return *this;
 }
 
-bool CO2Footprint::operator ==(const CO2Footprint& x) const
+bool CO2Footprint::operator ==(
+        const CO2Footprint& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
-bool CO2Footprint::operator !=(const CO2Footprint& x) const
+bool CO2Footprint::operator !=(
+        const CO2Footprint& x) const
 {
     return !(*this == x);
 }
 
-void CO2Footprint::co2_footprint(double _co2_footprint)
+void CO2Footprint::co2_footprint(
+        double _co2_footprint)
 {
     impl_->co2_footprint(_co2_footprint);
 }
@@ -1054,7 +1118,8 @@ double& CO2Footprint::co2_footprint()
     return impl_->co2_footprint();
 }
 
-void CO2Footprint::energy_consumption(double _energy_consumption)
+void CO2Footprint::energy_consumption(
+        double _energy_consumption)
 {
     impl_->energy_consumption(_energy_consumption);
 }
@@ -1069,7 +1134,8 @@ double& CO2Footprint::energy_consumption()
     return impl_->energy_consumption();
 }
 
-void CO2Footprint::carbon_intensity(double _carbon_intensity)
+void CO2Footprint::carbon_intensity(
+        double _carbon_intensity)
 {
     impl_->carbon_intensity(_carbon_intensity);
 }
@@ -1084,7 +1150,8 @@ double& CO2Footprint::carbon_intensity()
     return impl_->carbon_intensity();
 }
 
-void CO2Footprint::task_id(int32_t _task_id)
+void CO2Footprint::task_id(
+        int32_t _task_id)
 {
     impl_->task_id(_task_id);
 }

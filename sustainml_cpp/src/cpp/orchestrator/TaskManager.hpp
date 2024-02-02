@@ -26,8 +26,8 @@ namespace sustainml {
 namespace orchestrator {
 
 /**
-* @brief Class that manages the task ids.
-*/
+ * @brief Class that manages the task ids.
+ */
 class TaskManager
 {
 public:
@@ -36,8 +36,8 @@ public:
     virtual ~TaskManager() = default;
 
     /**
-    * @brief Create a new unique task_id.
-    */
+     * @brief Create a new unique task_id.
+     */
     inline int create_new_task_id()
     {
         static int task_id = common::INVALID_ID;

@@ -32,15 +32,15 @@ namespace sustainml {
 namespace orchestrator {
 
 /**
-* @brief This class acts as a factory for creating new ModuleProxies.
-*/
+ * @brief This class acts as a factory for creating new ModuleProxies.
+ */
 struct ModuleNodeProxyFactory
 {
     static void make_node_proxy(
-            const NodeID &id,
+            const NodeID& id,
             OrchestratorNode* orchestrator,
             std::shared_ptr<ModuleNodeProxy::TaskDB_t> db,
-            ModuleNodeProxy* &node_proxy)
+            ModuleNodeProxy*& node_proxy)
     {
         switch (id)
         {
@@ -71,6 +71,7 @@ struct ModuleNodeProxyFactory
             }
         }
     }
+
 };
 
 } // namespace orchestrator

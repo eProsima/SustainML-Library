@@ -32,225 +32,232 @@
 namespace sustainml {
 namespace common {
 
-    constexpr int INVALID_ID = -1;
+constexpr int INVALID_ID = -1;
 
-    //!Node Names
-    constexpr const char* TASK_ENCODER_NODE = "TASK_ENCODER_NODE";
-    constexpr const char* ML_MODEL_NODE = "ML_MODEL_NODE";
-    constexpr const char* HW_RESOURCES_NODE = "HW_RESOURCES_NODE";
-    constexpr const char* CO2_TRACKER_NODE = "CO2_TRACKER_NODE";
+//!Node Names
+constexpr const char* TASK_ENCODER_NODE = "TASK_ENCODER_NODE";
+constexpr const char* ML_MODEL_NODE = "ML_MODEL_NODE";
+constexpr const char* HW_RESOURCES_NODE = "HW_RESOURCES_NODE";
+constexpr const char* CO2_TRACKER_NODE = "CO2_TRACKER_NODE";
 
-    inline NodeID get_node_id_from_name(const eprosima::fastrtps::string_255 &name)
+inline NodeID get_node_id_from_name(
+        const eprosima::fastrtps::string_255& name)
+{
+    NodeID id = NodeID::UNKNOWN;
+
+    if (name == TASK_ENCODER_NODE)
     {
-        NodeID id = NodeID::UNKNOWN;
+        id = NodeID::ID_TASK_ENCODER;
+    }
+    else if (name == ML_MODEL_NODE)
+    {
+        id = NodeID::ID_MACHINE_LEARNING;
+    }
+    else if (name == HW_RESOURCES_NODE)
+    {
+        id = NodeID::ID_HARDWARE_RESOURCES;
+    }
+    else if (name == CO2_TRACKER_NODE)
+    {
+        id = NodeID::ID_CARBON_FOOTPRINT;
+    }
+    return id;
+}
 
-        if (name == TASK_ENCODER_NODE)
-        {
-            id = NodeID::ID_TASK_ENCODER;
-        }
-        else if (name == ML_MODEL_NODE)
-        {
-            id = NodeID::ID_MACHINE_LEARNING;
-        }
-        else if (name == HW_RESOURCES_NODE)
-        {
-            id = NodeID::ID_HARDWARE_RESOURCES;
-        }
-        else if (name == CO2_TRACKER_NODE)
-        {
-            id = NodeID::ID_CARBON_FOOTPRINT;
-        }
-        return id;
+enum Topics
+{
+    NODE_CONTROL,
+    NODE_STATUS,
+    USER_INPUT,
+    ENCODED_TASK,
+    ML_MODEL,
+    HW_RESOURCE,
+    CO2_FOOTPRINT,
+    MAX
+};
+
+inline Topics get_topic_from_name(
+        const char* name)
+{
+    Topics output = Topics::MAX;
+
+    if (name == TASK_ENCODER_NODE)
+    {
+        output = Topics::ENCODED_TASK;
+    }
+    else if (name == ML_MODEL_NODE)
+    {
+        output = Topics::ML_MODEL;
+    }
+    else if (name == HW_RESOURCES_NODE)
+    {
+        output = Topics::HW_RESOURCE;
+    }
+    else if (name == CO2_TRACKER_NODE)
+    {
+        output = Topics::CO2_FOOTPRINT;
+    }
+    return output;
+}
+
+/*!
+ * @brief Map in which to store all the topics, name and typename
+ */
+class TopicCollection
+{
+public:
+
+    static std::map<Topics, std::pair<std::string, std::string>>& get()
+    {
+        static std::map<Topics, std::pair<std::string, std::string>>  topics {
+            {NODE_CONTROL, {"/sustainml/control", "NodeControlImpl"}},
+            {NODE_STATUS, {"/sustainml/status", "NodeStatusImpl"}},
+            {USER_INPUT, {"/sustainml/user_input", "UserInputImpl"}},
+            {ENCODED_TASK, {"/sustainml/task_encoder/output", "EncodedTaskImpl"}},
+            {ML_MODEL, {"/sustainml/ml_model_provider/output", "MLModelImpl"}},
+            {HW_RESOURCE, {"/sustainml/hw_resources/output", "HWResourceImpl"}},
+            {CO2_FOOTPRINT, {"/sustainml/carbon_tracker/output", "CO2FootprintImpl"}}
+        };
+
+        return topics;
     }
 
-    enum Topics
-    {
-        NODE_CONTROL,
-        NODE_STATUS,
-        USER_INPUT,
-        ENCODED_TASK,
-        ML_MODEL,
-        HW_RESOURCE,
-        CO2_FOOTPRINT,
-        MAX
-    };
+protected:
 
-    inline Topics get_topic_from_name(const char *name)
-    {
-        Topics output = Topics::MAX;
+    TopicCollection() = default;
+};
 
-        if (name == TASK_ENCODER_NODE)
-        {
-            output = Topics::ENCODED_TASK;
-        }
-        else if (name == ML_MODEL_NODE)
-        {
-            output = Topics::ML_MODEL;
-        }
-        else if (name == HW_RESOURCES_NODE)
-        {
-            output = Topics::HW_RESOURCE;
-        }
-        else if (name == CO2_TRACKER_NODE)
-        {
-            output = Topics::CO2_FOOTPRINT;
-        }
-        return output;
+
+enum QueueIds
+{
+    USER_INPUT_QUEUE,
+    ENCODED_TASK_QUEUE,
+    ML_MODEL_QUEUE,
+    HW_RESOURCE_QUEUE,
+    CO2_FOOTPRINT_QUEUE,
+};
+
+inline int queue_name_to_id(
+        const std::string& queue_name)
+{
+    auto tp = TopicCollection::get();
+
+    if (queue_name.find(tp[ENCODED_TASK].second) != std::string::npos)
+    {
+        return ENCODED_TASK_QUEUE;
+    }
+    else if (queue_name.find(tp[USER_INPUT].second) != std::string::npos)
+    {
+        return USER_INPUT_QUEUE;
+    }
+    else if (queue_name.find(tp[ML_MODEL].second) != std::string::npos)
+    {
+        return ML_MODEL_QUEUE;
+    }
+    else if (queue_name.find(tp[HW_RESOURCE].second) != std::string::npos)
+    {
+        return HW_RESOURCE_QUEUE;
+    }
+    else if (queue_name.find(tp[CO2_FOOTPRINT].second) != std::string::npos)
+    {
+        return CO2_FOOTPRINT_QUEUE;
+    }
+    else
+    {
+        EPROSIMA_LOG_ERROR(COMMON, "Could not find the requested queue type name " << queue_name);
     }
 
-    /*!
-    * @brief Map in which to store all the topics, name and typename
-    */
-    class TopicCollection
+    return -1;
+}
+
+template<typename T>
+inline int sample_type_to_queue_id(
+        T* sample)
+{
+    if (typeid(sample) == typeid(types::EncodedTask*))
     {
-        public:
-
-            static std::map<Topics, std::pair<std::string, std::string>>& get()
-            {
-                static std::map<Topics, std::pair<std::string, std::string>>  topics {
-                    {NODE_CONTROL, {"/sustainml/control", "NodeControlImpl"}},
-                    {NODE_STATUS, {"/sustainml/status", "NodeStatusImpl"}},
-                    {USER_INPUT, {"/sustainml/user_input", "UserInputImpl"}},
-                    {ENCODED_TASK, {"/sustainml/task_encoder/output", "EncodedTaskImpl"}},
-                    {ML_MODEL, {"/sustainml/ml_model_provider/output", "MLModelImpl"}},
-                    {HW_RESOURCE, {"/sustainml/hw_resources/output", "HWResourceImpl"}},
-                    {CO2_FOOTPRINT, {"/sustainml/carbon_tracker/output", "CO2FootprintImpl"}}
-                };
-
-                return topics;
-            }
-
-        protected:
-
-            TopicCollection() = default;
-    };
-
-
-    enum QueueIds
+        return ENCODED_TASK_QUEUE;
+    }
+    else if (typeid(sample) == typeid(types::UserInput*))
     {
-        USER_INPUT_QUEUE,
-        ENCODED_TASK_QUEUE,
-        ML_MODEL_QUEUE,
-        HW_RESOURCE_QUEUE,
-        CO2_FOOTPRINT_QUEUE,
-    };
-
-    inline int queue_name_to_id(const std::string& queue_name)
+        return USER_INPUT_QUEUE;
+    }
+    else if (typeid(sample) == typeid(types::MLModel*))
     {
-        auto tp = TopicCollection::get();
-
-        if (queue_name.find(tp[ENCODED_TASK].second) != std::string::npos)
-        {
-            return ENCODED_TASK_QUEUE;
-        }
-        else if (queue_name.find(tp[USER_INPUT].second) != std::string::npos)
-        {
-            return USER_INPUT_QUEUE;
-        }
-        else if (queue_name.find(tp[ML_MODEL].second) != std::string::npos)
-        {
-            return ML_MODEL_QUEUE;
-        }
-        else if (queue_name.find(tp[HW_RESOURCE].second) != std::string::npos)
-        {
-            return HW_RESOURCE_QUEUE;
-        }
-        else if (queue_name.find(tp[CO2_FOOTPRINT].second) != std::string::npos)
-        {
-            return CO2_FOOTPRINT_QUEUE;
-        }
-        else
-        {
-            EPROSIMA_LOG_ERROR(COMMON, "Could not find the requested queue type name " << queue_name);
-        }
-
-        return -1;
+        return ML_MODEL_QUEUE;
+    }
+    else if (typeid(sample) == typeid(types::HWResource*))
+    {
+        return HW_RESOURCE_QUEUE;
+    }
+    else if (typeid(sample) == typeid(types::CO2Footprint*))
+    {
+        return CO2_FOOTPRINT_QUEUE;
     }
 
-    template<typename T>
-    inline int sample_type_to_queue_id(T* sample)
-    {
-        if (typeid(sample) == typeid(types::EncodedTask*))
-        {
-            return ENCODED_TASK_QUEUE;
-        }
-        else if (typeid(sample) == typeid(types::UserInput*))
-        {
-            return USER_INPUT_QUEUE;
-        }
-        else if (typeid(sample) == typeid(types::MLModel*))
-        {
-            return ML_MODEL_QUEUE;
-        }
-        else if (typeid(sample) == typeid(types::HWResource*))
-        {
-            return HW_RESOURCE_QUEUE;
-        }
-        else if (typeid(sample) == typeid(types::CO2Footprint*))
-        {
-            return CO2_FOOTPRINT_QUEUE;
-        }
+    return -1;
+}
 
-        return -1;
+template<typename T>
+inline bool pair_queue_id_with_sample_type(
+        std::vector<std::pair<int, void*>> input_samples,
+        T*& sample,
+        const size_t& expected_samples,
+        size_t& n_samples_retrieved)
+{
+    bool ret = false;
+
+    for (std::pair<int, void*>& input : input_samples)
+    {
+        if (sample_type_to_queue_id(sample) == input.first)
+        {
+            sample = reinterpret_cast<decltype(sample)>(input.second);
+            ++n_samples_retrieved;
+            ret = true;
+        }
     }
 
-    template<typename T>
-    inline bool pair_queue_id_with_sample_type(
-            std::vector<std::pair<int,void*>> input_samples,
-            T* &sample,
-            const size_t &expected_samples,
-            size_t &n_samples_retrieved)
-    {
-        bool ret = false;
+    return ret;
+}
 
-        for (std::pair<int,void*> &input : input_samples)
-        {
-            if (sample_type_to_queue_id(sample) == input.first)
-            {
-                sample = reinterpret_cast<decltype(sample)>(input.second);
-                ++n_samples_retrieved;
-                ret = true;
-            }
-        }
+template<std::size_t I = 0, typename ... Tp>
+inline typename std::enable_if<I == sizeof...(Tp), void>::type
+pair_queue_id_with_sample_type(
+        const std::vector<std::pair<int, void*>>& input_samples,
+        std::tuple<Tp...>& t,
+        const size_t& expected_samples,
+        size_t& n_samples_retrieved)
+{
+}
 
-        return ret;
-    }
+template<std::size_t I = 0, typename ... Tp>
+inline typename std::enable_if < I < sizeof...(Tp), void>::type
+pair_queue_id_with_sample_type(
+        const std::vector<std::pair<int, void*>>& input_samples,
+        std::tuple<Tp...>& t_args,
+        const size_t& expected_samples,
+        size_t& n_samples_retrieved)
+{
 
-    template<std::size_t I = 0, typename... Tp>
-    inline typename std::enable_if<I == sizeof...(Tp), void>::type
-    pair_queue_id_with_sample_type(
-            const std::vector<std::pair<int,void*>> &input_samples,
-            std::tuple<Tp...>& t, const size_t &expected_samples,
-            size_t &n_samples_retrieved)
-    { }
-
-    template<std::size_t I = 0, typename... Tp>
-    inline typename std::enable_if<I < sizeof...(Tp), void>::type
-    pair_queue_id_with_sample_type(const std::vector<std::pair<int,void*>> &input_samples,
-            std::tuple<Tp...>& t_args,
-            const size_t &expected_samples,
-            size_t &n_samples_retrieved)
-    {
-
-        if (!pair_queue_id_with_sample_type(
+    if (!pair_queue_id_with_sample_type(
                 input_samples,
                 std::get<I>(t_args),
                 expected_samples,
                 n_samples_retrieved))
+    {
+        if (n_samples_retrieved != expected_samples)
         {
-            if (n_samples_retrieved != expected_samples)
-            {
-                EPROSIMA_LOG_ERROR(COMMON, "Expected sample type not found in retrieved samples");
-            }
-
-            return;
+            EPROSIMA_LOG_ERROR(COMMON, "Expected sample type not found in retrieved samples");
         }
-        pair_queue_id_with_sample_type<I + 1, Tp...>(
-                input_samples,
-                t_args,
-                expected_samples,
-                n_samples_retrieved);
+
+        return;
     }
+    pair_queue_id_with_sample_type<I + 1, Tp...>(
+        input_samples,
+        t_args,
+        expected_samples,
+        n_samples_retrieved);
+}
 
 } //common
 } //sustainml

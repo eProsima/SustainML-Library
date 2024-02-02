@@ -30,31 +30,37 @@ namespace sustainml {
 namespace orchestrator {
 
 /**
-* @brief Class that represents the DataBase
-*/
-template <typename ...Args>
+ * @brief Class that represents the DataBase
+ */
+template <typename ... Args>
 class TaskDB
 {
 public:
+
     TaskDB() = default;
     virtual ~TaskDB();
 
     /**
-    * @brief Inserts new data in the DB.
-    */
+     * @brief Inserts new data in the DB.
+     */
     template <typename T>
-    bool insert_task_data(const int& task_id, const T& data);
+    bool insert_task_data(
+            const int& task_id,
+            const T& data);
 
     /**
-    * @brief Retrieves data from the DB given the task name
-    */
+     * @brief Retrieves data from the DB given the task name
+     */
     template <typename T>
-    bool get_task_data(const int &task_id, T*&);
+    bool get_task_data(
+            const int& task_id,
+            T*&);
 
     /**
-    * @brief Allocates a new entry in the DB
-    */
-    bool prepare_new_entry(const int& task_id);
+     * @brief Allocates a new entry in the DB
+     */
+    bool prepare_new_entry(
+            const int& task_id);
 
 protected:
 
@@ -63,22 +69,24 @@ protected:
 
 };
 
-template <typename ...Args>
+template <typename ... Args>
 TaskDB<Args...>::~TaskDB()
 {
     std::lock_guard<std::mutex> lock(mtx_);
 }
 
-template <typename ...Args>
+template <typename ... Args>
 template <typename T>
-bool TaskDB<Args...>::insert_task_data(const int& task_id, const T& data)
+bool TaskDB<Args...>::insert_task_data(
+        const int& task_id,
+        const T& data)
 {
     bool ret_code = false;
 
     std::lock_guard<std::mutex> lock(mtx_);
     auto it = db_.find(task_id);
 
-    if(it != db_.end())
+    if (it != db_.end())
     {
         T& db_data = std::get<T>(it->second);
         db_data = data;
@@ -92,17 +100,18 @@ bool TaskDB<Args...>::insert_task_data(const int& task_id, const T& data)
     return ret_code;
 }
 
-
-template <typename ...Args>
+template <typename ... Args>
 template <typename T>
-bool TaskDB<Args...>::get_task_data(const int &task_id, T*& data)
+bool TaskDB<Args...>::get_task_data(
+        const int& task_id,
+        T*& data)
 {
     bool ret_code = false;
 
     std::lock_guard<std::mutex> lock(mtx_);
     auto it = db_.find(task_id);
 
-    if(it != db_.end())
+    if (it != db_.end())
     {
         T& db_data = std::get<T>(it->second);
         data = &db_data;
@@ -116,15 +125,16 @@ bool TaskDB<Args...>::get_task_data(const int &task_id, T*& data)
     return ret_code;
 }
 
-template <typename ...Args>
-bool TaskDB<Args...>::prepare_new_entry(const int &task_id)
+template <typename ... Args>
+bool TaskDB<Args...>::prepare_new_entry(
+        const int& task_id)
 {
     bool ret_code = false;
 
     std::lock_guard<std::mutex> lock(mtx_);
     auto it = db_.find(task_id);
 
-    if(it == db_.end())
+    if (it == db_.end())
     {
         db_[task_id];
         ret_code = true;

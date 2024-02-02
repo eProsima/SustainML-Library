@@ -26,14 +26,15 @@
 namespace sustainml {
 namespace orchestrator {
 
-ModuleNodeProxy::ModuleNodeProxyListener::ModuleNodeProxyListener(ModuleNodeProxy* proxy) :
-    proxy_parent_(proxy)
+ModuleNodeProxy::ModuleNodeProxyListener::ModuleNodeProxyListener(
+        ModuleNodeProxy* proxy)
+    : proxy_parent_(proxy)
 {
 
 }
 
 void ModuleNodeProxy::ModuleNodeProxyListener::on_data_available(
-    eprosima::fastdds::dds::DataReader* reader)
+        eprosima::fastdds::dds::DataReader* reader)
 {
     eprosima::fastdds::dds::SampleInfo info;
 
@@ -49,20 +50,21 @@ void ModuleNodeProxy::ModuleNodeProxyListener::on_data_available(
 }
 
 void ModuleNodeProxy::ModuleNodeProxyListener::on_subscription_matched(
-    eprosima::fastdds::dds::DataReader* reader,
-    const eprosima::fastdds::dds::SubscriptionMatchedStatus & status)
+        eprosima::fastdds::dds::DataReader* reader,
+        const eprosima::fastdds::dds::SubscriptionMatchedStatus& status)
 {
 
 }
 
-ModuleNodeProxy::ModuleNodeProxyStatusListener::ModuleNodeProxyStatusListener(ModuleNodeProxy* proxy) :
-    proxy_parent_(proxy)
+ModuleNodeProxy::ModuleNodeProxyStatusListener::ModuleNodeProxyStatusListener(
+        ModuleNodeProxy* proxy)
+    : proxy_parent_(proxy)
 {
 
 }
 
 void ModuleNodeProxy::ModuleNodeProxyStatusListener::on_data_available(
-    eprosima::fastdds::dds::DataReader* reader)
+        eprosima::fastdds::dds::DataReader* reader)
 {
     SampleInfo info;
     // Take next sample from DataReader's history
@@ -72,33 +74,35 @@ void ModuleNodeProxy::ModuleNodeProxyStatusListener::on_data_available(
         if (ALIVE_INSTANCE_STATE == info.instance_state)
         {
             // Print structure data
-            EPROSIMA_LOG_INFO(MODULE_PROXY, "New Status " << proxy_parent_->status_.node_name() << " " << proxy_parent_->status_.node_status() << " RECEIVED");
+            EPROSIMA_LOG_INFO(MODULE_PROXY,
+                    "New Status " << proxy_parent_->status_.node_name() << " " << proxy_parent_->status_.node_status() <<
+                    " RECEIVED");
             proxy_parent_->notify_status_change();
         }
     }
 }
 
 void ModuleNodeProxy::ModuleNodeProxyStatusListener::on_subscription_matched(
-    eprosima::fastdds::dds::DataReader*,
-    const eprosima::fastdds::dds::SubscriptionMatchedStatus & status)
+        eprosima::fastdds::dds::DataReader*,
+        const eprosima::fastdds::dds::SubscriptionMatchedStatus& status)
 {
 
 }
 
 ModuleNodeProxy::ModuleNodeProxy(
-    OrchestratorNode* orchestrator,
-    std::shared_ptr<TaskDB_t> task_db,
-    const char * name) :
-    name_(name),
-    node_id_(common::get_node_id_from_name(name_)),
-    orchestrator_(orchestrator),
-    task_db_(task_db),
-    listener_(this),
-    status_listener_(this)
+        OrchestratorNode* orchestrator,
+        std::shared_ptr<TaskDB_t> task_db,
+        const char* name)
+    : name_(name)
+    , node_id_(common::get_node_id_from_name(name_))
+    , orchestrator_(orchestrator)
+    , task_db_(task_db)
+    , listener_(this)
+    , status_listener_(this)
 {
     if (orchestrator_->participant_ == nullptr ||
-        orchestrator_->sub_ == nullptr ||
-        orchestrator_->status_topic_ == nullptr)
+            orchestrator_->sub_ == nullptr ||
+            orchestrator_->status_topic_ == nullptr)
     {
         EPROSIMA_LOG_ERROR(ORCHESTRATOR_NODE_PROXY, "Error construction");
         return;
@@ -164,7 +168,8 @@ void ModuleNodeProxy::notify_status_change()
     }
 }
 
-void ModuleNodeProxy::notify_new_node_ouput(void* data)
+void ModuleNodeProxy::notify_new_node_ouput(
+        void* data)
 {
     store_data_in_db();
     std::lock_guard<std::mutex> lock(orchestrator_->mtx_);
@@ -175,7 +180,8 @@ void ModuleNodeProxy::notify_new_node_ouput(void* data)
     }
 }
 
-void ModuleNodeProxy::set_status(const types::NodeStatus& status)
+void ModuleNodeProxy::set_status(
+        const types::NodeStatus& status)
 {
     status_ = status;
 }
@@ -188,7 +194,7 @@ const types::NodeStatus& ModuleNodeProxy::get_status()
 TaskEncoderNodeProxy::TaskEncoderNodeProxy(
         OrchestratorNode* orchestrator,
         std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-        : ModuleNodeProxy(orchestrator, task_db, common::TASK_ENCODER_NODE)
+    : ModuleNodeProxy(orchestrator, task_db, common::TASK_ENCODER_NODE)
 {
 
 }
@@ -201,7 +207,7 @@ void TaskEncoderNodeProxy::store_data_in_db()
 MLModelProviderNodeProxy::MLModelProviderNodeProxy(
         OrchestratorNode* orchestrator,
         std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-        : ModuleNodeProxy(orchestrator, task_db, common::ML_MODEL_NODE)
+    : ModuleNodeProxy(orchestrator, task_db, common::ML_MODEL_NODE)
 {
 
 }
@@ -214,7 +220,7 @@ void MLModelProviderNodeProxy::store_data_in_db()
 HardwareResourcesProviderNodeProxy::HardwareResourcesProviderNodeProxy(
         OrchestratorNode* orchestrator,
         std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-        : ModuleNodeProxy(orchestrator, task_db, common::HW_RESOURCES_NODE)
+    : ModuleNodeProxy(orchestrator, task_db, common::HW_RESOURCES_NODE)
 {
 
 }
@@ -227,7 +233,7 @@ void HardwareResourcesProviderNodeProxy::store_data_in_db()
 CarbonFootprintProviderNodeProxy::CarbonFootprintProviderNodeProxy(
         OrchestratorNode* orchestrator,
         std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-        : ModuleNodeProxy(orchestrator, task_db, common::CO2_TRACKER_NODE)
+    : ModuleNodeProxy(orchestrator, task_db, common::CO2_TRACKER_NODE)
 {
 
 }

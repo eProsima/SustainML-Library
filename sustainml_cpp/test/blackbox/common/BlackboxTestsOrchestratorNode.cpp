@@ -21,21 +21,26 @@ struct TestOrchestratorNodeHandle : public orchestrator::OrchestratorNodeHandle
 {
     using DataCollection = std::map<NodeID, std::pair<Status, int>>;
 
-    void on_new_node_output(const NodeID &id, void* data)
+    void on_new_node_output(
+            const NodeID& id,
+            void* data)
     {
         std::lock_guard<std::mutex> lock(mtx_);
         node_data_received_[id].second++;
         cv_.notify_one();
     }
 
-    void on_node_status_change(const NodeID &id, const types::NodeStatus& status)
+    void on_node_status_change(
+            const NodeID& id,
+            const types::NodeStatus& status)
     {
         std::lock_guard<std::mutex> lock(mtx_);
         node_data_received_[id].first = status.node_status();
         cv_.notify_one();
     }
 
-    void prepare_expected_data(const DataCollection& expected_data)
+    void prepare_expected_data(
+            const DataCollection& expected_data)
     {
         expected_node_data_ = expected_data;
     }
@@ -52,11 +57,11 @@ struct TestOrchestratorNodeHandle : public orchestrator::OrchestratorNodeHandle
                     for (auto& x : node_data_received_)
                     {
                         std::cout << "Arrived " << (int)x.first << x.second.first << x.second.second << std::endl;
-                    };
+                    }
                     for (auto& x : expected_node_data_)
                     {
                         std::cout << "Expected " << (int)x.first << x.second.first << x.second.second << std::endl;
-                    };
+                    }
                     return expected_node_data_ == node_data_received_;
                 });
 
@@ -75,12 +80,12 @@ private:
 };
 
 static TestOrchestratorNodeHandle::DataCollection nodes_ready_expected_data =
-        {
-            {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 0}},
-            {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 0}},
-            {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 0}},
-            {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
-        };
+{
+    {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 0}},
+    {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 0}},
+    {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 0}},
+    {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
+};
 
 TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
 {
@@ -108,12 +113,12 @@ TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
     std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
 
     TestOrchestratorNodeHandle::DataCollection expected_data =
-        {
-            {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 0}},
-            {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 0}},
-            {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 0}},
-            {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
-        };
+    {
+        {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 0}},
+        {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 0}},
+        {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 0}},
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
+    };
 
     tonh->prepare_expected_data(expected_data);
 
@@ -156,12 +161,12 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(3)));
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
-        {
-            {NodeID::ID_TASK_ENCODER, {NODE_RUNNING, 1}},
-            {NodeID::ID_MACHINE_LEARNING, {NODE_RUNNING, 1}},
-            {NodeID::ID_HARDWARE_RESOURCES, {NODE_RUNNING, 1}},
-            {NodeID::ID_CARBON_FOOTPRINT, {NODE_RUNNING, 1}}
-        };
+    {
+        {NodeID::ID_TASK_ENCODER, {NODE_RUNNING, 1}},
+        {NodeID::ID_MACHINE_LEARNING, {NODE_RUNNING, 1}},
+        {NodeID::ID_HARDWARE_RESOURCES, {NODE_RUNNING, 1}},
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_RUNNING, 1}}
+    };
 
     tonh->prepare_expected_data(test_expected_data);
 
@@ -253,12 +258,12 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(3)));
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
-        {
-            {NodeID::ID_TASK_ENCODER, {NODE_RUNNING, 1}},
-            {NodeID::ID_MACHINE_LEARNING, {NODE_RUNNING, 1}},
-            {NodeID::ID_HARDWARE_RESOURCES, {NODE_RUNNING, 1}},
-            {NodeID::ID_CARBON_FOOTPRINT, {NODE_RUNNING, 1}}
-        };
+    {
+        {NodeID::ID_TASK_ENCODER, {NODE_RUNNING, 1}},
+        {NodeID::ID_MACHINE_LEARNING, {NODE_RUNNING, 1}},
+        {NodeID::ID_HARDWARE_RESOURCES, {NODE_RUNNING, 1}},
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_RUNNING, 1}}
+    };
 
     tonh->prepare_expected_data(test_expected_data);
 
