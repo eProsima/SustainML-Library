@@ -147,6 +147,10 @@ bool OrchestratorNode::init()
     DomainParticipantQos dpqos = PARTICIPANT_QOS_DEFAULT;
     dpqos.name("ORCHESTRATOR_NODE");
 
+    //! Set sustainML app ID participant properties
+    dpqos.properties().properties().emplace_back("fastdds.application.id", "SUSTAINML", true);
+    dpqos.properties().properties().emplace_back("fastdds.application.metadata", "", true);
+
     //! Initialize entities
     participant_ = dpf->create_participant(domain_,
                     dpqos,
