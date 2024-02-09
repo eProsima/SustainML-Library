@@ -185,7 +185,8 @@ void ModuleNodeProxy::notify_new_node_ouput()
     }
 }
 
-void ModuleNodeProxy::reset_and_prepare_task_id(const int& task_id)
+void ModuleNodeProxy::reset_and_prepare_task_id(
+        const int& task_id)
 {
     task_db_->prepare_new_entry(task_id);
     orchestrator_->task_man_->set_task_id(task_id);
@@ -212,7 +213,7 @@ TaskEncoderNodeProxy::TaskEncoderNodeProxy(
 
 void TaskEncoderNodeProxy::store_data_in_db()
 {
-    if(!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
     {
         reset_and_prepare_task_id(tmp_data_.task_id());
         task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
@@ -229,7 +230,7 @@ MLModelProviderNodeProxy::MLModelProviderNodeProxy(
 
 void MLModelProviderNodeProxy::store_data_in_db()
 {
-    if(!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
     {
         reset_and_prepare_task_id(tmp_data_.task_id());
         task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
@@ -246,7 +247,7 @@ HardwareResourcesProviderNodeProxy::HardwareResourcesProviderNodeProxy(
 
 void HardwareResourcesProviderNodeProxy::store_data_in_db()
 {
-    if(!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
     {
         reset_and_prepare_task_id(tmp_data_.task_id());
         task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
@@ -263,7 +264,7 @@ CarbonFootprintProviderNodeProxy::CarbonFootprintProviderNodeProxy(
 
 void CarbonFootprintProviderNodeProxy::store_data_in_db()
 {
-    if(!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
     {
         reset_and_prepare_task_id(tmp_data_.task_id());
         task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);

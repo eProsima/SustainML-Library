@@ -49,11 +49,11 @@ public:
     /**
      * @brief Sets the task id to the status of the system
      */
-    inline void set_task_id(const int& task_id)
+    inline void set_task_id(
+            const int& task_id)
     {
         if (task_id > task_id_.load())
         {
-            std::cout << "Resetting task id to " << task_id << std::endl;
             task_id_.exchange(task_id);
         }
     }

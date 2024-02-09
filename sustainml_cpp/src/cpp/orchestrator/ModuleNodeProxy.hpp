@@ -136,7 +136,8 @@ protected:
      * to a certain task_id. This is useful in case the Orchestrator
      * is a late joiner.
      */
-    void reset_and_prepare_task_id(const int& task_id);
+    void reset_and_prepare_task_id(
+            const int& task_id);
 
     /**
      * @brief Stores an untyped data into the DB
