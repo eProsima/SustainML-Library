@@ -145,9 +145,12 @@ bool OrchestratorNode::init()
 {
     auto dpf = DomainParticipantFactory::get_instance();
 
+    DomainParticipantQos dpqos = PARTICIPANT_QOS_DEFAULT;
+    dpqos.name("ORCHESTRATOR_NODE");
+
     //! Initialize entities
     participant_ = dpf->create_participant(domain_,
-                    PARTICIPANT_QOS_DEFAULT,
+                    dpqos,
                     participant_listener_.get(),
                     StatusMask::all() >> StatusMask::data_on_readers());
 
