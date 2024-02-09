@@ -129,8 +129,14 @@ protected:
      * a new output available in this node to store
      * it into the db
      */
-    void notify_new_node_ouput(
-            void* data);
+    void notify_new_node_ouput();
+
+    /**
+     * @brief Prepare a new entry and resets task manager counter
+     * to a certain task_id. This is useful in case the Orchestrator
+     * is a late joiner.
+     */
+    void reset_and_prepare_task_id(const int& task_id);
 
     /**
      * @brief Stores an untyped data into the DB
@@ -139,9 +145,15 @@ protected:
 
     /**
      * @brief Get a pointer to a stack allocated
-     * temporary typed data
+     * temporary impl untyped data
      */
-    virtual void* get_tmp_impl_typed_data() = 0;
+    virtual void* get_tmp_impl_untyped_data() = 0;
+
+    /**
+     * @brief Get a pointer to a stack allocated
+     * temporary untyped data
+     */
+    virtual void* get_tmp_untyped_data() = 0;
 
     const char* name_;
     const NodeID node_id_;
@@ -182,9 +194,14 @@ protected:
 
     void store_data_in_db() override;
 
-    inline void* get_tmp_impl_typed_data() override
+    inline void* get_tmp_impl_untyped_data() override
     {
         return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
     }
 
 private:
@@ -213,9 +230,14 @@ protected:
 
     void store_data_in_db() override;
 
-    inline void* get_tmp_impl_typed_data() override
+    inline void* get_tmp_impl_untyped_data() override
     {
         return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
     }
 
 private:
@@ -245,9 +267,14 @@ protected:
 
     void store_data_in_db() override;
 
-    inline void* get_tmp_impl_typed_data() override
+    inline void* get_tmp_impl_untyped_data() override
     {
         return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
     }
 
 private:
@@ -276,9 +303,14 @@ protected:
 
     void store_data_in_db() override;
 
-    inline void* get_tmp_impl_typed_data() override
+    inline void* get_tmp_impl_untyped_data() override
     {
         return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
     }
 
 private:

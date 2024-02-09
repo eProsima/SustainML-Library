@@ -18,6 +18,7 @@
 
 
 #include <orchestrator/ModuleNodeProxy.hpp>
+#include <orchestrator/TaskManager.hpp>
 
 #include "TaskDB.ipp"
 
@@ -38,13 +39,13 @@ void ModuleNodeProxy::ModuleNodeProxyListener::on_data_available(
 {
     eprosima::fastdds::dds::SampleInfo info;
 
-    void* tmp_untyped_impl_data = proxy_parent_->get_tmp_impl_typed_data();
+    void* tmp_untyped_impl_data = proxy_parent_->get_tmp_impl_untyped_data();
     if (reader->take_next_sample(tmp_untyped_impl_data, &info) == eprosima::fastrtps::types::ReturnCode_t::RETCODE_OK)
     {
         if (info.instance_state == eprosima::fastdds::dds::ALIVE_INSTANCE_STATE)
         {
             EPROSIMA_LOG_INFO(MODULE_PROXY, "notify_new_node_ouput " << proxy_parent_->name_);
-            proxy_parent_->notify_new_node_ouput(tmp_untyped_impl_data);
+            proxy_parent_->notify_new_node_ouput();
         }
     }
 }
@@ -168,16 +169,22 @@ void ModuleNodeProxy::notify_status_change()
     }
 }
 
-void ModuleNodeProxy::notify_new_node_ouput(
-        void* data)
+void ModuleNodeProxy::notify_new_node_ouput()
 {
     store_data_in_db();
+    void* untyped_data = get_tmp_untyped_data();
     std::lock_guard<std::mutex> lock(orchestrator_->mtx_);
     std::shared_ptr<OrchestratorNodeHandle> handler_ptr = orchestrator_->get_handler().lock();
     if (handler_ptr != nullptr)
     {
-        handler_ptr->on_new_node_output(node_id_, data);
+        handler_ptr->on_new_node_output(node_id_, untyped_data);
     }
+}
+
+void ModuleNodeProxy::reset_and_prepare_task_id(const int& task_id)
+{
+    task_db_->prepare_new_entry(task_id);
+    orchestrator_->task_man_->set_task_id(task_id);
 }
 
 void ModuleNodeProxy::set_status(
@@ -201,7 +208,11 @@ TaskEncoderNodeProxy::TaskEncoderNodeProxy(
 
 void TaskEncoderNodeProxy::store_data_in_db()
 {
-    task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    if(!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    {
+        reset_and_prepare_task_id(tmp_data_.task_id());
+        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    }
 }
 
 MLModelProviderNodeProxy::MLModelProviderNodeProxy(
@@ -214,7 +225,11 @@ MLModelProviderNodeProxy::MLModelProviderNodeProxy(
 
 void MLModelProviderNodeProxy::store_data_in_db()
 {
-    task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    if(!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    {
+        reset_and_prepare_task_id(tmp_data_.task_id());
+        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    }
 }
 
 HardwareResourcesProviderNodeProxy::HardwareResourcesProviderNodeProxy(
@@ -227,7 +242,11 @@ HardwareResourcesProviderNodeProxy::HardwareResourcesProviderNodeProxy(
 
 void HardwareResourcesProviderNodeProxy::store_data_in_db()
 {
-    task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    if(!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    {
+        reset_and_prepare_task_id(tmp_data_.task_id());
+        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    }
 }
 
 CarbonFootprintProviderNodeProxy::CarbonFootprintProviderNodeProxy(
@@ -240,7 +259,11 @@ CarbonFootprintProviderNodeProxy::CarbonFootprintProviderNodeProxy(
 
 void CarbonFootprintProviderNodeProxy::store_data_in_db()
 {
-    task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    if(!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    {
+        reset_and_prepare_task_id(tmp_data_.task_id());
+        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    }
 }
 
 } // namespace orchestrator

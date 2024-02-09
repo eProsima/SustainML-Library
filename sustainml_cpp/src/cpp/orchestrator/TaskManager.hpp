@@ -35,14 +35,26 @@ public:
     TaskManager() = default;
     virtual ~TaskManager() = default;
 
+    std::atomic<int> task_id_{common::INVALID_ID};
+
     /**
      * @brief Create a new unique task_id.
      */
     inline int create_new_task_id()
     {
-        static int task_id = common::INVALID_ID;
-        ++task_id;
-        return task_id;
+        task_id_.fetch_add(1);
+        return task_id_;
+    }
+
+    /**
+     * @brief Sets the task id to the status of the system
+     */
+    inline void set_task_id(const int& task_id)
+    {
+        if (task_id > task_id_.load())
+        {
+            task_id_.exchange(task_id);
+        }
     }
 
 };

@@ -92,10 +92,6 @@ bool TaskDB<Args...>::insert_task_data(
         db_data = data;
         ret_code = true;
     }
-    else
-    {
-        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Inserting a data element with an unknown task_id");
-    }
 
     return ret_code;
 }
