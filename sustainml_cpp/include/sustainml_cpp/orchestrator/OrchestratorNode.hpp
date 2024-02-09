@@ -1,4 +1,4 @@
-// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2024 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,6 +61,8 @@ struct OrchestratorNodeHandle
 
     /**
      * @brief Callback to notify the user that new output data is available in one node.
+     * @param   id identifier of the node that triggered the new output
+     * @param data generic pointer to the output data
      */
     virtual void on_new_node_output(
             const NodeID& id,
@@ -68,6 +70,8 @@ struct OrchestratorNodeHandle
 
     /**
      * @brief Callback to notify the user that the status of a node has changed.
+     * @param     id identifier of the node that triggered the new status
+     * @param status pointer to the status data
      */
     virtual void on_node_status_change(
             const NodeID& id,
@@ -95,6 +99,9 @@ public:
 
     /**
      * @brief Get the task data from DB given the task_id and node identifier.
+     * @param [in] task_id id identifier of the task that has new data available
+     * @param [in] node_id id identifier of the node that triggered the new status
+     * @param [in,out]  data pointer that will be redirected to the data
      */
     RetCode_t get_task_data(
             const int& task_id,
@@ -103,6 +110,9 @@ public:
 
     /**
      * @brief Get the node status from DB given node identifier.
+     * @param [in] node_id id identifier of the node that triggered the new status
+     * @param [in,out]  status pointer that will be redirected to the status data
+     *
      */
     RetCode_t get_node_status(
             const NodeID& node_id,
@@ -118,6 +128,8 @@ public:
     /**
      * @brief This method triggers a new task with a previously prepared task_id and
      * a pointer to the UserInput data structure.
+     * @param [in] task_id id task identifier of the desired task
+     * @param [in]      ui pointer to the user input data
      */
     bool start_task(
             const int& task_id,
@@ -125,6 +137,7 @@ public:
 
     /**
      * @brief This method sends the specified Node Control command to the related node.
+     * @param [in] cmd control command to send
      */
     void send_control_command(
             const types::NodeControl& cmd);

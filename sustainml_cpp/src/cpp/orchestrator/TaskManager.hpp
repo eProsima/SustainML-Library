@@ -1,4 +1,4 @@
-// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2024 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,6 +53,7 @@ public:
     {
         if (task_id > task_id_.load())
         {
+            std::cout << "Resetting task id to " << task_id << std::endl;
             task_id_.exchange(task_id);
         }
     }

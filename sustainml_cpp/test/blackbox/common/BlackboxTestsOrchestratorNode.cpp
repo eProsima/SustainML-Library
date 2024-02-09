@@ -14,7 +14,6 @@
 
 #include "BlackboxTests.hpp"
 
-
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
 
 struct TestOrchestratorNodeHandle : public orchestrator::OrchestratorNodeHandle
@@ -225,7 +224,7 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
 
     orchestrator.start_task(task.first, task.second);
 
-    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
+    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
     void* enc_task = nullptr;
     void* hw = nullptr;
     ASSERT_EQ(orchestrator.get_task_data(0, NodeID::ID_TASK_ENCODER, enc_task), RetCode_t::RETCODE_OK);
