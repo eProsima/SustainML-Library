@@ -124,6 +124,10 @@ ModuleNodeProxy::ModuleNodeProxy(
     DataReaderQos drqos;
     drqos.durability().kind = TRANSIENT_LOCAL_DURABILITY_QOS;
     drqos.reliability().kind = RELIABLE_RELIABILITY_QOS;
+    drqos.resource_limits().max_instances = 500;
+    drqos.resource_limits().max_samples_per_instance = 1;
+    drqos.history().kind = eprosima::fastdds::dds::KEEP_LAST_HISTORY_QOS;
+    drqos.history().depth = 1;
 
     node_output_datareader_ = orchestrator_->sub_->create_datareader(node_output_topic_, drqos, &listener_);
 

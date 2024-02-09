@@ -202,7 +202,11 @@ bool OrchestratorNode::init()
         return false;
     }
 
-    control_writer_ = pub_->create_datawriter(control_topic_, DATAWRITER_QOS_DEFAULT);
+    DataWriterQos dwqos = DATAWRITER_QOS_DEFAULT;
+    dwqos.resource_limits().max_instances = 500;
+    dwqos.resource_limits().max_samples_per_instance = 1;
+
+    control_writer_ = pub_->create_datawriter(control_topic_, dwqos);
 
     if (control_writer_ == nullptr)
     {
@@ -210,7 +214,7 @@ bool OrchestratorNode::init()
         return false;
     }
 
-    user_input_writer_ = pub_->create_datawriter(user_input_topic_, DATAWRITER_QOS_DEFAULT);
+    user_input_writer_ = pub_->create_datawriter(user_input_topic_, dwqos);
 
     if (user_input_topic_ == nullptr)
     {
