@@ -84,6 +84,7 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
         status.node_status(NODE_INACTIVE);
         std::lock_guard<std::mutex> lock(orchestrator_->mtx_);
         orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]->set_status(status);
+        orchestrator_->handler_->on_node_status_change(node_id, status);
     }
 }
 
