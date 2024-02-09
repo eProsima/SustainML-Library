@@ -131,6 +131,16 @@ void CarbonFootprintNode::publish_to_user(
         //! Ensure task_id is forwarded to the output
         task_data_cache->second.task_id(task_id);
 
+        if (task_data_cache->first.node_status() != NODE_ERROR)
+        {
+            status(NODE_IDLE);
+        }
+        else
+        {
+            status(NODE_ERROR);
+        }
+
+        publish_node_status();
         writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->second.get_impl());
 
         listener_ml_model_queue_->remove_element_by_taskid(task_id);
