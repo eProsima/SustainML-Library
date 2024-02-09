@@ -465,6 +465,12 @@ public:
      */
     eProsima_user_DllExport std::string source_node();
 
+    /*!
+     * @brief This function returns the implementation
+     * @return Pointer to implementation
+     */
+    NodeControlImpl* get_impl() const;
+
 protected:
 
     NodeControlImpl* impl_;

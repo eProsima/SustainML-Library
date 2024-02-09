@@ -1,4 +1,3 @@
-
 // Copyright 2024 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -337,6 +336,12 @@ RetCode_t OrchestratorNode::get_node_status(
     }
 
     return ret;
+}
+
+void OrchestratorNode::send_control_command(
+        const types::NodeControl& cmd)
+{
+    control_writer_->write(cmd.get_impl());
 }
 
 } // namespace orchestrator
