@@ -161,10 +161,10 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_TASK_ENCODER, {NODE_RUNNING, 1}},
-        {NodeID::ID_MACHINE_LEARNING, {NODE_RUNNING, 1}},
-        {NodeID::ID_HARDWARE_RESOURCES, {NODE_RUNNING, 1}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_RUNNING, 1}}
+        {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 1}},
+        {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 1}},
+        {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 1}},
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -202,10 +202,10 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_TASK_ENCODER, {NODE_RUNNING, 2}},
-        {NodeID::ID_MACHINE_LEARNING, {NODE_RUNNING, 2}},
-        {NodeID::ID_HARDWARE_RESOURCES, {NODE_RUNNING, 2}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_RUNNING, 2}}
+        {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 2}},
+        {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 2}},
+        {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 2}},
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 2}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -258,10 +258,10 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_TASK_ENCODER, {NODE_RUNNING, 1}},
-        {NodeID::ID_MACHINE_LEARNING, {NODE_RUNNING, 1}},
-        {NodeID::ID_HARDWARE_RESOURCES, {NODE_RUNNING, 1}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_RUNNING, 1}}
+        {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 1}},
+        {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 1}},
+        {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 1}},
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -276,11 +276,11 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
     const types::NodeStatus* status;
     orchestrator.get_node_status(NodeID::ID_TASK_ENCODER, status);
-    ASSERT_EQ(status->node_status(), NODE_RUNNING);
+    ASSERT_EQ(status->node_status(), NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_MACHINE_LEARNING, status);
-    ASSERT_EQ(status->node_status(), NODE_RUNNING);
+    ASSERT_EQ(status->node_status(), NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_HARDWARE_RESOURCES, status);
-    ASSERT_EQ(status->node_status(), NODE_RUNNING);
+    ASSERT_EQ(status->node_status(), NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_CARBON_FOOTPRINT, status);
-    ASSERT_EQ(status->node_status(), NODE_RUNNING);
+    ASSERT_EQ(status->node_status(), NODE_IDLE);
 }
