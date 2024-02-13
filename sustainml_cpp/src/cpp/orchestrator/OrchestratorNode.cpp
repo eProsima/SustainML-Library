@@ -207,6 +207,7 @@ bool OrchestratorNode::init()
     DataWriterQos dwqos = DATAWRITER_QOS_DEFAULT;
     dwqos.resource_limits().max_instances = 500;
     dwqos.resource_limits().max_samples_per_instance = 1;
+    dwqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
 
     control_writer_ = pub_->create_datawriter(control_topic_, dwqos);
 
