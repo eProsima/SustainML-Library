@@ -374,11 +374,6 @@ std::string NodeControl::source_node()
     return impl_->source_node();
 }
 
-NodeControlImpl* NodeControl::get_impl() const
-{
-    return impl_;
-}
-
 GeoLocation::GeoLocation()
 {
     impl_ = new GeoLocationImpl();

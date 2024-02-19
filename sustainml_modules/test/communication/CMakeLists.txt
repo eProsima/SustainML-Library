@@ -15,6 +15,7 @@
 set(TYPES_SOURCE
     types/typesImpl.cxx
     types/typesImplPubSubTypes.cxx
+    types/typesImplTypeObject.cxx
     )
 
 set(SIMPLE_TASK_PUBSUB_SOURCE ${TYPES_SOURCE}

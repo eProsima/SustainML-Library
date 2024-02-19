@@ -14,6 +14,7 @@
 
 #include "SimpleTaskBase.hpp"
 
+#include "types/typesImplTypeObject.h"
 
 SimpleTaskBase::~SimpleTaskBase()
 {
@@ -46,6 +47,8 @@ bool SimpleTaskBase::init(
 
     //REGISTER THE TYPE
     type_.register_type(participant_);
+
+    registertypesImplTypes();
 
     //CREATE THE TOPIC
     eprosima::fastdds::dds::TopicQos tqos =

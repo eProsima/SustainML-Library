@@ -279,6 +279,12 @@ public:
     eProsima_user_DllExport void update(
             uint32_t new_status);
 
+    /*!
+     * @brief This function returns the implementation
+     * @return Pointer to implementation
+     */
+    NodeStatusImpl* get_impl();
+
 protected:
 
     NodeStatusImpl* impl_;
@@ -458,6 +464,12 @@ public:
      * @return Copy of the source_node member
      */
     eProsima_user_DllExport std::string source_node();
+
+    /*!
+     * @brief This function returns the implementation
+     * @return Pointer to implementation
+     */
+    NodeControlImpl* get_impl() const;
 
 protected:
 

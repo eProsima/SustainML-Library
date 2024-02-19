@@ -38,12 +38,14 @@ CarbonFootprintNode::CarbonFootprintNode(
     sustainml::core::Options opts;
     opts.rqos.resource_limits().max_instances = 500;
     opts.rqos.resource_limits().max_samples_per_instance = 1;
+    opts.rqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
     opts.rqos.reliability().kind = eprosima::fastdds::dds::RELIABLE_RELIABILITY_QOS;
     opts.rqos.history().kind = eprosima::fastdds::dds::KEEP_LAST_HISTORY_QOS;
     opts.rqos.history().depth = 1;
 
     opts.wqos.resource_limits().max_instances = 500;
     opts.wqos.resource_limits().max_samples_per_instance = 1;
+    opts.wqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
 
     init(opts);
 }
@@ -131,6 +133,16 @@ void CarbonFootprintNode::publish_to_user(
         //! Ensure task_id is forwarded to the output
         task_data_cache->second.task_id(task_id);
 
+        if (task_data_cache->first.node_status() != NODE_ERROR)
+        {
+            status(NODE_IDLE);
+        }
+        else
+        {
+            status(NODE_ERROR);
+        }
+
+        publish_node_status();
         writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->second.get_impl());
 
         listener_ml_model_queue_->remove_element_by_taskid(task_id);
