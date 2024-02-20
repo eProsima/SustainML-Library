@@ -94,6 +94,11 @@ bool NodeImpl::init(
     //! Initialize entities
     DomainParticipantQos pqos = opts.pqos;
     pqos.name(name);
+
+    //! Set sustainML app ID participant properties
+    pqos.properties().properties().emplace_back("fastdds.application.id", "SUSTAINML", true);
+    pqos.properties().properties().emplace_back("fastdds.application.metadata", "", true);
+
     participant_ = dpf->create_participant(opts.domain, pqos);
 
     if (participant_ == nullptr)
