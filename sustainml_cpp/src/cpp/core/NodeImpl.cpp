@@ -127,11 +127,13 @@ bool NodeImpl::init(
 
     sustainml_types.push_back(static_cast<TypeSupport>(new NodeStatusImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new NodeControlImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new UserInputImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new AppRequirementsImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new CO2FootprintImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new HWConstraintsImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new HWResourceImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new MLModelMetadataImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new MLModelImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new HWResourceImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new CO2FootprintImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new UserInputImplPubSubType()));
 
     for (auto&& type : sustainml_types)
     {

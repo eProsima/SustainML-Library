@@ -68,12 +68,22 @@ void HardwareResourcesNode::init (
         const sustainml::core::Options& opts)
 {
     listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
+    listener_app_requirements_queue_.reset(new core::QueuedNodeListener<AppRequirements>(this));
+    listener_hw_constraints_queue_.reset(new core::QueuedNodeListener<HWConstraints>(this));
 
     task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, HWResource>>(opts));
 
     initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
             sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
             &(*listener_ml_model_queue_), opts);
+
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::APP_REQUIREMENT].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::APP_REQUIREMENT].second.c_str(),
+            &(*listener_app_requirements_queue_), opts);
+
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::HW_CONSTRAINT].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::HW_CONSTRAINT].second.c_str(),
+            &(*listener_hw_constraints_queue_), opts);
 
     initialize_publication(sustainml::common::TopicCollection::get()[common::HW_RESOURCE].first.c_str(),
             sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str(),
@@ -136,6 +146,8 @@ void HardwareResourcesNode::publish_to_user(
         writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->second.get_impl());
 
         listener_ml_model_queue_->remove_element_by_taskid(task_id);
+        listener_app_requirements_queue_->remove_element_by_taskid(task_id);
+        listener_hw_constraints_queue_->remove_element_by_taskid(task_id);
 
         {
             std::lock_guard<std::mutex> lock (mtx_);

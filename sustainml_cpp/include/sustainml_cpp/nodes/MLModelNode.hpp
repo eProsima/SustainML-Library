@@ -41,7 +41,8 @@ namespace ml_model_provider_module {
 class Node;
 class Dispatcher;
 
-using MLModelCallable = core::Callable<types::MLModelMetadata, types::NodeStatus, types::MLModel>;
+using MLModelCallable = core::Callable<types::MLModelMetadata, types::AppRequirements, types::HWConstraints,
+                types::NodeStatus, types::MLModel>;
 
 struct MLModelTaskListener : public MLModelCallable
 {
@@ -51,6 +52,8 @@ struct MLModelTaskListener : public MLModelCallable
 
     virtual void on_new_task_available(
             types::MLModelMetadata& model_metadata,
+            types::AppRequirements& requirements,
+            types::HWConstraints& constraints,
             types::NodeStatus& status,
             types::MLModel& output) override
     {
@@ -69,6 +72,8 @@ class MLModelNode : public ::sustainml::core::Node
     enum ExpectedInputSamples
     {
         ML_MODEL_METADATA_SAMPLE,
+        APP_REQUIREMENTS_SAMPLE,
+        HW_CONSTRAINTS_SAMPLE,
         MAX
     };
 
@@ -113,7 +118,9 @@ private:
 
     MLModelTaskListener& user_listener_;
 
-    std::unique_ptr<core::QueuedNodeListener<types::MLModelMetadata>> listener_enc_task_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::MLModelMetadata>> listener_model_metadata_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::AppRequirements>> listener_app_requirements_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::HWConstraints>> listener_hw_constraints_queue_;
 
     std::mutex mtx_;
 
