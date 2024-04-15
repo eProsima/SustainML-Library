@@ -25,6 +25,7 @@
 #include <mutex>
 
 #include <sustainml_cpp/core/Constants.hpp>
+#include <sustainml_cpp/core/TaskId.hpp>
 #include <sustainml_cpp/types/types.h>
 
 #include <fastdds/dds/domain/DomainParticipantListener.hpp>
@@ -85,11 +86,13 @@ class OrchestratorNode
 public:
 
     using TaskDB_t =  TaskDB<
-        types::UserInput,
+        types::AppRequirements,
+        types::CO2Footprint,
+        types::HWConstraints,
+        types::HWResource,
         types::MLModelMetadata,
         types::MLModel,
-        types::HWResource,
-        types::CO2Footprint>;
+        types::UserInput>;
 
     OrchestratorNode(
             std::shared_ptr<OrchestratorNodeHandle> handler,
@@ -104,7 +107,7 @@ public:
      * @param [in,out]  data pointer that will be redirected to the data
      */
     RetCode_t get_task_data(
-            const int& task_id,
+            const TaskId& task_id,
             const NodeID& node_id,
             void*& data);
 
@@ -132,7 +135,7 @@ public:
      * @param [in]      ui pointer to the user input data
      */
     bool start_task(
-            const int& task_id,
+            const TaskId& task_id,
             types::UserInput* ui);
 
     /**

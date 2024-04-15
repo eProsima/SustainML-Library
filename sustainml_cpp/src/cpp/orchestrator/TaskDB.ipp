@@ -20,6 +20,8 @@
 #ifndef SUSTAINMLCPP_NODES_ORCHESTRATOR_TASKDB_HPP
 #define SUSTAINMLCPP_NODES_ORCHESTRATOR_TASKDB_HPP
 
+#include <sustainml_cpp/core/TaskId.hpp>
+
 #include <map>
 #include <shared_mutex>
 #include <tuple>
@@ -45,7 +47,7 @@ public:
      */
     template <typename T>
     bool insert_task_data(
-            const int& task_id,
+            const TaskId& task_id,
             const T& data);
 
     /**
@@ -53,19 +55,20 @@ public:
      */
     template <typename T>
     bool get_task_data(
-            const int& task_id,
+            const TaskId& task_id,
             T*&);
 
     /**
      * @brief Allocates a new entry in the DB
      */
     bool prepare_new_entry(
-            const int& task_id);
+            const TaskId& task_id);
 
 protected:
 
     std::mutex mtx_;
-    std::map<int, std::tuple<Args...>> db_;
+    std::map<std::string, std::set<std::pair<int, std::tuple<Args...>>>> db_;
+    //std::map<int, std::tuple<Args...>> db_;
 
 };
 
@@ -78,18 +81,17 @@ TaskDB<Args...>::~TaskDB()
 template <typename ... Args>
 template <typename T>
 bool TaskDB<Args...>::insert_task_data(
-        const int& task_id,
+        const TaskId& task_id,
         const T& data)
 {
     bool ret_code = false;
 
     std::lock_guard<std::mutex> lock(mtx_);
-    auto it = db_.find(task_id);
+    auto db_set = db_.find(task_id.name());
 
-    if (it != db_.end())
+    if (db_set != db_.end())
     {
-        T& db_data = std::get<T>(it->second);
-        db_data = data;
+        db_set->insert(std::make_pair(task_id.iteration(), data));
         ret_code = true;
     }
 
@@ -99,23 +101,31 @@ bool TaskDB<Args...>::insert_task_data(
 template <typename ... Args>
 template <typename T>
 bool TaskDB<Args...>::get_task_data(
-        const int& task_id,
+        const TaskId& task_id,
         T*& data)
 {
     bool ret_code = false;
 
     std::lock_guard<std::mutex> lock(mtx_);
-    auto it = db_.find(task_id);
+    auto it = db_.find(task_id.name());
 
     if (it != db_.end())
     {
-        T& db_data = std::get<T>(it->second);
-        data = &db_data;
-        ret_code = true;
+        for(auto pair : it->second) {
+            if (pair.first == task_id.iteration()) {
+                T& db_data = pair.second;
+                data = &db_data;
+                ret_code = true;
+            }
+        }
+        if (ret_code = false)
+        {
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown task id");
+        }
     }
     else
     {
-        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown task_id");
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown task name");
     }
 
     return ret_code;
@@ -123,16 +133,16 @@ bool TaskDB<Args...>::get_task_data(
 
 template <typename ... Args>
 bool TaskDB<Args...>::prepare_new_entry(
-        const int& task_id)
+        const TaskId& task_id)
 {
     bool ret_code = false;
 
     std::lock_guard<std::mutex> lock(mtx_);
-    auto it = db_.find(task_id);
+    auto it = db_.find(task_id.name());
 
     if (it == db_.end())
     {
-        db_[task_id];
+        it->insert(std::make_pair(task_id.iteration(), task_id.iteration()));
         ret_code = true;
     }
     else
