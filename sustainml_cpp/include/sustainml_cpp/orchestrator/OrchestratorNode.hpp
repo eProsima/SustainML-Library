@@ -86,7 +86,7 @@ public:
 
     using TaskDB_t =  TaskDB<
         types::UserInput,
-        types::EncodedTask,
+        types::MLModelMetadata,
         types::MLModel,
         types::HWResource,
         types::CO2Footprint>;

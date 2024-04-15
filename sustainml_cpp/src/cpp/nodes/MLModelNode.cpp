@@ -67,12 +67,12 @@ MLModelNode::~MLModelNode()
 void MLModelNode::init (
         const sustainml::core::Options& opts)
 {
-    listener_enc_task_queue_.reset(new core::QueuedNodeListener<EncodedTask>(this));
+    listener_enc_task_queue_.reset(new core::QueuedNodeListener<MLModelMetadata>(this));
 
     task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, MLModel>>(opts));
 
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::ENCODED_TASK].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::ENCODED_TASK].second.c_str(),
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].second.c_str(),
             &(*listener_enc_task_queue_), opts);
 
     initialize_publication(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),

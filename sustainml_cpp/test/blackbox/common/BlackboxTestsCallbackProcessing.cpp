@@ -16,15 +16,15 @@
 
 TEST(BlackboxTestsCallbackProcessing, TasksCorrectlyFinishDespiteDifferentProcessingTimes)
 {
-    TaskEncoderCallbackSignature te_cb =
-            [](types::UserInput& ui, types::NodeStatus&, types::EncodedTask&)
+    MLModelMetadataCallbackSignature te_cb =
+            [](types::UserInput& ui, types::NodeStatus&, types::MLModelMetadata&)
             {
                 std::srand(std::time(nullptr));
                 //! Depending on the task_id, simulate different processing times
                 std::this_thread::sleep_for(std::chrono::seconds(std::rand() % (ui.task_id() + 2)));
             };
 
-    TaskEncoderManagedNode te_node(te_cb);
+    MLModelMetadataManagedNode te_node(te_cb);
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
 

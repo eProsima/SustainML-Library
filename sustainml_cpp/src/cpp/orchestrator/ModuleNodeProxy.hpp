@@ -175,19 +175,19 @@ protected:
 };
 
 /**
- * @brief TaskEncoder node proxy
+ * @brief MLModelMetadata node proxy
  */
-class TaskEncoderNodeProxy : public ModuleNodeProxy
+class MLModelMetadataNodeProxy : public ModuleNodeProxy
 {
-    static constexpr MapFromNodeIDToType_t<NodeID::ID_TASK_ENCODER> node_id_to_type_id_{};
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_ML_MODEL_METADATA> node_id_to_type_id_{};
 
 public:
 
-    TaskEncoderNodeProxy(
+    MLModelMetadataNodeProxy(
             OrchestratorNode* orchestrator,
             std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
 
-    virtual ~TaskEncoderNodeProxy()
+    virtual ~MLModelMetadataNodeProxy()
     {
     }
 

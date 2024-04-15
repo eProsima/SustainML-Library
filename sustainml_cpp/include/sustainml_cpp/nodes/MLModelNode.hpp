@@ -41,7 +41,7 @@ namespace ml_model_provider_module {
 class Node;
 class Dispatcher;
 
-using MLModelCallable = core::Callable<types::EncodedTask, types::NodeStatus, types::MLModel>;
+using MLModelCallable = core::Callable<types::MLModelMetadata, types::NodeStatus, types::MLModel>;
 
 struct MLModelTaskListener : public MLModelCallable
 {
@@ -50,7 +50,7 @@ struct MLModelTaskListener : public MLModelCallable
     }
 
     virtual void on_new_task_available(
-            types::EncodedTask& encoded_task,
+            types::MLModelMetadata& model_metadata,
             types::NodeStatus& status,
             types::MLModel& output) override
     {
@@ -61,14 +61,14 @@ struct MLModelTaskListener : public MLModelCallable
 /**
  * @brief Machine Learning Model Node Implementation
  * It requires the
- * - Encoded Task
+ * - ML model metadata
  * as input
  */
 class MLModelNode : public ::sustainml::core::Node
 {
     enum ExpectedInputSamples
     {
-        ENCODED_TASK_SAMPLE,
+        ML_MODEL_METADATA_SAMPLE,
         MAX
     };
 
@@ -113,7 +113,7 @@ private:
 
     MLModelTaskListener& user_listener_;
 
-    std::unique_ptr<core::QueuedNodeListener<types::EncodedTask>> listener_enc_task_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::MLModelMetadata>> listener_enc_task_queue_;
 
     std::mutex mtx_;
 

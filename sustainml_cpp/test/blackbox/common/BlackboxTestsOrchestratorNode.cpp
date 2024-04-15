@@ -80,7 +80,7 @@ private:
 
 static TestOrchestratorNodeHandle::DataCollection nodes_ready_expected_data =
 {
-    {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 0}},
+    {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 0}},
     {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 0}},
     {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 0}},
     {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
@@ -94,7 +94,7 @@ TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
 
     orchestrator::OrchestratorNode orchestrator(tonh);
 
-    TaskEncoderManagedNode te_node;
+    MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
@@ -113,7 +113,7 @@ TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
 
     TestOrchestratorNodeHandle::DataCollection expected_data =
     {
-        {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 0}},
+        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 0}},
         {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 0}},
         {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 0}},
         {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
@@ -121,7 +121,7 @@ TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
 
     tonh->prepare_expected_data(expected_data);
 
-    TaskEncoderManagedNode te_node;
+    MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
@@ -144,7 +144,7 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
 
     orchestrator::OrchestratorNode orchestrator(tonh);
 
-    TaskEncoderManagedNode te_node;
+    MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
@@ -161,7 +161,7 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 1}},
+        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
         {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 1}},
         {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 1}},
         {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}}
@@ -172,7 +172,8 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
     auto task = orchestrator.prepare_new_task();
 
     task.second->task_id(task.first);
-    task.second->problem_description("Test");
+    task.second->task_name("Test_Task_name");
+    task.second->problem_definition("Test");
 
     orchestrator.start_task(task.first, task.second);
 
@@ -185,7 +186,7 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
 
     orchestrator::OrchestratorNode orchestrator(tonh);
 
-    TaskEncoderManagedNode te_node;
+    MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
@@ -202,7 +203,7 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 2}},
+        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 2}},
         {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 2}},
         {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 2}},
         {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 2}}
@@ -213,24 +214,26 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     auto task = orchestrator.prepare_new_task();
 
     task.second->task_id(task.first);
-    task.second->problem_description("Test_Task0");
+    task.second->task_name("Test_Task0_name");
+    task.second->problem_definition("Test_Task0");
 
     orchestrator.start_task(task.first, task.second);
 
     task = orchestrator.prepare_new_task();
 
     task.second->task_id(task.first);
-    task.second->problem_description("Test_Task1");
+    task.second->task_name("Test_Task1_name");
+    task.second->problem_definition("Test_Task1");
 
     orchestrator.start_task(task.first, task.second);
 
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
     void* enc_task = nullptr;
     void* hw = nullptr;
-    ASSERT_EQ(orchestrator.get_task_data(0, NodeID::ID_TASK_ENCODER, enc_task), RetCode_t::RETCODE_OK);
-    ASSERT_EQ(((types::EncodedTask*)enc_task)->task_id(), 0);
-    ASSERT_EQ(orchestrator.get_task_data(1, NodeID::ID_TASK_ENCODER, enc_task), RetCode_t::RETCODE_OK);
-    ASSERT_EQ(((types::EncodedTask*)enc_task)->task_id(), 1);
+    ASSERT_EQ(orchestrator.get_task_data(0, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id(), 0);
+    ASSERT_EQ(orchestrator.get_task_data(1, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id(), 1);
     ASSERT_EQ(orchestrator.get_task_data(1, NodeID::ID_HARDWARE_RESOURCES, hw), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::HWResource*)hw)->task_id(), 1);
 }
@@ -241,7 +244,7 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
 
     orchestrator::OrchestratorNode orchestrator(tonh);
 
-    TaskEncoderManagedNode te_node;
+    MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
@@ -258,7 +261,7 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_TASK_ENCODER, {NODE_IDLE, 1}},
+        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
         {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 1}},
         {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 1}},
         {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}}
@@ -269,13 +272,14 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     auto task = orchestrator.prepare_new_task();
 
     task.second->task_id(task.first);
-    task.second->problem_description("Test_Task0");
+    task.second->task_name("Test_Task0_name");
+    task.second->problem_definition("Test_Task0");
 
     orchestrator.start_task(task.first, task.second);
 
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
     const types::NodeStatus* status;
-    orchestrator.get_node_status(NodeID::ID_TASK_ENCODER, status);
+    orchestrator.get_node_status(NodeID::ID_ML_MODEL_METADATA, status);
     ASSERT_EQ(status->node_status(), NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_MACHINE_LEARNING, status);
     ASSERT_EQ(status->node_status(), NODE_IDLE);

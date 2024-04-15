@@ -203,15 +203,15 @@ const types::NodeStatus& ModuleNodeProxy::get_status()
     return status_;
 }
 
-TaskEncoderNodeProxy::TaskEncoderNodeProxy(
+MLModelMetadataNodeProxy::MLModelMetadataNodeProxy(
         OrchestratorNode* orchestrator,
         std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::TASK_ENCODER_NODE)
+    : ModuleNodeProxy(orchestrator, task_db, common::ML_MODEL_METADATA_NODE)
 {
 
 }
 
-void TaskEncoderNodeProxy::store_data_in_db()
+void MLModelMetadataNodeProxy::store_data_in_db()
 {
     if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
     {

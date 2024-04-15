@@ -14,9 +14,9 @@
 
 #include "BlackboxTests.hpp"
 
-TEST(BlackboxTestsIsolatedNodes, TaskEncoderNode)
+TEST(BlackboxTestsIsolatedNodes, MLModelMetadataNode)
 {
-    TaskEncoderManagedNode node;
+    MLModelMetadataManagedNode node;
 
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
 
@@ -37,17 +37,18 @@ TEST(BlackboxTestsIsolatedNodes, MachineLearningModelNode)
 {
     MLModelManagedNode node;
 
-    TaskInjector<EncodedTaskImplPubSubType> enc_task_inj(common::TopicCollection::get()[common::ENCODED_TASK].first);
+    TaskInjector<MLModelMetadataImplPubSubType> ml_model_metadata_inj(common::TopicCollection::get()[common::
+                    ML_MODEL_METADATA].first);
 
     node.start();
 
-    enc_task_inj.wait_discovery(1);
+    ml_model_metadata_inj.wait_discovery(1);
 
-    auto enc_task_data = default_encodedtask_task_generator();
+    auto ml_model_metadata_data = default_modelmetadata_task_generator();
 
-    node.prepare_expected_samples(enc_task_data.size());
+    node.prepare_expected_samples(ml_model_metadata_data.size());
 
-    enc_task_inj.inject(enc_task_data);
+    ml_model_metadata_inj.inject(ml_model_metadata_data);
 
     EXPECT_TRUE(node.block_for_all(std::chrono::seconds(4)));
 }

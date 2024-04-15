@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * @file TaskEncoderNode.cpp
+ * @file MLModelMetadataNode.cpp
  */
 
-#include <sustainml_cpp/nodes/TaskEncoderNode.hpp>
+#include <sustainml_cpp/nodes/MLModelMetadataNode.hpp>
 
 #include <fastdds/dds/publisher/DataWriter.hpp>
 
@@ -28,11 +28,11 @@
 using namespace types;
 
 namespace sustainml {
-namespace ml_task_encoding_module {
+namespace ml_model_metadata_module {
 
-TaskEncoderNode::TaskEncoderNode(
-        TaskEncoderTaskListener& user_listener)
-    : Node(common::TASK_ENCODER_NODE)
+MLModelMetadataNode::MLModelMetadataNode(
+        MLModelMetadataTaskListener& user_listener)
+    : Node(common::ML_MODEL_METADATA_NODE)
     , user_listener_(user_listener)
 {
     sustainml::core::Options opts;
@@ -49,37 +49,37 @@ TaskEncoderNode::TaskEncoderNode(
     init(opts);
 }
 
-TaskEncoderNode::TaskEncoderNode(
-        TaskEncoderTaskListener& user_listener,
+MLModelMetadataNode::MLModelMetadataNode(
+        MLModelMetadataTaskListener& user_listener,
         sustainml::core::Options opts)
-    : Node(common::TASK_ENCODER_NODE, opts)
+    : Node(common::ML_MODEL_METADATA_NODE, opts)
     , user_listener_(user_listener)
 {
     init(opts);
 }
 
-TaskEncoderNode::~TaskEncoderNode()
+MLModelMetadataNode::~MLModelMetadataNode()
 {
 
 }
 
-void TaskEncoderNode::init (
+void MLModelMetadataNode::init (
         const sustainml::core::Options& opts)
 {
     listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 
-    task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, EncodedTask>>(opts));
+    task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, MLModelMetadata>>(opts));
 
     initialize_subscription(sustainml::common::TopicCollection::get()[common::USER_INPUT].first.c_str(),
             sustainml::common::TopicCollection::get()[common::USER_INPUT].second.c_str(),
             &(*listener_user_input_queue_), opts);
 
-    initialize_publication(sustainml::common::TopicCollection::get()[common::ENCODED_TASK].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::ENCODED_TASK].second.c_str(),
+    initialize_publication(sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].second.c_str(),
             opts);
 }
 
-void TaskEncoderNode::publish_to_user(
+void MLModelMetadataNode::publish_to_user(
         const int& task_id,
         const std::vector<std::pair<int, void*>> input_samples)
 {
@@ -95,7 +95,7 @@ void TaskEncoderNode::publish_to_user(
             ExpectedInputSamples::MAX,
             samples_retrieved);
 
-        std::pair<NodeStatus, EncodedTask>* task_data_cache;
+        std::pair<NodeStatus, MLModelMetadata>* task_data_cache;
 
         {
             std::lock_guard<std::mutex> lock (mtx_);
@@ -117,7 +117,7 @@ void TaskEncoderNode::publish_to_user(
             publish_node_status();
         }
 
-        user_listener_.invoke_user_cb(task_id, core::helper::gen_seq<TaskEncoderCallable::size>{});
+        user_listener_.invoke_user_cb(task_id, core::helper::gen_seq<MLModelMetadataCallable::size>{});
 
         //! Ensure task_id is forwarded to the output
         task_data_cache->second.task_id(task_id);
@@ -144,9 +144,9 @@ void TaskEncoderNode::publish_to_user(
     }
     else
     {
-        EPROSIMA_LOG_ERROR(TASKENC_NODE, "Input size mismatch");
+        EPROSIMA_LOG_ERROR(MLMODELMETADATA_NODE, "Input size mismatch");
     }
 }
 
-} // ml_task_encoding_module
+} // ml_model_metadata_module
 } // sustainml

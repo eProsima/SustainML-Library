@@ -14,9 +14,9 @@
 
 #include "BlackboxTests.hpp"
 
-TEST(BlackboxTestsPairedNodes, TaskEncoderWithMLNode)
+TEST(BlackboxTestsPairedNodes, MLModelMetadataWithMLNode)
 {
-    TaskEncoderManagedNode te_node;
+    MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
 
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
@@ -40,14 +40,15 @@ TEST(BlackboxTestsPairedNodes, MachineLearningWithHardwareResourcesNode)
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
 
-    TaskInjector<EncodedTaskImplPubSubType> enc_task_inj(common::TopicCollection::get()[common::ENCODED_TASK].first);
+    TaskInjector<MLModelMetadataImplPubSubType> enc_task_inj(common::TopicCollection::get()[common::ML_MODEL_METADATA].
+                    first);
 
     hw_node.start();
     ml_node.start();
 
     enc_task_inj.wait_discovery(1);
 
-    auto enc_task_data = default_encodedtask_task_generator();
+    auto enc_task_data = default_modelmetadata_task_generator();
 
     hw_node.prepare_expected_samples(enc_task_data.size());
 
@@ -83,7 +84,7 @@ TEST(BlackboxTestsPairedNodes, HardwareResourcesWithCarbonFootprintNode)
 
 TEST(BlackboxTestsPairedNodes, CompleteChain)
 {
-    TaskEncoderManagedNode te_node;
+    MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;

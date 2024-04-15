@@ -31,9 +31,12 @@ std::list<UserInputImpl> default_userinput_task_generator(
             {
                 UserInputImpl ui;
                 ui.task_id(index);
-                std::stringstream ss;
-                ss << "Problem Description of Task id: " << index;
-                ui.problem_description(ss.str());
+                std::stringstream problem_definition;
+                problem_definition << "Problem Description of Task id: " << index;
+                ui.problem_definition(problem_definition.str());
+                std::stringstream task_name;
+                task_name << "initial task";
+                ui.task_name(task_name.str());
                 ++index;
                 return ui;
             });
@@ -41,16 +44,16 @@ std::list<UserInputImpl> default_userinput_task_generator(
     return returnedValue;
 }
 
-std::list<EncodedTaskImpl> default_encodedtask_task_generator(
+std::list<MLModelMetadataImpl> default_modelmetadata_task_generator(
         size_t max)
 {
     uint16_t index = 0;
     size_t maximum = max ? max : 20;
-    std::list<EncodedTaskImpl> returnedValue(maximum);
+    std::list<MLModelMetadataImpl> returnedValue(maximum);
 
     std::generate(returnedValue.begin(), returnedValue.end(), [&index]
             {
-                EncodedTaskImpl enc_task;
+                MLModelMetadataImpl enc_task;
                 enc_task.task_id(index);
                 std::vector<std::string> keywords;
                 keywords.push_back("EXAMPLE");
@@ -118,7 +121,7 @@ std::list<CO2FootprintImpl> default_co2footprint_data_generator(
                 co2f.task_id(index);
                 std::stringstream ss;
                 ss << "co2fWorld " << index;
-                co2f.co2_footprint(index * 1.0);
+                co2f.carbon_footprint(index * 1.0);
                 co2f.carbon_intensity(22.0);
                 co2f.energy_consumption(index * 30.0);
                 ++index;

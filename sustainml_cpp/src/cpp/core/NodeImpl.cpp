@@ -128,7 +128,7 @@ bool NodeImpl::init(
     sustainml_types.push_back(static_cast<TypeSupport>(new NodeStatusImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new NodeControlImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new UserInputImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new EncodedTaskImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new MLModelMetadataImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new MLModelImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new HWResourceImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new CO2FootprintImplPubSubType()));

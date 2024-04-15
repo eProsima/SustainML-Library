@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file TaskEncoderNode.hpp
+ * @file MLModelMetadataNode.hpp
  */
 
 
-#ifndef SUSTAINMLCPP_NODES_TASKENCODERNODE_HPP
-#define SUSTAINMLCPP_NODES_TASKENCODERNODE_HPP
+#ifndef SUSTAINMLCPP_NODES_MLMODELMETADATANODE_HPP
+#define SUSTAINMLCPP_NODES_MLMODELMETADATANODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/core/Callable.hpp>
@@ -36,35 +36,35 @@ namespace utils {
 template<class T> class SamplePool;
 } // namespace utils
 
-namespace ml_task_encoding_module {
+namespace ml_model_metadata_module {
 
 class Node;
 class Dispatcher;
 
-using TaskEncoderCallable = core::Callable<types::UserInput, types::NodeStatus, types::EncodedTask>;
+using MLModelMetadataCallable = core::Callable<types::UserInput, types::NodeStatus, types::MLModelMetadata>;
 
-struct TaskEncoderTaskListener : public TaskEncoderCallable
+struct MLModelMetadataTaskListener : public MLModelMetadataCallable
 {
-    virtual ~TaskEncoderTaskListener()
+    virtual ~MLModelMetadataTaskListener()
     {
     }
 
     virtual void on_new_task_available(
             types::UserInput& user_input,
             types::NodeStatus& status,
-            types::EncodedTask& output) override
+            types::MLModelMetadata& output) override
     {
     }
 
 };
 
 /**
- * @brief Task Encoder Node Implementation
+ * @brief ML Model metadata Node Implementation
  * It requires the
  * - User Input
  * as input
  */
-class TaskEncoderNode : public ::sustainml::core::Node
+class MLModelMetadataNode : public ::sustainml::core::Node
 {
 
     enum ExpectedInputSamples
@@ -81,16 +81,16 @@ class TaskEncoderNode : public ::sustainml::core::Node
 
 public:
 
-    SUSTAINML_CPP_DLL_API TaskEncoderNode(
-            TaskEncoderTaskListener& user_listener);
+    SUSTAINML_CPP_DLL_API MLModelMetadataNode(
+            MLModelMetadataTaskListener& user_listener);
 
 #ifndef SWIG_WRAPPER
-    SUSTAINML_CPP_DLL_API TaskEncoderNode(
-            TaskEncoderTaskListener& user_listener,
+    SUSTAINML_CPP_DLL_API MLModelMetadataNode(
+            MLModelMetadataTaskListener& user_listener,
             sustainml::core::Options opts);
 #endif // SWIG_WRAPPER
 
-    SUSTAINML_CPP_DLL_API virtual ~TaskEncoderNode();
+    SUSTAINML_CPP_DLL_API virtual ~MLModelMetadataNode();
 
 private:
 
@@ -112,17 +112,17 @@ private:
             const int& task_id,
             const std::vector<std::pair<int, void*>> inputs) override;
 
-    TaskEncoderTaskListener& user_listener_;
+    MLModelMetadataTaskListener& user_listener_;
 
     std::unique_ptr<core::QueuedNodeListener<types::UserInput>> listener_user_input_queue_;
 
     std::mutex mtx_;
 
-    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::EncodedTask>>> task_data_pool_;
+    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::MLModelMetadata>>> task_data_pool_;
 
 };
 
-} // namespace ml_task_encoding_module
+} // namespace ml_model_metadata_module
 } // namespace sustainml
 
-#endif // SUSTAINMLCPP_NODES_TASKENCODERNODE_HPP
+#endif // SUSTAINMLCPP_NODES_MLMODELMETADATANODE_HPP

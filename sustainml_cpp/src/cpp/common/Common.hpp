@@ -35,7 +35,7 @@ namespace common {
 constexpr int INVALID_ID = -1;
 
 //!Node Names
-constexpr const char* TASK_ENCODER_NODE = "TASK_ENCODER_NODE";
+constexpr const char* ML_MODEL_METADATA_NODE = "ML_MODEL_METADATA_NODE";
 constexpr const char* ML_MODEL_NODE = "ML_MODEL_NODE";
 constexpr const char* HW_RESOURCES_NODE = "HW_RESOURCES_NODE";
 constexpr const char* CO2_TRACKER_NODE = "CO2_TRACKER_NODE";
@@ -45,9 +45,9 @@ inline NodeID get_node_id_from_name(
 {
     NodeID id = NodeID::UNKNOWN;
 
-    if (name == TASK_ENCODER_NODE)
+    if (name == ML_MODEL_METADATA_NODE)
     {
-        id = NodeID::ID_TASK_ENCODER;
+        id = NodeID::ID_ML_MODEL_METADATA;
     }
     else if (name == ML_MODEL_NODE)
     {
@@ -69,7 +69,7 @@ enum Topics
     NODE_CONTROL,
     NODE_STATUS,
     USER_INPUT,
-    ENCODED_TASK,
+    ML_MODEL_METADATA,
     ML_MODEL,
     HW_RESOURCE,
     CO2_FOOTPRINT,
@@ -81,9 +81,9 @@ inline Topics get_topic_from_name(
 {
     Topics output = Topics::MAX;
 
-    if (name == TASK_ENCODER_NODE)
+    if (name == ML_MODEL_METADATA_NODE)
     {
-        output = Topics::ENCODED_TASK;
+        output = Topics::ML_MODEL_METADATA;
     }
     else if (name == ML_MODEL_NODE)
     {
@@ -113,7 +113,7 @@ public:
             {NODE_CONTROL, {"/sustainml/control", "NodeControlImpl"}},
             {NODE_STATUS, {"/sustainml/status", "NodeStatusImpl"}},
             {USER_INPUT, {"/sustainml/user_input", "UserInputImpl"}},
-            {ENCODED_TASK, {"/sustainml/task_encoder/output", "EncodedTaskImpl"}},
+            {ML_MODEL_METADATA, {"/sustainml/ml_model_metadata/output", "MLModelMetadataImpl"}},
             {ML_MODEL, {"/sustainml/ml_model_provider/output", "MLModelImpl"}},
             {HW_RESOURCE, {"/sustainml/hw_resources/output", "HWResourceImpl"}},
             {CO2_FOOTPRINT, {"/sustainml/carbon_tracker/output", "CO2FootprintImpl"}}
@@ -131,7 +131,7 @@ protected:
 enum QueueIds
 {
     USER_INPUT_QUEUE,
-    ENCODED_TASK_QUEUE,
+    ML_MODEL_METADATA_QUEUE,
     ML_MODEL_QUEUE,
     HW_RESOURCE_QUEUE,
     CO2_FOOTPRINT_QUEUE,
@@ -142,9 +142,9 @@ inline int queue_name_to_id(
 {
     auto tp = TopicCollection::get();
 
-    if (queue_name.find(tp[ENCODED_TASK].second) != std::string::npos)
+    if (queue_name.find(tp[ML_MODEL_METADATA].second) != std::string::npos)
     {
-        return ENCODED_TASK_QUEUE;
+        return ML_MODEL_METADATA_QUEUE;
     }
     else if (queue_name.find(tp[USER_INPUT].second) != std::string::npos)
     {
@@ -174,9 +174,9 @@ template<typename T>
 inline int sample_type_to_queue_id(
         T* sample)
 {
-    if (typeid(sample) == typeid(types::EncodedTask*))
+    if (typeid(sample) == typeid(types::MLModelMetadata*))
     {
-        return ENCODED_TASK_QUEUE;
+        return ML_MODEL_METADATA_QUEUE;
     }
     else if (typeid(sample) == typeid(types::UserInput*))
     {

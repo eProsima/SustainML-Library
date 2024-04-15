@@ -28,7 +28,7 @@ namespace sustainml {
  */
 enum class NodeID
 {
-    ID_TASK_ENCODER,
+    ID_ML_MODEL_METADATA,
     ID_MACHINE_LEARNING,
     ID_HARDWARE_RESOURCES,
     ID_CARBON_FOOTPRINT,

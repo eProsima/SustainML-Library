@@ -28,7 +28,7 @@
 using namespace types;
 
 namespace sustainml {
-namespace co2_tracker_module {
+namespace carbon_tracker_module {
 
 CarbonFootprintNode::CarbonFootprintNode(
         CarbonFootprintTaskListener& user_listener)
@@ -161,5 +161,5 @@ void CarbonFootprintNode::publish_to_user(
     }
 }
 
-} // co2_tracker_module
+} // carbon_tracker_module
 } // sustainml

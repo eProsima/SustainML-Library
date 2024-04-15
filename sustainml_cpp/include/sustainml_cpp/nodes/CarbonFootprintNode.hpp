@@ -36,7 +36,7 @@ namespace utils {
 template<class T> class SamplePool;
 } // namespace utils
 
-namespace co2_tracker_module {
+namespace carbon_tracker_module {
 
 class Node;
 class Dispatcher;
@@ -129,7 +129,7 @@ private:
     std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::CO2Footprint>>> task_data_pool_;
 };
 
-} // namespace co2_tracker_module
+} // namespace carbon_tracker_module
 } // namespace sustainml
 
 #endif // SUSTAINMLCPP_NODES_CARBONFOOTPRINTNODE_HPP

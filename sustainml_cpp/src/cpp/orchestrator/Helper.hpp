@@ -41,10 +41,10 @@ template <> struct MapFromNodeIDToType_t<NodeID::ID_ORCHESTRATOR>
     using type = types::UserInput;
     using typeImpl = UserInputImpl;
 };
-template <> struct MapFromNodeIDToType_t<NodeID::ID_TASK_ENCODER>
+template <> struct MapFromNodeIDToType_t<NodeID::ID_ML_MODEL_METADATA>
 {
-    using type = types::EncodedTask;
-    using typeImpl = EncodedTaskImpl;
+    using type = types::MLModelMetadata;
+    using typeImpl = MLModelMetadataImpl;
 };
 template <> struct MapFromNodeIDToType_t<NodeID::ID_MACHINE_LEARNING>
 {

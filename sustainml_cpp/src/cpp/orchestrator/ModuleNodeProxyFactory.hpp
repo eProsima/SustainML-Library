@@ -44,9 +44,9 @@ struct ModuleNodeProxyFactory
     {
         switch (id)
         {
-            case NodeID::ID_TASK_ENCODER:
+            case NodeID::ID_ML_MODEL_METADATA:
             {
-                node_proxy = new TaskEncoderNodeProxy(orchestrator, db);
+                node_proxy = new MLModelMetadataNodeProxy(orchestrator, db);
                 break;
             }
             case NodeID::ID_MACHINE_LEARNING:

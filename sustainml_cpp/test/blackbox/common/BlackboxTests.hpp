@@ -54,7 +54,7 @@ using namespace sustainml;
 std::list<UserInputImpl> default_userinput_task_generator(
         size_t max = 0);
 
-std::list<EncodedTaskImpl> default_encodedtask_task_generator(
+std::list<MLModelMetadataImpl> default_modelmetadata_task_generator(
         size_t max = 0);
 
 std::list<MLModelImpl> default_mlmodel_task_generator(
@@ -63,36 +63,36 @@ std::list<MLModelImpl> default_mlmodel_task_generator(
 std::list<HWResourceImpl> default_hwresource_task_generator(
         size_t max = 0);
 
-std::list<CO2FootprintImpl> default_co2footprint_data_generator(
+std::list<CO2FootprintImpl> default_carbonfootprint_data_generator(
         size_t max = 0);
 
 /******* Auxiliary Managed Nodes aliases *****/
 
-using TaskEncoderManagedNode = ManagedNode<ml_task_encoding_module::TaskEncoderNode,
-                ml_task_encoding_module::TaskEncoderTaskListener,
-                types::UserInput, types::NodeStatus, types::EncodedTask>;
+using MLModelMetadataManagedNode = ManagedNode<ml_model_metadata_module::MLModelMetadataNode,
+                ml_model_metadata_module::MLModelMetadataTaskListener,
+                types::UserInput, types::NodeStatus, types::MLModelMetadata>;
 
 using MLModelManagedNode = ManagedNode<ml_model_provider_module::MLModelNode,
                 ml_model_provider_module::MLModelTaskListener,
-                types::EncodedTask, types::NodeStatus, types::MLModel>;
+                types::MLModelMetadata, types::NodeStatus, types::MLModel>;
 
 using HWResourcesManagedNode = ManagedNode<hardware_module::HardwareResourcesNode,
                 hardware_module::HardwareResourcesTaskListener,
                 types::MLModel, types::NodeStatus, types::HWResource>;
 
-using CarbonFootprintManagedNode = ManagedNode<co2_tracker_module::CarbonFootprintNode,
-                co2_tracker_module::CarbonFootprintTaskListener,
+using CarbonFootprintManagedNode = ManagedNode<carbon_tracker_module::CarbonFootprintNode,
+                carbon_tracker_module::CarbonFootprintTaskListener,
                 types::MLModel, types::UserInput, types::HWResource,
                 types::NodeStatus, types::CO2Footprint>;
 
 /******* Auxiliary Signature aliases *****/
-using TaskEncoderCallbackSignature = std::function<void (
+using MLModelMetadataCallbackSignature = std::function<void (
                     types::UserInput& user_input,
                     types::NodeStatus& status,
-                    types::EncodedTask& output)>;
+                    types::MLModelMetadata& output)>;
 
 using MLModelCallbackSignature = std::function<void (
-                    types::EncodedTask& encoded_task,
+                    types::MLModelMetadata& ml_model_metadata,
                     types::NodeStatus& status,
                     types::MLModel& output)>;
 

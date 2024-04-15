@@ -169,7 +169,7 @@ bool OrchestratorNode::init()
     sustainml_types.push_back(static_cast<TypeSupport>(new NodeStatusImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new NodeControlImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new UserInputImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new EncodedTaskImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new MLModelMetadataImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new MLModelImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new HWResourceImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new CO2FootprintImplPubSubType()));
@@ -269,9 +269,9 @@ RetCode_t OrchestratorNode::get_task_data(
 
     switch (node_id)
     {
-        case NodeID::ID_TASK_ENCODER:
+        case NodeID::ID_ML_MODEL_METADATA:
         {
-            MapFromNodeIDToType_t<NodeID::ID_TASK_ENCODER>::type* typed_data = nullptr;
+            MapFromNodeIDToType_t<NodeID::ID_ML_MODEL_METADATA>::type* typed_data = nullptr;
             if (task_db_->get_task_data(task_id, typed_data))
             {
                 data = typed_data;
