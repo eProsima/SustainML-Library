@@ -38,10 +38,12 @@
 #include <fastdds/dds/topic/TypeSupport.hpp>
 #include <fastdds/dds/common/InstanceHandle.hpp>
 #include <fastrtps/types/TypesBase.h>
+#include <sustainml_cpp/nodes/AppRequirementsNode.hpp>
+#include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
+#include <sustainml_cpp/nodes/HardwareConstraintsNode.hpp>
+#include <sustainml_cpp/nodes/HardwareResourcesNode.hpp>
 #include <sustainml_cpp/nodes/MLModelMetadataNode.hpp>
 #include <sustainml_cpp/nodes/MLModelNode.hpp>
-#include <sustainml_cpp/nodes/HardwareResourcesNode.hpp>
-#include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
 
 #include "typesImplPubSubTypes.h"
 
@@ -261,24 +263,26 @@ void print_usage()
     std::cout << "SustainML modules mock requires the following arguments:" << std::endl;
     std::cout << "./sustainml_modules_poc <module> <print_mode>" << std::endl;
     std::cout << "    <module> options are:" << std::endl;
-    std::cout << "        all:  all modules are executed in the same process." << std::endl;
-    std::cout << "        ui:   execute a user input node." << std::endl;
-    std::cout << "        task: execute a task encoder node." << std::endl;
-    std::cout << "        ml:   execute a ML model provider node." << std::endl;
-    std::cout << "        hw:   execute a hardware resources provider node." << std::endl;
-    std::cout << "        co2:  execute a CO2 footprint provider node." << std::endl;
+    std::cout << "        all:          all modules are executed in the same process." << std::endl;
+    std::cout << "        carbon:       execute a carbon footprint provider node." << std::endl;
+    std::cout << "        constraints:  execute a hardware constraints node." << std::endl;
+    std::cout << "        input:        execute a user input node." << std::endl;
+    std::cout << "        metadata:     execute a ML model metadata node." << std::endl;
+    std::cout << "        model:        execute a ML model provider node." << std::endl;
+    std::cout << "        requirements: execute a application requirements node." << std::endl;
+    std::cout << "        resources:    execute an hardware resources provider node." << std::endl;
     std::cout << "    <print_mode> options are:" << std::endl;
-    std::cout << "        true:  print extended information of the selected node(s)." << std::endl;
-    std::cout << "        false: print minimal information of the selected node(s)" << std::endl;
+    std::cout << "        true:     print extended information of the selected node(s)." << std::endl;
+    std::cout << "        false:    print minimal information of the selected node(s)" << std::endl;
 }
 
-class CustomMLModelMetadataListener : public sustainml::ml_model_metadata_module::MLModelMetadataTaskListener
+class CustomAppRequirementsListener : public sustainml::app_requirements_module::AppRequirementsTaskListener
 {
 
     void on_new_task_available(
             types::UserInput& user_input,
             types::NodeStatus& status,
-            types::MLModelMetadata& output) override
+            types::AppRequirements& output) override
     {
         // Set up node
         status.update(Status::NODE_INITIALIZING);
@@ -286,7 +290,7 @@ class CustomMLModelMetadataListener : public sustainml::ml_model_metadata_module
         // Print task id input
         if (DEBUG_MODE)
         {
-            std::cout << "ML task encoding received task ID: " << std::endl;
+            std::cout << "App requirements received task ID: " << std::endl;
             std::cout << " User input task: " << user_input.task_id() << std::endl;
         }
 
@@ -297,18 +301,19 @@ class CustomMLModelMetadataListener : public sustainml::ml_model_metadata_module
         status.update(Status::NODE_RUNNING);
 
         // Populate output
-        output.keywords(std::vector<std::string>
-                {"keywords", "from", "task", std::to_string(user_input.task_id())});
+        output.app_requirements(std::vector<std::string>
+                {"requirements", "from", "task", std::to_string(user_input.task_id())});
 
         // Wait the time it takes the node to generate the output
         sleep(1);
         // Print node output
         if (DEBUG_MODE)
         {
-            std::cout << "ML task encoding output generated: " << std::endl;
-            std::cout << " Keywords: ";
+            std::cout << "App requirements output generated: " << std::endl;
+            std::cout << " Requirements: ";
             int count = 0;
-            for (std::vector<std::string>::iterator it = output.keywords().begin(); it != output.keywords().end();
+            for (std::vector<std::string>::iterator it = output.app_requirements().begin();
+                    it != output.app_requirements().end();
                     ++it, count++)
             {
                 if (count != 0)
@@ -320,109 +325,6 @@ class CustomMLModelMetadataListener : public sustainml::ml_model_metadata_module
             std::cout << std::endl;
         }
 
-        // Update the status when finished
-        status.update(Status::NODE_IDLE);
-    }
-
-};
-
-class CustomMLModelListener : public sustainml::ml_model_provider_module::MLModelTaskListener
-{
-
-    void on_new_task_available (
-            types::MLModelMetadata& model_metadata,
-            types::NodeStatus& status,
-            types::MLModel& output) override
-    {
-        // Set up node
-        status.update(Status::NODE_INITIALIZING);
-
-        // Print task id input
-        if (DEBUG_MODE)
-        {
-            std::cout << "ML model provider received task ID: " << std::endl;
-            std::cout << " ML model metadata: " << model_metadata.task_id() << std::endl;
-            std::cout << " ML model metadata number of keyworkds: " << model_metadata.keywords().size() << std::endl;
-            for (size_t i = 0; i < model_metadata.keywords().size(); i++)
-            {
-                std::cout << " ML model metadata keyword " << model_metadata.keywords()[i] << std::endl;
-            }
-        }
-
-        // Wait the time it takes the node to initialize
-        sleep(2);
-
-        // Update the status to running
-        status.update(Status::NODE_RUNNING);
-
-        // Populate output
-        output.model("ML model #" + std::to_string(model_metadata.task_id())
-                + " ONNX would go here, parsed to string");
-        output.model_path("/opt/sustainml/ml_model/" + std::to_string(model_metadata.task_id())
-                + "/model.onnx");
-        output.model_properties("ML model #" + std::to_string(model_metadata.task_id())
-                + " properties would go here, parsed to string");
-        output.model_path("/opt/sustainml/ml_model/" + std::to_string(model_metadata.task_id())
-                + "/properties.json");
-
-        // Wait the time it takes the node to generate the output
-        usleep(2);
-
-        // Print node output
-        if (DEBUG_MODE)
-        {
-            std::cout << "ML model provider output generated: " << std::endl;
-            std::cout << " ML model ONNX:            " << output.model() << std::endl;
-            std::cout << " ML model path:            " << output.model_path() << std::endl;
-            std::cout << " ML model properties:      " << output.model_properties() << std::endl;
-            std::cout << " ML model properties path: " << output.model_properties_path() << std::endl;
-        }
-
-        // Update the status when finished
-        status.update(Status::NODE_IDLE);
-    }
-
-};
-
-
-class CustomHardwareResourcesListener : public sustainml::hardware_module::HardwareResourcesTaskListener
-{
-
-    void on_new_task_available (
-            types::MLModel& model,
-            types::NodeStatus& status,
-            types::HWResource& output) override
-    {
-        // Set up node
-        status.update(Status::NODE_INITIALIZING);
-
-        // Print task id input
-        if (DEBUG_MODE)
-        {
-            std::cout << "HW resource received task ID: " << std::endl;
-            std::cout << " ML model provider: " << model.task_id()  << std::endl;
-        }
-
-        // Wait the time it takes the node to initialize
-        sleep(3);
-
-        // Update the status to running
-        status.update(Status::NODE_RUNNING);
-
-        // Populate output
-        output.hw_description("HW descr. of task #" + std::to_string(model.task_id()));
-        output.power_consumption(model.task_id() + 1000.3);
-
-        // Wait the time it takes the node to generate the output
-        sleep(3);
-
-        // Print node output
-        if (DEBUG_MODE)
-        {
-            std::cout << "HW resource output generated: " << std::endl;
-            std::cout << " hardware description: " << output.hw_description() << std::endl;
-            std::cout << " power consumption:    " << std::to_string(output.power_consumption()) << std::endl;
-        }
         // Update the status when finished
         status.update(Status::NODE_IDLE);
     }
@@ -475,6 +377,210 @@ class CustomCarbonFootprintListener : public sustainml::carbon_tracker_module::C
 
 };
 
+class CustomHardwareConstraintsListener : public sustainml::hw_constraints_module::HardwareConstraintsTaskListener
+{
+
+    void on_new_task_available(
+            types::UserInput& user_input,
+            types::NodeStatus& status,
+            types::HWConstraints& output) override
+    {
+        // Set up node
+        status.update(Status::NODE_INITIALIZING);
+
+        // Print task id input
+        if (DEBUG_MODE)
+        {
+            std::cout << "Hardware constraints received task ID: " << std::endl;
+            std::cout << " User input task: " << user_input.task_id() << std::endl;
+        }
+
+        // Wait the time it takes the node to initialize
+        sleep(1);
+
+        // Update the status to running
+        status.update(Status::NODE_RUNNING);
+
+        // Populate output
+        output.max_memory_footprint(user_input.task_id());
+
+        // Wait the time it takes the node to generate the output
+        sleep(1);
+        // Print node output
+        if (DEBUG_MODE)
+        {
+            std::cout << "Hardware constraints output generated: " << std::endl;
+            std::cout << " Max memory footprint: " << output.max_memory_footprint() << std::endl;
+        }
+
+        // Update the status when finished
+        status.update(Status::NODE_IDLE);
+    }
+
+};
+
+class CustomHardwareResourcesListener : public sustainml::hardware_module::HardwareResourcesTaskListener
+{
+
+    void on_new_task_available (
+            types::MLModel& model,
+            types::AppRequirements& requirements,
+            types::HWConstraints& constraints,
+            types::NodeStatus& status,
+            types::HWResource& output) override
+    {
+        // Set up node
+        status.update(Status::NODE_INITIALIZING);
+
+        // Print task id input
+        if (DEBUG_MODE)
+        {
+            std::cout << "HW resource received task ID: " << std::endl;
+            std::cout << " ML model provider:    " << model.task_id()  << std::endl;
+            std::cout << " App requirements:     " << requirements.task_id()  << std::endl;
+            std::cout << " Hardware constraints: " << constraints.task_id()  << std::endl;
+        }
+
+        // Wait the time it takes the node to initialize
+        sleep(3);
+
+        // Update the status to running
+        status.update(Status::NODE_RUNNING);
+
+        // Populate output
+        output.hw_description("HW descr. of task #" + std::to_string(model.task_id()));
+        output.power_consumption(model.task_id() + 1000.3);
+
+        // Wait the time it takes the node to generate the output
+        sleep(3);
+
+        // Print node output
+        if (DEBUG_MODE)
+        {
+            std::cout << "HW resource output generated: " << std::endl;
+            std::cout << " hardware description: " << output.hw_description() << std::endl;
+            std::cout << " power consumption:    " << std::to_string(output.power_consumption()) << std::endl;
+        }
+        // Update the status when finished
+        status.update(Status::NODE_IDLE);
+    }
+
+};
+
+class CustomMLModelMetadataListener : public sustainml::ml_model_metadata_module::MLModelMetadataTaskListener
+{
+
+    void on_new_task_available(
+            types::UserInput& user_input,
+            types::NodeStatus& status,
+            types::MLModelMetadata& output) override
+    {
+        // Set up node
+        status.update(Status::NODE_INITIALIZING);
+
+        // Print task id input
+        if (DEBUG_MODE)
+        {
+            std::cout << "ML model metadata received task ID: " << std::endl;
+            std::cout << " User input task: " << user_input.task_id() << std::endl;
+        }
+
+        // Wait the time it takes the node to initialize
+        sleep(1);
+
+        // Update the status to running
+        status.update(Status::NODE_RUNNING);
+
+        // Populate output
+        output.keywords(std::vector<std::string>
+                {"keywords", "from", "task", std::to_string(user_input.task_id())});
+
+        // Wait the time it takes the node to generate the output
+        sleep(1);
+        // Print node output
+        if (DEBUG_MODE)
+        {
+            std::cout << "ML model metadata output generated: " << std::endl;
+            std::cout << " Keywords: ";
+            int count = 0;
+            for (std::vector<std::string>::iterator it = output.keywords().begin(); it != output.keywords().end();
+                    ++it, count++)
+            {
+                if (count != 0)
+                {
+                    std::cout << ", ";
+                }
+                std::cout << "'" << *it << "'";
+            }
+            std::cout << std::endl;
+        }
+
+        // Update the status when finished
+        status.update(Status::NODE_IDLE);
+    }
+
+};
+
+class CustomMLModelListener : public sustainml::ml_model_provider_module::MLModelTaskListener
+{
+    void on_new_task_available (
+            types::MLModelMetadata& model_metadata,
+            types::AppRequirements& app_requirements,
+            types::HWConstraints& hw_constraints,
+            types::NodeStatus& status,
+            types::MLModel& output) override
+    {
+        // Set up node
+        status.update(Status::NODE_INITIALIZING);
+
+        // Print task id input
+        if (DEBUG_MODE)
+        {
+            std::cout << "ML model provider received task ID: " << std::endl;
+            std::cout << " ML model metadata:    " << model_metadata.task_id() << std::endl;
+            std::cout << " App requirements:     " << app_requirements.task_id() << std::endl;
+            std::cout << " Hardware constraints: " << hw_constraints.task_id() << std::endl;
+            std::cout << " ML model metadata keywords size:    " << model_metadata.keywords().size() << std::endl;
+            std::cout << " App constraints size:               " << app_requirements.app_requirements().size() <<
+                std::endl;
+            std::cout << " Hardware constraints max footprint: " << hw_constraints.max_memory_footprint() << std::endl;
+        }
+
+        // Wait the time it takes the node to initialize
+        sleep(2);
+
+        // Update the status to running
+        status.update(Status::NODE_RUNNING);
+
+        // Populate output
+        output.model("ML model #" + std::to_string(model_metadata.task_id())
+                + " ONNX would go here, parsed to string");
+        output.model_path("/opt/sustainml/ml_model/" + std::to_string(model_metadata.task_id())
+                + "/model.onnx");
+        output.model_properties("ML model #" + std::to_string(model_metadata.task_id())
+                + " properties would go here, parsed to string");
+        output.model_path("/opt/sustainml/ml_model/" + std::to_string(model_metadata.task_id())
+                + "/properties.json");
+
+        // Wait the time it takes the node to generate the output
+        usleep(2);
+
+        // Print node output
+        if (DEBUG_MODE)
+        {
+            std::cout << "ML model provider output generated: " << std::endl;
+            std::cout << " ML model ONNX:            " << output.model() << std::endl;
+            std::cout << " ML model path:            " << output.model_path() << std::endl;
+            std::cout << " ML model properties:      " << output.model_properties() << std::endl;
+            std::cout << " ML model properties path: " << output.model_properties_path() << std::endl;
+        }
+
+        // Update the status when finished
+        status.update(Status::NODE_IDLE);
+    }
+
+};
+
 int main (
         int argc,
         char** argv)
@@ -484,8 +590,10 @@ int main (
         print_usage();
         return EXIT_FAILURE;
     }
-    else if (!(std::strcmp(argv[1], "all") == 0 || std::strcmp(argv[1], "ui") == 0 || std::strcmp(argv[1], "task") == 0
-            || std::strcmp(argv[1], "ml") == 0 || std::strcmp(argv[1], "hw") == 0 || std::strcmp(argv[1], "co2") == 0)
+    else if (!(std::strcmp(argv[1], "all") == 0 || std::strcmp(argv[1], "carbon") == 0
+            || std::strcmp(argv[1], "constraints") == 0 || std::strcmp(argv[1], "input") == 0
+            || std::strcmp(argv[1], "metadata") == 0 || std::strcmp(argv[1], "model") == 0
+            || std::strcmp(argv[1], "requirements") == 0 || std::strcmp(argv[1], "resources") == 0)
             || !(std::strcmp(argv[2], "true") == 0 || std::strcmp(argv[2], "false") == 0))
     {
         print_usage();
@@ -503,10 +611,12 @@ int main (
             {
                 std::cout << "SIGINT received, stopping execution." << std::endl;
                 static_cast<void>(signum);
+                sustainml::app_requirements_module::AppRequirementsNode::terminate();
+                sustainml::carbon_tracker_module::CarbonFootprintNode::terminate();
+                sustainml::hardware_module::HardwareResourcesNode::terminate();
+                sustainml::hw_constraints_module::HardwareConstraintsNode::terminate();
                 sustainml::ml_model_metadata_module::MLModelMetadataNode::terminate();
                 sustainml::ml_model_provider_module::MLModelNode::terminate();
-                sustainml::hardware_module::HardwareResourcesNode::terminate();
-                sustainml::carbon_tracker_module::CarbonFootprintNode::terminate();
             });
 
     // All nodes workflow
@@ -515,36 +625,50 @@ int main (
         // Register the nodes
         UserInputPublisher user_input_publisher;
 
-        CustomMLModelMetadataListener ml_task_encoding_listener;
-        sustainml::ml_model_metadata_module::MLModelMetadataNode ml_task_encoding_node_mock(ml_task_encoding_listener);
+        CustomAppRequirementsListener app_requirements_listener;
+        sustainml::app_requirements_module::AppRequirementsNode app_requirements_node_mock(app_requirements_listener);
+
+        CustomCarbonFootprintListener carbon_tracker_listener;
+        sustainml::carbon_tracker_module::CarbonFootprintNode carbon_tracker_node_mock(carbon_tracker_listener);
+        CO2FootprintSubscriber carbon_footprint_subscriber;
+
+        CustomHardwareConstraintsListener hardware_constraints_listener;
+        sustainml::hw_constraints_module::HardwareConstraintsNode hardware_constraints_node_mock(
+            hardware_constraints_listener);
+
+        CustomHardwareResourcesListener hardware_resources_listener;
+        sustainml::hardware_module::HardwareResourcesNode hardware_resources_node_mock(hardware_resources_listener);
+
+        CustomMLModelMetadataListener ml_model_metadata_listener;
+        sustainml::ml_model_metadata_module::MLModelMetadataNode ml_model_metadata_node_mock(ml_model_metadata_listener);
 
         CustomMLModelListener ml_model_provider_listener;
         sustainml::ml_model_provider_module::MLModelNode ml_model_provider_node_mock(ml_model_provider_listener);
 
-        CustomHardwareResourcesListener hardware_listener;
-        sustainml::hardware_module::HardwareResourcesNode hardware_node_mock(hardware_listener);
-
-        CustomCarbonFootprintListener carbon_tracker_listener;
-        sustainml::carbon_tracker_module::CarbonFootprintNode co2_tracker_node_mock(carbon_tracker_listener);
-
-        CO2FootprintSubscriber carbon_footprint_subscriber;
-
         // Spin nodes
-        auto p_task_encoding = std::async([&ml_task_encoding_node_mock]()
+        auto p_app_requirements = std::async([&app_requirements_node_mock]()
                         {
-                            ml_task_encoding_node_mock.spin();
+                            app_requirements_node_mock.spin();
+                        });
+        auto p_carbon_tracker = std::async([&carbon_tracker_node_mock]()
+                        {
+                            carbon_tracker_node_mock.spin();
+                        });
+        auto p_hardware_constraints = std::async([&hardware_constraints_node_mock]()
+                        {
+                            hardware_constraints_node_mock.spin();
+                        });
+        auto p_hardware_resources = std::async([&hardware_resources_node_mock]()
+                        {
+                            hardware_resources_node_mock.spin();
+                        });
+        auto p_model_metadata = std::async([&ml_model_metadata_node_mock]()
+                        {
+                            ml_model_metadata_node_mock.spin();
                         });
         auto p_ml_model_provider = std::async([&ml_model_provider_node_mock]()
                         {
                             ml_model_provider_node_mock.spin();
-                        });
-        auto p_hardware = std::async([&hardware_node_mock]()
-                        {
-                            hardware_node_mock.spin();
-                        });
-        auto p_carbon_tracker = std::async([&co2_tracker_node_mock]()
-                        {
-                            co2_tracker_node_mock.spin();
                         });
 
         // Wait for spin
@@ -574,17 +698,21 @@ int main (
 
         } while (1);
 
+        sustainml::app_requirements_module::AppRequirementsNode::terminate();
+        sustainml::carbon_tracker_module::CarbonFootprintNode::terminate();
+        sustainml::hardware_module::HardwareResourcesNode::terminate();
+        sustainml::hw_constraints_module::HardwareConstraintsNode::terminate();
         sustainml::ml_model_metadata_module::MLModelMetadataNode::terminate();
         sustainml::ml_model_provider_module::MLModelNode::terminate();
-        sustainml::hardware_module::HardwareResourcesNode::terminate();
-        sustainml::carbon_tracker_module::CarbonFootprintNode::terminate();
 
-        p_task_encoding.get();
-        p_ml_model_provider.get();
-        p_hardware.get();
+        p_app_requirements.get();
         p_carbon_tracker.get();
+        p_hardware_constraints.get();
+        p_hardware_resources.get();
+        p_ml_model_provider.get();
+        p_model_metadata.get();
     }
-    else if (std::strcmp(argv[1], "ui") == 0)
+    else if (std::strcmp(argv[1], "input") == 0)
     {
         // Input loop
         uint16_t task_id = 1;
@@ -614,33 +742,48 @@ int main (
 
 
     // Assign each node their main method callback
-    if (std::strcmp(argv[1], "task") == 0)
+    if (std::strcmp(argv[1], "metadata") == 0)
     {
         std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
-        CustomMLModelMetadataListener ml_task_encoding_listener;
-        sustainml::ml_model_metadata_module::MLModelMetadataNode ml_task_encoding_node_mock(ml_task_encoding_listener);
-        ml_task_encoding_node_mock.spin();
+        CustomMLModelMetadataListener ml_model_metadata_listener;
+        sustainml::ml_model_metadata_module::MLModelMetadataNode ml_model_metadata_node_mock(ml_model_metadata_listener);
+        ml_model_metadata_node_mock.spin();
     }
-    if (std::strcmp(argv[1], "ml") == 0)
+    if (std::strcmp(argv[1], "model") == 0)
     {
         std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
         CustomMLModelListener ml_model_provider_listener;
         sustainml::ml_model_provider_module::MLModelNode ml_model_provider_node_mock(ml_model_provider_listener);
         ml_model_provider_node_mock.spin();
     }
-    if (std::strcmp(argv[1], "hw") == 0)
+    if (std::strcmp(argv[1], "resources") == 0)
     {
         std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
-        CustomHardwareResourcesListener hardware_listener;
-        sustainml::hardware_module::HardwareResourcesNode hardware_node_mock(hardware_listener);
-        hardware_node_mock.spin();
+        CustomHardwareResourcesListener hardware_resources_listener;
+        sustainml::hardware_module::HardwareResourcesNode hardware_resources_node_mock(hardware_resources_listener);
+        hardware_resources_node_mock.spin();
     }
-    if (std::strcmp(argv[1], "co2") == 0)
+    if (std::strcmp(argv[1], "carbon") == 0)
     {
         std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
         CustomCarbonFootprintListener carbon_tracker_listener;
-        sustainml::carbon_tracker_module::CarbonFootprintNode co2_tracker_node_mock(carbon_tracker_listener);
-        co2_tracker_node_mock.spin();
+        sustainml::carbon_tracker_module::CarbonFootprintNode carbon_tracker_node_mock(carbon_tracker_listener);
+        carbon_tracker_node_mock.spin();
+    }
+    if (std::strcmp(argv[1], "requirements") == 0)
+    {
+        std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
+        CustomAppRequirementsListener app_requirements_listener;
+        sustainml::app_requirements_module::AppRequirementsNode app_requirements_node_mock(app_requirements_listener);
+        app_requirements_node_mock.spin();
+    }
+    if (std::strcmp(argv[1], "constraints") == 0)
+    {
+        std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
+        CustomHardwareConstraintsListener hardware_constraints_listener;
+        sustainml::hw_constraints_module::HardwareConstraintsNode hardware_constraints_node_mock(
+            hardware_constraints_listener);
+        hardware_constraints_node_mock.spin();
     }
     return EXIT_SUCCESS;
 }
