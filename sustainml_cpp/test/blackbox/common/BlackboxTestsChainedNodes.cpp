@@ -16,12 +16,12 @@
 
 TEST(BlackboxTestsPairedNodes, MLModelMetadataWithMLNode)
 {
-    MLModelMetadataManagedNode te_node;
+    MLModelMetadataManagedNode ml_md_node;
     MLModelManagedNode ml_node;
 
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
 
-    te_node.start();
+    ml_md_node.start();
     ml_node.start();
 
     ui_inj.wait_discovery(1);
@@ -84,19 +84,22 @@ TEST(BlackboxTestsPairedNodes, HardwareResourcesWithCarbonFootprintNode)
 
 TEST(BlackboxTestsPairedNodes, CompleteChain)
 {
-    MLModelMetadataManagedNode te_node;
-    MLModelManagedNode ml_node;
-    HWResourcesManagedNode hw_node;
+    AppRequirementsManagedNode app_req_node;
     CarbonFootprintManagedNode co2_node;
+    HWConstraintsManagedNode hw_cons_node;
+    HWResourcesManagedNode hw_res_node;
+    MLModelMetadataManagedNode ml_md_node;
+    MLModelManagedNode ml_node;
 
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
 
     co2_node.start();
-    hw_node.start();
+    hw_cons_node.start();
+    hw_res_node.start();
+    ml_md_node.start();
     ml_node.start();
-    te_node.start();
 
-    ui_inj.wait_discovery(2);
+    ui_inj.wait_discovery(4);
 
     auto ui_data = default_userinput_task_generator();
 

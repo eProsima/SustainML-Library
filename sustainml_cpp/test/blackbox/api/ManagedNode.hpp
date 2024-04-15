@@ -22,7 +22,9 @@
 
 #include <future>
 
+#include <sustainml_cpp/nodes/AppRequirementsNode.hpp>
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
+#include <sustainml_cpp/nodes/HardwareConstraintsNode.hpp>
 #include <sustainml_cpp/nodes/HardwareResourcesNode.hpp>
 #include <sustainml_cpp/nodes/MLModelNode.hpp>
 #include <sustainml_cpp/nodes/MLModelMetadataNode.hpp>
