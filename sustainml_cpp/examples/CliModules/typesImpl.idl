@@ -1,16 +1,16 @@
 enum Status {
     NODE_INACTIVE,
-    NODE_INITIALIZING,
-    NODE_IDLE,
-    NODE_RUNNING,
     NODE_ERROR,
+    NODE_IDLE,
+    NODE_INITIALIZING,
+    NODE_RUNNING,
     NODE_TERMINATING
 };
 
 enum TaskStatus {
     TASK_WAITING,
-    TASK_RUNNING,
     TASK_ERROR,
+    TASK_RUNNING,
     TASK_SUCCEEDED
 };
 
@@ -24,25 +24,25 @@ struct NodeStatusImpl
     Status node_status;
     TaskStatus task_status;
     ErrorCode error_code;
-    @Key long task_id;
+    @key long task_id;
     string error_description;
-    @Key string node_name;
+    @key string node_name;
 };
 
 enum CmdNode {
     NO_CMD_NODE,
-    CMD_START_NODE,
-    CMD_STOP_NODE,
-    CMD_RESET_NODE,
-    CMD_TERMINATE_NODE
+    START_NODE,
+    STOP_NODE,
+    RESET_NODE,
+    TERMINATE_NODE
 };
 
 enum CmdTask {
     NO_CMD_TASK,
-    CMD_STOP_TASK,
-    CMD_RESET_TASK,
-    CMD_PREEMPT_TASK,
-    CMD_TERMINATE_TASK
+    STOP_TASK,
+    RESET_TASK,
+    PREEMPT_TASK,
+    TERMINATE_TASK
 };
 
 struct NodeControlImpl
@@ -51,7 +51,7 @@ struct NodeControlImpl
     CmdTask cmd_task;
     string target_node;
     long task_id;
-    @Key string source_node;
+    @key string source_node;
 };
 
 struct GeoLocationImpl
@@ -62,37 +62,73 @@ struct GeoLocationImpl
 
 struct UserInputImpl
 {
-    string problem_description;
+    string task_name;
+    string modality;
+    string problem_definition;
+    sequence<string> inputs;
+    sequence<string> outputs;
+    unsigned long minimum_samples;
+    unsigned long maximum_samples;
+    boolean optimize_carbon_footprint_manual;
+    long previous_iteration;
+    boolean optimize_carbon_footprint_auto;
+    double desired_carbon_footprint;
     GeoLocationImpl geo_location;
-    @Key long task_id;
+    sequence<octet> extra_data;
+    @key long task_id;
+
 };
 
-struct EncodedTaskImpl
+struct MLModelMetadataImpl
 {
     sequence<string> keywords;
-    @Key long task_id;
+    sequence<string> ml_model_metadata;
+    sequence<octet> extra_data;
+    @key long task_id;
 };
+
+struct AppRequirementsImpl
+{
+    sequence<string> app_requirements;
+    sequence<octet> extra_data;
+    @key long task_id;
+};
+
+struct HWConstraintsImpl
+{
+    unsigned long max_memory_footprint;
+    sequence<octet> extra_data;
+    @key long task_id;
+ };
 
 struct MLModelImpl
 {
     string model_path;
-    string model; // In case of remote approach
+    string model;
     string model_properties_path;
     string model_properties;
-    @Key long task_id;
+    sequence<string> input_batch;
+    double target_latency;
+    sequence<octet> extra_data;
+    @key long task_id;
 };
 
 struct HWResourceImpl
 {
     string hw_description;
     double power_consumption;
-    @Key long task_id;
+    double latency;
+    double memory_footprint_of_ml_model;
+    double max_hw_memory_footprint;
+    sequence<octet> extra_data;
+    @key long task_id;
 };
 
 struct CO2FootprintImpl
 {
-    double co2_footprint;
+    double carbon_footprint;
     double energy_consumption;
     double carbon_intensity;
-    @Key long task_id;
+    sequence<octet> extra_data;
+    @key long task_id;
 };
