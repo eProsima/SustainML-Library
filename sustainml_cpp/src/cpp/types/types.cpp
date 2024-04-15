@@ -503,8 +503,19 @@ UserInput::UserInput(
 {
     impl_ = new UserInputImpl;
 
+    this->impl_->task_name() = x.impl_->task_name();
+    this->impl_->modality() = x.impl_->modality();
+    this->impl_->problem_definition() = x.impl_->problem_definition();
+    this->impl_->inputs() = x.impl_->inputs();
+    this->impl_->outputs() = x.impl_->outputs();
+    this->impl_->minimum_samples() = x.impl_->minimum_samples();
+    this->impl_->maximum_samples() = x.impl_->maximum_samples();
+    this->impl_->optimize_carbon_footprint_manual() = x.impl_->optimize_carbon_footprint_manual();
+    this->impl_->previous_iteration() = x.impl_->previous_iteration();
+    this->impl_->optimize_carbon_footprint_auto() = x.impl_->optimize_carbon_footprint_auto();
+    this->impl_->desired_carbon_footprint() = x.impl_->desired_carbon_footprint();
     this->impl_->geo_location() = x.impl_->geo_location();
-    this->impl_->problem_description() = x.impl_->problem_description();
+    this->impl_->extra_data() = x.impl_->extra_data();
     this->impl_->task_id() = x.impl_->task_id();
 }
 
@@ -518,9 +529,21 @@ UserInput::UserInput(
 UserInput& UserInput::operator =(
         const UserInput& x)
 {
+    this->impl_->task_name() = x.impl_->task_name();
+    this->impl_->modality() = x.impl_->modality();
+    this->impl_->problem_definition() = x.impl_->problem_definition();
+    this->impl_->inputs() = x.impl_->inputs();
+    this->impl_->outputs() = x.impl_->outputs();
+    this->impl_->minimum_samples() = x.impl_->minimum_samples();
+    this->impl_->maximum_samples() = x.impl_->maximum_samples();
+    this->impl_->optimize_carbon_footprint_manual() = x.impl_->optimize_carbon_footprint_manual();
+    this->impl_->previous_iteration() = x.impl_->previous_iteration();
+    this->impl_->optimize_carbon_footprint_auto() = x.impl_->optimize_carbon_footprint_auto();
+    this->impl_->desired_carbon_footprint() = x.impl_->desired_carbon_footprint();
     this->impl_->geo_location() = x.impl_->geo_location();
-    this->impl_->problem_description() = x.impl_->problem_description();
+    this->impl_->extra_data() = x.impl_->extra_data();
     this->impl_->task_id() = x.impl_->task_id();
+
     return *this;
 }
 
@@ -549,26 +572,210 @@ bool UserInput::operator !=(
     return !(*this == x);
 }
 
-void UserInput::problem_description(
-        const std::string& _problem_description)
+void UserInput::task_name(
+        const std::string& _task_name)
 {
-    impl_->problem_description(_problem_description);
+    impl_->task_name(_task_name);
 }
 
-void UserInput::problem_description(
-        std::string&& _problem_description)
+void UserInput::task_name(
+        std::string&& _task_name)
 {
-    impl_->problem_description(std::forward<std::string>(_problem_description));
+    impl_->task_name(std::forward<std::string>(_task_name));
 }
 
-const std::string& UserInput::problem_description() const
+const std::string& UserInput::task_name() const
 {
-    return impl_->problem_description();
+    return impl_->task_name();
 }
 
-std::string UserInput::problem_description()
+std::string& UserInput::task_name()
 {
-    return impl_->problem_description();
+    return impl_->task_name();
+}
+
+void UserInput::modality(
+        const std::string& _modality)
+{
+    impl_->modality(_modality);
+}
+
+void UserInput::modality(
+        std::string&& _modality)
+{
+    impl_->modality(std::forward<std::string>(_modality));
+}
+
+const std::string& UserInput::modality() const
+{
+    return impl_->modality();
+}
+
+std::string& UserInput::modality()
+{
+    return impl_->modality();
+}
+
+void UserInput::problem_definition(
+        const std::string& _problem_definition)
+{
+    impl_->problem_definition(_problem_definition);
+}
+
+void UserInput::problem_definition(
+        std::string&& _problem_definition)
+{
+    impl_->problem_definition(std::forward<std::string>(_problem_definition));
+}
+
+const std::string& UserInput::problem_definition() const
+{
+    return impl_->problem_definition();
+}
+
+std::string& UserInput::problem_definition()
+{
+    return impl_->problem_definition();
+}
+
+void UserInput::inputs(
+        const std::vector<std::string>& _inputs)
+{
+    impl_->inputs(_inputs);
+}
+
+void UserInput::inputs(
+        std::vector<std::string>&& _inputs)
+{
+    impl_->inputs(std::forward<std::vector<std::string>>(_inputs));
+}
+
+const std::vector<std::string>& UserInput::inputs() const
+{
+    return impl_->inputs();
+}
+
+std::vector<std::string>& UserInput::inputs()
+{
+    return impl_->inputs();
+}
+
+void UserInput::outputs(
+        const std::vector<std::string>& _outputs)
+{
+    impl_->outputs(_outputs);
+}
+
+void UserInput::outputs(
+        std::vector<std::string>&& _outputs)
+{
+    impl_->outputs(std::forward<std::vector<std::string>>(_outputs));
+}
+
+const std::vector<std::string>& UserInput::outputs() const
+{
+    return impl_->outputs();
+}
+
+std::vector<std::string>& UserInput::outputs()
+{
+    return impl_->outputs();
+}
+
+void UserInput::minimum_samples(
+        uint32_t _minimum_samples)
+{
+    impl_->minimum_samples(_minimum_samples);
+}
+
+uint32_t UserInput::minimum_samples() const
+{
+    return impl_->minimum_samples();
+}
+
+uint32_t& UserInput::minimum_samples()
+{
+    return impl_->minimum_samples();
+}
+
+void UserInput::maximum_samples(
+        uint32_t _maximum_samples)
+{
+    impl_->maximum_samples(_maximum_samples);
+}
+
+uint32_t UserInput::maximum_samples() const
+{
+    return impl_->maximum_samples();
+}
+
+uint32_t& UserInput::maximum_samples()
+{
+    return impl_->maximum_samples();
+}
+
+void UserInput::optimize_carbon_footprint_manual(
+        bool _optimize_carbon_footprint_manual)
+{
+    impl_->optimize_carbon_footprint_manual(_optimize_carbon_footprint_manual);
+}
+
+bool UserInput::optimize_carbon_footprint_manual() const
+{
+    return impl_->optimize_carbon_footprint_manual();
+}
+
+bool& UserInput::optimize_carbon_footprint_manual()
+{
+    return impl_->optimize_carbon_footprint_manual();
+}
+
+void UserInput::previous_iteration(
+        int32_t _previous_iteration)
+{
+    impl_->previous_iteration(_previous_iteration);
+}
+
+int32_t UserInput::previous_iteration() const
+{
+    return impl_->previous_iteration();
+}
+
+int32_t& UserInput::previous_iteration()
+{
+    return impl_->previous_iteration();
+}
+
+void UserInput::optimize_carbon_footprint_auto(
+        bool _optimize_carbon_footprint_auto)
+{
+    impl_->optimize_carbon_footprint_auto(_optimize_carbon_footprint_auto);
+}
+
+bool UserInput::optimize_carbon_footprint_auto() const
+{
+    return impl_->optimize_carbon_footprint_auto();
+}
+
+bool& UserInput::optimize_carbon_footprint_auto()
+{
+    return impl_->optimize_carbon_footprint_auto();
+}
+
+void UserInput::desired_carbon_footprint(
+        double _desired_carbon_footprint)
+{
+    impl_->desired_carbon_footprint(_desired_carbon_footprint);
+}
+
+double UserInput::desired_carbon_footprint() const
+{
+    return impl_->desired_carbon_footprint();
+}
+
+double& UserInput::desired_carbon_footprint()
+{
+    return impl_->desired_carbon_footprint();
 }
 
 void UserInput::geo_location(
@@ -591,6 +798,28 @@ const GeoLocationImpl& UserInput::geo_location() const
 GeoLocationImpl& UserInput::geo_location()
 {
     return impl_->geo_location();
+}
+
+void UserInput::extra_data(
+        const std::vector<uint8_t>& _extra_data)
+{
+    impl_->extra_data(_extra_data);
+}
+
+void UserInput::extra_data(
+        std::vector<uint8_t>&& _extra_data)
+{
+    impl_->extra_data(std::forward<std::vector<uint8_t>>(_extra_data));
+}
+
+const std::vector<uint8_t>& UserInput::extra_data() const
+{
+    return impl_->extra_data();
+}
+
+std::vector<uint8_t>& UserInput::extra_data()
+{
+    return impl_->extra_data();
 }
 
 void UserInput::task_id(
@@ -619,12 +848,12 @@ const std::type_info& UserInput::impl_typeinfo()
     return typeid(UserInputImpl);
 }
 
-EncodedTask::EncodedTask()
+MLModelMetadata::MLModelMetadata()
 {
-    impl_ = new EncodedTaskImpl;
+    impl_ = new MLModelMetadataImpl;
 }
 
-EncodedTask::~EncodedTask()
+MLModelMetadata::~MLModelMetadata()
 {
     if (nullptr != impl_)
     {
@@ -632,32 +861,36 @@ EncodedTask::~EncodedTask()
     }
 }
 
-EncodedTask::EncodedTask(
-        const EncodedTask& x)
+MLModelMetadata::MLModelMetadata(
+        const MLModelMetadata& x)
 {
-    impl_ = new EncodedTaskImpl;
+    impl_ = new MLModelMetadataImpl;
 
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->keywords() = x.impl_->keywords();
+    this->impl_->ml_model_metadata() = x.impl_->ml_model_metadata();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
 }
 
-EncodedTask::EncodedTask(
-        EncodedTask&& x) noexcept
+MLModelMetadata::MLModelMetadata(
+        MLModelMetadata&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
-EncodedTask& EncodedTask::operator =(
-        const EncodedTask& x)
+MLModelMetadata& MLModelMetadata::operator =(
+        const MLModelMetadata& x)
 {
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->keywords() = x.impl_->keywords();
+    this->impl_->ml_model_metadata() = x.impl_->ml_model_metadata();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
     return *this;
 }
 
-EncodedTask& EncodedTask::operator =(
-        EncodedTask&& x) noexcept
+MLModelMetadata& MLModelMetadata::operator =(
+        MLModelMetadata&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
@@ -669,64 +902,370 @@ EncodedTask& EncodedTask::operator =(
     return *this;
 }
 
-bool EncodedTask::operator ==(
-        const EncodedTask& x) const
+bool MLModelMetadata::operator ==(
+        const MLModelMetadata& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
-bool EncodedTask::operator !=(
-        const EncodedTask& x) const
+bool MLModelMetadata::operator !=(
+        const MLModelMetadata& x) const
 {
     return !(*this == x);
 }
 
-void EncodedTask::keywords(
+void MLModelMetadata::keywords(
         const std::vector<std::string>& _keywords)
 {
     impl_->keywords(_keywords);
 }
 
-void EncodedTask::keywords(
+void MLModelMetadata::keywords(
         std::vector<std::string>&& _keywords)
 {
     impl_->keywords(std::forward<std::vector<std::string>>(_keywords));
 }
 
-const std::vector<std::string>& EncodedTask::keywords() const
+const std::vector<std::string>& MLModelMetadata::keywords() const
 {
     return impl_->keywords();
 }
 
-std::vector<std::string>& EncodedTask::keywords()
+void MLModelMetadata::ml_model_metadata(
+        const std::vector<std::string>& _ml_model_metadata)
+{
+    impl_->ml_model_metadata(_ml_model_metadata);
+}
+
+void MLModelMetadata::ml_model_metadata(
+        std::vector<std::string>&& _ml_model_metadata)
+{
+    impl_->ml_model_metadata(std::forward<std::vector<std::string>>(_ml_model_metadata));
+}
+
+const std::vector<std::string>& MLModelMetadata::ml_model_metadata() const
+{
+    return impl_->ml_model_metadata();
+}
+
+std::vector<std::string>& MLModelMetadata::ml_model_metadata()
+{
+    return impl_->ml_model_metadata();
+}
+
+void MLModelMetadata::extra_data(
+        const std::vector<uint8_t>& _extra_data)
+{
+    impl_->extra_data(_extra_data);
+}
+
+void MLModelMetadata::extra_data(
+        std::vector<uint8_t>&& _extra_data)
+{
+    impl_->extra_data(std::forward<std::vector<uint8_t>>(_extra_data));
+}
+
+const std::vector<uint8_t>& MLModelMetadata::extra_data() const
+{
+    return impl_->extra_data();
+}
+
+std::vector<uint8_t>& MLModelMetadata::extra_data()
+{
+    return impl_->extra_data();
+}
+
+std::vector<std::string>& MLModelMetadata::keywords()
 {
     return impl_->keywords();
 }
 
-void EncodedTask::task_id(
+void MLModelMetadata::task_id(
         int32_t _task_id)
 {
     impl_->task_id(_task_id);
 }
 
-int32_t EncodedTask::task_id() const
+int32_t MLModelMetadata::task_id() const
 {
     return impl_->task_id();
 }
 
-int32_t& EncodedTask::task_id()
+int32_t& MLModelMetadata::task_id()
 {
     return impl_->task_id();
 }
 
-EncodedTaskImpl* EncodedTask::get_impl()
+MLModelMetadataImpl* MLModelMetadata::get_impl()
 {
     return impl_;
 }
 
-const std::type_info& EncodedTask::impl_typeinfo()
+const std::type_info& MLModelMetadata::impl_typeinfo()
 {
-    return typeid(EncodedTaskImpl);
+    return typeid(MLModelMetadataImpl);
+}
+
+AppRequirements::AppRequirements()
+{
+    impl_ = new AppRequirementsImpl;
+}
+
+AppRequirements::~AppRequirements()
+{
+    if (nullptr != impl_)
+    {
+        delete impl_;
+    }
+}
+
+AppRequirements::AppRequirements(
+        const AppRequirements& x)
+{
+    impl_ = new AppRequirementsImpl;
+
+    this->impl_->app_requirements() = x.impl_->app_requirements();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
+}
+
+AppRequirements::AppRequirements(
+        AppRequirements&& x) noexcept
+{
+    this->impl_ = x.impl_;
+    x.impl_ = nullptr;
+}
+
+AppRequirements& AppRequirements::operator =(
+        const AppRequirements& x)
+{
+    this->impl_->app_requirements() = x.impl_->app_requirements();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
+    return *this;
+}
+
+AppRequirements& AppRequirements::operator =(
+        AppRequirements&& x) noexcept
+{
+    if (x.impl_ != this->impl_)
+    {
+        delete this->impl_;
+        this->impl_ = x.impl_;
+        x.impl_ = nullptr;
+    }
+
+    return *this;
+}
+
+bool AppRequirements::operator ==(
+        const AppRequirements& x) const
+{
+    return (this->impl_ == x.impl_);
+}
+
+bool AppRequirements::operator !=(
+        const AppRequirements& x) const
+{
+    return !(*this == x);
+}
+
+void AppRequirements::app_requirements(
+        const std::vector<std::string>& _app_requirements)
+{
+    impl_->app_requirements(_app_requirements);
+}
+
+void AppRequirements::app_requirements(
+        std::vector<std::string>&& _app_requirements)
+{
+    impl_->app_requirements(std::forward<std::vector<std::string>>(_app_requirements));
+}
+
+const std::vector<std::string>& AppRequirements::app_requirements() const
+{
+    return impl_->app_requirements();
+}
+
+std::vector<std::string>& AppRequirements::app_requirements()
+{
+    return impl_->app_requirements();
+}
+
+void AppRequirements::extra_data(
+        const std::vector<uint8_t>& _extra_data)
+{
+    impl_->extra_data(_extra_data);
+}
+
+void AppRequirements::extra_data(
+        std::vector<uint8_t>&& _extra_data)
+{
+    impl_->extra_data(std::forward<std::vector<uint8_t>>(_extra_data));
+}
+
+const std::vector<uint8_t>& AppRequirements::extra_data() const
+{
+    return impl_->extra_data();
+}
+
+std::vector<uint8_t>& AppRequirements::extra_data()
+{
+    return impl_->extra_data();
+}
+
+void AppRequirements::task_id(
+        int32_t _task_id)
+{
+    impl_->task_id(_task_id);
+}
+
+int32_t AppRequirements::task_id() const
+{
+    return impl_->task_id();
+}
+
+int32_t& AppRequirements::task_id()
+{
+    return impl_->task_id();
+}
+
+AppRequirementsImpl* AppRequirements::get_impl()
+{
+    return impl_;
+}
+
+const std::type_info& AppRequirements::impl_typeinfo()
+{
+    return typeid(AppRequirementsImpl);
+}
+
+HWConstraints::HWConstraints()
+{
+    impl_ = new HWConstraintsImpl;
+}
+
+HWConstraints::~HWConstraints()
+{
+    if (nullptr != impl_)
+    {
+        delete impl_;
+    }
+}
+
+HWConstraints::HWConstraints(
+        const HWConstraints& x)
+{
+    impl_ = new HWConstraintsImpl;
+
+    this->impl_->max_memory_footprint() = x.impl_->max_memory_footprint();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
+}
+
+HWConstraints::HWConstraints(
+        HWConstraints&& x) noexcept
+{
+    this->impl_ = x.impl_;
+    x.impl_ = nullptr;
+}
+
+HWConstraints& HWConstraints::operator =(
+        const HWConstraints& x)
+{
+    this->impl_->max_memory_footprint() = x.impl_->max_memory_footprint();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
+    return *this;
+}
+
+HWConstraints& HWConstraints::operator =(
+        HWConstraints&& x) noexcept
+{
+    if (x.impl_ != this->impl_)
+    {
+        delete this->impl_;
+        this->impl_ = x.impl_;
+        x.impl_ = nullptr;
+    }
+
+    return *this;
+}
+
+bool HWConstraints::operator ==(
+        const HWConstraints& x) const
+{
+    return (this->impl_ == x.impl_);
+}
+
+bool HWConstraints::operator !=(
+        const HWConstraints& x) const
+{
+    return !(*this == x);
+}
+
+void HWConstraints::max_memory_footprint(
+        uint32_t _max_memory_footprint)
+{
+    impl_->max_memory_footprint(_max_memory_footprint);
+}
+
+uint32_t HWConstraints::max_memory_footprint() const
+{
+    return impl_->max_memory_footprint();
+}
+
+uint32_t& HWConstraints::max_memory_footprint()
+{
+    return impl_->max_memory_footprint();
+}
+
+void HWConstraints::extra_data(
+        const std::vector<uint8_t>& _extra_data)
+{
+    impl_->extra_data(_extra_data);
+}
+
+void HWConstraints::extra_data(
+        std::vector<uint8_t>&& _extra_data)
+{
+    impl_->extra_data(std::forward<std::vector<uint8_t>>(_extra_data));
+}
+
+const std::vector<uint8_t>& HWConstraints::extra_data() const
+{
+    return impl_->extra_data();
+}
+
+std::vector<uint8_t>& HWConstraints::extra_data()
+{
+    return impl_->extra_data();
+}
+
+void HWConstraints::task_id(
+        int32_t _task_id)
+{
+    impl_->task_id(_task_id);
+}
+
+int32_t HWConstraints::task_id() const
+{
+    return impl_->task_id();
+}
+
+int32_t& HWConstraints::task_id()
+{
+    return impl_->task_id();
+}
+
+HWConstraintsImpl* HWConstraints::get_impl()
+{
+    return impl_;
+}
+
+const std::type_info& HWConstraints::impl_typeinfo()
+{
+    return typeid(HWConstraintsImpl);
 }
 
 MLModel::MLModel()
@@ -747,11 +1286,14 @@ MLModel::MLModel(
 {
     impl_ = new MLModelImpl;
 
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->model() = x.impl_->model();
     this->impl_->model_path() = x.impl_->model_path();
     this->impl_->model_properties_path() = x.impl_->model_properties_path();
     this->impl_->model_properties() = x.impl_->model_properties();
+    this->impl_->input_batch() = x.impl_->input_batch();
+    this->impl_->target_latency() = x.impl_->target_latency();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
 }
 
 MLModel::MLModel(
@@ -764,11 +1306,14 @@ MLModel::MLModel(
 MLModel& MLModel::operator =(
         const MLModel& x)
 {
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->model() = x.impl_->model();
     this->impl_->model_path() = x.impl_->model_path();
     this->impl_->model_properties_path() = x.impl_->model_properties_path();
     this->impl_->model_properties() = x.impl_->model_properties();
+    this->impl_->input_batch() = x.impl_->input_batch();
+    this->impl_->target_latency() = x.impl_->target_latency();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
     return *this;
 }
 
@@ -885,6 +1430,66 @@ std::string MLModel::model_properties()
     return impl_->model_properties();
 }
 
+void MLModel::input_batch(
+        const std::vector<std::string>& _input_batch)
+{
+    impl_->input_batch(_input_batch);
+}
+
+void MLModel::input_batch(
+        std::vector<std::string>&& _input_batch)
+{
+    impl_->input_batch(std::forward<std::vector<std::string>>(_input_batch));
+}
+
+const std::vector<std::string>& MLModel::input_batch() const
+{
+    return impl_->input_batch();
+}
+
+std::vector<std::string>& MLModel::input_batch()
+{
+    return impl_->input_batch();
+}
+
+void MLModel::target_latency(
+        double _target_latency)
+{
+    impl_->target_latency(_target_latency);
+}
+
+double MLModel::target_latency() const
+{
+    return impl_->target_latency();
+}
+
+double& MLModel::target_latency()
+{
+    return impl_->target_latency();
+}
+
+void MLModel::extra_data(
+        const std::vector<uint8_t>& _extra_data)
+{
+    impl_->extra_data(_extra_data);
+}
+
+void MLModel::extra_data(
+        std::vector<uint8_t>&& _extra_data)
+{
+    impl_->extra_data(std::forward<std::vector<uint8_t>>(_extra_data));
+}
+
+const std::vector<uint8_t>& MLModel::extra_data() const
+{
+    return impl_->extra_data();
+}
+
+std::vector<uint8_t>& MLModel::extra_data()
+{
+    return impl_->extra_data();
+}
+
 void MLModel::task_id(
         int32_t _task_id)
 {
@@ -929,9 +1534,13 @@ HWResource::HWResource(
 {
     impl_ = new HWResourceImpl;
 
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->hw_description() = x.impl_->hw_description();
     this->impl_->power_consumption() = x.impl_->power_consumption();
+    this->impl_->latency() = x.impl_->latency();
+    this->impl_->memory_footprint_of_ml_model() = x.impl_->memory_footprint_of_ml_model();
+    this->impl_->max_hw_memory_footprint() = x.impl_->max_hw_memory_footprint();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
 }
 
 HWResource::HWResource(
@@ -944,9 +1553,13 @@ HWResource::HWResource(
 HWResource& HWResource::operator =(
         const HWResource& x)
 {
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->hw_description() = x.impl_->hw_description();
     this->impl_->power_consumption() = x.impl_->power_consumption();
+    this->impl_->latency() = x.impl_->latency();
+    this->impl_->memory_footprint_of_ml_model() = x.impl_->memory_footprint_of_ml_model();
+    this->impl_->max_hw_memory_footprint() = x.impl_->max_hw_memory_footprint();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
     return *this;
 }
 
@@ -1013,6 +1626,76 @@ double& HWResource::power_consumption()
     return impl_->power_consumption();
 }
 
+void HWResource::latency(
+        double _latency)
+{
+    impl_->latency(_latency);
+}
+
+double HWResource::latency() const
+{
+    return impl_->latency();
+}
+
+double& HWResource::latency()
+{
+    return impl_->latency();
+}
+
+void HWResource::memory_footprint_of_ml_model(
+        double _memory_footprint_of_ml_model)
+{
+    impl_->memory_footprint_of_ml_model(_memory_footprint_of_ml_model);
+}
+
+double HWResource::memory_footprint_of_ml_model() const
+{
+    return impl_->memory_footprint_of_ml_model();
+}
+
+double& HWResource::memory_footprint_of_ml_model()
+{
+    return impl_->memory_footprint_of_ml_model();
+}
+
+void HWResource::max_hw_memory_footprint(
+        double _max_hw_memory_footprint)
+{
+    impl_->max_hw_memory_footprint(_max_hw_memory_footprint);
+}
+
+double HWResource::max_hw_memory_footprint() const
+{
+    return impl_->max_hw_memory_footprint();
+}
+
+double& HWResource::max_hw_memory_footprint()
+{
+    return impl_->max_hw_memory_footprint();
+}
+
+void HWResource::extra_data(
+        const std::vector<uint8_t>& _extra_data)
+{
+    impl_->extra_data(_extra_data);
+}
+
+void HWResource::extra_data(
+        std::vector<uint8_t>&& _extra_data)
+{
+    impl_->extra_data(std::forward<std::vector<uint8_t>>(_extra_data));
+}
+
+const std::vector<uint8_t>& HWResource::extra_data() const
+{
+    return impl_->extra_data();
+}
+
+std::vector<uint8_t>& HWResource::extra_data()
+{
+    return impl_->extra_data();
+}
+
 void HWResource::task_id(
         int32_t _task_id)
 {
@@ -1057,10 +1740,11 @@ CO2Footprint::CO2Footprint(
 {
     impl_ = new CO2FootprintImpl;
 
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->carbon_intensity() = x.impl_->carbon_intensity();
-    this->impl_->co2_footprint() = x.impl_->co2_footprint();
+    this->impl_->carbon_footprint() = x.impl_->carbon_footprint();
     this->impl_->energy_consumption() = x.impl_->energy_consumption();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
 }
 
 CO2Footprint::CO2Footprint(
@@ -1073,10 +1757,11 @@ CO2Footprint::CO2Footprint(
 CO2Footprint& CO2Footprint::operator =(
         const CO2Footprint& x)
 {
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->carbon_intensity() = x.impl_->carbon_intensity();
-    this->impl_->co2_footprint() = x.impl_->co2_footprint();
+    this->impl_->carbon_footprint() = x.impl_->carbon_footprint();
     this->impl_->energy_consumption() = x.impl_->energy_consumption();
+    this->impl_->extra_data() = x.impl_->extra_data();
+    this->impl_->task_id() = x.impl_->task_id();
     return *this;
 }
 
@@ -1107,20 +1792,20 @@ bool CO2Footprint::operator !=(
     return !(*this == x);
 }
 
-void CO2Footprint::co2_footprint(
-        double _co2_footprint)
+void CO2Footprint::carbon_footprint(
+        double _carbon_footprint)
 {
-    impl_->co2_footprint(_co2_footprint);
+    impl_->carbon_footprint(_carbon_footprint);
 }
 
-double CO2Footprint::co2_footprint() const
+double CO2Footprint::carbon_footprint() const
 {
-    return impl_->co2_footprint();
+    return impl_->carbon_footprint();
 }
 
-double& CO2Footprint::co2_footprint()
+double& CO2Footprint::carbon_footprint()
 {
-    return impl_->co2_footprint();
+    return impl_->carbon_footprint();
 }
 
 void CO2Footprint::energy_consumption(
@@ -1153,6 +1838,28 @@ double CO2Footprint::carbon_intensity() const
 double& CO2Footprint::carbon_intensity()
 {
     return impl_->carbon_intensity();
+}
+
+void CO2Footprint::extra_data(
+        const std::vector<uint8_t>& _extra_data)
+{
+    impl_->extra_data(_extra_data);
+}
+
+void CO2Footprint::extra_data(
+        std::vector<uint8_t>&& _extra_data)
+{
+    impl_->extra_data(std::forward<std::vector<uint8_t>>(_extra_data));
+}
+
+const std::vector<uint8_t>& CO2Footprint::extra_data() const
+{
+    return impl_->extra_data();
+}
+
+std::vector<uint8_t>& CO2Footprint::extra_data()
+{
+    return impl_->extra_data();
 }
 
 void CO2Footprint::task_id(
