@@ -49,12 +49,12 @@ struct ModuleNodeProxyFactory
                 node_proxy = new MLModelMetadataNodeProxy(orchestrator, db);
                 break;
             }
-            case NodeID::ID_MACHINE_LEARNING:
+            case NodeID::ID_ML_MODEL:
             {
                 node_proxy = new MLModelProviderNodeProxy(orchestrator, db);
                 break;
             }
-            case NodeID::ID_HARDWARE_RESOURCES:
+            case NodeID::ID_HW_RESOURCES:
             {
                 node_proxy = new HardwareResourcesProviderNodeProxy(orchestrator, db);
                 break;

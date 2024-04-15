@@ -81,8 +81,8 @@ private:
 static TestOrchestratorNodeHandle::DataCollection nodes_ready_expected_data =
 {
     {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 0}},
-    {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 0}},
-    {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 0}},
+    {NodeID::ID_ML_MODEL, {NODE_IDLE, 0}},
+    {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 0}},
     {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
 };
 
@@ -114,8 +114,8 @@ TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
     TestOrchestratorNodeHandle::DataCollection expected_data =
     {
         {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 0}},
-        {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 0}},
-        {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 0}},
+        {NodeID::ID_ML_MODEL, {NODE_IDLE, 0}},
+        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 0}},
         {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
     };
 
@@ -162,8 +162,8 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
         {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
-        {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 1}},
-        {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 1}},
+        {NodeID::ID_ML_MODEL, {NODE_IDLE, 1}},
+        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 1}},
         {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}}
     };
 
@@ -204,8 +204,8 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
         {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 2}},
-        {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 2}},
-        {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 2}},
+        {NodeID::ID_ML_MODEL, {NODE_IDLE, 2}},
+        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 2}},
         {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 2}}
     };
 
@@ -234,7 +234,7 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id(), 0);
     ASSERT_EQ(orchestrator.get_task_data(1, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id(), 1);
-    ASSERT_EQ(orchestrator.get_task_data(1, NodeID::ID_HARDWARE_RESOURCES, hw), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(orchestrator.get_task_data(1, NodeID::ID_HW_RESOURCES, hw), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::HWResource*)hw)->task_id(), 1);
 }
 
@@ -262,8 +262,8 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
         {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
-        {NodeID::ID_MACHINE_LEARNING, {NODE_IDLE, 1}},
-        {NodeID::ID_HARDWARE_RESOURCES, {NODE_IDLE, 1}},
+        {NodeID::ID_ML_MODEL, {NODE_IDLE, 1}},
+        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 1}},
         {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}}
     };
 
@@ -281,9 +281,9 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     const types::NodeStatus* status;
     orchestrator.get_node_status(NodeID::ID_ML_MODEL_METADATA, status);
     ASSERT_EQ(status->node_status(), NODE_IDLE);
-    orchestrator.get_node_status(NodeID::ID_MACHINE_LEARNING, status);
+    orchestrator.get_node_status(NodeID::ID_ML_MODEL, status);
     ASSERT_EQ(status->node_status(), NODE_IDLE);
-    orchestrator.get_node_status(NodeID::ID_HARDWARE_RESOURCES, status);
+    orchestrator.get_node_status(NodeID::ID_HW_RESOURCES, status);
     ASSERT_EQ(status->node_status(), NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_CARBON_FOOTPRINT, status);
     ASSERT_EQ(status->node_status(), NODE_IDLE);

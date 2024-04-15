@@ -279,9 +279,9 @@ RetCode_t OrchestratorNode::get_task_data(
             }
             break;
         }
-        case NodeID::ID_MACHINE_LEARNING:
+        case NodeID::ID_ML_MODEL:
         {
-            MapFromNodeIDToType_t<NodeID::ID_MACHINE_LEARNING>::type* typed_data = nullptr;
+            MapFromNodeIDToType_t<NodeID::ID_ML_MODEL>::type* typed_data = nullptr;
             if (task_db_->get_task_data(task_id, typed_data))
             {
                 data = typed_data;
@@ -289,9 +289,9 @@ RetCode_t OrchestratorNode::get_task_data(
             }
             break;
         }
-        case NodeID::ID_HARDWARE_RESOURCES:
+        case NodeID::ID_HW_RESOURCES:
         {
-            MapFromNodeIDToType_t<NodeID::ID_HARDWARE_RESOURCES>::type* typed_data = nullptr;
+            MapFromNodeIDToType_t<NodeID::ID_HW_RESOURCES>::type* typed_data = nullptr;
             if (task_db_->get_task_data(task_id, typed_data))
             {
                 data = typed_data;

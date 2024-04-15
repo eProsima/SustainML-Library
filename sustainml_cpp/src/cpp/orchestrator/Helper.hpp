@@ -46,12 +46,12 @@ template <> struct MapFromNodeIDToType_t<NodeID::ID_ML_MODEL_METADATA>
     using type = types::MLModelMetadata;
     using typeImpl = MLModelMetadataImpl;
 };
-template <> struct MapFromNodeIDToType_t<NodeID::ID_MACHINE_LEARNING>
+template <> struct MapFromNodeIDToType_t<NodeID::ID_ML_MODEL>
 {
     using type = types::MLModel;
     using typeImpl = MLModelImpl;
 };
-template <> struct MapFromNodeIDToType_t<NodeID::ID_HARDWARE_RESOURCES>
+template <> struct MapFromNodeIDToType_t<NodeID::ID_HW_RESOURCES>
 {
     using type = types::HWResource;
     using typeImpl = HWResourceImpl;

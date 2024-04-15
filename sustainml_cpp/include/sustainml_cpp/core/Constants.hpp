@@ -28,10 +28,12 @@ namespace sustainml {
  */
 enum class NodeID
 {
-    ID_ML_MODEL_METADATA,
-    ID_MACHINE_LEARNING,
-    ID_HARDWARE_RESOURCES,
+    ID_APP_REQUIREMENTS,
     ID_CARBON_FOOTPRINT,
+    ID_HW_CONSTRAINTS,
+    ID_HW_RESOURCES,
+    ID_ML_MODEL_METADATA,
+    ID_ML_MODEL,
     // Proxies end here since the MAX
     // is used to allocate proxy resources
     // in the orchestrator

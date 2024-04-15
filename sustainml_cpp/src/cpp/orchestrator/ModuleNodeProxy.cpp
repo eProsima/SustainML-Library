@@ -257,7 +257,7 @@ void HardwareResourcesProviderNodeProxy::store_data_in_db()
 CarbonFootprintProviderNodeProxy::CarbonFootprintProviderNodeProxy(
         OrchestratorNode* orchestrator,
         std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::CO2_TRACKER_NODE)
+    : ModuleNodeProxy(orchestrator, task_db, common::CARBON_FOOTPRINT_NODE)
 {
 
 }

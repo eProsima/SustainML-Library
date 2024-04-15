@@ -215,7 +215,7 @@ private:
  */
 class MLModelProviderNodeProxy : public ModuleNodeProxy
 {
-    static constexpr MapFromNodeIDToType_t<NodeID::ID_MACHINE_LEARNING> node_id_to_type_id_{};
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_ML_MODEL> node_id_to_type_id_{};
 
 public:
 
@@ -252,7 +252,7 @@ private:
  */
 class HardwareResourcesProviderNodeProxy : public ModuleNodeProxy
 {
-    static constexpr MapFromNodeIDToType_t<NodeID::ID_HARDWARE_RESOURCES> node_id_to_type_id_{};
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_HW_RESOURCES> node_id_to_type_id_{};
 
 public:
 
