@@ -27,13 +27,19 @@
 constexpr uint32_t NodeStatusImpl_max_cdr_typesize {540UL};
 constexpr uint32_t NodeStatusImpl_max_key_cdr_typesize {264UL};
 
-constexpr uint32_t EncodedTaskImpl_max_cdr_typesize {26016UL};
-constexpr uint32_t EncodedTaskImpl_max_key_cdr_typesize {4UL};
+constexpr uint32_t AppRequirementsImpl_max_cdr_typesize {26120UL};
+constexpr uint32_t AppRequirementsImpl_max_key_cdr_typesize {4UL};
 
-constexpr uint32_t MLModelImpl_max_cdr_typesize {1048UL};
+constexpr uint32_t MLModelImpl_max_cdr_typesize {27172UL};
 constexpr uint32_t MLModelImpl_max_key_cdr_typesize {4UL};
 
-constexpr uint32_t CO2FootprintImpl_max_cdr_typesize {36UL};
+constexpr uint32_t MLModelMetadataImpl_max_cdr_typesize {52128UL};
+constexpr uint32_t MLModelMetadataImpl_max_key_cdr_typesize {4UL};
+
+constexpr uint32_t HWConstraintsImpl_max_cdr_typesize {116UL};
+constexpr uint32_t HWConstraintsImpl_max_key_cdr_typesize {4UL};
+
+constexpr uint32_t CO2FootprintImpl_max_cdr_typesize {140UL};
 constexpr uint32_t CO2FootprintImpl_max_key_cdr_typesize {4UL};
 
 constexpr uint32_t NodeControlImpl_max_cdr_typesize {536UL};
@@ -45,10 +51,10 @@ constexpr uint32_t GeoLocationImpl_max_key_cdr_typesize {0UL};
 
 
 
-constexpr uint32_t UserInputImpl_max_cdr_typesize {792UL};
+constexpr uint32_t UserInputImpl_max_cdr_typesize {53464UL};
 constexpr uint32_t UserInputImpl_max_key_cdr_typesize {4UL};
 
-constexpr uint32_t HWResourceImpl_max_cdr_typesize {276UL};
+constexpr uint32_t HWResourceImpl_max_cdr_typesize {404UL};
 constexpr uint32_t HWResourceImpl_max_key_cdr_typesize {4UL};
 
 
@@ -59,9 +65,13 @@ namespace fastcdr {
 class Cdr;
 class CdrSizeCalculator;
 
+
+
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
         const NodeStatusImpl& data);
+
+
 
 
 
@@ -69,25 +79,49 @@ eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
         const NodeControlImpl& data);
 
+
+
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
         const GeoLocationImpl& data);
+
+
 
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
         const UserInputImpl& data);
 
+
+
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
-        const EncodedTaskImpl& data);
+        const MLModelMetadataImpl& data);
+
+
+
+eProsima_user_DllExport void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const AppRequirementsImpl& data);
+
+
+
+eProsima_user_DllExport void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const HWConstraintsImpl& data);
+
+
 
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
         const MLModelImpl& data);
 
+
+
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
         const HWResourceImpl& data);
+
+
 
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
@@ -98,3 +132,4 @@ eProsima_user_DllExport void serialize_key(
 } // namespace eprosima
 
 #endif // _FAST_DDS_GENERATED_TYPESIMPLCDRAUX_HPP_
+
