@@ -83,8 +83,8 @@ using CarbonFootprintManagedNode = ManagedNode<carbon_tracker_module::CarbonFoot
                 types::MLModel, types::UserInput, types::HWResource,
                 types::NodeStatus, types::CO2Footprint>;
 
-using HWConstraintsManagedNode = ManagedNode<hw_constraints_module::HardwareConstraintsNode,
-                hw_constraints_module::HardwareConstraintsTaskListener,
+using HWConstraintsManagedNode = ManagedNode<hardware_module::HardwareConstraintsNode,
+                hardware_module::HardwareConstraintsTaskListener,
                 types::UserInput, types::NodeStatus, types::HWConstraints>;
 
 using HWResourcesManagedNode = ManagedNode<hardware_module::HardwareResourcesNode,
@@ -92,12 +92,12 @@ using HWResourcesManagedNode = ManagedNode<hardware_module::HardwareResourcesNod
                 types::MLModel, types::AppRequirements, types::HWConstraints,
                 types::NodeStatus, types::HWResource>;
 
-using MLModelMetadataManagedNode = ManagedNode<ml_model_metadata_module::MLModelMetadataNode,
-                ml_model_metadata_module::MLModelMetadataTaskListener,
+using MLModelMetadataManagedNode = ManagedNode<ml_model_module::MLModelMetadataNode,
+                ml_model_module::MLModelMetadataTaskListener,
                 types::UserInput, types::NodeStatus, types::MLModelMetadata>;
 
-using MLModelManagedNode = ManagedNode<ml_model_provider_module::MLModelNode,
-                ml_model_provider_module::MLModelTaskListener,
+using MLModelManagedNode = ManagedNode<ml_model_module::MLModelNode,
+                ml_model_module::MLModelTaskListener,
                 types::MLModelMetadata, types::AppRequirements, types::HWConstraints,
                 types::NodeStatus, types::MLModel>;
 

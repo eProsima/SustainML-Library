@@ -28,7 +28,7 @@
 using namespace types;
 
 namespace sustainml {
-namespace ml_model_metadata_module {
+namespace ml_model_module {
 
 MLModelMetadataNode::MLModelMetadataNode(
         MLModelMetadataTaskListener& user_listener)
@@ -148,5 +148,5 @@ void MLModelMetadataNode::publish_to_user(
     }
 }
 
-} // ml_model_metadata_module
+} // ml_model_module
 } // sustainml

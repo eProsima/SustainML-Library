@@ -28,7 +28,7 @@
 using namespace types;
 
 namespace sustainml {
-namespace ml_model_provider_module {
+namespace ml_model_module {
 
 MLModelNode::MLModelNode(
         MLModelTaskListener& user_listener)
@@ -161,5 +161,5 @@ void MLModelNode::publish_to_user(
     }
 }
 
-} // ml_model_provider_module
+} // ml_model_module
 } // sustainml

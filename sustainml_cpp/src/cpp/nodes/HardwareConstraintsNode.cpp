@@ -28,7 +28,7 @@
 using namespace types;
 
 namespace sustainml {
-namespace hw_constraints_module {
+namespace hardware_module {
 
 HardwareConstraintsNode::HardwareConstraintsNode(
         HardwareConstraintsTaskListener& user_listener)
@@ -148,5 +148,5 @@ void HardwareConstraintsNode::publish_to_user(
     }
 }
 
-} // hw_constraints_module
+} // hardware_module
 } // sustainml

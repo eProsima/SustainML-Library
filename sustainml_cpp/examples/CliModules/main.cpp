@@ -377,7 +377,7 @@ class CustomCarbonFootprintListener : public sustainml::carbon_tracker_module::C
 
 };
 
-class CustomHardwareConstraintsListener : public sustainml::hw_constraints_module::HardwareConstraintsTaskListener
+class CustomHardwareConstraintsListener : public sustainml::hardware_module::HardwareConstraintsTaskListener
 {
 
     void on_new_task_available(
@@ -467,7 +467,7 @@ class CustomHardwareResourcesListener : public sustainml::hardware_module::Hardw
 
 };
 
-class CustomMLModelMetadataListener : public sustainml::ml_model_metadata_module::MLModelMetadataTaskListener
+class CustomMLModelMetadataListener : public sustainml::ml_model_module::MLModelMetadataTaskListener
 {
 
     void on_new_task_available(
@@ -521,7 +521,7 @@ class CustomMLModelMetadataListener : public sustainml::ml_model_metadata_module
 
 };
 
-class CustomMLModelListener : public sustainml::ml_model_provider_module::MLModelTaskListener
+class CustomMLModelListener : public sustainml::ml_model_module::MLModelTaskListener
 {
     void on_new_task_available (
             types::MLModelMetadata& model_metadata,
@@ -614,9 +614,9 @@ int main (
                 sustainml::app_requirements_module::AppRequirementsNode::terminate();
                 sustainml::carbon_tracker_module::CarbonFootprintNode::terminate();
                 sustainml::hardware_module::HardwareResourcesNode::terminate();
-                sustainml::hw_constraints_module::HardwareConstraintsNode::terminate();
-                sustainml::ml_model_metadata_module::MLModelMetadataNode::terminate();
-                sustainml::ml_model_provider_module::MLModelNode::terminate();
+                sustainml::hardware_module::HardwareConstraintsNode::terminate();
+                sustainml::ml_model_module::MLModelMetadataNode::terminate();
+                sustainml::ml_model_module::MLModelNode::terminate();
             });
 
     // All nodes workflow
@@ -633,17 +633,17 @@ int main (
         CO2FootprintSubscriber carbon_footprint_subscriber;
 
         CustomHardwareConstraintsListener hardware_constraints_listener;
-        sustainml::hw_constraints_module::HardwareConstraintsNode hardware_constraints_node_mock(
+        sustainml::hardware_module::HardwareConstraintsNode hardware_constraints_node_mock(
             hardware_constraints_listener);
 
         CustomHardwareResourcesListener hardware_resources_listener;
         sustainml::hardware_module::HardwareResourcesNode hardware_resources_node_mock(hardware_resources_listener);
 
         CustomMLModelMetadataListener ml_model_metadata_listener;
-        sustainml::ml_model_metadata_module::MLModelMetadataNode ml_model_metadata_node_mock(ml_model_metadata_listener);
+        sustainml::ml_model_module::MLModelMetadataNode ml_model_metadata_node_mock(ml_model_metadata_listener);
 
         CustomMLModelListener ml_model_provider_listener;
-        sustainml::ml_model_provider_module::MLModelNode ml_model_provider_node_mock(ml_model_provider_listener);
+        sustainml::ml_model_module::MLModelNode ml_model_provider_node_mock(ml_model_provider_listener);
 
         // Spin nodes
         auto p_app_requirements = std::async([&app_requirements_node_mock]()
@@ -701,9 +701,9 @@ int main (
         sustainml::app_requirements_module::AppRequirementsNode::terminate();
         sustainml::carbon_tracker_module::CarbonFootprintNode::terminate();
         sustainml::hardware_module::HardwareResourcesNode::terminate();
-        sustainml::hw_constraints_module::HardwareConstraintsNode::terminate();
-        sustainml::ml_model_metadata_module::MLModelMetadataNode::terminate();
-        sustainml::ml_model_provider_module::MLModelNode::terminate();
+        sustainml::hardware_module::HardwareConstraintsNode::terminate();
+        sustainml::ml_model_module::MLModelMetadataNode::terminate();
+        sustainml::ml_model_module::MLModelNode::terminate();
 
         p_app_requirements.get();
         p_carbon_tracker.get();
@@ -746,14 +746,14 @@ int main (
     {
         std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
         CustomMLModelMetadataListener ml_model_metadata_listener;
-        sustainml::ml_model_metadata_module::MLModelMetadataNode ml_model_metadata_node_mock(ml_model_metadata_listener);
+        sustainml::ml_model_module::MLModelMetadataNode ml_model_metadata_node_mock(ml_model_metadata_listener);
         ml_model_metadata_node_mock.spin();
     }
     if (std::strcmp(argv[1], "model") == 0)
     {
         std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
         CustomMLModelListener ml_model_provider_listener;
-        sustainml::ml_model_provider_module::MLModelNode ml_model_provider_node_mock(ml_model_provider_listener);
+        sustainml::ml_model_module::MLModelNode ml_model_provider_node_mock(ml_model_provider_listener);
         ml_model_provider_node_mock.spin();
     }
     if (std::strcmp(argv[1], "resources") == 0)
@@ -781,7 +781,7 @@ int main (
     {
         std::cout << "<--- Press a CTRL + C to exit: " << std::endl;
         CustomHardwareConstraintsListener hardware_constraints_listener;
-        sustainml::hw_constraints_module::HardwareConstraintsNode hardware_constraints_node_mock(
+        sustainml::hardware_module::HardwareConstraintsNode hardware_constraints_node_mock(
             hardware_constraints_listener);
         hardware_constraints_node_mock.spin();
     }

@@ -36,7 +36,7 @@ namespace utils {
 template<class T> class SamplePool;
 } // namespace utils
 
-namespace hw_constraints_module {
+namespace hardware_module {
 
 class Node;
 class Dispatcher;
@@ -122,7 +122,7 @@ private:
 
 };
 
-} // namespace hw_constraints_module
+} // namespace hardware_module
 } // namespace sustainml
 
 #endif // SUSTAINMLCPP_NODES_HARDWARECONSTRAINTSNODE_HPP

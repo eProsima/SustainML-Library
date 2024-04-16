@@ -36,7 +36,7 @@ namespace utils {
 template<class T> class SamplePool;
 } // namespace utils
 
-namespace ml_model_provider_module {
+namespace ml_model_module {
 
 class Node;
 class Dispatcher;
@@ -128,7 +128,7 @@ private:
 
 };
 
-} // namespace ml_model_provider_module
+} // namespace ml_model_module
 } // namespace sustainml
 
 #endif // SUSTAINMLCPP_NODES_MLMODELNODE_HPP
