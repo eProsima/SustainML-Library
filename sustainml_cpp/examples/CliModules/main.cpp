@@ -203,6 +203,7 @@ public:
         geo.region("Region of task id " + std::to_string(task_id));
         ui.geo_location(geo);
         ui.problem_definition("Problem definition of task id " + std::to_string(task_id));
+        ui.task_name(std::to_string(task_id));
         ui.task_id(task_id);
 
         // publish new sample
