@@ -41,6 +41,121 @@ using namespace eprosima::fastcdr::exception;
 
 
 
+TaskIdImpl::TaskIdImpl()
+{
+    // Just to register all known types
+    registertypesImplTypes();
+}
+
+TaskIdImpl::~TaskIdImpl()
+{
+}
+
+TaskIdImpl::TaskIdImpl(
+        const TaskIdImpl& x)
+{
+    m_problem_id = x.m_problem_id;
+    m_data_id = x.m_data_id;
+}
+
+TaskIdImpl::TaskIdImpl(
+        TaskIdImpl&& x) noexcept
+{
+    m_problem_id = x.m_problem_id;
+    m_data_id = x.m_data_id;
+}
+
+TaskIdImpl& TaskIdImpl::operator =(
+        const TaskIdImpl& x)
+{
+
+    m_problem_id = x.m_problem_id;
+    m_data_id = x.m_data_id;
+    return *this;
+}
+
+TaskIdImpl& TaskIdImpl::operator =(
+        TaskIdImpl&& x) noexcept
+{
+
+    m_problem_id = x.m_problem_id;
+    m_data_id = x.m_data_id;
+    return *this;
+}
+
+bool TaskIdImpl::operator ==(
+        const TaskIdImpl& x) const
+{
+    return (m_problem_id == x.m_problem_id &&
+           m_data_id == x.m_data_id);
+}
+
+bool TaskIdImpl::operator !=(
+        const TaskIdImpl& x) const
+{
+    return !(*this == x);
+}
+
+/*!
+ * @brief This function sets a value in member problem_id
+ * @param _problem_id New value for member problem_id
+ */
+void TaskIdImpl::problem_id(
+        uint32_t _problem_id)
+{
+    m_problem_id = _problem_id;
+}
+
+/*!
+ * @brief This function returns the value of member problem_id
+ * @return Value of member problem_id
+ */
+uint32_t TaskIdImpl::problem_id() const
+{
+    return m_problem_id;
+}
+
+/*!
+ * @brief This function returns a reference to member problem_id
+ * @return Reference to member problem_id
+ */
+uint32_t& TaskIdImpl::problem_id()
+{
+    return m_problem_id;
+}
+
+
+/*!
+ * @brief This function sets a value in member data_id
+ * @param _data_id New value for member data_id
+ */
+void TaskIdImpl::data_id(
+        uint32_t _data_id)
+{
+    m_data_id = _data_id;
+}
+
+/*!
+ * @brief This function returns the value of member data_id
+ * @return Value of member data_id
+ */
+uint32_t TaskIdImpl::data_id() const
+{
+    return m_data_id;
+}
+
+/*!
+ * @brief This function returns a reference to member data_id
+ * @return Reference to member data_id
+ */
+uint32_t& TaskIdImpl::data_id()
+{
+    return m_data_id;
+}
+
+
+
+
 NodeStatusImpl::NodeStatusImpl()
 {
     // Just to register all known types
@@ -57,9 +172,9 @@ NodeStatusImpl::NodeStatusImpl(
     m_node_status = x.m_node_status;
     m_task_status = x.m_task_status;
     m_error_code = x.m_error_code;
-    m_task_id = x.m_task_id;
     m_error_description = x.m_error_description;
     m_node_name = x.m_node_name;
+    m_task_id = x.m_task_id;
 }
 
 NodeStatusImpl::NodeStatusImpl(
@@ -68,9 +183,9 @@ NodeStatusImpl::NodeStatusImpl(
     m_node_status = x.m_node_status;
     m_task_status = x.m_task_status;
     m_error_code = x.m_error_code;
-    m_task_id = x.m_task_id;
     m_error_description = std::move(x.m_error_description);
     m_node_name = std::move(x.m_node_name);
+    m_task_id = std::move(x.m_task_id);
 }
 
 NodeStatusImpl& NodeStatusImpl::operator =(
@@ -80,9 +195,9 @@ NodeStatusImpl& NodeStatusImpl::operator =(
     m_node_status = x.m_node_status;
     m_task_status = x.m_task_status;
     m_error_code = x.m_error_code;
-    m_task_id = x.m_task_id;
     m_error_description = x.m_error_description;
     m_node_name = x.m_node_name;
+    m_task_id = x.m_task_id;
     return *this;
 }
 
@@ -93,9 +208,9 @@ NodeStatusImpl& NodeStatusImpl::operator =(
     m_node_status = x.m_node_status;
     m_task_status = x.m_task_status;
     m_error_code = x.m_error_code;
-    m_task_id = x.m_task_id;
     m_error_description = std::move(x.m_error_description);
     m_node_name = std::move(x.m_node_name);
+    m_task_id = std::move(x.m_task_id);
     return *this;
 }
 
@@ -105,9 +220,9 @@ bool NodeStatusImpl::operator ==(
     return (m_node_status == x.m_node_status &&
            m_task_status == x.m_task_status &&
            m_error_code == x.m_error_code &&
-           m_task_id == x.m_task_id &&
            m_error_description == x.m_error_description &&
-           m_node_name == x.m_node_name);
+           m_node_name == x.m_node_name &&
+           m_task_id == x.m_task_id);
 }
 
 bool NodeStatusImpl::operator !=(
@@ -144,6 +259,7 @@ Status& NodeStatusImpl::node_status()
     return m_node_status;
 }
 
+
 /*!
  * @brief This function sets a value in member task_status
  * @param _task_status New value for member task_status
@@ -171,6 +287,7 @@ TaskStatus& NodeStatusImpl::task_status()
 {
     return m_task_status;
 }
+
 
 /*!
  * @brief This function sets a value in member error_code
@@ -200,33 +317,6 @@ ErrorCode& NodeStatusImpl::error_code()
     return m_error_code;
 }
 
-/*!
- * @brief This function sets a value in member task_id
- * @param _task_id New value for member task_id
- */
-void NodeStatusImpl::task_id(
-        int32_t _task_id)
-{
-    m_task_id = _task_id;
-}
-
-/*!
- * @brief This function returns the value of member task_id
- * @return Value of member task_id
- */
-int32_t NodeStatusImpl::task_id() const
-{
-    return m_task_id;
-}
-
-/*!
- * @brief This function returns a reference to member task_id
- * @return Reference to member task_id
- */
-int32_t& NodeStatusImpl::task_id()
-{
-    return m_task_id;
-}
 
 /*!
  * @brief This function copies the value in member error_description
@@ -266,6 +356,7 @@ std::string& NodeStatusImpl::error_description()
     return m_error_description;
 }
 
+
 /*!
  * @brief This function copies the value in member node_name
  * @param _node_name New value to be copied in member node_name
@@ -304,6 +395,50 @@ std::string& NodeStatusImpl::node_name()
     return m_node_name;
 }
 
+
+/*!
+ * @brief This function copies the value in member task_id
+ * @param _task_id New value to be copied in member task_id
+ */
+void NodeStatusImpl::task_id(
+        const TaskIdImpl& _task_id)
+{
+    m_task_id = _task_id;
+}
+
+/*!
+ * @brief This function moves the value in member task_id
+ * @param _task_id New value to be moved in member task_id
+ */
+void NodeStatusImpl::task_id(
+        TaskIdImpl&& _task_id)
+{
+    m_task_id = std::move(_task_id);
+}
+
+/*!
+ * @brief This function returns a constant reference to member task_id
+ * @return Constant reference to member task_id
+ */
+const TaskIdImpl& NodeStatusImpl::task_id() const
+{
+    return m_task_id;
+}
+
+/*!
+ * @brief This function returns a reference to member task_id
+ * @return Reference to member task_id
+ */
+TaskIdImpl& NodeStatusImpl::task_id()
+{
+    return m_task_id;
+}
+
+
+
+
+
+
 NodeControlImpl::NodeControlImpl()
 {
     // Just to register all known types
@@ -320,8 +455,8 @@ NodeControlImpl::NodeControlImpl(
     m_cmd_node = x.m_cmd_node;
     m_cmd_task = x.m_cmd_task;
     m_target_node = x.m_target_node;
-    m_task_id = x.m_task_id;
     m_source_node = x.m_source_node;
+    m_task_id = x.m_task_id;
 }
 
 NodeControlImpl::NodeControlImpl(
@@ -330,8 +465,8 @@ NodeControlImpl::NodeControlImpl(
     m_cmd_node = x.m_cmd_node;
     m_cmd_task = x.m_cmd_task;
     m_target_node = std::move(x.m_target_node);
-    m_task_id = x.m_task_id;
     m_source_node = std::move(x.m_source_node);
+    m_task_id = std::move(x.m_task_id);
 }
 
 NodeControlImpl& NodeControlImpl::operator =(
@@ -341,8 +476,8 @@ NodeControlImpl& NodeControlImpl::operator =(
     m_cmd_node = x.m_cmd_node;
     m_cmd_task = x.m_cmd_task;
     m_target_node = x.m_target_node;
-    m_task_id = x.m_task_id;
     m_source_node = x.m_source_node;
+    m_task_id = x.m_task_id;
     return *this;
 }
 
@@ -353,8 +488,8 @@ NodeControlImpl& NodeControlImpl::operator =(
     m_cmd_node = x.m_cmd_node;
     m_cmd_task = x.m_cmd_task;
     m_target_node = std::move(x.m_target_node);
-    m_task_id = x.m_task_id;
     m_source_node = std::move(x.m_source_node);
+    m_task_id = std::move(x.m_task_id);
     return *this;
 }
 
@@ -364,8 +499,8 @@ bool NodeControlImpl::operator ==(
     return (m_cmd_node == x.m_cmd_node &&
            m_cmd_task == x.m_cmd_task &&
            m_target_node == x.m_target_node &&
-           m_task_id == x.m_task_id &&
-           m_source_node == x.m_source_node);
+           m_source_node == x.m_source_node &&
+           m_task_id == x.m_task_id);
 }
 
 bool NodeControlImpl::operator !=(
@@ -402,6 +537,7 @@ CmdNode& NodeControlImpl::cmd_node()
     return m_cmd_node;
 }
 
+
 /*!
  * @brief This function sets a value in member cmd_task
  * @param _cmd_task New value for member cmd_task
@@ -429,6 +565,7 @@ CmdTask& NodeControlImpl::cmd_task()
 {
     return m_cmd_task;
 }
+
 
 /*!
  * @brief This function copies the value in member target_node
@@ -468,33 +605,6 @@ std::string& NodeControlImpl::target_node()
     return m_target_node;
 }
 
-/*!
- * @brief This function sets a value in member task_id
- * @param _task_id New value for member task_id
- */
-void NodeControlImpl::task_id(
-        int32_t _task_id)
-{
-    m_task_id = _task_id;
-}
-
-/*!
- * @brief This function returns the value of member task_id
- * @return Value of member task_id
- */
-int32_t NodeControlImpl::task_id() const
-{
-    return m_task_id;
-}
-
-/*!
- * @brief This function returns a reference to member task_id
- * @return Reference to member task_id
- */
-int32_t& NodeControlImpl::task_id()
-{
-    return m_task_id;
-}
 
 /*!
  * @brief This function copies the value in member source_node
@@ -534,136 +644,50 @@ std::string& NodeControlImpl::source_node()
     return m_source_node;
 }
 
-GeoLocationImpl::GeoLocationImpl()
+
+/*!
+ * @brief This function copies the value in member task_id
+ * @param _task_id New value to be copied in member task_id
+ */
+void NodeControlImpl::task_id(
+        const TaskIdImpl& _task_id)
 {
-    // Just to register all known types
-    registertypesImplTypes();
-}
-
-GeoLocationImpl::~GeoLocationImpl()
-{
-}
-
-GeoLocationImpl::GeoLocationImpl(
-        const GeoLocationImpl& x)
-{
-    m_continent = x.m_continent;
-    m_region = x.m_region;
-}
-
-GeoLocationImpl::GeoLocationImpl(
-        GeoLocationImpl&& x) noexcept
-{
-    m_continent = std::move(x.m_continent);
-    m_region = std::move(x.m_region);
-}
-
-GeoLocationImpl& GeoLocationImpl::operator =(
-        const GeoLocationImpl& x)
-{
-
-    m_continent = x.m_continent;
-    m_region = x.m_region;
-    return *this;
-}
-
-GeoLocationImpl& GeoLocationImpl::operator =(
-        GeoLocationImpl&& x) noexcept
-{
-
-    m_continent = std::move(x.m_continent);
-    m_region = std::move(x.m_region);
-    return *this;
-}
-
-bool GeoLocationImpl::operator ==(
-        const GeoLocationImpl& x) const
-{
-    return (m_continent == x.m_continent &&
-           m_region == x.m_region);
-}
-
-bool GeoLocationImpl::operator !=(
-        const GeoLocationImpl& x) const
-{
-    return !(*this == x);
+    m_task_id = _task_id;
 }
 
 /*!
- * @brief This function copies the value in member continent
- * @param _continent New value to be copied in member continent
+ * @brief This function moves the value in member task_id
+ * @param _task_id New value to be moved in member task_id
  */
-void GeoLocationImpl::continent(
-        const std::string& _continent)
+void NodeControlImpl::task_id(
+        TaskIdImpl&& _task_id)
 {
-    m_continent = _continent;
+    m_task_id = std::move(_task_id);
 }
 
 /*!
- * @brief This function moves the value in member continent
- * @param _continent New value to be moved in member continent
+ * @brief This function returns a constant reference to member task_id
+ * @return Constant reference to member task_id
  */
-void GeoLocationImpl::continent(
-        std::string&& _continent)
+const TaskIdImpl& NodeControlImpl::task_id() const
 {
-    m_continent = std::move(_continent);
+    return m_task_id;
 }
 
 /*!
- * @brief This function returns a constant reference to member continent
- * @return Constant reference to member continent
+ * @brief This function returns a reference to member task_id
+ * @return Reference to member task_id
  */
-const std::string& GeoLocationImpl::continent() const
+TaskIdImpl& NodeControlImpl::task_id()
 {
-    return m_continent;
+    return m_task_id;
 }
 
-/*!
- * @brief This function returns a reference to member continent
- * @return Reference to member continent
- */
-std::string& GeoLocationImpl::continent()
-{
-    return m_continent;
-}
 
-/*!
- * @brief This function copies the value in member region
- * @param _region New value to be copied in member region
- */
-void GeoLocationImpl::region(
-        const std::string& _region)
-{
-    m_region = _region;
-}
 
-/*!
- * @brief This function moves the value in member region
- * @param _region New value to be moved in member region
- */
-void GeoLocationImpl::region(
-        std::string&& _region)
-{
-    m_region = std::move(_region);
-}
 
-/*!
- * @brief This function returns a constant reference to member region
- * @return Constant reference to member region
- */
-const std::string& GeoLocationImpl::region() const
-{
-    return m_region;
-}
 
-/*!
- * @brief This function returns a reference to member region
- * @return Reference to member region
- */
-std::string& GeoLocationImpl::region()
-{
-    return m_region;
-}
+
 
 UserInputImpl::UserInputImpl()
 {
@@ -678,8 +702,8 @@ UserInputImpl::~UserInputImpl()
 UserInputImpl::UserInputImpl(
         const UserInputImpl& x)
 {
-    m_task_name = x.m_task_name;
     m_modality = x.m_modality;
+    m_problem_short_description = x.m_problem_short_description;
     m_problem_definition = x.m_problem_definition;
     m_inputs = x.m_inputs;
     m_outputs = x.m_outputs;
@@ -689,7 +713,8 @@ UserInputImpl::UserInputImpl(
     m_previous_iteration = x.m_previous_iteration;
     m_optimize_carbon_footprint_auto = x.m_optimize_carbon_footprint_auto;
     m_desired_carbon_footprint = x.m_desired_carbon_footprint;
-    m_geo_location = x.m_geo_location;
+    m_geo_location_continent = x.m_geo_location_continent;
+    m_geo_location_region = x.m_geo_location_region;
     m_extra_data = x.m_extra_data;
     m_task_id = x.m_task_id;
 }
@@ -697,8 +722,8 @@ UserInputImpl::UserInputImpl(
 UserInputImpl::UserInputImpl(
         UserInputImpl&& x) noexcept
 {
-    m_task_name = std::move(x.m_task_name);
     m_modality = std::move(x.m_modality);
+    m_problem_short_description = std::move(x.m_problem_short_description);
     m_problem_definition = std::move(x.m_problem_definition);
     m_inputs = std::move(x.m_inputs);
     m_outputs = std::move(x.m_outputs);
@@ -708,17 +733,18 @@ UserInputImpl::UserInputImpl(
     m_previous_iteration = x.m_previous_iteration;
     m_optimize_carbon_footprint_auto = x.m_optimize_carbon_footprint_auto;
     m_desired_carbon_footprint = x.m_desired_carbon_footprint;
-    m_geo_location = std::move(x.m_geo_location);
+    m_geo_location_continent = std::move(x.m_geo_location_continent);
+    m_geo_location_region = std::move(x.m_geo_location_region);
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
 }
 
 UserInputImpl& UserInputImpl::operator =(
         const UserInputImpl& x)
 {
 
-    m_task_name = x.m_task_name;
     m_modality = x.m_modality;
+    m_problem_short_description = x.m_problem_short_description;
     m_problem_definition = x.m_problem_definition;
     m_inputs = x.m_inputs;
     m_outputs = x.m_outputs;
@@ -728,7 +754,8 @@ UserInputImpl& UserInputImpl::operator =(
     m_previous_iteration = x.m_previous_iteration;
     m_optimize_carbon_footprint_auto = x.m_optimize_carbon_footprint_auto;
     m_desired_carbon_footprint = x.m_desired_carbon_footprint;
-    m_geo_location = x.m_geo_location;
+    m_geo_location_continent = x.m_geo_location_continent;
+    m_geo_location_region = x.m_geo_location_region;
     m_extra_data = x.m_extra_data;
     m_task_id = x.m_task_id;
     return *this;
@@ -738,8 +765,8 @@ UserInputImpl& UserInputImpl::operator =(
         UserInputImpl&& x) noexcept
 {
 
-    m_task_name = std::move(x.m_task_name);
     m_modality = std::move(x.m_modality);
+    m_problem_short_description = std::move(x.m_problem_short_description);
     m_problem_definition = std::move(x.m_problem_definition);
     m_inputs = std::move(x.m_inputs);
     m_outputs = std::move(x.m_outputs);
@@ -749,17 +776,18 @@ UserInputImpl& UserInputImpl::operator =(
     m_previous_iteration = x.m_previous_iteration;
     m_optimize_carbon_footprint_auto = x.m_optimize_carbon_footprint_auto;
     m_desired_carbon_footprint = x.m_desired_carbon_footprint;
-    m_geo_location = std::move(x.m_geo_location);
+    m_geo_location_continent = std::move(x.m_geo_location_continent);
+    m_geo_location_region = std::move(x.m_geo_location_region);
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
     return *this;
 }
 
 bool UserInputImpl::operator ==(
         const UserInputImpl& x) const
 {
-    return (m_task_name == x.m_task_name &&
-           m_modality == x.m_modality &&
+    return (m_modality == x.m_modality &&
+           m_problem_short_description == x.m_problem_short_description &&
            m_problem_definition == x.m_problem_definition &&
            m_inputs == x.m_inputs &&
            m_outputs == x.m_outputs &&
@@ -769,7 +797,8 @@ bool UserInputImpl::operator ==(
            m_previous_iteration == x.m_previous_iteration &&
            m_optimize_carbon_footprint_auto == x.m_optimize_carbon_footprint_auto &&
            m_desired_carbon_footprint == x.m_desired_carbon_footprint &&
-           m_geo_location == x.m_geo_location &&
+           m_geo_location_continent == x.m_geo_location_continent &&
+           m_geo_location_region == x.m_geo_location_region &&
            m_extra_data == x.m_extra_data &&
            m_task_id == x.m_task_id);
 }
@@ -778,44 +807,6 @@ bool UserInputImpl::operator !=(
         const UserInputImpl& x) const
 {
     return !(*this == x);
-}
-
-/*!
- * @brief This function copies the value in member task_name
- * @param _task_name New value to be copied in member task_name
- */
-void UserInputImpl::task_name(
-        const std::string& _task_name)
-{
-    m_task_name = _task_name;
-}
-
-/*!
- * @brief This function moves the value in member task_name
- * @param _task_name New value to be moved in member task_name
- */
-void UserInputImpl::task_name(
-        std::string&& _task_name)
-{
-    m_task_name = std::move(_task_name);
-}
-
-/*!
- * @brief This function returns a constant reference to member task_name
- * @return Constant reference to member task_name
- */
-const std::string& UserInputImpl::task_name() const
-{
-    return m_task_name;
-}
-
-/*!
- * @brief This function returns a reference to member task_name
- * @return Reference to member task_name
- */
-std::string& UserInputImpl::task_name()
-{
-    return m_task_name;
 }
 
 /*!
@@ -856,6 +847,46 @@ std::string& UserInputImpl::modality()
     return m_modality;
 }
 
+
+/*!
+ * @brief This function copies the value in member problem_short_description
+ * @param _problem_short_description New value to be copied in member problem_short_description
+ */
+void UserInputImpl::problem_short_description(
+        const std::string& _problem_short_description)
+{
+    m_problem_short_description = _problem_short_description;
+}
+
+/*!
+ * @brief This function moves the value in member problem_short_description
+ * @param _problem_short_description New value to be moved in member problem_short_description
+ */
+void UserInputImpl::problem_short_description(
+        std::string&& _problem_short_description)
+{
+    m_problem_short_description = std::move(_problem_short_description);
+}
+
+/*!
+ * @brief This function returns a constant reference to member problem_short_description
+ * @return Constant reference to member problem_short_description
+ */
+const std::string& UserInputImpl::problem_short_description() const
+{
+    return m_problem_short_description;
+}
+
+/*!
+ * @brief This function returns a reference to member problem_short_description
+ * @return Reference to member problem_short_description
+ */
+std::string& UserInputImpl::problem_short_description()
+{
+    return m_problem_short_description;
+}
+
+
 /*!
  * @brief This function copies the value in member problem_definition
  * @param _problem_definition New value to be copied in member problem_definition
@@ -893,6 +924,7 @@ std::string& UserInputImpl::problem_definition()
 {
     return m_problem_definition;
 }
+
 
 /*!
  * @brief This function copies the value in member inputs
@@ -932,6 +964,7 @@ std::vector<std::string>& UserInputImpl::inputs()
     return m_inputs;
 }
 
+
 /*!
  * @brief This function copies the value in member outputs
  * @param _outputs New value to be copied in member outputs
@@ -970,6 +1003,7 @@ std::vector<std::string>& UserInputImpl::outputs()
     return m_outputs;
 }
 
+
 /*!
  * @brief This function sets a value in member minimum_samples
  * @param _minimum_samples New value for member minimum_samples
@@ -997,6 +1031,7 @@ uint32_t& UserInputImpl::minimum_samples()
 {
     return m_minimum_samples;
 }
+
 
 /*!
  * @brief This function sets a value in member maximum_samples
@@ -1026,6 +1061,7 @@ uint32_t& UserInputImpl::maximum_samples()
     return m_maximum_samples;
 }
 
+
 /*!
  * @brief This function sets a value in member optimize_carbon_footprint_manual
  * @param _optimize_carbon_footprint_manual New value for member optimize_carbon_footprint_manual
@@ -1053,6 +1089,7 @@ bool& UserInputImpl::optimize_carbon_footprint_manual()
 {
     return m_optimize_carbon_footprint_manual;
 }
+
 
 /*!
  * @brief This function sets a value in member previous_iteration
@@ -1082,6 +1119,7 @@ int32_t& UserInputImpl::previous_iteration()
     return m_previous_iteration;
 }
 
+
 /*!
  * @brief This function sets a value in member optimize_carbon_footprint_auto
  * @param _optimize_carbon_footprint_auto New value for member optimize_carbon_footprint_auto
@@ -1109,6 +1147,7 @@ bool& UserInputImpl::optimize_carbon_footprint_auto()
 {
     return m_optimize_carbon_footprint_auto;
 }
+
 
 /*!
  * @brief This function sets a value in member desired_carbon_footprint
@@ -1138,43 +1177,84 @@ double& UserInputImpl::desired_carbon_footprint()
     return m_desired_carbon_footprint;
 }
 
+
 /*!
- * @brief This function copies the value in member geo_location
- * @param _geo_location New value to be copied in member geo_location
+ * @brief This function copies the value in member geo_location_continent
+ * @param _geo_location_continent New value to be copied in member geo_location_continent
  */
-void UserInputImpl::geo_location(
-        const GeoLocationImpl& _geo_location)
+void UserInputImpl::geo_location_continent(
+        const std::string& _geo_location_continent)
 {
-    m_geo_location = _geo_location;
+    m_geo_location_continent = _geo_location_continent;
 }
 
 /*!
- * @brief This function moves the value in member geo_location
- * @param _geo_location New value to be moved in member geo_location
+ * @brief This function moves the value in member geo_location_continent
+ * @param _geo_location_continent New value to be moved in member geo_location_continent
  */
-void UserInputImpl::geo_location(
-        GeoLocationImpl&& _geo_location)
+void UserInputImpl::geo_location_continent(
+        std::string&& _geo_location_continent)
 {
-    m_geo_location = std::move(_geo_location);
+    m_geo_location_continent = std::move(_geo_location_continent);
 }
 
 /*!
- * @brief This function returns a constant reference to member geo_location
- * @return Constant reference to member geo_location
+ * @brief This function returns a constant reference to member geo_location_continent
+ * @return Constant reference to member geo_location_continent
  */
-const GeoLocationImpl& UserInputImpl::geo_location() const
+const std::string& UserInputImpl::geo_location_continent() const
 {
-    return m_geo_location;
+    return m_geo_location_continent;
 }
 
 /*!
- * @brief This function returns a reference to member geo_location
- * @return Reference to member geo_location
+ * @brief This function returns a reference to member geo_location_continent
+ * @return Reference to member geo_location_continent
  */
-GeoLocationImpl& UserInputImpl::geo_location()
+std::string& UserInputImpl::geo_location_continent()
 {
-    return m_geo_location;
+    return m_geo_location_continent;
 }
+
+
+/*!
+ * @brief This function copies the value in member geo_location_region
+ * @param _geo_location_region New value to be copied in member geo_location_region
+ */
+void UserInputImpl::geo_location_region(
+        const std::string& _geo_location_region)
+{
+    m_geo_location_region = _geo_location_region;
+}
+
+/*!
+ * @brief This function moves the value in member geo_location_region
+ * @param _geo_location_region New value to be moved in member geo_location_region
+ */
+void UserInputImpl::geo_location_region(
+        std::string&& _geo_location_region)
+{
+    m_geo_location_region = std::move(_geo_location_region);
+}
+
+/*!
+ * @brief This function returns a constant reference to member geo_location_region
+ * @return Constant reference to member geo_location_region
+ */
+const std::string& UserInputImpl::geo_location_region() const
+{
+    return m_geo_location_region;
+}
+
+/*!
+ * @brief This function returns a reference to member geo_location_region
+ * @return Reference to member geo_location_region
+ */
+std::string& UserInputImpl::geo_location_region()
+{
+    return m_geo_location_region;
+}
+
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -1214,21 +1294,32 @@ std::vector<uint8_t>& UserInputImpl::extra_data()
     return m_extra_data;
 }
 
+
 /*!
- * @brief This function sets a value in member task_id
- * @param _task_id New value for member task_id
+ * @brief This function copies the value in member task_id
+ * @param _task_id New value to be copied in member task_id
  */
 void UserInputImpl::task_id(
-        int32_t _task_id)
+        const TaskIdImpl& _task_id)
 {
     m_task_id = _task_id;
 }
 
 /*!
- * @brief This function returns the value of member task_id
- * @return Value of member task_id
+ * @brief This function moves the value in member task_id
+ * @param _task_id New value to be moved in member task_id
  */
-int32_t UserInputImpl::task_id() const
+void UserInputImpl::task_id(
+        TaskIdImpl&& _task_id)
+{
+    m_task_id = std::move(_task_id);
+}
+
+/*!
+ * @brief This function returns a constant reference to member task_id
+ * @return Constant reference to member task_id
+ */
+const TaskIdImpl& UserInputImpl::task_id() const
 {
     return m_task_id;
 }
@@ -1237,10 +1328,13 @@ int32_t UserInputImpl::task_id() const
  * @brief This function returns a reference to member task_id
  * @return Reference to member task_id
  */
-int32_t& UserInputImpl::task_id()
+TaskIdImpl& UserInputImpl::task_id()
 {
     return m_task_id;
 }
+
+
+
 
 MLModelMetadataImpl::MLModelMetadataImpl()
 {
@@ -1267,7 +1361,7 @@ MLModelMetadataImpl::MLModelMetadataImpl(
     m_keywords = std::move(x.m_keywords);
     m_ml_model_metadata = std::move(x.m_ml_model_metadata);
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
 }
 
 MLModelMetadataImpl& MLModelMetadataImpl::operator =(
@@ -1288,7 +1382,7 @@ MLModelMetadataImpl& MLModelMetadataImpl::operator =(
     m_keywords = std::move(x.m_keywords);
     m_ml_model_metadata = std::move(x.m_ml_model_metadata);
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
     return *this;
 }
 
@@ -1345,6 +1439,7 @@ std::vector<std::string>& MLModelMetadataImpl::keywords()
     return m_keywords;
 }
 
+
 /*!
  * @brief This function copies the value in member ml_model_metadata
  * @param _ml_model_metadata New value to be copied in member ml_model_metadata
@@ -1382,6 +1477,7 @@ std::vector<std::string>& MLModelMetadataImpl::ml_model_metadata()
 {
     return m_ml_model_metadata;
 }
+
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -1421,21 +1517,32 @@ std::vector<uint8_t>& MLModelMetadataImpl::extra_data()
     return m_extra_data;
 }
 
+
 /*!
- * @brief This function sets a value in member task_id
- * @param _task_id New value for member task_id
+ * @brief This function copies the value in member task_id
+ * @param _task_id New value to be copied in member task_id
  */
 void MLModelMetadataImpl::task_id(
-        int32_t _task_id)
+        const TaskIdImpl& _task_id)
 {
     m_task_id = _task_id;
 }
 
 /*!
- * @brief This function returns the value of member task_id
- * @return Value of member task_id
+ * @brief This function moves the value in member task_id
+ * @param _task_id New value to be moved in member task_id
  */
-int32_t MLModelMetadataImpl::task_id() const
+void MLModelMetadataImpl::task_id(
+        TaskIdImpl&& _task_id)
+{
+    m_task_id = std::move(_task_id);
+}
+
+/*!
+ * @brief This function returns a constant reference to member task_id
+ * @return Constant reference to member task_id
+ */
+const TaskIdImpl& MLModelMetadataImpl::task_id() const
 {
     return m_task_id;
 }
@@ -1444,10 +1551,13 @@ int32_t MLModelMetadataImpl::task_id() const
  * @brief This function returns a reference to member task_id
  * @return Reference to member task_id
  */
-int32_t& MLModelMetadataImpl::task_id()
+TaskIdImpl& MLModelMetadataImpl::task_id()
 {
     return m_task_id;
 }
+
+
+
 
 AppRequirementsImpl::AppRequirementsImpl()
 {
@@ -1472,7 +1582,7 @@ AppRequirementsImpl::AppRequirementsImpl(
 {
     m_app_requirements = std::move(x.m_app_requirements);
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
 }
 
 AppRequirementsImpl& AppRequirementsImpl::operator =(
@@ -1491,7 +1601,7 @@ AppRequirementsImpl& AppRequirementsImpl::operator =(
 
     m_app_requirements = std::move(x.m_app_requirements);
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
     return *this;
 }
 
@@ -1547,6 +1657,7 @@ std::vector<std::string>& AppRequirementsImpl::app_requirements()
     return m_app_requirements;
 }
 
+
 /*!
  * @brief This function copies the value in member extra_data
  * @param _extra_data New value to be copied in member extra_data
@@ -1585,21 +1696,32 @@ std::vector<uint8_t>& AppRequirementsImpl::extra_data()
     return m_extra_data;
 }
 
+
 /*!
- * @brief This function sets a value in member task_id
- * @param _task_id New value for member task_id
+ * @brief This function copies the value in member task_id
+ * @param _task_id New value to be copied in member task_id
  */
 void AppRequirementsImpl::task_id(
-        int32_t _task_id)
+        const TaskIdImpl& _task_id)
 {
     m_task_id = _task_id;
 }
 
 /*!
- * @brief This function returns the value of member task_id
- * @return Value of member task_id
+ * @brief This function moves the value in member task_id
+ * @param _task_id New value to be moved in member task_id
  */
-int32_t AppRequirementsImpl::task_id() const
+void AppRequirementsImpl::task_id(
+        TaskIdImpl&& _task_id)
+{
+    m_task_id = std::move(_task_id);
+}
+
+/*!
+ * @brief This function returns a constant reference to member task_id
+ * @return Constant reference to member task_id
+ */
+const TaskIdImpl& AppRequirementsImpl::task_id() const
 {
     return m_task_id;
 }
@@ -1608,10 +1730,13 @@ int32_t AppRequirementsImpl::task_id() const
  * @brief This function returns a reference to member task_id
  * @return Reference to member task_id
  */
-int32_t& AppRequirementsImpl::task_id()
+TaskIdImpl& AppRequirementsImpl::task_id()
 {
     return m_task_id;
 }
+
+
+
 
 HWConstraintsImpl::HWConstraintsImpl()
 {
@@ -1636,7 +1761,7 @@ HWConstraintsImpl::HWConstraintsImpl(
 {
     m_max_memory_footprint = x.m_max_memory_footprint;
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
 }
 
 HWConstraintsImpl& HWConstraintsImpl::operator =(
@@ -1655,7 +1780,7 @@ HWConstraintsImpl& HWConstraintsImpl::operator =(
 
     m_max_memory_footprint = x.m_max_memory_footprint;
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
     return *this;
 }
 
@@ -1701,6 +1826,7 @@ uint32_t& HWConstraintsImpl::max_memory_footprint()
     return m_max_memory_footprint;
 }
 
+
 /*!
  * @brief This function copies the value in member extra_data
  * @param _extra_data New value to be copied in member extra_data
@@ -1739,21 +1865,32 @@ std::vector<uint8_t>& HWConstraintsImpl::extra_data()
     return m_extra_data;
 }
 
+
 /*!
- * @brief This function sets a value in member task_id
- * @param _task_id New value for member task_id
+ * @brief This function copies the value in member task_id
+ * @param _task_id New value to be copied in member task_id
  */
 void HWConstraintsImpl::task_id(
-        int32_t _task_id)
+        const TaskIdImpl& _task_id)
 {
     m_task_id = _task_id;
 }
 
 /*!
- * @brief This function returns the value of member task_id
- * @return Value of member task_id
+ * @brief This function moves the value in member task_id
+ * @param _task_id New value to be moved in member task_id
  */
-int32_t HWConstraintsImpl::task_id() const
+void HWConstraintsImpl::task_id(
+        TaskIdImpl&& _task_id)
+{
+    m_task_id = std::move(_task_id);
+}
+
+/*!
+ * @brief This function returns a constant reference to member task_id
+ * @return Constant reference to member task_id
+ */
+const TaskIdImpl& HWConstraintsImpl::task_id() const
 {
     return m_task_id;
 }
@@ -1762,10 +1899,13 @@ int32_t HWConstraintsImpl::task_id() const
  * @brief This function returns a reference to member task_id
  * @return Reference to member task_id
  */
-int32_t& HWConstraintsImpl::task_id()
+TaskIdImpl& HWConstraintsImpl::task_id()
 {
     return m_task_id;
 }
+
+
+
 
 MLModelImpl::MLModelImpl()
 {
@@ -1800,7 +1940,7 @@ MLModelImpl::MLModelImpl(
     m_input_batch = std::move(x.m_input_batch);
     m_target_latency = x.m_target_latency;
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
 }
 
 MLModelImpl& MLModelImpl::operator =(
@@ -1829,7 +1969,7 @@ MLModelImpl& MLModelImpl::operator =(
     m_input_batch = std::move(x.m_input_batch);
     m_target_latency = x.m_target_latency;
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
     return *this;
 }
 
@@ -1890,6 +2030,7 @@ std::string& MLModelImpl::model_path()
     return m_model_path;
 }
 
+
 /*!
  * @brief This function copies the value in member model
  * @param _model New value to be copied in member model
@@ -1927,6 +2068,7 @@ std::string& MLModelImpl::model()
 {
     return m_model;
 }
+
 
 /*!
  * @brief This function copies the value in member model_properties_path
@@ -1966,6 +2108,7 @@ std::string& MLModelImpl::model_properties_path()
     return m_model_properties_path;
 }
 
+
 /*!
  * @brief This function copies the value in member model_properties
  * @param _model_properties New value to be copied in member model_properties
@@ -2003,6 +2146,7 @@ std::string& MLModelImpl::model_properties()
 {
     return m_model_properties;
 }
+
 
 /*!
  * @brief This function copies the value in member input_batch
@@ -2042,6 +2186,7 @@ std::vector<std::string>& MLModelImpl::input_batch()
     return m_input_batch;
 }
 
+
 /*!
  * @brief This function sets a value in member target_latency
  * @param _target_latency New value for member target_latency
@@ -2069,6 +2214,7 @@ double& MLModelImpl::target_latency()
 {
     return m_target_latency;
 }
+
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -2108,21 +2254,32 @@ std::vector<uint8_t>& MLModelImpl::extra_data()
     return m_extra_data;
 }
 
+
 /*!
- * @brief This function sets a value in member task_id
- * @param _task_id New value for member task_id
+ * @brief This function copies the value in member task_id
+ * @param _task_id New value to be copied in member task_id
  */
 void MLModelImpl::task_id(
-        int32_t _task_id)
+        const TaskIdImpl& _task_id)
 {
     m_task_id = _task_id;
 }
 
 /*!
- * @brief This function returns the value of member task_id
- * @return Value of member task_id
+ * @brief This function moves the value in member task_id
+ * @param _task_id New value to be moved in member task_id
  */
-int32_t MLModelImpl::task_id() const
+void MLModelImpl::task_id(
+        TaskIdImpl&& _task_id)
+{
+    m_task_id = std::move(_task_id);
+}
+
+/*!
+ * @brief This function returns a constant reference to member task_id
+ * @return Constant reference to member task_id
+ */
+const TaskIdImpl& MLModelImpl::task_id() const
 {
     return m_task_id;
 }
@@ -2131,10 +2288,13 @@ int32_t MLModelImpl::task_id() const
  * @brief This function returns a reference to member task_id
  * @return Reference to member task_id
  */
-int32_t& MLModelImpl::task_id()
+TaskIdImpl& MLModelImpl::task_id()
 {
     return m_task_id;
 }
+
+
+
 
 HWResourceImpl::HWResourceImpl()
 {
@@ -2167,7 +2327,7 @@ HWResourceImpl::HWResourceImpl(
     m_memory_footprint_of_ml_model = x.m_memory_footprint_of_ml_model;
     m_max_hw_memory_footprint = x.m_max_hw_memory_footprint;
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
 }
 
 HWResourceImpl& HWResourceImpl::operator =(
@@ -2194,7 +2354,7 @@ HWResourceImpl& HWResourceImpl::operator =(
     m_memory_footprint_of_ml_model = x.m_memory_footprint_of_ml_model;
     m_max_hw_memory_footprint = x.m_max_hw_memory_footprint;
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
     return *this;
 }
 
@@ -2254,6 +2414,7 @@ std::string& HWResourceImpl::hw_description()
     return m_hw_description;
 }
 
+
 /*!
  * @brief This function sets a value in member power_consumption
  * @param _power_consumption New value for member power_consumption
@@ -2281,6 +2442,7 @@ double& HWResourceImpl::power_consumption()
 {
     return m_power_consumption;
 }
+
 
 /*!
  * @brief This function sets a value in member latency
@@ -2310,6 +2472,7 @@ double& HWResourceImpl::latency()
     return m_latency;
 }
 
+
 /*!
  * @brief This function sets a value in member memory_footprint_of_ml_model
  * @param _memory_footprint_of_ml_model New value for member memory_footprint_of_ml_model
@@ -2338,6 +2501,7 @@ double& HWResourceImpl::memory_footprint_of_ml_model()
     return m_memory_footprint_of_ml_model;
 }
 
+
 /*!
  * @brief This function sets a value in member max_hw_memory_footprint
  * @param _max_hw_memory_footprint New value for member max_hw_memory_footprint
@@ -2365,6 +2529,7 @@ double& HWResourceImpl::max_hw_memory_footprint()
 {
     return m_max_hw_memory_footprint;
 }
+
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -2404,21 +2569,32 @@ std::vector<uint8_t>& HWResourceImpl::extra_data()
     return m_extra_data;
 }
 
+
 /*!
- * @brief This function sets a value in member task_id
- * @param _task_id New value for member task_id
+ * @brief This function copies the value in member task_id
+ * @param _task_id New value to be copied in member task_id
  */
 void HWResourceImpl::task_id(
-        int32_t _task_id)
+        const TaskIdImpl& _task_id)
 {
     m_task_id = _task_id;
 }
 
 /*!
- * @brief This function returns the value of member task_id
- * @return Value of member task_id
+ * @brief This function moves the value in member task_id
+ * @param _task_id New value to be moved in member task_id
  */
-int32_t HWResourceImpl::task_id() const
+void HWResourceImpl::task_id(
+        TaskIdImpl&& _task_id)
+{
+    m_task_id = std::move(_task_id);
+}
+
+/*!
+ * @brief This function returns a constant reference to member task_id
+ * @return Constant reference to member task_id
+ */
+const TaskIdImpl& HWResourceImpl::task_id() const
 {
     return m_task_id;
 }
@@ -2427,10 +2603,13 @@ int32_t HWResourceImpl::task_id() const
  * @brief This function returns a reference to member task_id
  * @return Reference to member task_id
  */
-int32_t& HWResourceImpl::task_id()
+TaskIdImpl& HWResourceImpl::task_id()
 {
     return m_task_id;
 }
+
+
+
 
 CO2FootprintImpl::CO2FootprintImpl()
 {
@@ -2459,7 +2638,7 @@ CO2FootprintImpl::CO2FootprintImpl(
     m_energy_consumption = x.m_energy_consumption;
     m_carbon_intensity = x.m_carbon_intensity;
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
 }
 
 CO2FootprintImpl& CO2FootprintImpl::operator =(
@@ -2482,7 +2661,7 @@ CO2FootprintImpl& CO2FootprintImpl::operator =(
     m_energy_consumption = x.m_energy_consumption;
     m_carbon_intensity = x.m_carbon_intensity;
     m_extra_data = std::move(x.m_extra_data);
-    m_task_id = x.m_task_id;
+    m_task_id = std::move(x.m_task_id);
     return *this;
 }
 
@@ -2530,6 +2709,7 @@ double& CO2FootprintImpl::carbon_footprint()
     return m_carbon_footprint;
 }
 
+
 /*!
  * @brief This function sets a value in member energy_consumption
  * @param _energy_consumption New value for member energy_consumption
@@ -2558,6 +2738,7 @@ double& CO2FootprintImpl::energy_consumption()
     return m_energy_consumption;
 }
 
+
 /*!
  * @brief This function sets a value in member carbon_intensity
  * @param _carbon_intensity New value for member carbon_intensity
@@ -2585,6 +2766,7 @@ double& CO2FootprintImpl::carbon_intensity()
 {
     return m_carbon_intensity;
 }
+
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -2624,21 +2806,32 @@ std::vector<uint8_t>& CO2FootprintImpl::extra_data()
     return m_extra_data;
 }
 
+
 /*!
- * @brief This function sets a value in member task_id
- * @param _task_id New value for member task_id
+ * @brief This function copies the value in member task_id
+ * @param _task_id New value to be copied in member task_id
  */
 void CO2FootprintImpl::task_id(
-        int32_t _task_id)
+        const TaskIdImpl& _task_id)
 {
     m_task_id = _task_id;
 }
 
 /*!
- * @brief This function returns the value of member task_id
- * @return Value of member task_id
+ * @brief This function moves the value in member task_id
+ * @param _task_id New value to be moved in member task_id
  */
-int32_t CO2FootprintImpl::task_id() const
+void CO2FootprintImpl::task_id(
+        TaskIdImpl&& _task_id)
+{
+    m_task_id = std::move(_task_id);
+}
+
+/*!
+ * @brief This function returns a constant reference to member task_id
+ * @return Constant reference to member task_id
+ */
+const TaskIdImpl& CO2FootprintImpl::task_id() const
 {
     return m_task_id;
 }
@@ -2647,10 +2840,11 @@ int32_t CO2FootprintImpl::task_id() const
  * @brief This function returns a reference to member task_id
  * @return Reference to member task_id
  */
-int32_t& CO2FootprintImpl::task_id()
+TaskIdImpl& CO2FootprintImpl::task_id()
 {
     return m_task_id;
 }
+
 
 // Include auxiliary functions like for serializing/deserializing.
 #include "typesImplCdrAux.ipp"

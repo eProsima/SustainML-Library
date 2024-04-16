@@ -104,6 +104,113 @@ enum ErrorCode : uint32_t
 
 
 /*!
+ * @brief This class represents the structure TaskIdImpl defined by the user in the IDL file.
+ * @ingroup typesImpl
+ */
+class TaskIdImpl
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport TaskIdImpl();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~TaskIdImpl();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object TaskIdImpl that will be copied.
+     */
+    eProsima_user_DllExport TaskIdImpl(
+            const TaskIdImpl& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object TaskIdImpl that will be copied.
+     */
+    eProsima_user_DllExport TaskIdImpl(
+            TaskIdImpl&& x) noexcept;
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object TaskIdImpl that will be copied.
+     */
+    eProsima_user_DllExport TaskIdImpl& operator =(
+            const TaskIdImpl& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object TaskIdImpl that will be copied.
+     */
+    eProsima_user_DllExport TaskIdImpl& operator =(
+            TaskIdImpl&& x) noexcept;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x TaskIdImpl object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const TaskIdImpl& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x TaskIdImpl object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const TaskIdImpl& x) const;
+
+    /*!
+     * @brief This function sets a value in member problem_id
+     * @param _problem_id New value for member problem_id
+     */
+    eProsima_user_DllExport void problem_id(
+            uint32_t _problem_id);
+
+    /*!
+     * @brief This function returns the value of member problem_id
+     * @return Value of member problem_id
+     */
+    eProsima_user_DllExport uint32_t problem_id() const;
+
+    /*!
+     * @brief This function returns a reference to member problem_id
+     * @return Reference to member problem_id
+     */
+    eProsima_user_DllExport uint32_t& problem_id();
+
+
+    /*!
+     * @brief This function sets a value in member data_id
+     * @param _data_id New value for member data_id
+     */
+    eProsima_user_DllExport void data_id(
+            uint32_t _data_id);
+
+    /*!
+     * @brief This function returns the value of member data_id
+     * @return Value of member data_id
+     */
+    eProsima_user_DllExport uint32_t data_id() const;
+
+    /*!
+     * @brief This function returns a reference to member data_id
+     * @return Reference to member data_id
+     */
+    eProsima_user_DllExport uint32_t& data_id();
+
+private:
+
+    uint32_t m_problem_id{0};
+    uint32_t m_data_id{0};
+
+};
+
+
+/*!
  * @brief This class represents the structure NodeStatusImpl defined by the user in the IDL file.
  * @ingroup typesImpl
  */
@@ -224,26 +331,6 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member task_id
-     * @param _task_id New value for member task_id
-     */
-    eProsima_user_DllExport void task_id(
-            int32_t _task_id);
-
-    /*!
-     * @brief This function returns the value of member task_id
-     * @return Value of member task_id
-     */
-    eProsima_user_DllExport int32_t task_id() const;
-
-    /*!
-     * @brief This function returns a reference to member task_id
-     * @return Reference to member task_id
-     */
-    eProsima_user_DllExport int32_t& task_id();
-
-
-    /*!
      * @brief This function copies the value in member error_description
      * @param _error_description New value to be copied in member error_description
      */
@@ -296,14 +383,41 @@ public:
      */
     eProsima_user_DllExport std::string& node_name();
 
+
+    /*!
+     * @brief This function copies the value in member task_id
+     * @param _task_id New value to be copied in member task_id
+     */
+    eProsima_user_DllExport void task_id(
+            const TaskIdImpl& _task_id);
+
+    /*!
+     * @brief This function moves the value in member task_id
+     * @param _task_id New value to be moved in member task_id
+     */
+    eProsima_user_DllExport void task_id(
+            TaskIdImpl&& _task_id);
+
+    /*!
+     * @brief This function returns a constant reference to member task_id
+     * @return Constant reference to member task_id
+     */
+    eProsima_user_DllExport const TaskIdImpl& task_id() const;
+
+    /*!
+     * @brief This function returns a reference to member task_id
+     * @return Reference to member task_id
+     */
+    eProsima_user_DllExport TaskIdImpl& task_id();
+
 private:
 
     Status m_node_status{::NODE_INACTIVE};
     TaskStatus m_task_status{::TASK_WAITING};
     ErrorCode m_error_code{::NO_ERROR};
-    int32_t m_task_id{0};
     std::string m_error_description;
     std::string m_node_name;
+    TaskIdImpl m_task_id;
 
 };
 /*!
@@ -460,26 +574,6 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member task_id
-     * @param _task_id New value for member task_id
-     */
-    eProsima_user_DllExport void task_id(
-            int32_t _task_id);
-
-    /*!
-     * @brief This function returns the value of member task_id
-     * @return Value of member task_id
-     */
-    eProsima_user_DllExport int32_t task_id() const;
-
-    /*!
-     * @brief This function returns a reference to member task_id
-     * @return Reference to member task_id
-     */
-    eProsima_user_DllExport int32_t& task_id();
-
-
-    /*!
      * @brief This function copies the value in member source_node
      * @param _source_node New value to be copied in member source_node
      */
@@ -505,134 +599,40 @@ public:
      */
     eProsima_user_DllExport std::string& source_node();
 
+
+    /*!
+     * @brief This function copies the value in member task_id
+     * @param _task_id New value to be copied in member task_id
+     */
+    eProsima_user_DllExport void task_id(
+            const TaskIdImpl& _task_id);
+
+    /*!
+     * @brief This function moves the value in member task_id
+     * @param _task_id New value to be moved in member task_id
+     */
+    eProsima_user_DllExport void task_id(
+            TaskIdImpl&& _task_id);
+
+    /*!
+     * @brief This function returns a constant reference to member task_id
+     * @return Constant reference to member task_id
+     */
+    eProsima_user_DllExport const TaskIdImpl& task_id() const;
+
+    /*!
+     * @brief This function returns a reference to member task_id
+     * @return Reference to member task_id
+     */
+    eProsima_user_DllExport TaskIdImpl& task_id();
+
 private:
 
     CmdNode m_cmd_node{::NO_CMD_NODE};
     CmdTask m_cmd_task{::NO_CMD_TASK};
     std::string m_target_node;
-    int32_t m_task_id{0};
     std::string m_source_node;
-
-};
-
-
-/*!
- * @brief This class represents the structure GeoLocationImpl defined by the user in the IDL file.
- * @ingroup typesImpl
- */
-class GeoLocationImpl
-{
-public:
-
-    /*!
-     * @brief Default constructor.
-     */
-    eProsima_user_DllExport GeoLocationImpl();
-
-    /*!
-     * @brief Default destructor.
-     */
-    eProsima_user_DllExport ~GeoLocationImpl();
-
-    /*!
-     * @brief Copy constructor.
-     * @param x Reference to the object GeoLocationImpl that will be copied.
-     */
-    eProsima_user_DllExport GeoLocationImpl(
-            const GeoLocationImpl& x);
-
-    /*!
-     * @brief Move constructor.
-     * @param x Reference to the object GeoLocationImpl that will be copied.
-     */
-    eProsima_user_DllExport GeoLocationImpl(
-            GeoLocationImpl&& x) noexcept;
-
-    /*!
-     * @brief Copy assignment.
-     * @param x Reference to the object GeoLocationImpl that will be copied.
-     */
-    eProsima_user_DllExport GeoLocationImpl& operator =(
-            const GeoLocationImpl& x);
-
-    /*!
-     * @brief Move assignment.
-     * @param x Reference to the object GeoLocationImpl that will be copied.
-     */
-    eProsima_user_DllExport GeoLocationImpl& operator =(
-            GeoLocationImpl&& x) noexcept;
-
-    /*!
-     * @brief Comparison operator.
-     * @param x GeoLocationImpl object to compare.
-     */
-    eProsima_user_DllExport bool operator ==(
-            const GeoLocationImpl& x) const;
-
-    /*!
-     * @brief Comparison operator.
-     * @param x GeoLocationImpl object to compare.
-     */
-    eProsima_user_DllExport bool operator !=(
-            const GeoLocationImpl& x) const;
-
-    /*!
-     * @brief This function copies the value in member continent
-     * @param _continent New value to be copied in member continent
-     */
-    eProsima_user_DllExport void continent(
-            const std::string& _continent);
-
-    /*!
-     * @brief This function moves the value in member continent
-     * @param _continent New value to be moved in member continent
-     */
-    eProsima_user_DllExport void continent(
-            std::string&& _continent);
-
-    /*!
-     * @brief This function returns a constant reference to member continent
-     * @return Constant reference to member continent
-     */
-    eProsima_user_DllExport const std::string& continent() const;
-
-    /*!
-     * @brief This function returns a reference to member continent
-     * @return Reference to member continent
-     */
-    eProsima_user_DllExport std::string& continent();
-
-
-    /*!
-     * @brief This function copies the value in member region
-     * @param _region New value to be copied in member region
-     */
-    eProsima_user_DllExport void region(
-            const std::string& _region);
-
-    /*!
-     * @brief This function moves the value in member region
-     * @param _region New value to be moved in member region
-     */
-    eProsima_user_DllExport void region(
-            std::string&& _region);
-
-    /*!
-     * @brief This function returns a constant reference to member region
-     * @return Constant reference to member region
-     */
-    eProsima_user_DllExport const std::string& region() const;
-
-    /*!
-     * @brief This function returns a reference to member region
-     * @return Reference to member region
-     */
-    eProsima_user_DllExport std::string& region();
-
-private:
-
-    std::string m_continent;
-    std::string m_region;
+    TaskIdImpl m_task_id;
 
 };
 
@@ -698,33 +698,6 @@ public:
             const UserInputImpl& x) const;
 
     /*!
-     * @brief This function copies the value in member task_name
-     * @param _task_name New value to be copied in member task_name
-     */
-    eProsima_user_DllExport void task_name(
-            const std::string& _task_name);
-
-    /*!
-     * @brief This function moves the value in member task_name
-     * @param _task_name New value to be moved in member task_name
-     */
-    eProsima_user_DllExport void task_name(
-            std::string&& _task_name);
-
-    /*!
-     * @brief This function returns a constant reference to member task_name
-     * @return Constant reference to member task_name
-     */
-    eProsima_user_DllExport const std::string& task_name() const;
-
-    /*!
-     * @brief This function returns a reference to member task_name
-     * @return Reference to member task_name
-     */
-    eProsima_user_DllExport std::string& task_name();
-
-
-    /*!
      * @brief This function copies the value in member modality
      * @param _modality New value to be copied in member modality
      */
@@ -749,6 +722,33 @@ public:
      * @return Reference to member modality
      */
     eProsima_user_DllExport std::string& modality();
+
+
+    /*!
+     * @brief This function copies the value in member problem_short_description
+     * @param _problem_short_description New value to be copied in member problem_short_description
+     */
+    eProsima_user_DllExport void problem_short_description(
+            const std::string& _problem_short_description);
+
+    /*!
+     * @brief This function moves the value in member problem_short_description
+     * @param _problem_short_description New value to be moved in member problem_short_description
+     */
+    eProsima_user_DllExport void problem_short_description(
+            std::string&& _problem_short_description);
+
+    /*!
+     * @brief This function returns a constant reference to member problem_short_description
+     * @return Constant reference to member problem_short_description
+     */
+    eProsima_user_DllExport const std::string& problem_short_description() const;
+
+    /*!
+     * @brief This function returns a reference to member problem_short_description
+     * @return Reference to member problem_short_description
+     */
+    eProsima_user_DllExport std::string& problem_short_description();
 
 
     /*!
@@ -953,30 +953,57 @@ public:
 
 
     /*!
-     * @brief This function copies the value in member geo_location
-     * @param _geo_location New value to be copied in member geo_location
+     * @brief This function copies the value in member geo_location_continent
+     * @param _geo_location_continent New value to be copied in member geo_location_continent
      */
-    eProsima_user_DllExport void geo_location(
-            const GeoLocationImpl& _geo_location);
+    eProsima_user_DllExport void geo_location_continent(
+            const std::string& _geo_location_continent);
 
     /*!
-     * @brief This function moves the value in member geo_location
-     * @param _geo_location New value to be moved in member geo_location
+     * @brief This function moves the value in member geo_location_continent
+     * @param _geo_location_continent New value to be moved in member geo_location_continent
      */
-    eProsima_user_DllExport void geo_location(
-            GeoLocationImpl&& _geo_location);
+    eProsima_user_DllExport void geo_location_continent(
+            std::string&& _geo_location_continent);
 
     /*!
-     * @brief This function returns a constant reference to member geo_location
-     * @return Constant reference to member geo_location
+     * @brief This function returns a constant reference to member geo_location_continent
+     * @return Constant reference to member geo_location_continent
      */
-    eProsima_user_DllExport const GeoLocationImpl& geo_location() const;
+    eProsima_user_DllExport const std::string& geo_location_continent() const;
 
     /*!
-     * @brief This function returns a reference to member geo_location
-     * @return Reference to member geo_location
+     * @brief This function returns a reference to member geo_location_continent
+     * @return Reference to member geo_location_continent
      */
-    eProsima_user_DllExport GeoLocationImpl& geo_location();
+    eProsima_user_DllExport std::string& geo_location_continent();
+
+
+    /*!
+     * @brief This function copies the value in member geo_location_region
+     * @param _geo_location_region New value to be copied in member geo_location_region
+     */
+    eProsima_user_DllExport void geo_location_region(
+            const std::string& _geo_location_region);
+
+    /*!
+     * @brief This function moves the value in member geo_location_region
+     * @param _geo_location_region New value to be moved in member geo_location_region
+     */
+    eProsima_user_DllExport void geo_location_region(
+            std::string&& _geo_location_region);
+
+    /*!
+     * @brief This function returns a constant reference to member geo_location_region
+     * @return Constant reference to member geo_location_region
+     */
+    eProsima_user_DllExport const std::string& geo_location_region() const;
+
+    /*!
+     * @brief This function returns a reference to member geo_location_region
+     * @return Reference to member geo_location_region
+     */
+    eProsima_user_DllExport std::string& geo_location_region();
 
 
     /*!
@@ -1007,28 +1034,35 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member task_id
-     * @param _task_id New value for member task_id
+     * @brief This function copies the value in member task_id
+     * @param _task_id New value to be copied in member task_id
      */
     eProsima_user_DllExport void task_id(
-            int32_t _task_id);
+            const TaskIdImpl& _task_id);
 
     /*!
-     * @brief This function returns the value of member task_id
-     * @return Value of member task_id
+     * @brief This function moves the value in member task_id
+     * @param _task_id New value to be moved in member task_id
      */
-    eProsima_user_DllExport int32_t task_id() const;
+    eProsima_user_DllExport void task_id(
+            TaskIdImpl&& _task_id);
+
+    /*!
+     * @brief This function returns a constant reference to member task_id
+     * @return Constant reference to member task_id
+     */
+    eProsima_user_DllExport const TaskIdImpl& task_id() const;
 
     /*!
      * @brief This function returns a reference to member task_id
      * @return Reference to member task_id
      */
-    eProsima_user_DllExport int32_t& task_id();
+    eProsima_user_DllExport TaskIdImpl& task_id();
 
 private:
 
-    std::string m_task_name;
     std::string m_modality;
+    std::string m_problem_short_description;
     std::string m_problem_definition;
     std::vector<std::string> m_inputs;
     std::vector<std::string> m_outputs;
@@ -1038,9 +1072,10 @@ private:
     int32_t m_previous_iteration{0};
     bool m_optimize_carbon_footprint_auto{false};
     double m_desired_carbon_footprint{0.0};
-    GeoLocationImpl m_geo_location;
+    std::string m_geo_location_continent;
+    std::string m_geo_location_region;
     std::vector<uint8_t> m_extra_data;
-    int32_t m_task_id{0};
+    TaskIdImpl m_task_id;
 
 };
 
@@ -1187,30 +1222,37 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member task_id
-     * @param _task_id New value for member task_id
+     * @brief This function copies the value in member task_id
+     * @param _task_id New value to be copied in member task_id
      */
     eProsima_user_DllExport void task_id(
-            int32_t _task_id);
+            const TaskIdImpl& _task_id);
 
     /*!
-     * @brief This function returns the value of member task_id
-     * @return Value of member task_id
+     * @brief This function moves the value in member task_id
+     * @param _task_id New value to be moved in member task_id
      */
-    eProsima_user_DllExport int32_t task_id() const;
+    eProsima_user_DllExport void task_id(
+            TaskIdImpl&& _task_id);
+
+    /*!
+     * @brief This function returns a constant reference to member task_id
+     * @return Constant reference to member task_id
+     */
+    eProsima_user_DllExport const TaskIdImpl& task_id() const;
 
     /*!
      * @brief This function returns a reference to member task_id
      * @return Reference to member task_id
      */
-    eProsima_user_DllExport int32_t& task_id();
+    eProsima_user_DllExport TaskIdImpl& task_id();
 
 private:
 
     std::vector<std::string> m_keywords;
     std::vector<std::string> m_ml_model_metadata;
     std::vector<uint8_t> m_extra_data;
-    int32_t m_task_id{0};
+    TaskIdImpl m_task_id;
 
 };
 
@@ -1330,29 +1372,36 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member task_id
-     * @param _task_id New value for member task_id
+     * @brief This function copies the value in member task_id
+     * @param _task_id New value to be copied in member task_id
      */
     eProsima_user_DllExport void task_id(
-            int32_t _task_id);
+            const TaskIdImpl& _task_id);
 
     /*!
-     * @brief This function returns the value of member task_id
-     * @return Value of member task_id
+     * @brief This function moves the value in member task_id
+     * @param _task_id New value to be moved in member task_id
      */
-    eProsima_user_DllExport int32_t task_id() const;
+    eProsima_user_DllExport void task_id(
+            TaskIdImpl&& _task_id);
+
+    /*!
+     * @brief This function returns a constant reference to member task_id
+     * @return Constant reference to member task_id
+     */
+    eProsima_user_DllExport const TaskIdImpl& task_id() const;
 
     /*!
      * @brief This function returns a reference to member task_id
      * @return Reference to member task_id
      */
-    eProsima_user_DllExport int32_t& task_id();
+    eProsima_user_DllExport TaskIdImpl& task_id();
 
 private:
 
     std::vector<std::string> m_app_requirements;
     std::vector<uint8_t> m_extra_data;
-    int32_t m_task_id{0};
+    TaskIdImpl m_task_id;
 
 };
 
@@ -1465,29 +1514,36 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member task_id
-     * @param _task_id New value for member task_id
+     * @brief This function copies the value in member task_id
+     * @param _task_id New value to be copied in member task_id
      */
     eProsima_user_DllExport void task_id(
-            int32_t _task_id);
+            const TaskIdImpl& _task_id);
 
     /*!
-     * @brief This function returns the value of member task_id
-     * @return Value of member task_id
+     * @brief This function moves the value in member task_id
+     * @param _task_id New value to be moved in member task_id
      */
-    eProsima_user_DllExport int32_t task_id() const;
+    eProsima_user_DllExport void task_id(
+            TaskIdImpl&& _task_id);
+
+    /*!
+     * @brief This function returns a constant reference to member task_id
+     * @return Constant reference to member task_id
+     */
+    eProsima_user_DllExport const TaskIdImpl& task_id() const;
 
     /*!
      * @brief This function returns a reference to member task_id
      * @return Reference to member task_id
      */
-    eProsima_user_DllExport int32_t& task_id();
+    eProsima_user_DllExport TaskIdImpl& task_id();
 
 private:
 
     uint32_t m_max_memory_footprint{0};
     std::vector<uint8_t> m_extra_data;
-    int32_t m_task_id{0};
+    TaskIdImpl m_task_id;
 
 };
 
@@ -1735,23 +1791,30 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member task_id
-     * @param _task_id New value for member task_id
+     * @brief This function copies the value in member task_id
+     * @param _task_id New value to be copied in member task_id
      */
     eProsima_user_DllExport void task_id(
-            int32_t _task_id);
+            const TaskIdImpl& _task_id);
 
     /*!
-     * @brief This function returns the value of member task_id
-     * @return Value of member task_id
+     * @brief This function moves the value in member task_id
+     * @param _task_id New value to be moved in member task_id
      */
-    eProsima_user_DllExport int32_t task_id() const;
+    eProsima_user_DllExport void task_id(
+            TaskIdImpl&& _task_id);
+
+    /*!
+     * @brief This function returns a constant reference to member task_id
+     * @return Constant reference to member task_id
+     */
+    eProsima_user_DllExport const TaskIdImpl& task_id() const;
 
     /*!
      * @brief This function returns a reference to member task_id
      * @return Reference to member task_id
      */
-    eProsima_user_DllExport int32_t& task_id();
+    eProsima_user_DllExport TaskIdImpl& task_id();
 
 private:
 
@@ -1762,7 +1825,7 @@ private:
     std::vector<std::string> m_input_batch;
     double m_target_latency{0.0};
     std::vector<uint8_t> m_extra_data;
-    int32_t m_task_id{0};
+    TaskIdImpl m_task_id;
 
 };
 
@@ -1962,23 +2025,30 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member task_id
-     * @param _task_id New value for member task_id
+     * @brief This function copies the value in member task_id
+     * @param _task_id New value to be copied in member task_id
      */
     eProsima_user_DllExport void task_id(
-            int32_t _task_id);
+            const TaskIdImpl& _task_id);
 
     /*!
-     * @brief This function returns the value of member task_id
-     * @return Value of member task_id
+     * @brief This function moves the value in member task_id
+     * @param _task_id New value to be moved in member task_id
      */
-    eProsima_user_DllExport int32_t task_id() const;
+    eProsima_user_DllExport void task_id(
+            TaskIdImpl&& _task_id);
+
+    /*!
+     * @brief This function returns a constant reference to member task_id
+     * @return Constant reference to member task_id
+     */
+    eProsima_user_DllExport const TaskIdImpl& task_id() const;
 
     /*!
      * @brief This function returns a reference to member task_id
      * @return Reference to member task_id
      */
-    eProsima_user_DllExport int32_t& task_id();
+    eProsima_user_DllExport TaskIdImpl& task_id();
 
 private:
 
@@ -1988,7 +2058,7 @@ private:
     double m_memory_footprint_of_ml_model{0.0};
     double m_max_hw_memory_footprint{0.0};
     std::vector<uint8_t> m_extra_data;
-    int32_t m_task_id{0};
+    TaskIdImpl m_task_id;
 
 };
 
@@ -2141,23 +2211,30 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member task_id
-     * @param _task_id New value for member task_id
+     * @brief This function copies the value in member task_id
+     * @param _task_id New value to be copied in member task_id
      */
     eProsima_user_DllExport void task_id(
-            int32_t _task_id);
+            const TaskIdImpl& _task_id);
 
     /*!
-     * @brief This function returns the value of member task_id
-     * @return Value of member task_id
+     * @brief This function moves the value in member task_id
+     * @param _task_id New value to be moved in member task_id
      */
-    eProsima_user_DllExport int32_t task_id() const;
+    eProsima_user_DllExport void task_id(
+            TaskIdImpl&& _task_id);
+
+    /*!
+     * @brief This function returns a constant reference to member task_id
+     * @return Constant reference to member task_id
+     */
+    eProsima_user_DllExport const TaskIdImpl& task_id() const;
 
     /*!
      * @brief This function returns a reference to member task_id
      * @return Reference to member task_id
      */
-    eProsima_user_DllExport int32_t& task_id();
+    eProsima_user_DllExport TaskIdImpl& task_id();
 
 private:
 
@@ -2165,7 +2242,7 @@ private:
     double m_energy_consumption{0.0};
     double m_carbon_intensity{0.0};
     std::vector<uint8_t> m_extra_data;
-    int32_t m_task_id{0};
+    TaskIdImpl m_task_id;
 
 };
 
