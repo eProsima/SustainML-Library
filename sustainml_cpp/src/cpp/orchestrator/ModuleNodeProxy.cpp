@@ -203,6 +203,74 @@ const types::NodeStatus& ModuleNodeProxy::get_status()
     return status_;
 }
 
+AppRequirementsNodeProxy::AppRequirementsNodeProxy(
+        OrchestratorNode* orchestrator,
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
+    : ModuleNodeProxy(orchestrator, task_db, common::APP_REQUIREMENTS_NODE)
+{
+
+}
+
+void AppRequirementsNodeProxy::store_data_in_db()
+{
+    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    {
+        reset_and_prepare_task_id(tmp_data_.task_id());
+        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    }
+}
+
+CarbonFootprintNodeProxy::CarbonFootprintNodeProxy(
+        OrchestratorNode* orchestrator,
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
+    : ModuleNodeProxy(orchestrator, task_db, common::CARBON_FOOTPRINT_NODE)
+{
+
+}
+
+void CarbonFootprintNodeProxy::store_data_in_db()
+{
+    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    {
+        reset_and_prepare_task_id(tmp_data_.task_id());
+        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    }
+}
+
+HardwareConstraintsNodeProxy::HardwareConstraintsNodeProxy(
+        OrchestratorNode* orchestrator,
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
+    : ModuleNodeProxy(orchestrator, task_db, common::HW_CONSTRAINTS_NODE)
+{
+
+}
+
+void HardwareConstraintsNodeProxy::store_data_in_db()
+{
+    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    {
+        reset_and_prepare_task_id(tmp_data_.task_id());
+        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    }
+}
+
+HardwareResourcesNodeProxy::HardwareResourcesNodeProxy(
+        OrchestratorNode* orchestrator,
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
+    : ModuleNodeProxy(orchestrator, task_db, common::HW_RESOURCES_NODE)
+{
+
+}
+
+void HardwareResourcesNodeProxy::store_data_in_db()
+{
+    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    {
+        reset_and_prepare_task_id(tmp_data_.task_id());
+        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+    }
+}
+
 MLModelMetadataNodeProxy::MLModelMetadataNodeProxy(
         OrchestratorNode* orchestrator,
         std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
@@ -229,40 +297,6 @@ MLModelProviderNodeProxy::MLModelProviderNodeProxy(
 }
 
 void MLModelProviderNodeProxy::store_data_in_db()
-{
-    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
-    {
-        reset_and_prepare_task_id(tmp_data_.task_id());
-        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
-    }
-}
-
-HardwareResourcesProviderNodeProxy::HardwareResourcesProviderNodeProxy(
-        OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::HW_RESOURCES_NODE)
-{
-
-}
-
-void HardwareResourcesProviderNodeProxy::store_data_in_db()
-{
-    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
-    {
-        reset_and_prepare_task_id(tmp_data_.task_id());
-        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
-    }
-}
-
-CarbonFootprintProviderNodeProxy::CarbonFootprintProviderNodeProxy(
-        OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::CARBON_FOOTPRINT_NODE)
-{
-
-}
-
-void CarbonFootprintProviderNodeProxy::store_data_in_db()
 {
     if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
     {

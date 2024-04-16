@@ -175,6 +175,150 @@ protected:
 };
 
 /**
+ * @brief App requirements node proxy
+ */
+class AppRequirementsNodeProxy : public ModuleNodeProxy
+{
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_APP_REQUIREMENTS> node_id_to_type_id_{};
+
+public:
+
+    AppRequirementsNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+
+    virtual ~AppRequirementsNodeProxy()
+    {
+    }
+
+protected:
+
+    void store_data_in_db() override;
+
+    inline void* get_tmp_impl_untyped_data() override
+    {
+        return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
+    }
+
+private:
+
+    decltype(node_id_to_type_id_)::type tmp_data_;
+};
+
+/**
+ * @brief Carbon Footprint node proxy
+ */
+class CarbonFootprintNodeProxy : public ModuleNodeProxy
+{
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_CARBON_FOOTPRINT> node_id_to_type_id_{};
+
+public:
+
+    CarbonFootprintNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+
+    virtual ~CarbonFootprintNodeProxy()
+    {
+    }
+
+protected:
+
+    void store_data_in_db() override;
+
+    inline void* get_tmp_impl_untyped_data() override
+    {
+        return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
+    }
+
+private:
+
+    decltype(node_id_to_type_id_)::type tmp_data_;
+};
+
+/**
+ * @brief Hardware Resources node proxy
+ */
+class HardwareConstraintsNodeProxy : public ModuleNodeProxy
+{
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_HW_CONSTRAINTS> node_id_to_type_id_{};
+
+public:
+
+    HardwareConstraintsNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+
+    virtual ~HardwareConstraintsNodeProxy()
+    {
+    }
+
+protected:
+
+    void store_data_in_db() override;
+
+    inline void* get_tmp_impl_untyped_data() override
+    {
+        return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
+    }
+
+private:
+
+    decltype(node_id_to_type_id_)::type tmp_data_;
+};
+
+/**
+ * @brief Hardware Resources node proxy
+ */
+class HardwareResourcesNodeProxy : public ModuleNodeProxy
+{
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_HW_RESOURCES> node_id_to_type_id_{};
+
+public:
+
+    HardwareResourcesNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+
+    virtual ~HardwareResourcesNodeProxy()
+    {
+    }
+
+protected:
+
+    void store_data_in_db() override;
+
+    inline void* get_tmp_impl_untyped_data() override
+    {
+        return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
+    }
+
+private:
+
+    decltype(node_id_to_type_id_)::type tmp_data_;
+};
+
+/**
  * @brief MLModelMetadata node proxy
  */
 class MLModelMetadataNodeProxy : public ModuleNodeProxy
@@ -211,7 +355,7 @@ private:
 };
 
 /**
- * @brief Machine Learning node proxy
+ * @brief ML Model node proxy
  */
 class MLModelProviderNodeProxy : public ModuleNodeProxy
 {
@@ -245,78 +389,6 @@ private:
 
     decltype(node_id_to_type_id_)::type tmp_data_;
 
-};
-
-/**
- * @brief Hardware Resources node proxy
- */
-class HardwareResourcesProviderNodeProxy : public ModuleNodeProxy
-{
-    static constexpr MapFromNodeIDToType_t<NodeID::ID_HW_RESOURCES> node_id_to_type_id_{};
-
-public:
-
-    HardwareResourcesProviderNodeProxy(
-            OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
-
-    virtual ~HardwareResourcesProviderNodeProxy()
-    {
-    }
-
-protected:
-
-    void store_data_in_db() override;
-
-    inline void* get_tmp_impl_untyped_data() override
-    {
-        return tmp_data_.get_impl();
-    }
-
-    inline void* get_tmp_untyped_data() override
-    {
-        return &tmp_data_;
-    }
-
-private:
-
-    decltype(node_id_to_type_id_)::type tmp_data_;
-};
-
-/**
- * @brief Carbon Footprint node proxy
- */
-class CarbonFootprintProviderNodeProxy : public ModuleNodeProxy
-{
-    static constexpr MapFromNodeIDToType_t<NodeID::ID_CARBON_FOOTPRINT> node_id_to_type_id_{};
-
-public:
-
-    CarbonFootprintProviderNodeProxy(
-            OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
-
-    virtual ~CarbonFootprintProviderNodeProxy()
-    {
-    }
-
-protected:
-
-    void store_data_in_db() override;
-
-    inline void* get_tmp_impl_untyped_data() override
-    {
-        return tmp_data_.get_impl();
-    }
-
-    inline void* get_tmp_untyped_data() override
-    {
-        return &tmp_data_;
-    }
-
-private:
-
-    decltype(node_id_to_type_id_)::type tmp_data_;
 };
 
 } // namespace orchestrator
