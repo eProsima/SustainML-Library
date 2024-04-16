@@ -19,14 +19,20 @@ enum ErrorCode {
     INTERNAL_ERROR
 };
 
+struct TaskIdImpl
+{
+    unsigned long problem_id;
+    unsigned long data_id;
+};
+
 struct NodeStatusImpl
 {
     Status node_status;
     TaskStatus task_status;
     ErrorCode error_code;
-    @key long task_id;
     string error_description;
     @key string node_name;
+    @key TaskIdImpl task_id;
 };
 
 enum CmdNode {
@@ -50,20 +56,14 @@ struct NodeControlImpl
     CmdNode cmd_node;
     CmdTask cmd_task;
     string target_node;
-    long task_id;
     @key string source_node;
-};
-
-struct GeoLocationImpl
-{
-    string continent;
-    string region;
+    @key TaskIdImpl task_id;
 };
 
 struct UserInputImpl
 {
-    string task_name;
     string modality;
+    string problem_short_description;
     string problem_definition;
     sequence<string> inputs;
     sequence<string> outputs;
@@ -73,9 +73,10 @@ struct UserInputImpl
     long previous_iteration;
     boolean optimize_carbon_footprint_auto;
     double desired_carbon_footprint;
-    GeoLocationImpl geo_location;
+    string geo_location_continent;
+    string geo_location_region;
     sequence<octet> extra_data;
-    @key long task_id;
+    @key TaskIdImpl task_id;
 
 };
 
@@ -84,21 +85,21 @@ struct MLModelMetadataImpl
     sequence<string> keywords;
     sequence<string> ml_model_metadata;
     sequence<octet> extra_data;
-    @key long task_id;
+    @key TaskIdImpl task_id;
 };
 
 struct AppRequirementsImpl
 {
     sequence<string> app_requirements;
     sequence<octet> extra_data;
-    @key long task_id;
+    @key TaskIdImpl task_id;
 };
 
 struct HWConstraintsImpl
 {
     unsigned long max_memory_footprint;
     sequence<octet> extra_data;
-    @key long task_id;
+    @key TaskIdImpl task_id;
  };
 
 struct MLModelImpl
@@ -110,7 +111,7 @@ struct MLModelImpl
     sequence<string> input_batch;
     double target_latency;
     sequence<octet> extra_data;
-    @key long task_id;
+    @key TaskIdImpl task_id;
 };
 
 struct HWResourceImpl
@@ -121,7 +122,7 @@ struct HWResourceImpl
     double memory_footprint_of_ml_model;
     double max_hw_memory_footprint;
     sequence<octet> extra_data;
-    @key long task_id;
+    @key TaskIdImpl task_id;
 };
 
 struct CO2FootprintImpl
@@ -130,5 +131,5 @@ struct CO2FootprintImpl
     double energy_consumption;
     double carbon_intensity;
     sequence<octet> extra_data;
-    @key long task_id;
+    @key TaskIdImpl task_id;
 };
