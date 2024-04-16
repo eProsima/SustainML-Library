@@ -35,16 +35,17 @@ public:
 
     SUSTAINML_CPP_DLL_API TaskId(
             const std::string& name,
-            const int& iteration)
-            : iteration_(iteration)
+            const int& id)
+            : id_(id)
+            , iteration_(0)
             , name_(name)
     {
 
     }
 
     SUSTAINML_CPP_DLL_API TaskId(
-            const int& iteration)
-            : iteration_(iteration)
+            const int& id)
+            : id_(id)
             , name_(UNDEFINED_TASK_NAME)
     {
 
@@ -57,13 +58,29 @@ public:
         return name_;
     }
 
+    SUSTAINML_CPP_DLL_API void name(const std::string& name)
+    {
+        name_ = name;
+    }
+
     SUSTAINML_CPP_DLL_API const int& iteration() const
     {
         return iteration_;
     }
 
+    SUSTAINML_CPP_DLL_API void iteration(const int& iteration)
+    {
+        iteration_ = iteration;
+    }
+
+    SUSTAINML_CPP_DLL_API const int& id() const
+    {
+        return id_;
+    }
+
 private:
 
+    int id_;
     int iteration_;
     std::string name_;
 };

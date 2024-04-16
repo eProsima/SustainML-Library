@@ -67,9 +67,7 @@ public:
 protected:
 
     std::mutex mtx_;
-    std::map<std::string, std::set<std::pair<int, std::tuple<Args...>>>> db_;
-    //std::map<int, std::tuple<Args...>> db_;
-
+    std::map<std::string, std::map<int, std::tuple<Args...>>> db_;
 };
 
 template <typename ... Args>
@@ -87,12 +85,25 @@ bool TaskDB<Args...>::insert_task_data(
     bool ret_code = false;
 
     std::lock_guard<std::mutex> lock(mtx_);
-    auto db_set = db_.find(task_id.name());
+    auto it_db = db_.find(task_id.name());
 
-    if (db_set != db_.end())
+    if (it_db != db_.end())
     {
-        db_set->insert(std::make_pair(task_id.iteration(), data));
-        ret_code = true;
+        auto it_id = db_[task_id.name()].find(task_id.id());
+        if (it_id != db_[task_id.name()].end())
+        {
+            T& db_data = std::get<T>(it_id->second);
+            db_data = data;
+            ret_code = true;
+        }
+        else
+        {
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to insert a data element with an unknown task id");
+        }
+    }
+    else
+    {
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to insert a data element with an unknown task name");
     }
 
     return ret_code;
@@ -107,18 +118,18 @@ bool TaskDB<Args...>::get_task_data(
     bool ret_code = false;
 
     std::lock_guard<std::mutex> lock(mtx_);
-    auto it = db_.find(task_id.name());
+    auto it_db = db_.find(task_id.name());
 
-    if (it != db_.end())
+    if (it_db != db_.end())
     {
-        for(auto pair : it->second) {
-            if (pair.first == task_id.iteration()) {
-                T& db_data = pair.second;
-                data = &db_data;
-                ret_code = true;
-            }
+        auto it_id = db_[task_id.name()].find(task_id.id());
+        if (it_id != db_[task_id.name()].end())
+        {
+            T& db_data = std::get<T>(it_id->second);
+            data = &db_data;
+            ret_code = true;
         }
-        if (ret_code = false)
+        else
         {
             EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown task id");
         }
@@ -138,11 +149,11 @@ bool TaskDB<Args...>::prepare_new_entry(
     bool ret_code = false;
 
     std::lock_guard<std::mutex> lock(mtx_);
-    auto it = db_.find(task_id.name());
+    auto it_db = db_.find(task_id.name());
 
-    if (it == db_.end())
+    if (it_db == db_.end())
     {
-        it->insert(std::make_pair(task_id.iteration(), task_id.iteration()));
+        db_[task_id.name()][task_id.id()];
         ret_code = true;
     }
     else

@@ -20,6 +20,8 @@
 #ifndef SUSTAINMLCPP_NODES_ORCHESTRATOR_TASKMANAGER_HPP
 #define SUSTAINMLCPP_NODES_ORCHESTRATOR_TASKMANAGER_HPP
 
+#include <atomic>
+
 #include <common/Common.hpp>
 
 namespace sustainml {
