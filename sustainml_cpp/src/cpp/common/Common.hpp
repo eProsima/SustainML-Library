@@ -32,7 +32,7 @@
 namespace sustainml {
 namespace common {
 
-constexpr int INVALID_ID = -1;
+constexpr int INVALID_ID = 0;
 
 //!Node Names
 constexpr const char* APP_REQUIREMENTS_NODE = "APP_REQUIREMENTS_NODE";
