@@ -19,9 +19,97 @@
 
 #include <sustainml_cpp/types/types.h>
 
+#include <common/Common.hpp>
 #include <types/typesImpl.h>
 
 namespace types {
+
+
+TaskId::TaskId()
+        : problem_id_(sustainml::common::INVALID_ID)
+        , data_id_(sustainml::common::INVALID_ID)
+{
+}
+
+TaskId::~TaskId() = default;
+
+TaskId::TaskId(
+        const TaskId& x)
+{
+    problem_id_ = x.problem_id_;
+    data_id_ = x.data_id_;
+}
+
+TaskId::TaskId(
+        TaskId&& x) noexcept
+{
+    problem_id_ = x.problem_id_;
+    data_id_ = x.data_id_;
+}
+
+TaskId& TaskId::operator =(
+        const TaskId& x)
+{
+    problem_id_ = x.problem_id_;
+    data_id_ = x.data_id_;
+    return *this;
+}
+
+TaskId& TaskId::operator =(
+        TaskId&& x) noexcept
+{
+    problem_id_ = x.problem_id_;
+    data_id_ = x.data_id_;
+    return *this;
+}
+
+bool TaskId::operator ==(
+        const TaskId& x) const
+{
+
+    return (problem_id_ == x.problem_id_ &&
+            data_id_ == x.data_id_);
+}
+
+bool TaskId::operator !=(
+        const TaskId& x) const
+{
+    return !(*this == x);
+}
+
+
+void TaskId::problem_id(
+        uint32_t _problem_id)
+{
+    problem_id_ = _problem_id;
+}
+
+uint32_t TaskId::problem_id() const
+{
+    return problem_id_;
+}
+
+uint32_t& TaskId::problem_id()
+{
+    return problem_id_;
+}
+
+
+void TaskId::data_id(
+        uint32_t _data_id)
+{
+    data_id_ = _data_id;
+}
+
+uint32_t TaskId::data_id() const
+{
+    return data_id_;
+}
+
+uint32_t& TaskId::data_id()
+{
+    return data_id_;
+}
 
 NodeStatus::NodeStatus()
 {
@@ -142,19 +230,25 @@ ErrorCode& NodeStatus::error_code()
 }
 
 void NodeStatus::task_id(
-        int32_t _task_id)
+        const TaskId& _task_id)
 {
-    impl_->task_id(_task_id);
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t NodeStatus::task_id() const
+void NodeStatus::task_id(
+        TaskId&& _task_id)
 {
-    return impl_->task_id();
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t& NodeStatus::task_id()
+const TaskId& NodeStatus::task_id() const
 {
-    return impl_->task_id();
+    return *to_task_id(&impl_->task_id());
+}
+
+TaskId& NodeStatus::task_id()
+{
+    return *to_task_id(&impl_->task_id());
 }
 
 void NodeStatus::error_description(
@@ -235,8 +329,8 @@ NodeControl::NodeControl(
     this->impl_->cmd_node() = x.impl_->cmd_node();
     this->impl_->source_node() = x.impl_->source_node();
     this->impl_->target_node() = x.impl_->target_node();
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->cmd_task() = this->impl_->cmd_task();
+    this->impl_->task_id() = x.impl_->task_id();
 }
 
 NodeControl::NodeControl(
@@ -252,8 +346,8 @@ NodeControl& NodeControl::operator =(
     this->impl_->cmd_node() = x.impl_->cmd_node();
     this->impl_->source_node() = x.impl_->source_node();
     this->impl_->target_node() = x.impl_->target_node();
-    this->impl_->task_id() = x.impl_->task_id();
     this->impl_->cmd_task() = this->impl_->cmd_task();
+    this->impl_->task_id() = x.impl_->task_id();
     return *this;
 }
 
@@ -337,19 +431,25 @@ std::string NodeControl::target_node()
 }
 
 void NodeControl::task_id(
-        int32_t _task_id)
+        const TaskId& _task_id)
 {
-    impl_->task_id(_task_id);
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t NodeControl::task_id() const
+void NodeControl::task_id(
+        TaskId&& _task_id)
 {
-    return impl_->task_id();
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t& NodeControl::task_id()
+const TaskId& NodeControl::task_id() const
 {
-    return impl_->task_id();
+    return *to_task_id(&impl_->task_id());
+}
+
+TaskId& NodeControl::task_id()
+{
+    return *to_task_id(&impl_->task_id());
 }
 
 void NodeControl::source_node(
@@ -379,112 +479,6 @@ NodeControlImpl* NodeControl::get_impl() const
     return impl_;
 }
 
-GeoLocation::GeoLocation()
-{
-    impl_ = new GeoLocationImpl();
-}
-
-GeoLocation::~GeoLocation()
-{
-    if (nullptr != impl_)
-    {
-        delete impl_;
-    }
-}
-
-GeoLocation::GeoLocation(
-        const GeoLocation& x)
-{
-    impl_ = new GeoLocationImpl;
-
-    this->impl_->continent() = x.impl_->continent();
-    this->impl_->region() = x.impl_->region();
-}
-
-GeoLocation::GeoLocation(
-        GeoLocation&& x) noexcept
-{
-    this->impl_ = x.impl_;
-    x.impl_ = nullptr;
-}
-
-GeoLocation& GeoLocation::operator =(
-        const GeoLocation& x)
-{
-    this->impl_->continent() = x.impl_->continent();
-    this->impl_->region() = x.impl_->region();
-    return *this;
-}
-
-GeoLocation& GeoLocation::operator =(
-        GeoLocation&& x) noexcept
-{
-    if (x.impl_ != this->impl_)
-    {
-        delete this->impl_;
-        this->impl_ = x.impl_;
-        x.impl_ = nullptr;
-    }
-
-    return *this;
-}
-
-bool GeoLocation::operator ==(
-        const GeoLocation& x) const
-{
-    return (this->impl_ == x.impl_);
-}
-
-bool GeoLocation::operator !=(
-        const GeoLocation& x) const
-{
-    return !(*this == x);
-}
-
-void GeoLocation::continent(
-        const std::string& _continent)
-{
-    impl_->continent(_continent);
-}
-
-void GeoLocation::continent(
-        std::string&& _continent)
-{
-    impl_->continent(std::forward<std::string>(_continent));
-}
-
-const std::string& GeoLocation::continent() const
-{
-    return impl_->continent();
-}
-
-std::string GeoLocation::continent()
-{
-    return impl_->continent();
-}
-
-void GeoLocation::region(
-        const std::string& _region)
-{
-    impl_->region(_region);
-}
-
-void GeoLocation::region(
-        std::string&& _region)
-{
-    impl_->region(std::forward<std::string>(_region));
-}
-
-const std::string& GeoLocation::region() const
-{
-    return impl_->region();
-}
-
-std::string GeoLocation::region()
-{
-    return impl_->region();
-}
-
 UserInput::UserInput()
 {
     impl_ = new UserInputImpl;
@@ -503,8 +497,8 @@ UserInput::UserInput(
 {
     impl_ = new UserInputImpl;
 
-    this->impl_->task_name() = x.impl_->task_name();
     this->impl_->modality() = x.impl_->modality();
+    this->impl_->problem_short_description() = x.impl_->problem_short_description();
     this->impl_->problem_definition() = x.impl_->problem_definition();
     this->impl_->inputs() = x.impl_->inputs();
     this->impl_->outputs() = x.impl_->outputs();
@@ -514,7 +508,8 @@ UserInput::UserInput(
     this->impl_->previous_iteration() = x.impl_->previous_iteration();
     this->impl_->optimize_carbon_footprint_auto() = x.impl_->optimize_carbon_footprint_auto();
     this->impl_->desired_carbon_footprint() = x.impl_->desired_carbon_footprint();
-    this->impl_->geo_location() = x.impl_->geo_location();
+    this->impl_->geo_location_continent() = x.impl_->geo_location_continent();
+    this->impl_->geo_location_region() = x.impl_->geo_location_region();
     this->impl_->extra_data() = x.impl_->extra_data();
     this->impl_->task_id() = x.impl_->task_id();
 }
@@ -529,8 +524,8 @@ UserInput::UserInput(
 UserInput& UserInput::operator =(
         const UserInput& x)
 {
-    this->impl_->task_name() = x.impl_->task_name();
     this->impl_->modality() = x.impl_->modality();
+    this->impl_->problem_short_description() = x.impl_->problem_short_description();
     this->impl_->problem_definition() = x.impl_->problem_definition();
     this->impl_->inputs() = x.impl_->inputs();
     this->impl_->outputs() = x.impl_->outputs();
@@ -540,7 +535,8 @@ UserInput& UserInput::operator =(
     this->impl_->previous_iteration() = x.impl_->previous_iteration();
     this->impl_->optimize_carbon_footprint_auto() = x.impl_->optimize_carbon_footprint_auto();
     this->impl_->desired_carbon_footprint() = x.impl_->desired_carbon_footprint();
-    this->impl_->geo_location() = x.impl_->geo_location();
+    this->impl_->geo_location_continent() = x.impl_->geo_location_continent();
+    this->impl_->geo_location_region() = x.impl_->geo_location_region();
     this->impl_->extra_data() = x.impl_->extra_data();
     this->impl_->task_id() = x.impl_->task_id();
 
@@ -572,28 +568,6 @@ bool UserInput::operator !=(
     return !(*this == x);
 }
 
-void UserInput::task_name(
-        const std::string& _task_name)
-{
-    impl_->task_name(_task_name);
-}
-
-void UserInput::task_name(
-        std::string&& _task_name)
-{
-    impl_->task_name(std::forward<std::string>(_task_name));
-}
-
-const std::string& UserInput::task_name() const
-{
-    return impl_->task_name();
-}
-
-std::string& UserInput::task_name()
-{
-    return impl_->task_name();
-}
-
 void UserInput::modality(
         const std::string& _modality)
 {
@@ -614,6 +588,28 @@ const std::string& UserInput::modality() const
 std::string& UserInput::modality()
 {
     return impl_->modality();
+}
+
+void UserInput::problem_short_description(
+        const std::string& _problem_short_description)
+{
+    impl_->problem_short_description(_problem_short_description);
+}
+
+void UserInput::problem_short_description(
+        std::string&& _problem_short_description)
+{
+    impl_->problem_short_description(std::forward<std::string>(_problem_short_description));
+}
+
+const std::string& UserInput::problem_short_description() const
+{
+    return impl_->problem_short_description();
+}
+
+std::string& UserInput::problem_short_description()
+{
+    return impl_->problem_short_description();
 }
 
 void UserInput::problem_definition(
@@ -778,26 +774,48 @@ double& UserInput::desired_carbon_footprint()
     return impl_->desired_carbon_footprint();
 }
 
-void UserInput::geo_location(
-        const GeoLocation& _geo_location)
+void UserInput::geo_location_continent(
+        const std::string& _geo_location_continent)
 {
-    impl_->geo_location(*_geo_location.impl_);
+    impl_->geo_location_continent(_geo_location_continent);
 }
 
-void UserInput::geo_location(
-        GeoLocation&& _geo_location)
+void UserInput::geo_location_continent(
+        std::string&& _geo_location_continent)
 {
-    impl_->geo_location(std::forward<GeoLocationImpl>(*_geo_location.impl_));
+    impl_->geo_location_continent(std::forward<std::string>(_geo_location_continent));
 }
 
-const GeoLocationImpl& UserInput::geo_location() const
+const std::string& UserInput::geo_location_continent() const
 {
-    return impl_->geo_location();
+    return impl_->geo_location_continent();
 }
 
-GeoLocationImpl& UserInput::geo_location()
+std::string& UserInput::geo_location_continent()
 {
-    return impl_->geo_location();
+    return impl_->geo_location_continent();
+}
+
+void UserInput::geo_location_region(
+        const std::string& _geo_location_region)
+{
+    impl_->geo_location_region(_geo_location_region);
+}
+
+void UserInput::geo_location_region(
+        std::string&& _geo_location_region)
+{
+    impl_->geo_location_region(std::forward<std::string>(_geo_location_region));
+}
+
+const std::string& UserInput::geo_location_region() const
+{
+    return impl_->geo_location_region();
+}
+
+std::string& UserInput::geo_location_region()
+{
+    return impl_->geo_location_region();
 }
 
 void UserInput::extra_data(
@@ -823,19 +841,25 @@ std::vector<uint8_t>& UserInput::extra_data()
 }
 
 void UserInput::task_id(
-        int32_t _task_id)
+        const TaskId& _task_id)
 {
-    impl_->task_id(_task_id);
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t UserInput::task_id() const
+void UserInput::task_id(
+        TaskId&& _task_id)
 {
-    return impl_->task_id();
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t& UserInput::task_id()
+const TaskId& UserInput::task_id() const
 {
-    return impl_->task_id();
+    return *to_task_id(&impl_->task_id());
+}
+
+TaskId& UserInput::task_id()
+{
+    return *to_task_id(&impl_->task_id());
 }
 
 UserInputImpl* UserInput::get_impl()
@@ -981,19 +1005,26 @@ std::vector<std::string>& MLModelMetadata::keywords()
 }
 
 void MLModelMetadata::task_id(
-        int32_t _task_id)
+        const TaskId& _task_id)
 {
-    impl_->task_id(_task_id);
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
+
 }
 
-int32_t MLModelMetadata::task_id() const
+void MLModelMetadata::task_id(
+        TaskId&& _task_id)
 {
-    return impl_->task_id();
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t& MLModelMetadata::task_id()
+const TaskId& MLModelMetadata::task_id() const
 {
-    return impl_->task_id();
+    return *to_task_id(&impl_->task_id());
+}
+
+TaskId& MLModelMetadata::task_id()
+{
+    return *to_task_id(&impl_->task_id());
 }
 
 MLModelMetadataImpl* MLModelMetadata::get_impl()
@@ -1115,19 +1146,25 @@ std::vector<uint8_t>& AppRequirements::extra_data()
 }
 
 void AppRequirements::task_id(
-        int32_t _task_id)
+        const TaskId& _task_id)
 {
-    impl_->task_id(_task_id);
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t AppRequirements::task_id() const
+void AppRequirements::task_id(
+        TaskId&& _task_id)
 {
-    return impl_->task_id();
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t& AppRequirements::task_id()
+const TaskId& AppRequirements::task_id() const
 {
-    return impl_->task_id();
+    return *to_task_id(&impl_->task_id());
+}
+
+TaskId& AppRequirements::task_id()
+{
+    return *to_task_id(&impl_->task_id());
 }
 
 AppRequirementsImpl* AppRequirements::get_impl()
@@ -1243,19 +1280,25 @@ std::vector<uint8_t>& HWConstraints::extra_data()
 }
 
 void HWConstraints::task_id(
-        int32_t _task_id)
+        const TaskId& _task_id)
 {
-    impl_->task_id(_task_id);
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t HWConstraints::task_id() const
+void HWConstraints::task_id(
+        TaskId&& _task_id)
 {
-    return impl_->task_id();
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t& HWConstraints::task_id()
+const TaskId& HWConstraints::task_id() const
 {
-    return impl_->task_id();
+    return *to_task_id(&impl_->task_id());
+}
+
+TaskId& HWConstraints::task_id()
+{
+    return *to_task_id(&impl_->task_id());
 }
 
 HWConstraintsImpl* HWConstraints::get_impl()
@@ -1491,19 +1534,25 @@ std::vector<uint8_t>& MLModel::extra_data()
 }
 
 void MLModel::task_id(
-        int32_t _task_id)
+        const TaskId& _task_id)
 {
-    impl_->task_id(_task_id);
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t MLModel::task_id() const
+void MLModel::task_id(
+        TaskId&& _task_id)
 {
-    return impl_->task_id();
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t& MLModel::task_id()
+const TaskId& MLModel::task_id() const
 {
-    return impl_->task_id();
+    return *to_task_id(&impl_->task_id());
+}
+
+TaskId& MLModel::task_id()
+{
+    return *to_task_id(&impl_->task_id());
 }
 
 MLModelImpl* MLModel::get_impl()
@@ -1697,19 +1746,25 @@ std::vector<uint8_t>& HWResource::extra_data()
 }
 
 void HWResource::task_id(
-        int32_t _task_id)
+        const TaskId& _task_id)
 {
-    impl_->task_id(_task_id);
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t HWResource::task_id() const
+void HWResource::task_id(
+        TaskId&& _task_id)
 {
-    return impl_->task_id();
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t& HWResource::task_id()
+const TaskId& HWResource::task_id() const
 {
-    return impl_->task_id();
+    return *to_task_id(&impl_->task_id());
+}
+
+TaskId& HWResource::task_id()
+{
+    return *to_task_id(&impl_->task_id());
 }
 
 HWResourceImpl* HWResource::get_impl()
@@ -1863,19 +1918,25 @@ std::vector<uint8_t>& CO2Footprint::extra_data()
 }
 
 void CO2Footprint::task_id(
-        int32_t _task_id)
+        const TaskId& _task_id)
 {
-    impl_->task_id(_task_id);
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t CO2Footprint::task_id() const
+void CO2Footprint::task_id(
+        TaskId&& _task_id)
 {
-    return impl_->task_id();
+    impl_->task_id(*to_task_id_impl(const_cast<TaskId*>(&_task_id)));
 }
 
-int32_t& CO2Footprint::task_id()
+const TaskId& CO2Footprint::task_id() const
 {
-    return impl_->task_id();
+    return *to_task_id(&impl_->task_id());
+}
+
+TaskId& CO2Footprint::task_id()
+{
+    return *to_task_id(&impl_->task_id());
 }
 
 CO2FootprintImpl* CO2Footprint::get_impl()
