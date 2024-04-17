@@ -124,7 +124,6 @@ uint32_t& TaskIdImpl::problem_id()
     return m_problem_id;
 }
 
-
 /*!
  * @brief This function sets a value in member data_id
  * @param _data_id New value for member data_id
@@ -152,9 +151,6 @@ uint32_t& TaskIdImpl::data_id()
 {
     return m_data_id;
 }
-
-
-
 
 NodeStatusImpl::NodeStatusImpl()
 {
@@ -259,7 +255,6 @@ Status& NodeStatusImpl::node_status()
     return m_node_status;
 }
 
-
 /*!
  * @brief This function sets a value in member task_status
  * @param _task_status New value for member task_status
@@ -288,7 +283,6 @@ TaskStatus& NodeStatusImpl::task_status()
     return m_task_status;
 }
 
-
 /*!
  * @brief This function sets a value in member error_code
  * @param _error_code New value for member error_code
@@ -316,7 +310,6 @@ ErrorCode& NodeStatusImpl::error_code()
 {
     return m_error_code;
 }
-
 
 /*!
  * @brief This function copies the value in member error_description
@@ -356,7 +349,6 @@ std::string& NodeStatusImpl::error_description()
     return m_error_description;
 }
 
-
 /*!
  * @brief This function copies the value in member node_name
  * @param _node_name New value to be copied in member node_name
@@ -395,7 +387,6 @@ std::string& NodeStatusImpl::node_name()
     return m_node_name;
 }
 
-
 /*!
  * @brief This function copies the value in member task_id
  * @param _task_id New value to be copied in member task_id
@@ -433,11 +424,6 @@ TaskIdImpl& NodeStatusImpl::task_id()
 {
     return m_task_id;
 }
-
-
-
-
-
 
 NodeControlImpl::NodeControlImpl()
 {
@@ -537,7 +523,6 @@ CmdNode& NodeControlImpl::cmd_node()
     return m_cmd_node;
 }
 
-
 /*!
  * @brief This function sets a value in member cmd_task
  * @param _cmd_task New value for member cmd_task
@@ -565,7 +550,6 @@ CmdTask& NodeControlImpl::cmd_task()
 {
     return m_cmd_task;
 }
-
 
 /*!
  * @brief This function copies the value in member target_node
@@ -605,7 +589,6 @@ std::string& NodeControlImpl::target_node()
     return m_target_node;
 }
 
-
 /*!
  * @brief This function copies the value in member source_node
  * @param _source_node New value to be copied in member source_node
@@ -644,7 +627,6 @@ std::string& NodeControlImpl::source_node()
     return m_source_node;
 }
 
-
 /*!
  * @brief This function copies the value in member task_id
  * @param _task_id New value to be copied in member task_id
@@ -682,12 +664,6 @@ TaskIdImpl& NodeControlImpl::task_id()
 {
     return m_task_id;
 }
-
-
-
-
-
-
 
 UserInputImpl::UserInputImpl()
 {
@@ -847,7 +823,6 @@ std::string& UserInputImpl::modality()
     return m_modality;
 }
 
-
 /*!
  * @brief This function copies the value in member problem_short_description
  * @param _problem_short_description New value to be copied in member problem_short_description
@@ -885,7 +860,6 @@ std::string& UserInputImpl::problem_short_description()
 {
     return m_problem_short_description;
 }
-
 
 /*!
  * @brief This function copies the value in member problem_definition
@@ -925,7 +899,6 @@ std::string& UserInputImpl::problem_definition()
     return m_problem_definition;
 }
 
-
 /*!
  * @brief This function copies the value in member inputs
  * @param _inputs New value to be copied in member inputs
@@ -963,7 +936,6 @@ std::vector<std::string>& UserInputImpl::inputs()
 {
     return m_inputs;
 }
-
 
 /*!
  * @brief This function copies the value in member outputs
@@ -1003,7 +975,6 @@ std::vector<std::string>& UserInputImpl::outputs()
     return m_outputs;
 }
 
-
 /*!
  * @brief This function sets a value in member minimum_samples
  * @param _minimum_samples New value for member minimum_samples
@@ -1031,7 +1002,6 @@ uint32_t& UserInputImpl::minimum_samples()
 {
     return m_minimum_samples;
 }
-
 
 /*!
  * @brief This function sets a value in member maximum_samples
@@ -1061,7 +1031,6 @@ uint32_t& UserInputImpl::maximum_samples()
     return m_maximum_samples;
 }
 
-
 /*!
  * @brief This function sets a value in member optimize_carbon_footprint_manual
  * @param _optimize_carbon_footprint_manual New value for member optimize_carbon_footprint_manual
@@ -1089,7 +1058,6 @@ bool& UserInputImpl::optimize_carbon_footprint_manual()
 {
     return m_optimize_carbon_footprint_manual;
 }
-
 
 /*!
  * @brief This function sets a value in member previous_iteration
@@ -1119,7 +1087,6 @@ int32_t& UserInputImpl::previous_iteration()
     return m_previous_iteration;
 }
 
-
 /*!
  * @brief This function sets a value in member optimize_carbon_footprint_auto
  * @param _optimize_carbon_footprint_auto New value for member optimize_carbon_footprint_auto
@@ -1148,7 +1115,6 @@ bool& UserInputImpl::optimize_carbon_footprint_auto()
     return m_optimize_carbon_footprint_auto;
 }
 
-
 /*!
  * @brief This function sets a value in member desired_carbon_footprint
  * @param _desired_carbon_footprint New value for member desired_carbon_footprint
@@ -1176,7 +1142,6 @@ double& UserInputImpl::desired_carbon_footprint()
 {
     return m_desired_carbon_footprint;
 }
-
 
 /*!
  * @brief This function copies the value in member geo_location_continent
@@ -1216,7 +1181,6 @@ std::string& UserInputImpl::geo_location_continent()
     return m_geo_location_continent;
 }
 
-
 /*!
  * @brief This function copies the value in member geo_location_region
  * @param _geo_location_region New value to be copied in member geo_location_region
@@ -1254,7 +1218,6 @@ std::string& UserInputImpl::geo_location_region()
 {
     return m_geo_location_region;
 }
-
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -1294,7 +1257,6 @@ std::vector<uint8_t>& UserInputImpl::extra_data()
     return m_extra_data;
 }
 
-
 /*!
  * @brief This function copies the value in member task_id
  * @param _task_id New value to be copied in member task_id
@@ -1332,9 +1294,6 @@ TaskIdImpl& UserInputImpl::task_id()
 {
     return m_task_id;
 }
-
-
-
 
 MLModelMetadataImpl::MLModelMetadataImpl()
 {
@@ -1439,7 +1398,6 @@ std::vector<std::string>& MLModelMetadataImpl::keywords()
     return m_keywords;
 }
 
-
 /*!
  * @brief This function copies the value in member ml_model_metadata
  * @param _ml_model_metadata New value to be copied in member ml_model_metadata
@@ -1477,7 +1435,6 @@ std::vector<std::string>& MLModelMetadataImpl::ml_model_metadata()
 {
     return m_ml_model_metadata;
 }
-
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -1517,7 +1474,6 @@ std::vector<uint8_t>& MLModelMetadataImpl::extra_data()
     return m_extra_data;
 }
 
-
 /*!
  * @brief This function copies the value in member task_id
  * @param _task_id New value to be copied in member task_id
@@ -1555,9 +1511,6 @@ TaskIdImpl& MLModelMetadataImpl::task_id()
 {
     return m_task_id;
 }
-
-
-
 
 AppRequirementsImpl::AppRequirementsImpl()
 {
@@ -1657,7 +1610,6 @@ std::vector<std::string>& AppRequirementsImpl::app_requirements()
     return m_app_requirements;
 }
 
-
 /*!
  * @brief This function copies the value in member extra_data
  * @param _extra_data New value to be copied in member extra_data
@@ -1696,7 +1648,6 @@ std::vector<uint8_t>& AppRequirementsImpl::extra_data()
     return m_extra_data;
 }
 
-
 /*!
  * @brief This function copies the value in member task_id
  * @param _task_id New value to be copied in member task_id
@@ -1734,9 +1685,6 @@ TaskIdImpl& AppRequirementsImpl::task_id()
 {
     return m_task_id;
 }
-
-
-
 
 HWConstraintsImpl::HWConstraintsImpl()
 {
@@ -1826,7 +1774,6 @@ uint32_t& HWConstraintsImpl::max_memory_footprint()
     return m_max_memory_footprint;
 }
 
-
 /*!
  * @brief This function copies the value in member extra_data
  * @param _extra_data New value to be copied in member extra_data
@@ -1865,7 +1812,6 @@ std::vector<uint8_t>& HWConstraintsImpl::extra_data()
     return m_extra_data;
 }
 
-
 /*!
  * @brief This function copies the value in member task_id
  * @param _task_id New value to be copied in member task_id
@@ -1903,9 +1849,6 @@ TaskIdImpl& HWConstraintsImpl::task_id()
 {
     return m_task_id;
 }
-
-
-
 
 MLModelImpl::MLModelImpl()
 {
@@ -2030,7 +1973,6 @@ std::string& MLModelImpl::model_path()
     return m_model_path;
 }
 
-
 /*!
  * @brief This function copies the value in member model
  * @param _model New value to be copied in member model
@@ -2068,7 +2010,6 @@ std::string& MLModelImpl::model()
 {
     return m_model;
 }
-
 
 /*!
  * @brief This function copies the value in member model_properties_path
@@ -2108,7 +2049,6 @@ std::string& MLModelImpl::model_properties_path()
     return m_model_properties_path;
 }
 
-
 /*!
  * @brief This function copies the value in member model_properties
  * @param _model_properties New value to be copied in member model_properties
@@ -2146,7 +2086,6 @@ std::string& MLModelImpl::model_properties()
 {
     return m_model_properties;
 }
-
 
 /*!
  * @brief This function copies the value in member input_batch
@@ -2186,7 +2125,6 @@ std::vector<std::string>& MLModelImpl::input_batch()
     return m_input_batch;
 }
 
-
 /*!
  * @brief This function sets a value in member target_latency
  * @param _target_latency New value for member target_latency
@@ -2214,7 +2152,6 @@ double& MLModelImpl::target_latency()
 {
     return m_target_latency;
 }
-
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -2254,7 +2191,6 @@ std::vector<uint8_t>& MLModelImpl::extra_data()
     return m_extra_data;
 }
 
-
 /*!
  * @brief This function copies the value in member task_id
  * @param _task_id New value to be copied in member task_id
@@ -2292,9 +2228,6 @@ TaskIdImpl& MLModelImpl::task_id()
 {
     return m_task_id;
 }
-
-
-
 
 HWResourceImpl::HWResourceImpl()
 {
@@ -2414,7 +2347,6 @@ std::string& HWResourceImpl::hw_description()
     return m_hw_description;
 }
 
-
 /*!
  * @brief This function sets a value in member power_consumption
  * @param _power_consumption New value for member power_consumption
@@ -2442,7 +2374,6 @@ double& HWResourceImpl::power_consumption()
 {
     return m_power_consumption;
 }
-
 
 /*!
  * @brief This function sets a value in member latency
@@ -2472,7 +2403,6 @@ double& HWResourceImpl::latency()
     return m_latency;
 }
 
-
 /*!
  * @brief This function sets a value in member memory_footprint_of_ml_model
  * @param _memory_footprint_of_ml_model New value for member memory_footprint_of_ml_model
@@ -2501,7 +2431,6 @@ double& HWResourceImpl::memory_footprint_of_ml_model()
     return m_memory_footprint_of_ml_model;
 }
 
-
 /*!
  * @brief This function sets a value in member max_hw_memory_footprint
  * @param _max_hw_memory_footprint New value for member max_hw_memory_footprint
@@ -2529,7 +2458,6 @@ double& HWResourceImpl::max_hw_memory_footprint()
 {
     return m_max_hw_memory_footprint;
 }
-
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -2569,7 +2497,6 @@ std::vector<uint8_t>& HWResourceImpl::extra_data()
     return m_extra_data;
 }
 
-
 /*!
  * @brief This function copies the value in member task_id
  * @param _task_id New value to be copied in member task_id
@@ -2607,9 +2534,6 @@ TaskIdImpl& HWResourceImpl::task_id()
 {
     return m_task_id;
 }
-
-
-
 
 CO2FootprintImpl::CO2FootprintImpl()
 {
@@ -2709,7 +2633,6 @@ double& CO2FootprintImpl::carbon_footprint()
     return m_carbon_footprint;
 }
 
-
 /*!
  * @brief This function sets a value in member energy_consumption
  * @param _energy_consumption New value for member energy_consumption
@@ -2738,7 +2661,6 @@ double& CO2FootprintImpl::energy_consumption()
     return m_energy_consumption;
 }
 
-
 /*!
  * @brief This function sets a value in member carbon_intensity
  * @param _carbon_intensity New value for member carbon_intensity
@@ -2766,7 +2688,6 @@ double& CO2FootprintImpl::carbon_intensity()
 {
     return m_carbon_intensity;
 }
-
 
 /*!
  * @brief This function copies the value in member extra_data
@@ -2806,7 +2727,6 @@ std::vector<uint8_t>& CO2FootprintImpl::extra_data()
     return m_extra_data;
 }
 
-
 /*!
  * @brief This function copies the value in member task_id
  * @param _task_id New value to be copied in member task_id
@@ -2844,7 +2764,6 @@ TaskIdImpl& CO2FootprintImpl::task_id()
 {
     return m_task_id;
 }
-
 
 // Include auxiliary functions like for serializing/deserializing.
 #include "typesImplCdrAux.ipp"
