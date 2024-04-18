@@ -24,7 +24,6 @@
 
 namespace types {
 
-
 TaskId::TaskId()
         : problem_id_(sustainml::common::INVALID_ID)
         , data_id_(sustainml::common::INVALID_ID)
@@ -119,6 +118,12 @@ uint32_t TaskId::data_id() const
 uint32_t& TaskId::data_id()
 {
     return data_id_;
+}
+
+std::ostream& operator<< (std::ostream& stream, const TaskId& task_id)
+{
+    stream << "{" <<task_id.problem_id() << "," << task_id.data_id() << "}";
+    return stream;
 }
 
 NodeStatus::NodeStatus()
@@ -279,7 +284,7 @@ const std::string& NodeStatus::error_description() const
     return impl_->error_description();
 }
 
-std::string NodeStatus::error_description()
+std::string& NodeStatus::error_description()
 {
     return impl_->error_description();
 }
@@ -302,7 +307,7 @@ const std::string& NodeStatus::node_name() const
     return impl_->node_name();
 }
 
-std::string NodeStatus::node_name()
+std::string& NodeStatus::node_name()
 {
     return impl_->node_name();
 }
@@ -435,7 +440,7 @@ const std::string& NodeControl::target_node() const
     return impl_->target_node();
 }
 
-std::string NodeControl::target_node()
+std::string& NodeControl::target_node()
 {
     return impl_->target_node();
 }
@@ -479,7 +484,7 @@ const std::string& NodeControl::source_node() const
     return impl_->source_node();
 }
 
-std::string NodeControl::source_node()
+std::string& NodeControl::source_node()
 {
     return impl_->source_node();
 }
@@ -1412,7 +1417,7 @@ const std::string& MLModel::model_path() const
     return impl_->model_path();
 }
 
-std::string MLModel::model_path()
+std::string& MLModel::model_path()
 {
     return impl_->model_path();
 }
@@ -1434,7 +1439,7 @@ const std::string& MLModel::model() const
     return impl_->model();
 }
 
-std::string MLModel::model()
+std::string& MLModel::model()
 {
     return impl_->model();
 }
@@ -1456,7 +1461,7 @@ const std::string& MLModel::model_properties_path() const
     return impl_->model_properties_path();
 }
 
-std::string MLModel::model_properties_path()
+std::string& MLModel::model_properties_path()
 {
     return impl_->model_properties_path();
 }
@@ -1478,7 +1483,7 @@ const std::string& MLModel::model_properties() const
     return impl_->model_properties();
 }
 
-std::string MLModel::model_properties()
+std::string& MLModel::model_properties()
 {
     return impl_->model_properties();
 }
@@ -1664,7 +1669,7 @@ const std::string& HWResource::hw_description() const
     return impl_->hw_description();
 }
 
-std::string HWResource::hw_description()
+std::string& HWResource::hw_description()
 {
     return impl_->hw_description();
 }
