@@ -99,7 +99,9 @@ public:
     /*!
      * @brief Initial values TaskId constructor.
      */
-    eProsima_user_DllExport TaskId(uint32_t problem_id, uint32_t data_id);
+    eProsima_user_DllExport TaskId(
+            uint32_t problem_id,
+            uint32_t data_id);
 
     /*!
      * @brief Default destructor.
@@ -194,9 +196,11 @@ public:
     eProsima_user_DllExport uint32_t& data_id();
 
     /*!
-    * @brief This function overloads the operator << for the TaskId type.
-    */
-    friend std::ostream& operator<< (std::ostream& stream, const TaskId& task_id);
+     * @brief This function overloads the operator << for the TaskId type.
+     */
+    friend std::ostream& operator << (
+            std::ostream& stream,
+            const TaskId& task_id);
 
 private:
 
@@ -211,7 +215,8 @@ private:
  * @return TaskId* The TaskId that will be converted.
  * @warning This function is assuming that both classes have the same data representation in memory
  */
-inline TaskId* to_task_id(TaskIdImpl* impl)
+inline TaskId* to_task_id(
+        TaskIdImpl* impl)
 {
     return reinterpret_cast<TaskId*>(impl);
 }
@@ -223,7 +228,8 @@ inline TaskId* to_task_id(TaskIdImpl* impl)
  * @return TaskIdImpl* The TaskIdImpl that will be converted.
  * @warning This function is assuming that both classes have the same data representation in memory
  */
-inline TaskIdImpl* to_task_id_impl(TaskId* impl)
+inline TaskIdImpl* to_task_id_impl(
+        TaskId* impl)
 {
     return reinterpret_cast<TaskIdImpl*>(impl);
 }
@@ -1932,7 +1938,7 @@ public:
      */
     eProsima_user_DllExport std::string& modality();
 
-/*!
+    /*!
      * @brief This function copies the value in member problem_short_description
      * @param _problem_short_description New value to be copied in member problem_short_description
      */

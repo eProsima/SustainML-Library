@@ -25,13 +25,16 @@
 namespace types {
 
 TaskId::TaskId()
-        : problem_id_(sustainml::common::INVALID_ID)
-        , data_id_(sustainml::common::INVALID_ID)
+    : problem_id_(sustainml::common::INVALID_ID)
+    , data_id_(sustainml::common::INVALID_ID)
 {
 }
-TaskId::TaskId(uint32_t problem_id, uint32_t data_id)
-        : problem_id_(problem_id)
-        , data_id_(data_id)
+
+TaskId::TaskId(
+        uint32_t problem_id,
+        uint32_t data_id)
+    : problem_id_(problem_id)
+    , data_id_(data_id)
 {
 }
 
@@ -72,7 +75,7 @@ bool TaskId::operator ==(
 {
 
     return (problem_id_ == x.problem_id_ &&
-            data_id_ == x.data_id_);
+           data_id_ == x.data_id_);
 }
 
 bool TaskId::operator !=(
@@ -103,7 +106,6 @@ uint32_t& TaskId::problem_id()
     return problem_id_;
 }
 
-
 void TaskId::data_id(
         uint32_t _data_id)
 {
@@ -120,9 +122,11 @@ uint32_t& TaskId::data_id()
     return data_id_;
 }
 
-std::ostream& operator<< (std::ostream& stream, const TaskId& task_id)
+std::ostream& operator << (
+        std::ostream& stream,
+        const TaskId& task_id)
 {
-    stream << "{" <<task_id.problem_id() << "," << task_id.data_id() << "}";
+    stream << "{" << task_id.problem_id() << "," << task_id.data_id() << "}";
     return stream;
 }
 

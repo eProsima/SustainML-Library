@@ -31,100 +31,104 @@
 
 namespace sustainml {
 namespace utils {
-    template<class T> class SamplePool;
-}
+template<class T> class SamplePool;
+} // namespace utils
 namespace core {
 
-    class Node;
+class Node;
 
-    /**
-    * @brief Queue implementation for storing samples.
-    * Samplesa are stored in a map indexed by the task_id.
-    */
-    template <typename T>
-    class SamplesQueue : public interfaces::SampleQueryable
-    {
+/**
+ * @brief Queue implementation for storing samples.
+ * Samplesa are stored in a map indexed by the task_id.
+ */
+template <typename T>
+class SamplesQueue : public interfaces::SampleQueryable
+{
 
-    public:
+public:
 
-        SamplesQueue(
+    SamplesQueue(
             Node* node,
             const Options& opts = Options());
 
-        virtual ~SamplesQueue();
+    virtual ~SamplesQueue();
 
-        /**
-        * @brief Gets a free cache from the pool
-        *
-        * Thread safe operation.
-        *
-        * @return Pointer to the queue cache. nullptr if the pool is full
-        */
-        T* get_new_cache();
+    /**
+     * @brief Gets a free cache from the pool
+     *
+     * Thread safe operation.
+     *
+     * @return Pointer to the queue cache. nullptr if the pool is full
+     */
+    T* get_new_cache();
 
-        /**
-        * @brief Return a cache to the pool
-        *
-        * Thread safe operation.
-        *
-        * @param cache pointer to the cache.
-        */
-        void release_cache(T * cache);
+    /**
+     * @brief Return a cache to the pool
+     *
+     * Thread safe operation.
+     *
+     * @param cache pointer to the cache.
+     */
+    void release_cache(
+            T* cache);
 
-        /**
-        * @brief Inserts an element into the queue.
-        *
-        * Thread safe operation.
-        *
-        * @param elem element to insert.
-        */
-        void insert_element(T* & elem);
+    /**
+     * @brief Inserts an element into the queue.
+     *
+     * Thread safe operation.
+     *
+     * @param elem element to insert.
+     */
+    void insert_element(
+            T*& elem);
 
-        /**
-        * @brief Remove an element from the queue.
-        *
-        * Thread safe operation.
-        *
-        * @param id Sample key to remove.
-        */
-        void remove_element_by_taskid(const types::TaskId & id);
+    /**
+     * @brief Remove an element from the queue.
+     *
+     * Thread safe operation.
+     *
+     * @param id Sample key to remove.
+     */
+    void remove_element_by_taskid(
+            const types::TaskId& id);
 
-        /**
-        * @brief Retrieves a type-erased pointer of a sample by id.
-        * Implements the SampleQueryable interface
-        *
-        * @param id task_id key of the sample.
-        */
-        void* retrieve_sample_from_taskid(const types::TaskId & id) override;
+    /**
+     * @brief Retrieves a type-erased pointer of a sample by id.
+     * Implements the SampleQueryable interface
+     *
+     * @param id task_id key of the sample.
+     */
+    void* retrieve_sample_from_taskid(
+            const types::TaskId& id) override;
 
-        /**
-        * @brief Getter fot the queue
-        *
-        * @return The queue
-        */
-        SamplesQueue<T>* get_queue();
+    /**
+     * @brief Getter fot the queue
+     *
+     * @return The queue
+     */
+    SamplesQueue<T>* get_queue();
 
-        /**
-        * @brief Getter for the queue
-        *
-        * @return The queue
-        */
-        const int& get_id() override;
+    /**
+     * @brief Getter for the queue
+     *
+     * @return The queue
+     */
+    const int& get_id() override;
 
-    private:
+private:
 
-        Node* node_;
+    Node* node_;
 
-        //task_id to <sample, sample_processed>
-        std::map<types::TaskId, std::pair<T*, bool>> queue_;
+    //task_id to <sample, sample_processed>
+    std::map<types::TaskId, std::pair<T*, bool>> queue_;
 
-        sustainml::utils::SamplePool<T> *pool_;
+    sustainml::utils::SamplePool<T>* pool_;
 
-        std::mutex mtx_;
+    std::mutex mtx_;
 
-        const int queue_id;
+    const int queue_id;
 
-    };
+};
 
 } // namespace core
 } // namespace sustainml

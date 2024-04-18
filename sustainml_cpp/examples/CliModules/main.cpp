@@ -303,7 +303,8 @@ class CustomAppRequirementsListener : public sustainml::app_requirements_module:
 
         // Populate output
         output.app_requirements(std::vector<std::string>
-                {"requirements", "from", "task", std::to_string(user_input.task_id().problem_id()), std::to_string(user_input.task_id().data_id())});
+                {"requirements", "from", "task", std::to_string(user_input.task_id().problem_id()),
+                 std::to_string(user_input.task_id().data_id())});
 
         // Wait the time it takes the node to generate the output
         sleep(1);
@@ -449,7 +450,8 @@ class CustomHardwareResourcesListener : public sustainml::hardware_module::Hardw
         status.update(Status::NODE_RUNNING);
 
         // Populate output
-        output.hw_description("HW descr. of task #" + std::to_string(model.task_id().problem_id()) + " " + std::to_string(model.task_id().data_id()));
+        output.hw_description("HW descr. of task #" + std::to_string(
+                    model.task_id().problem_id()) + " " + std::to_string(model.task_id().data_id()));
         output.power_consumption(model.task_id().data_id() + 1000.3);
 
         // Wait the time it takes the node to generate the output
@@ -494,7 +496,8 @@ class CustomMLModelMetadataListener : public sustainml::ml_model_module::MLModel
 
         // Populate output
         output.keywords(std::vector<std::string>
-                {"keywords", "from", "task", std::to_string(user_input.task_id().problem_id()), std::to_string(user_input.task_id().data_id())});
+                {"keywords", "from", "task", std::to_string(user_input.task_id().problem_id()),
+                 std::to_string(user_input.task_id().data_id())});
 
         // Wait the time it takes the node to generate the output
         sleep(1);
@@ -554,13 +557,17 @@ class CustomMLModelListener : public sustainml::ml_model_module::MLModelTaskList
         status.update(Status::NODE_RUNNING);
 
         // Populate output
-        output.model("ML model #" + std::to_string(model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().data_id())
+        output.model("ML model #" + std::to_string(model_metadata.task_id().problem_id()) + " " +
+                std::to_string(model_metadata.task_id().data_id())
                 + " ONNX would go here, parsed to string");
-        output.model_path("/opt/sustainml/ml_model/" + std::to_string(model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().data_id())
+        output.model_path("/opt/sustainml/ml_model/" + std::to_string(
+                    model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().data_id())
                 + "/model.onnx");
-        output.model_properties("ML model #" + std::to_string(model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().data_id())
+        output.model_properties("ML model #" + std::to_string(
+                    model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().data_id())
                 + " properties would go here, parsed to string");
-        output.model_path("/opt/sustainml/ml_model/" + std::to_string(model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().data_id())
+        output.model_path("/opt/sustainml/ml_model/" + std::to_string(
+                    model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().data_id())
                 + "/properties.json");
 
         // Wait the time it takes the node to generate the output
