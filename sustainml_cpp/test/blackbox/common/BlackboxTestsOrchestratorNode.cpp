@@ -148,11 +148,15 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
+    HWConstraintsManagedNode hw_cons_node;
+    AppRequirementsManagedNode app_req_node;
 
     co2_node.start();
     hw_node.start();
     ml_node.start();
     te_node.start();
+    hw_cons_node.start();
+    app_req_node.start();
 
     // Wait for all nodes to be idle
     tonh->prepare_expected_data(nodes_ready_expected_data);
@@ -164,7 +168,9 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
         {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
         {NodeID::ID_ML_MODEL, {NODE_IDLE, 1}},
         {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 1}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}}
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}},
+        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 1}},
+        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 1}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -172,7 +178,7 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
     auto task = orchestrator.prepare_new_task();
 
     task.second->task_id(task.first);
-    task.second->task_name("Test_Task_name");
+    task.second->problem_short_description("Test_Task_name");
     task.second->problem_definition("Test");
 
     orchestrator.start_task(task.first, task.second);
@@ -190,11 +196,15 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
+    HWConstraintsManagedNode hw_cons_node;
+    AppRequirementsManagedNode app_req_node;
 
     co2_node.start();
     hw_node.start();
     ml_node.start();
     te_node.start();
+    hw_cons_node.start();
+    app_req_node.start();
 
     // Wait for all nodes to be idle
     tonh->prepare_expected_data(nodes_ready_expected_data);
@@ -206,7 +216,9 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
         {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 2}},
         {NodeID::ID_ML_MODEL, {NODE_IDLE, 2}},
         {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 2}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 2}}
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 2}},
+        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 2}},
+        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 2}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -214,7 +226,7 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     auto task = orchestrator.prepare_new_task();
 
     task.second->task_id(task.first);
-    task.second->task_name("Test_Task0_name");
+    task.second->problem_short_description("Test_Task0_name");
     task.second->problem_definition("Test_Task0");
 
     orchestrator.start_task(task.first, task.second);
@@ -222,7 +234,7 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     task = orchestrator.prepare_new_task();
 
     task.second->task_id(task.first);
-    task.second->task_name("Test_Task1_name");
+    task.second->problem_short_description("Test_Task1_name");
     task.second->problem_definition("Test_Task1");
 
     orchestrator.start_task(task.first, task.second);
@@ -230,12 +242,12 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
     void* enc_task = nullptr;
     void* hw = nullptr;
-    ASSERT_EQ(orchestrator.get_task_data(0, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
-    ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id(), 0);
-    ASSERT_EQ(orchestrator.get_task_data(1, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
-    ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id(), 1);
-    ASSERT_EQ(orchestrator.get_task_data(1, NodeID::ID_HW_RESOURCES, hw), RetCode_t::RETCODE_OK);
-    ASSERT_EQ(((types::HWResource*)hw)->task_id(), 1);
+    ASSERT_EQ(orchestrator.get_task_data({1,1}, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id().problem_id(), 1);
+    ASSERT_EQ(orchestrator.get_task_data({2,2}, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id().problem_id(), 2);
+    ASSERT_EQ(orchestrator.get_task_data({2,2}, NodeID::ID_HW_RESOURCES, hw), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(((types::HWResource*)hw)->task_id().problem_id(), 2);
 }
 
 TEST(OrchestratorNode, OrchestratorGetNodeStatus)
@@ -248,11 +260,15 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
+    HWConstraintsManagedNode hw_cons_node;
+    AppRequirementsManagedNode app_req_node;
 
     co2_node.start();
     hw_node.start();
     ml_node.start();
     te_node.start();
+    hw_cons_node.start();
+    app_req_node.start();
 
     // Wait for all nodes to be idle
     tonh->prepare_expected_data(nodes_ready_expected_data);
@@ -264,7 +280,9 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
         {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
         {NodeID::ID_ML_MODEL, {NODE_IDLE, 1}},
         {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 1}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}}
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}},
+        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 1}},
+        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 1}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -272,7 +290,7 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     auto task = orchestrator.prepare_new_task();
 
     task.second->task_id(task.first);
-    task.second->task_name("Test_Task0_name");
+    task.second->problem_short_description("Test_Task0_name");
     task.second->problem_definition("Test_Task0");
 
     orchestrator.start_task(task.first, task.second);
@@ -286,5 +304,9 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     orchestrator.get_node_status(NodeID::ID_HW_RESOURCES, status);
     ASSERT_EQ(status->node_status(), NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_CARBON_FOOTPRINT, status);
+    ASSERT_EQ(status->node_status(), NODE_IDLE);
+    orchestrator.get_node_status(NodeID::ID_HW_CONSTRAINTS, status);
+    ASSERT_EQ(status->node_status(), NODE_IDLE);
+    orchestrator.get_node_status(NodeID::ID_APP_REQUIREMENTS, status);
     ASSERT_EQ(status->node_status(), NODE_IDLE);
 }

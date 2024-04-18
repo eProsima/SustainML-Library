@@ -23,14 +23,15 @@
 std::list<AppRequirementsImpl> default_apprequirements_data_generator(
         size_t max)
 {
-    uint16_t index = 0;
+    uint16_t index = 1;
     size_t maximum = max ? max : 20;
     std::list<AppRequirementsImpl> returnedValue(maximum);
 
     std::generate(returnedValue.begin(), returnedValue.end(), [&index]
             {
                 AppRequirementsImpl app_req;
-                app_req.task_id(index);
+                app_req.task_id().problem_id(index);
+                app_req.task_id().data_id(index);;
                 std::vector<std::string> requirements;
                 requirements.push_back("req1");
                 requirements.push_back("req2");
@@ -48,14 +49,15 @@ std::list<AppRequirementsImpl> default_apprequirements_data_generator(
 std::list<CO2FootprintImpl> default_co2footprint_data_generator(
         size_t max)
 {
-    uint16_t index = 0;
+    uint16_t index = 1;
     size_t maximum = max ? max : 20;
     std::list<CO2FootprintImpl> returnedValue(maximum);
 
     std::generate(returnedValue.begin(), returnedValue.end(), [&index]
             {
                 CO2FootprintImpl co2f;
-                co2f.task_id(index);
+                co2f.task_id().problem_id(index);
+                co2f.task_id().data_id(index);;
                 std::stringstream ss;
                 ss << "co2fWorld " << index;
                 co2f.carbon_footprint(index * 1.0);
@@ -71,14 +73,15 @@ std::list<CO2FootprintImpl> default_co2footprint_data_generator(
 std::list<HWConstraintsImpl> default_hwconstraints_task_generator(
         size_t max)
 {
-    uint16_t index = 0;
+    uint16_t index = 1;
     size_t maximum = max ? max : 20;
     std::list<HWConstraintsImpl> returnedValue(maximum);
 
     std::generate(returnedValue.begin(), returnedValue.end(), [&index]
             {
                 HWConstraintsImpl hw_cons;
-                hw_cons.task_id(index);
+                hw_cons.task_id().problem_id(index);
+                hw_cons.task_id().data_id(index);;
                 hw_cons.max_memory_footprint(index);
                 ++index;
                 return hw_cons;
@@ -90,14 +93,15 @@ std::list<HWConstraintsImpl> default_hwconstraints_task_generator(
 std::list<HWResourceImpl> default_hwresource_task_generator(
         size_t max)
 {
-    uint16_t index = 0;
+    uint16_t index = 1;
     size_t maximum = max ? max : 20;
     std::list<HWResourceImpl> returnedValue(maximum);
 
     std::generate(returnedValue.begin(), returnedValue.end(), [&index]
             {
                 HWResourceImpl hw_res;
-                hw_res.task_id(index);
+                hw_res.task_id().problem_id(index);
+                hw_res.task_id().data_id(index);;
                 std::stringstream ss;
                 ss << "HW Description of Task id: " << index;
                 hw_res.hw_description(ss.str());
@@ -111,14 +115,15 @@ std::list<HWResourceImpl> default_hwresource_task_generator(
 std::list<MLModelMetadataImpl> default_modelmetadata_task_generator(
         size_t max)
 {
-    uint16_t index = 0;
+    uint16_t index = 1;
     size_t maximum = max ? max : 20;
     std::list<MLModelMetadataImpl> returnedValue(maximum);
 
     std::generate(returnedValue.begin(), returnedValue.end(), [&index]
             {
                 MLModelMetadataImpl enc_task;
-                enc_task.task_id(index);
+                enc_task.task_id().problem_id(index);
+                enc_task.task_id().data_id(index);;
                 std::vector<std::string> keywords;
                 keywords.push_back("EXAMPLE");
                 keywords.push_back("KEYWORD");
@@ -133,14 +138,15 @@ std::list<MLModelMetadataImpl> default_modelmetadata_task_generator(
 std::list<MLModelImpl> default_mlmodel_task_generator(
         size_t max)
 {
-    uint16_t index = 0;
+    uint16_t index = 1;
     size_t maximum = max ? max : 20;
     std::list<MLModelImpl> returnedValue(maximum);
 
     std::generate(returnedValue.begin(), returnedValue.end(), [&index]
             {
                 MLModelImpl ml_model;
-                ml_model.task_id(index);
+                ml_model.task_id().problem_id(index);
+                ml_model.task_id().data_id(index);;
                 std::stringstream ss;
                 ss << "Machine learning model for Task ID " << index;
                 ml_model.model(ss.str());
@@ -154,20 +160,21 @@ std::list<MLModelImpl> default_mlmodel_task_generator(
 std::list<UserInputImpl> default_userinput_task_generator(
         size_t max)
 {
-    uint16_t index = 0;
+    uint16_t index = 1;
     size_t maximum = max ? max : 20;
     std::list<UserInputImpl> returnedValue(maximum);
 
     std::generate(returnedValue.begin(), returnedValue.end(), [&index]
             {
                 UserInputImpl ui;
-                ui.task_id(index);
+                ui.task_id().problem_id(index);
+                ui.task_id().data_id(index);;
                 std::stringstream problem_definition;
                 problem_definition << "Problem Description of Task id: " << index;
                 ui.problem_definition(problem_definition.str());
                 std::stringstream task_name;
                 task_name << "initial task";
-                ui.task_name(task_name.str());
+                ui.problem_short_description(task_name.str());
                 ++index;
                 return ui;
             });

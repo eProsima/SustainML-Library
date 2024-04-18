@@ -21,12 +21,14 @@ TEST(BlackboxTestsCallbackProcessing, TasksCorrectlyFinishDespiteDifferentProces
             {
                 std::srand(std::time(nullptr));
                 //! Depending on the task_id, simulate different processing times
-                std::this_thread::sleep_for(std::chrono::seconds(std::rand() % (ui.task_id() + 2)));
+                std::this_thread::sleep_for(std::chrono::seconds(std::rand() % (ui.task_id().problem_id() + 2)));
             };
 
     MLModelMetadataManagedNode te_node(te_cb);
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
+    AppRequirementsManagedNode appr_node;
+    HWConstraintsManagedNode hwc_node;
 
     CarbonFootprintCallbackSignature co2_cb = [](
         types::MLModel&,
@@ -46,6 +48,8 @@ TEST(BlackboxTestsCallbackProcessing, TasksCorrectlyFinishDespiteDifferentProces
     hw_node.start();
     ml_node.start();
     te_node.start();
+    appr_node.start();
+    hwc_node.start();
 
     ui_inj.wait_discovery(2);
 
