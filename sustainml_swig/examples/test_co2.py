@@ -37,7 +37,7 @@ class MyListener(sustainml_swig.CarbonFootprintTaskListener):
 
     def on_new_task_available(self, arg1, arg2, arg3, arg4, arg5):
         print (arg1.model())
-        print (arg2.problem_description())
+        print (arg2.problem_definition())
         print (arg3.hw_description())
         print (arg4.node_status())
         arg5.carbon_intensity(4)
