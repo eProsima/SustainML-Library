@@ -97,7 +97,7 @@ public:
     eProsima_user_DllExport TaskId();
 
     /*!
-     * @brief Intiial ids constructor.
+     * @brief Initial values TaskId constructor.
      */
     eProsima_user_DllExport TaskId(uint32_t problem_id, uint32_t data_id);
 
