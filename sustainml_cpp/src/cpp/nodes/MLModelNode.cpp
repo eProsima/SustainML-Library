@@ -28,7 +28,7 @@
 using namespace types;
 
 namespace sustainml {
-namespace ml_model_provider_module {
+namespace ml_model_module {
 
 MLModelNode::MLModelNode(
         MLModelTaskListener& user_listener)
@@ -67,13 +67,23 @@ MLModelNode::~MLModelNode()
 void MLModelNode::init (
         const sustainml::core::Options& opts)
 {
-    listener_enc_task_queue_.reset(new core::QueuedNodeListener<EncodedTask>(this));
+    listener_model_metadata_queue_.reset(new core::QueuedNodeListener<MLModelMetadata>(this));
+    listener_app_requirements_queue_.reset(new core::QueuedNodeListener<AppRequirements>(this));
+    listener_hw_constraints_queue_.reset(new core::QueuedNodeListener<HWConstraints>(this));
 
     task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, MLModel>>(opts));
 
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::ENCODED_TASK].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::ENCODED_TASK].second.c_str(),
-            &(*listener_enc_task_queue_), opts);
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].second.c_str(),
+            &(*listener_model_metadata_queue_), opts);
+
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::APP_REQUIREMENT].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::APP_REQUIREMENT].second.c_str(),
+            &(*listener_app_requirements_queue_), opts);
+
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::HW_CONSTRAINT].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::HW_CONSTRAINT].second.c_str(),
+            &(*listener_hw_constraints_queue_), opts);
 
     initialize_publication(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
             sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
@@ -81,7 +91,7 @@ void MLModelNode::init (
 }
 
 void MLModelNode::publish_to_user(
-        const int& task_id,
+        const types::TaskId& task_id,
         const std::vector<std::pair<int, void*>> input_samples)
 {
     //! Expected inputs are the number of reader minus the control reader
@@ -135,7 +145,9 @@ void MLModelNode::publish_to_user(
         publish_node_status();
         writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->second.get_impl());
 
-        listener_enc_task_queue_->remove_element_by_taskid(task_id);
+        listener_model_metadata_queue_->remove_element_by_taskid(task_id);
+        listener_app_requirements_queue_->remove_element_by_taskid(task_id);
+        listener_hw_constraints_queue_->remove_element_by_taskid(task_id);
 
         {
             std::lock_guard<std::mutex> lock (mtx_);
@@ -149,5 +161,5 @@ void MLModelNode::publish_to_user(
     }
 }
 
-} // ml_model_provider_module
+} // ml_model_module
 } // sustainml

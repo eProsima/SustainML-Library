@@ -96,6 +96,8 @@ OrchestratorNode::OrchestratorNode(
             nullptr,
             nullptr,
             nullptr,
+            nullptr,
+            nullptr,
             nullptr
         }),
     task_db_(new TaskDB_t()),
@@ -166,13 +168,15 @@ bool OrchestratorNode::init()
     std::vector<eprosima::fastdds::dds::TypeSupport> sustainml_types;
     sustainml_types.reserve(common::Topics::MAX);
 
-    sustainml_types.push_back(static_cast<TypeSupport>(new NodeStatusImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new NodeControlImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new UserInputImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new EncodedTaskImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new MLModelImplPubSubType()));
-    sustainml_types.push_back(static_cast<TypeSupport>(new HWResourceImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new AppRequirementsImplPubSubType()));
     sustainml_types.push_back(static_cast<TypeSupport>(new CO2FootprintImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new HWConstraintsImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new HWResourceImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new MLModelImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new MLModelMetadataImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new NodeControlImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new NodeStatusImplPubSubType()));
+    sustainml_types.push_back(static_cast<TypeSupport>(new UserInputImplPubSubType()));
 
     for (auto&& type : sustainml_types)
     {
@@ -242,18 +246,18 @@ bool OrchestratorNode::init()
     return true;
 }
 
-std::pair<int, types::UserInput*> OrchestratorNode::prepare_new_task()
+std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_task()
 {
-    std::pair<int, types::UserInput*> output;
-    int new_task_id = task_man_->create_new_task_id();
-    task_db_->prepare_new_entry(new_task_id);
-    task_db_->get_task_data(new_task_id, output.second);
-    output.first = new_task_id;
+    std::pair<types::TaskId, types::UserInput*> output;
+    auto task_id = task_man_->create_new_task_id();
+    task_db_->prepare_new_entry(task_id);
+    task_db_->get_task_data(task_id, output.second);
+    output.first = task_id;
     return output;
 }
 
 bool OrchestratorNode::start_task(
-        const int& task_id,
+        const types::TaskId& /*task_id*/,
         types::UserInput* ui)
 {
     user_input_writer_->write(ui->get_impl());
@@ -261,7 +265,7 @@ bool OrchestratorNode::start_task(
 }
 
 RetCode_t OrchestratorNode::get_task_data(
-        const int& task_id,
+        const types::TaskId& task_id,
         const NodeID& node_id,
         void*& data)
 {
@@ -269,9 +273,9 @@ RetCode_t OrchestratorNode::get_task_data(
 
     switch (node_id)
     {
-        case NodeID::ID_TASK_ENCODER:
+        case NodeID::ID_ML_MODEL_METADATA:
         {
-            MapFromNodeIDToType_t<NodeID::ID_TASK_ENCODER>::type* typed_data = nullptr;
+            MapFromNodeIDToType_t<NodeID::ID_ML_MODEL_METADATA>::type* typed_data = nullptr;
             if (task_db_->get_task_data(task_id, typed_data))
             {
                 data = typed_data;
@@ -279,9 +283,9 @@ RetCode_t OrchestratorNode::get_task_data(
             }
             break;
         }
-        case NodeID::ID_MACHINE_LEARNING:
+        case NodeID::ID_ML_MODEL:
         {
-            MapFromNodeIDToType_t<NodeID::ID_MACHINE_LEARNING>::type* typed_data = nullptr;
+            MapFromNodeIDToType_t<NodeID::ID_ML_MODEL>::type* typed_data = nullptr;
             if (task_db_->get_task_data(task_id, typed_data))
             {
                 data = typed_data;
@@ -289,9 +293,9 @@ RetCode_t OrchestratorNode::get_task_data(
             }
             break;
         }
-        case NodeID::ID_HARDWARE_RESOURCES:
+        case NodeID::ID_HW_RESOURCES:
         {
-            MapFromNodeIDToType_t<NodeID::ID_HARDWARE_RESOURCES>::type* typed_data = nullptr;
+            MapFromNodeIDToType_t<NodeID::ID_HW_RESOURCES>::type* typed_data = nullptr;
             if (task_db_->get_task_data(task_id, typed_data))
             {
                 data = typed_data;

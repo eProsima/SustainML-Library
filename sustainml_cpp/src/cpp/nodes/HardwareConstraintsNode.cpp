@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * @file CarbonFootprintNode.cpp
+ * @file HardwareConstraintsNode.cpp
  */
 
-#include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
+#include <sustainml_cpp/nodes/HardwareConstraintsNode.hpp>
 
 #include <fastdds/dds/publisher/DataWriter.hpp>
 
@@ -28,11 +28,11 @@
 using namespace types;
 
 namespace sustainml {
-namespace carbon_tracker_module {
+namespace hardware_module {
 
-CarbonFootprintNode::CarbonFootprintNode(
-        CarbonFootprintTaskListener& user_listener)
-    : Node(common::CARBON_FOOTPRINT_NODE)
+HardwareConstraintsNode::HardwareConstraintsNode(
+        HardwareConstraintsTaskListener& user_listener)
+    : Node(common::HW_CONSTRAINTS_NODE)
     , user_listener_(user_listener)
 {
     sustainml::core::Options opts;
@@ -46,51 +46,40 @@ CarbonFootprintNode::CarbonFootprintNode(
     opts.wqos.resource_limits().max_instances = 500;
     opts.wqos.resource_limits().max_samples_per_instance = 1;
     opts.wqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
-
     init(opts);
 }
 
-CarbonFootprintNode::CarbonFootprintNode(
-        CarbonFootprintTaskListener& user_listener,
+HardwareConstraintsNode::HardwareConstraintsNode(
+        HardwareConstraintsTaskListener& user_listener,
         sustainml::core::Options opts)
-    : Node(common::CARBON_FOOTPRINT_NODE, opts)
+    : Node(common::HW_CONSTRAINTS_NODE, opts)
     , user_listener_(user_listener)
 {
     init(opts);
 }
 
-CarbonFootprintNode::~CarbonFootprintNode()
+HardwareConstraintsNode::~HardwareConstraintsNode()
 {
 
 }
 
-void CarbonFootprintNode::init (
+void HardwareConstraintsNode::init (
         const sustainml::core::Options& opts)
 {
-    listener_ml_model_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
-    listener_hw_queue_.reset(new core::QueuedNodeListener<HWResource>(this));
     listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 
-    task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, CO2Footprint>>(opts));
-
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
-            &(*listener_ml_model_queue_), opts);
-
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::HW_RESOURCE].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str(),
-            &(*listener_hw_queue_), opts);
+    task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, HWConstraints>>(opts));
 
     initialize_subscription(sustainml::common::TopicCollection::get()[common::USER_INPUT].first.c_str(),
             sustainml::common::TopicCollection::get()[common::USER_INPUT].second.c_str(),
             &(*listener_user_input_queue_), opts);
 
-    initialize_publication(sustainml::common::TopicCollection::get()[common::CARBON_FOOTPRINT].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::CARBON_FOOTPRINT].second.c_str(),
+    initialize_publication(sustainml::common::TopicCollection::get()[common::HW_CONSTRAINT].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::HW_CONSTRAINT].second.c_str(),
             opts);
 }
 
-void CarbonFootprintNode::publish_to_user(
+void HardwareConstraintsNode::publish_to_user(
         const types::TaskId& task_id,
         const std::vector<std::pair<int, void*>> input_samples)
 {
@@ -106,7 +95,7 @@ void CarbonFootprintNode::publish_to_user(
             ExpectedInputSamples::MAX,
             samples_retrieved);
 
-        std::pair<NodeStatus, CO2Footprint>* task_data_cache;
+        std::pair<NodeStatus, HWConstraints>* task_data_cache;
 
         {
             std::lock_guard<std::mutex> lock (mtx_);
@@ -128,7 +117,7 @@ void CarbonFootprintNode::publish_to_user(
             publish_node_status();
         }
 
-        user_listener_.invoke_user_cb(task_id, core::helper::gen_seq<CarbonFootprintCallable::size>{});
+        user_listener_.invoke_user_cb(task_id, core::helper::gen_seq<HardwareConstraintsCallable::size>{});
 
         //! Ensure task_id is forwarded to the output
         task_data_cache->second.task_id(task_id);
@@ -145,21 +134,19 @@ void CarbonFootprintNode::publish_to_user(
         publish_node_status();
         writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->second.get_impl());
 
-        listener_ml_model_queue_->remove_element_by_taskid(task_id);
-        listener_hw_queue_->remove_element_by_taskid(task_id);
         listener_user_input_queue_->remove_element_by_taskid(task_id);
 
         {
-            std::unique_lock<std::mutex> lock (mtx_);
+            std::lock_guard<std::mutex> lock (mtx_);
             task_data_pool_->release_cache_nts(task_data_cache);
             user_listener_.remove_task_args(task_id);
         }
     }
     else
     {
-        EPROSIMA_LOG_ERROR(CARBON_NODE, "Input size mismatch");
+        EPROSIMA_LOG_ERROR(HWCONSTAINTS_NODE, "Input size mismatch");
     }
 }
 
-} // carbon_tracker_module
+} // hardware_module
 } // sustainml

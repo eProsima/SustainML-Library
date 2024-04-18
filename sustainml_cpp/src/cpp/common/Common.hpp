@@ -32,34 +32,44 @@
 namespace sustainml {
 namespace common {
 
-constexpr int INVALID_ID = -1;
+constexpr int INVALID_ID = 0;
 
 //!Node Names
-constexpr const char* TASK_ENCODER_NODE = "TASK_ENCODER_NODE";
-constexpr const char* ML_MODEL_NODE = "ML_MODEL_NODE";
+constexpr const char* APP_REQUIREMENTS_NODE = "APP_REQUIREMENTS_NODE";
+constexpr const char* CARBON_FOOTPRINT_NODE = "CARBON_FOOTPRINT_NODE";
+constexpr const char* HW_CONSTRAINTS_NODE = "HW_CONSTRAINTS_NODE";
 constexpr const char* HW_RESOURCES_NODE = "HW_RESOURCES_NODE";
-constexpr const char* CO2_TRACKER_NODE = "CO2_TRACKER_NODE";
+constexpr const char* ML_MODEL_METADATA_NODE = "ML_MODEL_METADATA_NODE";
+constexpr const char* ML_MODEL_NODE = "ML_MODEL_NODE";
 
 inline NodeID get_node_id_from_name(
         const eprosima::fastrtps::string_255& name)
 {
     NodeID id = NodeID::UNKNOWN;
 
-    if (name == TASK_ENCODER_NODE)
+    if (name == APP_REQUIREMENTS_NODE)
     {
-        id = NodeID::ID_TASK_ENCODER;
+        id = NodeID::ID_APP_REQUIREMENTS;
     }
-    else if (name == ML_MODEL_NODE)
+    else if (name == CARBON_FOOTPRINT_NODE)
     {
-        id = NodeID::ID_MACHINE_LEARNING;
+        id = NodeID::ID_CARBON_FOOTPRINT;
+    }
+    else if (name == HW_CONSTRAINTS_NODE)
+    {
+        id = NodeID::ID_HW_CONSTRAINTS;
     }
     else if (name == HW_RESOURCES_NODE)
     {
-        id = NodeID::ID_HARDWARE_RESOURCES;
+        id = NodeID::ID_HW_RESOURCES;
     }
-    else if (name == CO2_TRACKER_NODE)
+    else if (name == ML_MODEL_METADATA_NODE)
     {
-        id = NodeID::ID_CARBON_FOOTPRINT;
+        id = NodeID::ID_ML_MODEL_METADATA;
+    }
+    else if (name == ML_MODEL_NODE)
+    {
+        id = NodeID::ID_ML_MODEL;
     }
     return id;
 }
@@ -68,11 +78,13 @@ enum Topics
 {
     NODE_CONTROL,
     NODE_STATUS,
-    USER_INPUT,
-    ENCODED_TASK,
-    ML_MODEL,
+    APP_REQUIREMENT,
+    CARBON_FOOTPRINT,
+    HW_CONSTRAINT,
     HW_RESOURCE,
-    CO2_FOOTPRINT,
+    ML_MODEL_METADATA,
+    ML_MODEL,
+    USER_INPUT,
     MAX
 };
 
@@ -81,21 +93,29 @@ inline Topics get_topic_from_name(
 {
     Topics output = Topics::MAX;
 
-    if (name == TASK_ENCODER_NODE)
+    if (name == APP_REQUIREMENTS_NODE)
     {
-        output = Topics::ENCODED_TASK;
+        output = Topics::APP_REQUIREMENT;
     }
-    else if (name == ML_MODEL_NODE)
+    else if (name == CARBON_FOOTPRINT_NODE)
     {
-        output = Topics::ML_MODEL;
+        output = Topics::CARBON_FOOTPRINT;
+    }
+    else if (name == HW_CONSTRAINTS_NODE)
+    {
+        output = Topics::HW_CONSTRAINT;
     }
     else if (name == HW_RESOURCES_NODE)
     {
         output = Topics::HW_RESOURCE;
     }
-    else if (name == CO2_TRACKER_NODE)
+    if (name == ML_MODEL_METADATA_NODE)
     {
-        output = Topics::CO2_FOOTPRINT;
+        output = Topics::ML_MODEL_METADATA;
+    }
+    else if (name == ML_MODEL_NODE)
+    {
+        output = Topics::ML_MODEL;
     }
     return output;
 }
@@ -112,11 +132,13 @@ public:
         static std::map<Topics, std::pair<std::string, std::string>>  topics {
             {NODE_CONTROL, {"/sustainml/control", "NodeControlImpl"}},
             {NODE_STATUS, {"/sustainml/status", "NodeStatusImpl"}},
-            {USER_INPUT, {"/sustainml/user_input", "UserInputImpl"}},
-            {ENCODED_TASK, {"/sustainml/task_encoder/output", "EncodedTaskImpl"}},
-            {ML_MODEL, {"/sustainml/ml_model_provider/output", "MLModelImpl"}},
+            {APP_REQUIREMENT, {"/sustainml/app_requirements/output", "AppRequirementsImpl"}},
+            {CARBON_FOOTPRINT, {"/sustainml/carbon_tracker/output", "CO2FootprintImpl"}},
+            {HW_CONSTRAINT, {"/sustainml/hw_constraints/output", "HWConstraintsImpl"}},
             {HW_RESOURCE, {"/sustainml/hw_resources/output", "HWResourceImpl"}},
-            {CO2_FOOTPRINT, {"/sustainml/carbon_tracker/output", "CO2FootprintImpl"}}
+            {ML_MODEL_METADATA, {"/sustainml/ml_model_metadata/output", "MLModelMetadataImpl"}},
+            {ML_MODEL, {"/sustainml/ml_model_provider/output", "MLModelImpl"}},
+            {USER_INPUT, {"/sustainml/user_input", "UserInputImpl"}}
         };
 
         return topics;
@@ -130,11 +152,13 @@ protected:
 
 enum QueueIds
 {
-    USER_INPUT_QUEUE,
-    ENCODED_TASK_QUEUE,
-    ML_MODEL_QUEUE,
+    APP_REQUIREMENT_QUEUE,
+    CARBON_FOOTPRINT_QUEUE,
     HW_RESOURCE_QUEUE,
-    CO2_FOOTPRINT_QUEUE,
+    HW_CONSTRAINT_QUEUE,
+    ML_MODEL_METADATA_QUEUE,
+    ML_MODEL_QUEUE,
+    USER_INPUT_QUEUE,
 };
 
 inline int queue_name_to_id(
@@ -142,25 +166,33 @@ inline int queue_name_to_id(
 {
     auto tp = TopicCollection::get();
 
-    if (queue_name.find(tp[ENCODED_TASK].second) != std::string::npos)
+    if (queue_name.find(tp[APP_REQUIREMENT].second) != std::string::npos)
     {
-        return ENCODED_TASK_QUEUE;
+        return APP_REQUIREMENT_QUEUE;
     }
-    else if (queue_name.find(tp[USER_INPUT].second) != std::string::npos)
+    else if (queue_name.find(tp[CARBON_FOOTPRINT].second) != std::string::npos)
     {
-        return USER_INPUT_QUEUE;
+        return CARBON_FOOTPRINT_QUEUE;
     }
-    else if (queue_name.find(tp[ML_MODEL].second) != std::string::npos)
+    else if (queue_name.find(tp[HW_CONSTRAINT].second) != std::string::npos)
     {
-        return ML_MODEL_QUEUE;
+        return HW_CONSTRAINT_QUEUE;
     }
     else if (queue_name.find(tp[HW_RESOURCE].second) != std::string::npos)
     {
         return HW_RESOURCE_QUEUE;
     }
-    else if (queue_name.find(tp[CO2_FOOTPRINT].second) != std::string::npos)
+    else if (queue_name.find(tp[ML_MODEL_METADATA].second) != std::string::npos)
     {
-        return CO2_FOOTPRINT_QUEUE;
+        return ML_MODEL_METADATA_QUEUE;
+    }
+    else if (queue_name.find(tp[ML_MODEL].second) != std::string::npos)
+    {
+        return ML_MODEL_QUEUE;
+    }
+    else if (queue_name.find(tp[USER_INPUT].second) != std::string::npos)
+    {
+        return USER_INPUT_QUEUE;
     }
     else
     {
@@ -174,25 +206,33 @@ template<typename T>
 inline int sample_type_to_queue_id(
         T* sample)
 {
-    if (typeid(sample) == typeid(types::EncodedTask*))
+    if (typeid(sample) == typeid(types::AppRequirements*))
     {
-        return ENCODED_TASK_QUEUE;
+        return APP_REQUIREMENT_QUEUE;
     }
-    else if (typeid(sample) == typeid(types::UserInput*))
+    else if (typeid(sample) == typeid(types::CO2Footprint*))
     {
-        return USER_INPUT_QUEUE;
+        return CARBON_FOOTPRINT_QUEUE;
     }
-    else if (typeid(sample) == typeid(types::MLModel*))
+    else if (typeid(sample) == typeid(types::HWConstraints*))
     {
-        return ML_MODEL_QUEUE;
+        return HW_CONSTRAINT_QUEUE;
     }
     else if (typeid(sample) == typeid(types::HWResource*))
     {
         return HW_RESOURCE_QUEUE;
     }
-    else if (typeid(sample) == typeid(types::CO2Footprint*))
+    else if (typeid(sample) == typeid(types::MLModelMetadata*))
     {
-        return CO2_FOOTPRINT_QUEUE;
+        return ML_MODEL_METADATA_QUEUE;
+    }
+    else if (typeid(sample) == typeid(types::MLModel*))
+    {
+        return ML_MODEL_QUEUE;
+    }
+    else if (typeid(sample) == typeid(types::UserInput*))
+    {
+        return USER_INPUT_QUEUE;
     }
 
     return -1;

@@ -22,7 +22,7 @@
 
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
 
-class CustomListener : public sustainml::co2_tracker_module::CarbonFootprintTaskListener
+class CustomListener : public sustainml::carbon_tracker_module::CarbonFootprintTaskListener
 {
 public:
 
@@ -48,7 +48,7 @@ int main()
             });
 
     CustomListener l;
-    sustainml::co2_tracker_module::CarbonFootprintNode n(l);
+    sustainml::carbon_tracker_module::CarbonFootprintNode n(l);
 
     n.spin();
 

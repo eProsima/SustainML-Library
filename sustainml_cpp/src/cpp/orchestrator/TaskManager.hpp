@@ -20,6 +20,9 @@
 #ifndef SUSTAINMLCPP_NODES_ORCHESTRATOR_TASKMANAGER_HPP
 #define SUSTAINMLCPP_NODES_ORCHESTRATOR_TASKMANAGER_HPP
 
+#include <atomic>
+#include <mutex>
+
 #include <common/Common.hpp>
 
 namespace sustainml {
@@ -35,26 +38,38 @@ public:
     TaskManager() = default;
     virtual ~TaskManager() = default;
 
-    std::atomic<int> task_id_{common::INVALID_ID};
+    std::mutex mtx_;
+    types::TaskId task_id_;
 
     /**
      * @brief Create a new unique task_id.
      */
-    inline int create_new_task_id()
+    inline types::TaskId create_new_task_id()
     {
-        task_id_.fetch_add(1);
+        {
+            std::lock_guard<std::mutex> lock(mtx_);
+            task_id_.problem_id(task_id_.problem_id() + 1);
+            task_id_.data_id(task_id_.data_id() + 1);
+        }
+
         return task_id_;
     }
 
     /**
      * @brief Sets the task id to the status of the system
      */
-    inline void set_task_id(
-            const int& task_id)
+    inline void update_task_id(
+            const types::TaskId& task_id)
     {
-        if (task_id > task_id_.load())
+        std::lock_guard<std::mutex> lock(mtx_);
+        if (task_id.problem_id() > task_id_.problem_id())
         {
-            task_id_.exchange(task_id);
+            task_id_.problem_id() = task_id.problem_id();
+        }
+
+        if (task_id.data_id() > task_id_.data_id())
+        {
+            task_id_.data_id() = task_id.data_id();
         }
     }
 

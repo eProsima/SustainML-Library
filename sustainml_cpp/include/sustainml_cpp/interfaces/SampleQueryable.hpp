@@ -21,6 +21,8 @@
 
 #include <vector>
 
+#include <types/types.h>
+
 namespace sustainml {
 namespace interfaces {
 
@@ -33,7 +35,7 @@ namespace interfaces {
         *
         * @return pointer to the sample
         */
-        virtual void* retrieve_sample_from_taskid(const int &id) = 0;
+        virtual void* retrieve_sample_from_taskid(const types::TaskId &id) = 0;
 
         /**
         * @brief Retrieves the id of the sample queryable.

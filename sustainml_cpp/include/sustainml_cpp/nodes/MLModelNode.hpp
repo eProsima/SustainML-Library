@@ -36,12 +36,13 @@ namespace utils {
 template<class T> class SamplePool;
 } // namespace utils
 
-namespace ml_model_provider_module {
+namespace ml_model_module {
 
 class Node;
 class Dispatcher;
 
-using MLModelCallable = core::Callable<types::EncodedTask, types::NodeStatus, types::MLModel>;
+using MLModelCallable = core::Callable<types::MLModelMetadata, types::AppRequirements, types::HWConstraints,
+                types::NodeStatus, types::MLModel>;
 
 struct MLModelTaskListener : public MLModelCallable
 {
@@ -50,7 +51,9 @@ struct MLModelTaskListener : public MLModelCallable
     }
 
     virtual void on_new_task_available(
-            types::EncodedTask& encoded_task,
+            types::MLModelMetadata& model_metadata,
+            types::AppRequirements& requirements,
+            types::HWConstraints& constraints,
             types::NodeStatus& status,
             types::MLModel& output) override
     {
@@ -61,14 +64,16 @@ struct MLModelTaskListener : public MLModelCallable
 /**
  * @brief Machine Learning Model Node Implementation
  * It requires the
- * - Encoded Task
+ * - ML model metadata
  * as input
  */
 class MLModelNode : public ::sustainml::core::Node
 {
     enum ExpectedInputSamples
     {
-        ENCODED_TASK_SAMPLE,
+        ML_MODEL_METADATA_SAMPLE,
+        APP_REQUIREMENTS_SAMPLE,
+        HW_CONSTRAINTS_SAMPLE,
         MAX
     };
 
@@ -108,12 +113,14 @@ private:
      * must correspond to the same task_id.
      */
     void publish_to_user(
-            const int& task_id,
+            const types::TaskId& task_id,
             const std::vector<std::pair<int, void*>> inputs) override;
 
     MLModelTaskListener& user_listener_;
 
-    std::unique_ptr<core::QueuedNodeListener<types::EncodedTask>> listener_enc_task_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::MLModelMetadata>> listener_model_metadata_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::AppRequirements>> listener_app_requirements_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::HWConstraints>> listener_hw_constraints_queue_;
 
     std::mutex mtx_;
 
@@ -121,7 +128,7 @@ private:
 
 };
 
-} // namespace ml_model_provider_module
+} // namespace ml_model_module
 } // namespace sustainml
 
 #endif // SUSTAINMLCPP_NODES_MLMODELNODE_HPP

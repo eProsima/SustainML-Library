@@ -1,4 +1,4 @@
-// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2024 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file TaskEncoderNode.hpp
+ * @file AppRequirementsNode.hpp
  */
 
 
-#ifndef SUSTAINMLCPP_NODES_TASKENCODERNODE_HPP
-#define SUSTAINMLCPP_NODES_TASKENCODERNODE_HPP
+#ifndef SUSTAINMLCPP_NODES_APPREQUIREMENTSNODE_HPP
+#define SUSTAINMLCPP_NODES_APPREQUIREMENTSNODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/core/Callable.hpp>
@@ -36,35 +36,35 @@ namespace utils {
 template<class T> class SamplePool;
 } // namespace utils
 
-namespace ml_task_encoding_module {
+namespace app_requirements_module {
 
 class Node;
 class Dispatcher;
 
-using TaskEncoderCallable = core::Callable<types::UserInput, types::NodeStatus, types::EncodedTask>;
+using AppRequirementsCallable = core::Callable<types::UserInput, types::NodeStatus, types::AppRequirements>;
 
-struct TaskEncoderTaskListener : public TaskEncoderCallable
+struct AppRequirementsTaskListener : public AppRequirementsCallable
 {
-    virtual ~TaskEncoderTaskListener()
+    virtual ~AppRequirementsTaskListener()
     {
     }
 
     virtual void on_new_task_available(
             types::UserInput& user_input,
             types::NodeStatus& status,
-            types::EncodedTask& output) override
+            types::AppRequirements& output) override
     {
     }
 
 };
 
 /**
- * @brief Task Encoder Node Implementation
+ * @brief App Requirements Node Implementation
  * It requires the
  * - User Input
  * as input
  */
-class TaskEncoderNode : public ::sustainml::core::Node
+class AppRequirementsNode : public ::sustainml::core::Node
 {
 
     enum ExpectedInputSamples
@@ -81,16 +81,16 @@ class TaskEncoderNode : public ::sustainml::core::Node
 
 public:
 
-    SUSTAINML_CPP_DLL_API TaskEncoderNode(
-            TaskEncoderTaskListener& user_listener);
+    SUSTAINML_CPP_DLL_API AppRequirementsNode(
+            AppRequirementsTaskListener& user_listener);
 
 #ifndef SWIG_WRAPPER
-    SUSTAINML_CPP_DLL_API TaskEncoderNode(
-            TaskEncoderTaskListener& user_listener,
+    SUSTAINML_CPP_DLL_API AppRequirementsNode(
+            AppRequirementsTaskListener& user_listener,
             sustainml::core::Options opts);
 #endif // SWIG_WRAPPER
 
-    SUSTAINML_CPP_DLL_API virtual ~TaskEncoderNode();
+    SUSTAINML_CPP_DLL_API virtual ~AppRequirementsNode();
 
 private:
 
@@ -109,20 +109,20 @@ private:
      * must correspond to the same task_id.
      */
     void publish_to_user(
-            const int& task_id,
+            const types::TaskId& task_id,
             const std::vector<std::pair<int, void*>> inputs) override;
 
-    TaskEncoderTaskListener& user_listener_;
+    AppRequirementsTaskListener& user_listener_;
 
     std::unique_ptr<core::QueuedNodeListener<types::UserInput>> listener_user_input_queue_;
 
     std::mutex mtx_;
 
-    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::EncodedTask>>> task_data_pool_;
+    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::AppRequirements>>> task_data_pool_;
 
 };
 
-} // namespace ml_task_encoding_module
+} // namespace app_requirements_module
 } // namespace sustainml
 
-#endif // SUSTAINMLCPP_NODES_TASKENCODERNODE_HPP
+#endif // SUSTAINMLCPP_NODES_APPREQUIREMENTSNODE_HPP
