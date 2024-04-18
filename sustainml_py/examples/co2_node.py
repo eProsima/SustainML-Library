@@ -35,7 +35,7 @@ def signal_handler(sig, frame):
 # Outputs: node_status, co2
 def task_callback(ml_model, user_input, hw, node_status, co2):
     print (ml_model.model())
-    print (user_input.problem_description())
+    print (user_input.problem_definition())
     print (hw.hw_description())
     print (node_status.node_status())
     co2.carbon_intensity(4)

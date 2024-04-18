@@ -13,7 +13,7 @@
 # limitations under the License.
 """SustainML Example Python Node API."""
 
-from sustainml_py.nodes.MLModelNode import MLModelNode
+from sustainml_py.nodes.HardwareConstraintsNode import HardwareConstraintsNode
 
 # Manage signaling
 import signal
@@ -26,25 +26,20 @@ running = False
 # Signal handler
 def signal_handler(sig, frame):
     print("\nExiting")
-    MLModelNode.terminate()
+    HardwareConstraintsNode.terminate()
     global running
     running = False
 
 # User Callback implementation
-# Inputs: ml_model_metadata, app_requirements, hw_constraints
-# Outputs: node_status, ml_model
-def task_callback(ml_model_metadata, app_requirements, hw_constraints, node_status, ml_model):
-    for metadata in ml_model_metadata.ml_model_metadata():
-        print("Received metadata " + metadata)
-    for requirement in app_requirements.app_requirements():
-        print("Received app requirement " + requirement)
-    print ("Received HW constraints: Max memory footprint: " + str(hw_constraints.max_memory_footprint()) + " MB")
-    print (node_status.node_status())
-    ml_model.model("MODEL in ONXX format")
+# Inputs: user_input
+# Outputs: node_status, hw_constraints
+def task_callback(user_input, node_status, hw_constraints):
+    print (user_input.problem_definition())
+    hw_constraints.max_memory_footprint(100)
 
 # Main workflow routine
 def run():
-    node = MLModelNode(callback=task_callback)
+    node = HardwareConstraintsNode(callback=task_callback)
     global running
     running = True
     node.spin()
