@@ -73,7 +73,7 @@ namespace core {
     }
 
     template <typename T>
-    void SamplesQueue<T>::remove_element_by_taskid(const int& id)
+    void SamplesQueue<T>::remove_element_by_taskid(const types::TaskId& id)
     {
         std::unique_lock<std::mutex> lock(mtx_);
         pool_->release_cache_nts(queue_[id].first);
@@ -81,7 +81,7 @@ namespace core {
     }
 
     template <typename T>
-    void* SamplesQueue<T>::retrieve_sample_from_taskid(const int &id)
+    void* SamplesQueue<T>::retrieve_sample_from_taskid(const types::TaskId &id)
     {
         std::unique_lock<std::mutex> lock(mtx_);
 

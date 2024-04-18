@@ -93,7 +93,7 @@ namespace core {
         *
         * @param task_id Task identifier
         */
-        void notify(const int &task_id);
+        void notify(const types::TaskId & task_id);
 
     private:
 
@@ -104,7 +104,7 @@ namespace core {
         *
         * @param task_id Task identifier
         */
-        void process(const int& task_id);
+        void process(const types::TaskId & task_id);
 
         /**
         * @brief Function that each thread executes. In a thread-safe fashion, pops
@@ -122,14 +122,14 @@ namespace core {
 
         Node* node_;
 
-        std::queue<int> taskid_buffer_;
+        std::queue<types::TaskId> taskid_buffer_;
 
         // collection of <taskid, std::vector<queue_id>>
         // Current implementation assumes that no task_id
         // can be received twice in a queue
         // but it can be easily added by also tracking the
         // queue_id
-        std::map<int, int> taskid_tracker_;
+        std::map<types::TaskId, int> taskid_tracker_;
 
         std::vector<interfaces::SampleQueryable*> sample_queryables_;
 

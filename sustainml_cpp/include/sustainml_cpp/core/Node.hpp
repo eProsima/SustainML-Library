@@ -135,7 +135,7 @@ protected:
      * must correspond to the same task_id.
      */
     virtual void publish_to_user(
-            const int& task_id,
+            const types::TaskId& task_id,
             const std::vector<std::pair<int, void*>> inputs) = 0;
 
     /**

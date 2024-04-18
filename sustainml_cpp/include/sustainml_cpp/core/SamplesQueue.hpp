@@ -69,7 +69,7 @@ namespace core {
         *
         * @param cache pointer to the cache.
         */
-        void release_cache(T* cache);
+        void release_cache(T * cache);
 
         /**
         * @brief Inserts an element into the queue.
@@ -78,7 +78,7 @@ namespace core {
         *
         * @param elem element to insert.
         */
-        void insert_element(T* &elem);
+        void insert_element(T* & elem);
 
         /**
         * @brief Remove an element from the queue.
@@ -87,7 +87,7 @@ namespace core {
         *
         * @param id Sample key to remove.
         */
-        void remove_element_by_taskid(const int& id);
+        void remove_element_by_taskid(const types::TaskId & id);
 
         /**
         * @brief Retrieves a type-erased pointer of a sample by id.
@@ -95,7 +95,7 @@ namespace core {
         *
         * @param id task_id key of the sample.
         */
-        void* retrieve_sample_from_taskid(const int &id) override;
+        void* retrieve_sample_from_taskid(const types::TaskId & id) override;
 
         /**
         * @brief Getter fot the queue
@@ -116,7 +116,7 @@ namespace core {
         Node* node_;
 
         //task_id to <sample, sample_processed>
-        std::map<int, std::pair<T*, bool>> queue_;
+        std::map<types::TaskId, std::pair<T*, bool>> queue_;
 
         sustainml::utils::SamplePool<T> *pool_;
 

@@ -85,11 +85,13 @@ class OrchestratorNode
 public:
 
     using TaskDB_t =  TaskDB<
-        types::UserInput,
-        types::EncodedTask,
-        types::MLModel,
+        types::AppRequirements,
+        types::CO2Footprint,
+        types::HWConstraints,
         types::HWResource,
-        types::CO2Footprint>;
+        types::MLModelMetadata,
+        types::MLModel,
+        types::UserInput>;
 
     OrchestratorNode(
             std::shared_ptr<OrchestratorNodeHandle> handler,
@@ -104,7 +106,7 @@ public:
      * @param [in,out]  data pointer that will be redirected to the data
      */
     RetCode_t get_task_data(
-            const int& task_id,
+            const types::TaskId& task_id,
             const NodeID& node_id,
             void*& data);
 
@@ -123,7 +125,7 @@ public:
      * where to fill the UserInput entry structure.
      * @note It must be called before start_task()
      */
-    std::pair<int, types::UserInput*> prepare_new_task();
+    std::pair<types::TaskId, types::UserInput*> prepare_new_task();
 
     /**
      * @brief This method triggers a new task with a previously prepared task_id and
@@ -132,7 +134,7 @@ public:
      * @param [in]      ui pointer to the user input data
      */
     bool start_task(
-            const int& task_id,
+            const types::TaskId& task_id,
             types::UserInput* ui);
 
     /**
