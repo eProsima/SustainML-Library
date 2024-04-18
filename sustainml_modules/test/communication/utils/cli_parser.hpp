@@ -51,14 +51,14 @@ inline bool parse_cli_args(
             }
             type_opts[USER_INPUT] = true;
         }
-        else if (strcmp(argv[arg_count], "--te") == 0)
+        else if (strcmp(argv[arg_count], "--mlm") == 0)
         {
             if (type_opts.any())
             {
                 std::cout << "Cannot request more than one type" << std::endl;
                 return -1;
             }
-            type_opts[TASK_ENCODER] = true;
+            type_opts[ML_MODEL_METADATA] = true;
         }
         else if (strcmp(argv[arg_count], "--ml") == 0)
         {
@@ -86,6 +86,24 @@ inline bool parse_cli_args(
                 return -1;
             }
             type_opts[CO2_FOOTPRINT] = true;
+        }
+        else if (strcmp(argv[arg_count], "--hwc") == 0)
+        {
+            if (type_opts.any())
+            {
+                std::cout << "Cannot request more than one type" << std::endl;
+                return -1;
+            }
+            type_opts[HW_CONSTRAINTS] = true;
+        }
+        else if (strcmp(argv[arg_count], "--app") == 0)
+        {
+            if (type_opts.any())
+            {
+                std::cout << "Cannot request more than one type" << std::endl;
+                return -1;
+            }
+            type_opts[APP_REQUIREMENTS] = true;
         }
         else if (strcmp(argv[arg_count], "--samples") == 0)
         {
