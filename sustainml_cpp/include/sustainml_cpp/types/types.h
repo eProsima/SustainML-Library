@@ -24,6 +24,7 @@
 #include <bitset>
 #include <cstdint>
 #include <map>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -96,6 +97,11 @@ public:
     eProsima_user_DllExport TaskId();
 
     /*!
+     * @brief Intiial ids constructor.
+     */
+    eProsima_user_DllExport TaskId(uint32_t problem_id, uint32_t data_id);
+
+    /*!
      * @brief Default destructor.
      */
     eProsima_user_DllExport ~TaskId();
@@ -113,13 +119,6 @@ public:
      */
     eProsima_user_DllExport TaskId(
             TaskId&& x) noexcept;
-
-    /*!
-     * @brief Copy constructor.
-     * @param x Reference to the object TaskIdImpl that will be copied.
-     */
-    eProsima_user_DllExport TaskId(
-            const TaskIdImpl& x);
 
     /*!
      * @brief Copy assignment.
@@ -147,6 +146,12 @@ public:
      * @param x TaskId object to compare.
      */
     eProsima_user_DllExport bool operator !=(
+            const TaskId& x) const;
+
+    /*!
+     * @brief Less than operator.
+     */
+    eProsima_user_DllExport bool operator <(
             const TaskId& x) const;
 
     /*!
@@ -188,6 +193,15 @@ public:
      */
     eProsima_user_DllExport uint32_t& data_id();
 
+    /*!
+    * @brief This function overloads the operator << for the TaskId type.
+    */
+    friend std::ostream& operator<< (std::ostream& stream, const TaskId& task_id)
+    {
+        stream << "{" <<task_id.problem_id() << "," << task_id.data_id() << "}";
+        return stream;
+    }
+
 private:
 
     uint32_t problem_id_;
@@ -201,7 +215,7 @@ private:
  * @return TaskId* The TaskId that will be converted.
  * @warning This function is assuming that both classes have the same data representation in memory
  */
-TaskId* to_task_id(TaskIdImpl* impl)
+inline TaskId* to_task_id(TaskIdImpl* impl)
 {
     return reinterpret_cast<TaskId*>(impl);
 }
@@ -213,7 +227,7 @@ TaskId* to_task_id(TaskIdImpl* impl)
  * @return TaskIdImpl* The TaskIdImpl that will be converted.
  * @warning This function is assuming that both classes have the same data representation in memory
  */
-TaskIdImpl* to_task_id_impl(TaskId* impl)
+inline TaskIdImpl* to_task_id_impl(TaskId* impl)
 {
     return reinterpret_cast<TaskIdImpl*>(impl);
 }

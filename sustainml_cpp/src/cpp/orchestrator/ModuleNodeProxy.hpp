@@ -137,7 +137,7 @@ protected:
      * is a late joiner.
      */
     void reset_and_prepare_task_id(
-            const int& task_id);
+            const types::TaskId& task_id);
 
     /**
      * @brief Stores an untyped data into the DB

@@ -246,19 +246,18 @@ bool OrchestratorNode::init()
     return true;
 }
 
-std::pair<int, types::UserInput*> OrchestratorNode::prepare_new_task()
+std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_task()
 {
-    std::pair<int, types::UserInput*> output;
-    int iteration = task_man_->create_new_task_id();
-    TaskId id(iteration);
-    task_db_->prepare_new_entry(id);
-    task_db_->get_task_data(id, output.second);
-    output.first = iteration;
+    std::pair<types::TaskId, types::UserInput*> output;
+    auto task_id = task_man_->create_new_task_id();
+    task_db_->prepare_new_entry(task_id);
+    task_db_->get_task_data(task_id, output.second);
+    output.first = task_id;
     return output;
 }
 
 bool OrchestratorNode::start_task(
-        const TaskId& /*task_id*/,
+        const types::TaskId& /*task_id*/,
         types::UserInput* ui)
 {
     user_input_writer_->write(ui->get_impl());
@@ -266,7 +265,7 @@ bool OrchestratorNode::start_task(
 }
 
 RetCode_t OrchestratorNode::get_task_data(
-        const TaskId& task_id,
+        const types::TaskId& task_id,
         const NodeID& node_id,
         void*& data)
 {

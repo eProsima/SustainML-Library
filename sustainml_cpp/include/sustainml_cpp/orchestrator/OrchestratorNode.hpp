@@ -25,7 +25,6 @@
 #include <mutex>
 
 #include <sustainml_cpp/core/Constants.hpp>
-#include <sustainml_cpp/core/TaskId.hpp>
 #include <sustainml_cpp/types/types.h>
 
 #include <fastdds/dds/domain/DomainParticipantListener.hpp>
@@ -107,7 +106,7 @@ public:
      * @param [in,out]  data pointer that will be redirected to the data
      */
     RetCode_t get_task_data(
-            const TaskId& task_id,
+            const types::TaskId& task_id,
             const NodeID& node_id,
             void*& data);
 
@@ -126,7 +125,7 @@ public:
      * where to fill the UserInput entry structure.
      * @note It must be called before start_task()
      */
-    std::pair<int, types::UserInput*> prepare_new_task();
+    std::pair<types::TaskId, types::UserInput*> prepare_new_task();
 
     /**
      * @brief This method triggers a new task with a previously prepared task_id and
@@ -135,7 +134,7 @@ public:
      * @param [in]      ui pointer to the user input data
      */
     bool start_task(
-            const TaskId& task_id,
+            const types::TaskId& task_id,
             types::UserInput* ui);
 
     /**

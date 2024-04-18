@@ -30,6 +30,11 @@ TaskId::TaskId()
         , data_id_(sustainml::common::INVALID_ID)
 {
 }
+TaskId::TaskId(uint32_t problem_id, uint32_t data_id)
+        : problem_id_(problem_id)
+        , data_id_(data_id)
+{
+}
 
 TaskId::~TaskId() = default;
 
@@ -77,6 +82,11 @@ bool TaskId::operator !=(
     return !(*this == x);
 }
 
+bool TaskId::operator <(
+        const TaskId& x) const
+{
+    return (data_id_ < x.data_id_);
+}
 
 void TaskId::problem_id(
         uint32_t _problem_id)

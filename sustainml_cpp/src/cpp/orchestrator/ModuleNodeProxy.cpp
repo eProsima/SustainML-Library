@@ -186,10 +186,10 @@ void ModuleNodeProxy::notify_new_node_ouput()
 }
 
 void ModuleNodeProxy::reset_and_prepare_task_id(
-        const int& task_id)
+        const types::TaskId& task_id)
 {
-    task_db_->prepare_new_entry(TaskId(task_id));
-    orchestrator_->task_man_->set_task_id(task_id);
+    task_db_->prepare_new_entry(task_id);
+    orchestrator_->task_man_->update_task_id(task_id);
 }
 
 void ModuleNodeProxy::set_status(

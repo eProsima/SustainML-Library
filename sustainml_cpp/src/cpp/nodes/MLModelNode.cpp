@@ -91,7 +91,7 @@ void MLModelNode::init (
 }
 
 void MLModelNode::publish_to_user(
-        const int& task_id,
+        const types::TaskId& task_id,
         const std::vector<std::pair<int, void*>> input_samples)
 {
     //! Expected inputs are the number of reader minus the control reader

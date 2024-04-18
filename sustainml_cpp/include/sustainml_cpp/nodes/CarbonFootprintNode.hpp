@@ -115,7 +115,7 @@ private:
      * must correspond to the same task_id.
      */
     void publish_to_user(
-            const int& task_id,
+            const types::TaskId& task_id,
             const std::vector<std::pair<int, void*>> inputs) override;
 
     CarbonFootprintTaskListener& user_listener_;
