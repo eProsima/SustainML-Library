@@ -32,79 +32,76 @@
 using namespace eprosima::fastcdr::exception;
 
 namespace eprosima {
-    namespace fastcdr {
+namespace fastcdr {
 
 
 
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const TaskIdImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const TaskIdImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.problem_id(), current_alignment);
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.problem_id(), current_alignment);
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.data_id(), current_alignment);
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.data_id(), current_alignment);
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
 
-            return calculated_size;
-        }
+    return calculated_size;
+}
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const TaskIdImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const TaskIdImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.problem_id()
-                << eprosima::fastcdr::MemberId(1) << data.data_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.problem_id()
+        << eprosima::fastcdr::MemberId(1) << data.data_id()
+;
+    scdr.end_serialize_type(current_state);
+}
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                TaskIdImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        TaskIdImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.problem_id();
-                        break;
+                                        case 0:
+                                                dcdr >> data.problem_id();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.data_id();
-                        break;
+                                        case 1:
+                                                dcdr >> data.data_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -112,117 +109,117 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const TaskIdImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-        }
-
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const NodeStatusImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
-
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const TaskIdImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+}
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.node_status(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.task_status(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                            data.error_code(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                            data.error_description(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                            data.node_name(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
-                            data.task_id(), current_alignment);
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const NodeStatusImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-            return calculated_size;
-        }
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const NodeStatusImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.node_status()
-                << eprosima::fastcdr::MemberId(1) << data.task_status()
-                << eprosima::fastcdr::MemberId(2) << data.error_code()
-                << eprosima::fastcdr::MemberId(3) << data.error_description()
-                << eprosima::fastcdr::MemberId(4) << data.node_name()
-                << eprosima::fastcdr::MemberId(5) << data.task_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.node_status(), current_alignment);
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                NodeStatusImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.task_status(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                data.error_code(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                data.error_description(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                data.node_name(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
+                data.task_id(), current_alignment);
+
+
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+
+    return calculated_size;
+}
+
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const NodeStatusImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.node_status()
+        << eprosima::fastcdr::MemberId(1) << data.task_status()
+        << eprosima::fastcdr::MemberId(2) << data.error_code()
+        << eprosima::fastcdr::MemberId(3) << data.error_description()
+        << eprosima::fastcdr::MemberId(4) << data.node_name()
+        << eprosima::fastcdr::MemberId(5) << data.task_id()
+;
+    scdr.end_serialize_type(current_state);
+}
+
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        NodeStatusImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.node_status();
-                        break;
+                                        case 0:
+                                                dcdr >> data.node_status();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.task_status();
-                        break;
+                                        case 1:
+                                                dcdr >> data.task_status();
+                                            break;
 
-                    case 2:
-                        dcdr >> data.error_code();
-                        break;
+                                        case 2:
+                                                dcdr >> data.error_code();
+                                            break;
 
-                    case 3:
-                        dcdr >> data.error_description();
-                        break;
+                                        case 3:
+                                                dcdr >> data.error_description();
+                                            break;
 
-                    case 4:
-                        dcdr >> data.node_name();
-                        break;
+                                        case 4:
+                                                dcdr >> data.node_name();
+                                            break;
 
-                    case 5:
-                        dcdr >> data.task_id();
-                        break;
+                                        case 5:
+                                                dcdr >> data.task_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -230,113 +227,115 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const NodeStatusImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-            scdr << data.node_name();
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const NodeStatusImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+                            scdr << data.node_name();
 
-            scdr << data.task_id();
+                                scdr << data.task_id();
 
-        }
-
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const NodeControlImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
-
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+}
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.cmd_node(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.cmd_task(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                            data.target_node(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                            data.source_node(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                            data.task_id(), current_alignment);
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
 
-            return calculated_size;
-        }
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const NodeControlImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const NodeControlImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.cmd_node()
-                << eprosima::fastcdr::MemberId(1) << data.cmd_task()
-                << eprosima::fastcdr::MemberId(2) << data.target_node()
-                << eprosima::fastcdr::MemberId(3) << data.source_node()
-                << eprosima::fastcdr::MemberId(4) << data.task_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                NodeControlImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.cmd_node(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.cmd_task(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                data.target_node(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                data.source_node(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                data.task_id(), current_alignment);
+
+
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+
+    return calculated_size;
+}
+
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const NodeControlImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.cmd_node()
+        << eprosima::fastcdr::MemberId(1) << data.cmd_task()
+        << eprosima::fastcdr::MemberId(2) << data.target_node()
+        << eprosima::fastcdr::MemberId(3) << data.source_node()
+        << eprosima::fastcdr::MemberId(4) << data.task_id()
+;
+    scdr.end_serialize_type(current_state);
+}
+
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        NodeControlImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.cmd_node();
-                        break;
+                                        case 0:
+                                                dcdr >> data.cmd_node();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.cmd_task();
-                        break;
+                                        case 1:
+                                                dcdr >> data.cmd_task();
+                                            break;
 
-                    case 2:
-                        dcdr >> data.target_node();
-                        break;
+                                        case 2:
+                                                dcdr >> data.target_node();
+                                            break;
 
-                    case 3:
-                        dcdr >> data.source_node();
-                        break;
+                                        case 3:
+                                                dcdr >> data.source_node();
+                                            break;
 
-                    case 4:
-                        dcdr >> data.task_id();
-                        break;
+                                        case 4:
+                                                dcdr >> data.task_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -344,239 +343,193 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const NodeControlImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-            scdr << data.source_node();
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const NodeControlImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+                            scdr << data.source_node();
 
-            scdr << data.task_id();
+                                scdr << data.task_id();
 
-        }
-
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const GeoLocationImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
-
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+}
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.continent(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.region(), current_alignment);
 
 
-            template < >
-            eProsima_user_DllExport size_t calculate_serialized_size(
-                    eprosima::fastcdr::CdrSizeCalculator& calculator,
-                    const UserInputImpl& data,
-                    size_t& current_alignment)
-            {
-                static_cast < void > (data);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const UserInputImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-                return calculated_size;
-            }
-
-            template < >
-            eProsima_user_DllExport void serialize(
-                    eprosima::fastcdr::Cdr& scdr,
-                    const UserInputImpl& data)
-            {
-                eprosima::fastcdr::Cdr::state current_state(
-                        scdr);
-                scdr.begin_serialize_type(current_state,
-                        eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                        eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                        eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
-
-                scdr
-                    << eprosima::fastcdr::MemberId(0) << data.modality()
-                    << eprosima::fastcdr::MemberId(1) << data.problem_short_description()
-                    << eprosima::fastcdr::MemberId(2) << data.problem_definition()
-                    << eprosima::fastcdr::MemberId(3) << data.inputs()
-                    << eprosima::fastcdr::MemberId(4) << data.outputs()
-                    << eprosima::fastcdr::MemberId(5) << data.minimum_samples()
-                    << eprosima::fastcdr::MemberId(6) << data.maximum_samples()
-                    << eprosima::fastcdr::MemberId(7) << data.optimize_carbon_footprint_manual()
-                    << eprosima::fastcdr::MemberId(8) << data.previous_iteration()
-                    << eprosima::fastcdr::MemberId(9) << data.optimize_carbon_footprint_auto()
-                    << eprosima::fastcdr::MemberId(10) << data.desired_carbon_footprint()
-                    << eprosima::fastcdr::MemberId(11) << data.geo_location()
-                    << eprosima::fastcdr::MemberId(12) << data.extra_data()
-                    << eprosima::fastcdr::MemberId(13) << data.task_id()
-                ;
-                scdr.end_serialize_type(current_state);
-            }
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.problem_short_description(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                            data.problem_definition(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                            data.inputs(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                            data.outputs(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
-                            data.minimum_samples(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
-                            data.maximum_samples(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(7),
-                            data.optimize_carbon_footprint_manual(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(8),
-                            data.previous_iteration(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(9),
-                            data.optimize_carbon_footprint_auto(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(10),
-                            data.desired_carbon_footprint(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(11),
-                            data.geo_location_continent(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(12),
-                            data.geo_location_region(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(13),
-                            data.extra_data(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(14),
-                            data.task_id(), current_alignment);
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.modality(), current_alignment);
 
-            return calculated_size;
-        }
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.problem_short_description(), current_alignment);
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const UserInputImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                data.problem_definition(), current_alignment);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.modality()
-                << eprosima::fastcdr::MemberId(1) << data.problem_short_description()
-                << eprosima::fastcdr::MemberId(2) << data.problem_definition()
-                << eprosima::fastcdr::MemberId(3) << data.inputs()
-                << eprosima::fastcdr::MemberId(4) << data.outputs()
-                << eprosima::fastcdr::MemberId(5) << data.minimum_samples()
-                << eprosima::fastcdr::MemberId(6) << data.maximum_samples()
-                << eprosima::fastcdr::MemberId(7) << data.optimize_carbon_footprint_manual()
-                << eprosima::fastcdr::MemberId(8) << data.previous_iteration()
-                << eprosima::fastcdr::MemberId(9) << data.optimize_carbon_footprint_auto()
-                << eprosima::fastcdr::MemberId(10) << data.desired_carbon_footprint()
-                << eprosima::fastcdr::MemberId(11) << data.geo_location_continent()
-                << eprosima::fastcdr::MemberId(12) << data.geo_location_region()
-                << eprosima::fastcdr::MemberId(13) << data.extra_data()
-                << eprosima::fastcdr::MemberId(14) << data.task_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                data.inputs(), current_alignment);
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                UserInputImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                data.outputs(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
+                data.minimum_samples(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
+                data.maximum_samples(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(7),
+                data.optimize_carbon_footprint_manual(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(8),
+                data.previous_iteration(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(9),
+                data.optimize_carbon_footprint_auto(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(10),
+                data.desired_carbon_footprint(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(11),
+                data.geo_location_continent(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(12),
+                data.geo_location_region(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(13),
+                data.extra_data(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(14),
+                data.task_id(), current_alignment);
+
+
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+
+    return calculated_size;
+}
+
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const UserInputImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.modality()
+        << eprosima::fastcdr::MemberId(1) << data.problem_short_description()
+        << eprosima::fastcdr::MemberId(2) << data.problem_definition()
+        << eprosima::fastcdr::MemberId(3) << data.inputs()
+        << eprosima::fastcdr::MemberId(4) << data.outputs()
+        << eprosima::fastcdr::MemberId(5) << data.minimum_samples()
+        << eprosima::fastcdr::MemberId(6) << data.maximum_samples()
+        << eprosima::fastcdr::MemberId(7) << data.optimize_carbon_footprint_manual()
+        << eprosima::fastcdr::MemberId(8) << data.previous_iteration()
+        << eprosima::fastcdr::MemberId(9) << data.optimize_carbon_footprint_auto()
+        << eprosima::fastcdr::MemberId(10) << data.desired_carbon_footprint()
+        << eprosima::fastcdr::MemberId(11) << data.geo_location_continent()
+        << eprosima::fastcdr::MemberId(12) << data.geo_location_region()
+        << eprosima::fastcdr::MemberId(13) << data.extra_data()
+        << eprosima::fastcdr::MemberId(14) << data.task_id()
+;
+    scdr.end_serialize_type(current_state);
+}
+
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        UserInputImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.modality();
-                        break;
+                                        case 0:
+                                                dcdr >> data.modality();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.problem_short_description();
-                        break;
+                                        case 1:
+                                                dcdr >> data.problem_short_description();
+                                            break;
 
-                    case 2:
-                        dcdr >> data.problem_definition();
-                        break;
+                                        case 2:
+                                                dcdr >> data.problem_definition();
+                                            break;
 
-                    case 3:
-                        dcdr >> data.inputs();
-                        break;
+                                        case 3:
+                                                dcdr >> data.inputs();
+                                            break;
 
-                    case 4:
-                        dcdr >> data.outputs();
-                        break;
+                                        case 4:
+                                                dcdr >> data.outputs();
+                                            break;
 
-                    case 5:
-                        dcdr >> data.minimum_samples();
-                        break;
+                                        case 5:
+                                                dcdr >> data.minimum_samples();
+                                            break;
 
-                    case 6:
-                        dcdr >> data.maximum_samples();
-                        break;
+                                        case 6:
+                                                dcdr >> data.maximum_samples();
+                                            break;
 
-                    case 7:
-                        dcdr >> data.optimize_carbon_footprint_manual();
-                        break;
+                                        case 7:
+                                                dcdr >> data.optimize_carbon_footprint_manual();
+                                            break;
 
-                    case 8:
-                        dcdr >> data.previous_iteration();
-                        break;
+                                        case 8:
+                                                dcdr >> data.previous_iteration();
+                                            break;
 
-                    case 9:
-                        dcdr >> data.optimize_carbon_footprint_auto();
-                        break;
+                                        case 9:
+                                                dcdr >> data.optimize_carbon_footprint_auto();
+                                            break;
 
-                    case 10:
-                        dcdr >> data.desired_carbon_footprint();
-                        break;
+                                        case 10:
+                                                dcdr >> data.desired_carbon_footprint();
+                                            break;
 
-                    case 11:
-                        dcdr >> data.geo_location_continent();
-                        break;
+                                        case 11:
+                                                dcdr >> data.geo_location_continent();
+                                            break;
 
-                    case 12:
-                        dcdr >> data.geo_location_region();
-                        break;
+                                        case 12:
+                                                dcdr >> data.geo_location_region();
+                                            break;
 
-                    case 13:
-                        dcdr >> data.extra_data();
-                        break;
+                                        case 13:
+                                                dcdr >> data.extra_data();
+                                            break;
 
-                    case 14:
-                        dcdr >> data.task_id();
-                        break;
+                                        case 14:
+                                                dcdr >> data.task_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -584,103 +537,103 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const UserInputImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-            scdr << data.task_id();
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const UserInputImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+                                scdr << data.task_id();
 
-        }
-
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const MLModelMetadataImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
-
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+}
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.keywords(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.ml_model_metadata(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                            data.extra_data(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                            data.task_id(), current_alignment);
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const MLModelMetadataImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-            return calculated_size;
-        }
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const MLModelMetadataImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.keywords()
-                << eprosima::fastcdr::MemberId(1) << data.ml_model_metadata()
-                << eprosima::fastcdr::MemberId(2) << data.extra_data()
-                << eprosima::fastcdr::MemberId(3) << data.task_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.keywords(), current_alignment);
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                MLModelMetadataImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.ml_model_metadata(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                data.extra_data(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                data.task_id(), current_alignment);
+
+
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+
+    return calculated_size;
+}
+
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const MLModelMetadataImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.keywords()
+        << eprosima::fastcdr::MemberId(1) << data.ml_model_metadata()
+        << eprosima::fastcdr::MemberId(2) << data.extra_data()
+        << eprosima::fastcdr::MemberId(3) << data.task_id()
+;
+    scdr.end_serialize_type(current_state);
+}
+
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        MLModelMetadataImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.keywords();
-                        break;
+                                        case 0:
+                                                dcdr >> data.keywords();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.ml_model_metadata();
-                        break;
+                                        case 1:
+                                                dcdr >> data.ml_model_metadata();
+                                            break;
 
-                    case 2:
-                        dcdr >> data.extra_data();
-                        break;
+                                        case 2:
+                                                dcdr >> data.extra_data();
+                                            break;
 
-                    case 3:
-                        dcdr >> data.task_id();
-                        break;
+                                        case 3:
+                                                dcdr >> data.task_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -688,95 +641,95 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const MLModelMetadataImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-            scdr << data.task_id();
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const MLModelMetadataImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+                                scdr << data.task_id();
 
-        }
-
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const AppRequirementsImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
-
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+}
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.app_requirements(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.extra_data(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                            data.task_id(), current_alignment);
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const AppRequirementsImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-            return calculated_size;
-        }
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const AppRequirementsImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.app_requirements()
-                << eprosima::fastcdr::MemberId(1) << data.extra_data()
-                << eprosima::fastcdr::MemberId(2) << data.task_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.app_requirements(), current_alignment);
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                AppRequirementsImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.extra_data(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                data.task_id(), current_alignment);
+
+
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+
+    return calculated_size;
+}
+
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const AppRequirementsImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.app_requirements()
+        << eprosima::fastcdr::MemberId(1) << data.extra_data()
+        << eprosima::fastcdr::MemberId(2) << data.task_id()
+;
+    scdr.end_serialize_type(current_state);
+}
+
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        AppRequirementsImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.app_requirements();
-                        break;
+                                        case 0:
+                                                dcdr >> data.app_requirements();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.extra_data();
-                        break;
+                                        case 1:
+                                                dcdr >> data.extra_data();
+                                            break;
 
-                    case 2:
-                        dcdr >> data.task_id();
-                        break;
+                                        case 2:
+                                                dcdr >> data.task_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -784,95 +737,95 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const AppRequirementsImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-            scdr << data.task_id();
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const AppRequirementsImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+                                scdr << data.task_id();
 
-        }
-
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const HWConstraintsImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
-
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+}
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.max_memory_footprint(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.extra_data(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                            data.task_id(), current_alignment);
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const HWConstraintsImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-            return calculated_size;
-        }
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const HWConstraintsImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.max_memory_footprint()
-                << eprosima::fastcdr::MemberId(1) << data.extra_data()
-                << eprosima::fastcdr::MemberId(2) << data.task_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.max_memory_footprint(), current_alignment);
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                HWConstraintsImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.extra_data(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                data.task_id(), current_alignment);
+
+
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+
+    return calculated_size;
+}
+
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const HWConstraintsImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.max_memory_footprint()
+        << eprosima::fastcdr::MemberId(1) << data.extra_data()
+        << eprosima::fastcdr::MemberId(2) << data.task_id()
+;
+    scdr.end_serialize_type(current_state);
+}
+
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        HWConstraintsImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.max_memory_footprint();
-                        break;
+                                        case 0:
+                                                dcdr >> data.max_memory_footprint();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.extra_data();
-                        break;
+                                        case 1:
+                                                dcdr >> data.extra_data();
+                                            break;
 
-                    case 2:
-                        dcdr >> data.task_id();
-                        break;
+                                        case 2:
+                                                dcdr >> data.task_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -880,135 +833,135 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const HWConstraintsImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-            scdr << data.task_id();
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const HWConstraintsImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+                                scdr << data.task_id();
 
-        }
-
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const MLModelImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
-
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+}
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.model_path(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.model(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                            data.model_properties_path(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                            data.model_properties(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                            data.input_batch(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
-                            data.target_latency(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
-                            data.extra_data(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(7),
-                            data.task_id(), current_alignment);
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const MLModelImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-            return calculated_size;
-        }
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const MLModelImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.model_path()
-                << eprosima::fastcdr::MemberId(1) << data.model()
-                << eprosima::fastcdr::MemberId(2) << data.model_properties_path()
-                << eprosima::fastcdr::MemberId(3) << data.model_properties()
-                << eprosima::fastcdr::MemberId(4) << data.input_batch()
-                << eprosima::fastcdr::MemberId(5) << data.target_latency()
-                << eprosima::fastcdr::MemberId(6) << data.extra_data()
-                << eprosima::fastcdr::MemberId(7) << data.task_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.model_path(), current_alignment);
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                MLModelImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.model(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                data.model_properties_path(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                data.model_properties(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                data.input_batch(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
+                data.target_latency(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
+                data.extra_data(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(7),
+                data.task_id(), current_alignment);
+
+
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+
+    return calculated_size;
+}
+
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const MLModelImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.model_path()
+        << eprosima::fastcdr::MemberId(1) << data.model()
+        << eprosima::fastcdr::MemberId(2) << data.model_properties_path()
+        << eprosima::fastcdr::MemberId(3) << data.model_properties()
+        << eprosima::fastcdr::MemberId(4) << data.input_batch()
+        << eprosima::fastcdr::MemberId(5) << data.target_latency()
+        << eprosima::fastcdr::MemberId(6) << data.extra_data()
+        << eprosima::fastcdr::MemberId(7) << data.task_id()
+;
+    scdr.end_serialize_type(current_state);
+}
+
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        MLModelImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.model_path();
-                        break;
+                                        case 0:
+                                                dcdr >> data.model_path();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.model();
-                        break;
+                                        case 1:
+                                                dcdr >> data.model();
+                                            break;
 
-                    case 2:
-                        dcdr >> data.model_properties_path();
-                        break;
+                                        case 2:
+                                                dcdr >> data.model_properties_path();
+                                            break;
 
-                    case 3:
-                        dcdr >> data.model_properties();
-                        break;
+                                        case 3:
+                                                dcdr >> data.model_properties();
+                                            break;
 
-                    case 4:
-                        dcdr >> data.input_batch();
-                        break;
+                                        case 4:
+                                                dcdr >> data.input_batch();
+                                            break;
 
-                    case 5:
-                        dcdr >> data.target_latency();
-                        break;
+                                        case 5:
+                                                dcdr >> data.target_latency();
+                                            break;
 
-                    case 6:
-                        dcdr >> data.extra_data();
-                        break;
+                                        case 6:
+                                                dcdr >> data.extra_data();
+                                            break;
 
-                    case 7:
-                        dcdr >> data.task_id();
-                        break;
+                                        case 7:
+                                                dcdr >> data.task_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -1016,127 +969,127 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const MLModelImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-            scdr << data.task_id();
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const MLModelImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+                                scdr << data.task_id();
 
-        }
-
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const HWResourceImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
-
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+}
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.hw_description(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.power_consumption(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                            data.latency(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                            data.memory_footprint_of_ml_model(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                            data.max_hw_memory_footprint(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
-                            data.extra_data(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
-                            data.task_id(), current_alignment);
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const HWResourceImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-            return calculated_size;
-        }
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const HWResourceImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.hw_description()
-                << eprosima::fastcdr::MemberId(1) << data.power_consumption()
-                << eprosima::fastcdr::MemberId(2) << data.latency()
-                << eprosima::fastcdr::MemberId(3) << data.memory_footprint_of_ml_model()
-                << eprosima::fastcdr::MemberId(4) << data.max_hw_memory_footprint()
-                << eprosima::fastcdr::MemberId(5) << data.extra_data()
-                << eprosima::fastcdr::MemberId(6) << data.task_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.hw_description(), current_alignment);
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                HWResourceImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.power_consumption(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                data.latency(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                data.memory_footprint_of_ml_model(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                data.max_hw_memory_footprint(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
+                data.extra_data(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
+                data.task_id(), current_alignment);
+
+
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+
+    return calculated_size;
+}
+
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const HWResourceImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.hw_description()
+        << eprosima::fastcdr::MemberId(1) << data.power_consumption()
+        << eprosima::fastcdr::MemberId(2) << data.latency()
+        << eprosima::fastcdr::MemberId(3) << data.memory_footprint_of_ml_model()
+        << eprosima::fastcdr::MemberId(4) << data.max_hw_memory_footprint()
+        << eprosima::fastcdr::MemberId(5) << data.extra_data()
+        << eprosima::fastcdr::MemberId(6) << data.task_id()
+;
+    scdr.end_serialize_type(current_state);
+}
+
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        HWResourceImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.hw_description();
-                        break;
+                                        case 0:
+                                                dcdr >> data.hw_description();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.power_consumption();
-                        break;
+                                        case 1:
+                                                dcdr >> data.power_consumption();
+                                            break;
 
-                    case 2:
-                        dcdr >> data.latency();
-                        break;
+                                        case 2:
+                                                dcdr >> data.latency();
+                                            break;
 
-                    case 3:
-                        dcdr >> data.memory_footprint_of_ml_model();
-                        break;
+                                        case 3:
+                                                dcdr >> data.memory_footprint_of_ml_model();
+                                            break;
 
-                    case 4:
-                        dcdr >> data.max_hw_memory_footprint();
-                        break;
+                                        case 4:
+                                                dcdr >> data.max_hw_memory_footprint();
+                                            break;
 
-                    case 5:
-                        dcdr >> data.extra_data();
-                        break;
+                                        case 5:
+                                                dcdr >> data.extra_data();
+                                            break;
 
-                    case 6:
-                        dcdr >> data.task_id();
-                        break;
+                                        case 6:
+                                                dcdr >> data.task_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -1144,111 +1097,111 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const HWResourceImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-            scdr << data.task_id();
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const HWResourceImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+                                scdr << data.task_id();
 
-        }
-
-        template < >
-        eProsima_user_DllExport size_t calculate_serialized_size(
-                eprosima::fastcdr::CdrSizeCalculator& calculator,
-                const CO2FootprintImpl& data,
-                size_t& current_alignment)
-        {
-            static_cast < void > (data);
-
-            eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-            size_t calculated_size {
-                calculator.begin_calculate_type_serialized_size(
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    current_alignment)
-            };
+}
 
 
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                            data.carbon_footprint(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                            data.energy_consumption(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                            data.carbon_intensity(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                            data.extra_data(), current_alignment);
-
-            calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                            data.task_id(), current_alignment);
 
 
-            calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+template<>
+eProsima_user_DllExport size_t calculate_serialized_size(
+        eprosima::fastcdr::CdrSizeCalculator& calculator,
+        const CO2FootprintImpl& data,
+        size_t& current_alignment)
+{
+    static_cast<void>(data);
 
-            return calculated_size;
-        }
+    eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
+                                eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
+                                eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+                                eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+                                current_alignment)};
 
-        template < >
-        eProsima_user_DllExport void serialize(
-                eprosima::fastcdr::Cdr& scdr,
-                const CO2FootprintImpl& data)
-        {
-            eprosima::fastcdr::Cdr::state current_state(
-                    scdr);
-            scdr.begin_serialize_type(current_state,
-                    eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
 
-            scdr
-                << eprosima::fastcdr::MemberId(0) << data.carbon_footprint()
-                << eprosima::fastcdr::MemberId(1) << data.energy_consumption()
-                << eprosima::fastcdr::MemberId(2) << data.carbon_intensity()
-                << eprosima::fastcdr::MemberId(3) << data.extra_data()
-                << eprosima::fastcdr::MemberId(4) << data.task_id()
-            ;
-            scdr.end_serialize_type(current_state);
-        }
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                data.carbon_footprint(), current_alignment);
 
-        template < >
-        eProsima_user_DllExport void deserialize(
-                eprosima::fastcdr::Cdr& cdr,
-                CO2FootprintImpl& data)
-        {
-            cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
-                    eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
-                    eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
-                    [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid)->bool
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                data.energy_consumption(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                data.carbon_intensity(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                data.extra_data(), current_alignment);
+
+        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                data.task_id(), current_alignment);
+
+
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+
+    return calculated_size;
+}
+
+template<>
+eProsima_user_DllExport void serialize(
+        eprosima::fastcdr::Cdr& scdr,
+        const CO2FootprintImpl& data)
+{
+    eprosima::fastcdr::Cdr::state current_state(scdr);
+    scdr.begin_serialize_type(current_state,
+            eprosima::fastcdr::CdrVersion::XCDRv2 == scdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR);
+
+    scdr
+        << eprosima::fastcdr::MemberId(0) << data.carbon_footprint()
+        << eprosima::fastcdr::MemberId(1) << data.energy_consumption()
+        << eprosima::fastcdr::MemberId(2) << data.carbon_intensity()
+        << eprosima::fastcdr::MemberId(3) << data.extra_data()
+        << eprosima::fastcdr::MemberId(4) << data.task_id()
+;
+    scdr.end_serialize_type(current_state);
+}
+
+template<>
+eProsima_user_DllExport void deserialize(
+        eprosima::fastcdr::Cdr& cdr,
+        CO2FootprintImpl& data)
+{
+    cdr.deserialize_type(eprosima::fastcdr::CdrVersion::XCDRv2 == cdr.get_cdr_version() ?
+            eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2 :
+            eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR,
+            [&data](eprosima::fastcdr::Cdr& dcdr, const eprosima::fastcdr::MemberId& mid) -> bool
             {
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                    case 0:
-                        dcdr >> data.carbon_footprint();
-                        break;
+                                        case 0:
+                                                dcdr >> data.carbon_footprint();
+                                            break;
 
-                    case 1:
-                        dcdr >> data.energy_consumption();
-                        break;
+                                        case 1:
+                                                dcdr >> data.energy_consumption();
+                                            break;
 
-                    case 2:
-                        dcdr >> data.carbon_intensity();
-                        break;
+                                        case 2:
+                                                dcdr >> data.carbon_intensity();
+                                            break;
 
-                    case 3:
-                        dcdr >> data.extra_data();
-                        break;
+                                        case 3:
+                                                dcdr >> data.extra_data();
+                                            break;
 
-                    case 4:
-                        dcdr >> data.task_id();
-                        break;
+                                        case 4:
+                                                dcdr >> data.task_id();
+                                            break;
 
                     default:
                         ret_value = false;
@@ -1256,19 +1209,21 @@ namespace eprosima {
                 }
                 return ret_value;
             });
-        }
+}
 
-        void serialize_key(
-                eprosima::fastcdr::Cdr& scdr,
-                const CO2FootprintImpl& data)
-        {
-            static_cast < void > (scdr);
-            static_cast < void > (data);
-            scdr << data.task_id();
+void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const CO2FootprintImpl& data)
+{
+    static_cast<void>(scdr);
+    static_cast<void>(data);
+                                scdr << data.task_id();
 
-        }
+}
 
-    } // namespace fastcdr
+
+
+} // namespace fastcdr
 } // namespace eprosima
 
 #endif // _FAST_DDS_GENERATED_TYPESIMPLCDRAUX_IPP_
