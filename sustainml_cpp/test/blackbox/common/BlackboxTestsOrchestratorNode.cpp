@@ -83,7 +83,9 @@ static TestOrchestratorNodeHandle::DataCollection nodes_ready_expected_data =
     {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 0}},
     {NodeID::ID_ML_MODEL, {NODE_IDLE, 0}},
     {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 0}},
-    {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
+    {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}},
+    {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 0}},
+    {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 0}}
 };
 
 TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
@@ -94,17 +96,21 @@ TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
 
     orchestrator::OrchestratorNode orchestrator(tonh);
 
-    MLModelMetadataManagedNode te_node;
+    MLModelMetadataManagedNode ml_met_node;
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
+    HWConstraintsManagedNode hw_cons_node;
+    AppRequirementsManagedNode app_req_node;
 
     co2_node.start();
     hw_node.start();
     ml_node.start();
-    te_node.start();
+    ml_met_node.start();
+    app_req_node.start();
+    hw_cons_node.start();
 
-    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(3)));
+    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
 }
 
 TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
@@ -116,26 +122,32 @@ TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
         {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 0}},
         {NodeID::ID_ML_MODEL, {NODE_IDLE, 0}},
         {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 0}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}}
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}},
+        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 0}},
+        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 0}}
     };
 
     tonh->prepare_expected_data(expected_data);
 
-    MLModelMetadataManagedNode te_node;
+    MLModelMetadataManagedNode ml_met_node;
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
     CarbonFootprintManagedNode co2_node;
+    HWConstraintsManagedNode hw_cons_node;
+    AppRequirementsManagedNode app_req_node;
 
     co2_node.start();
     hw_node.start();
     ml_node.start();
-    te_node.start();
+    ml_met_node.start();
+    app_req_node.start();
+    hw_cons_node.start();
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     orchestrator::OrchestratorNode orchestrator(tonh);
 
-    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(3)));
+    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
 }
 
 TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
@@ -209,7 +221,7 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     // Wait for all nodes to be idle
     tonh->prepare_expected_data(nodes_ready_expected_data);
 
-    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(3)));
+    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
