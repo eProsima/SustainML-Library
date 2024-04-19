@@ -29,7 +29,7 @@ namespace sustainml {
 namespace orchestrator {
 
 /**
- * @brief Class that manages the task ids.
+ * @brief Class that ensures that unique global problem_id is created and updated.
  */
 class TaskManager
 {
@@ -39,20 +39,18 @@ public:
     virtual ~TaskManager() = default;
 
     std::mutex mtx_;
-    types::TaskId task_id_;
+    std::atomic<uint32_t> problem_id_;
 
     /**
-     * @brief Create a new unique task_id.
+     * @brief Create a new unique task_id. It only needs to account for the problem_id.
      */
     inline types::TaskId create_new_task_id()
     {
-        {
-            std::lock_guard<std::mutex> lock(mtx_);
-            task_id_.problem_id(task_id_.problem_id() + 1);
-            task_id_.data_id(task_id_.data_id() + 1);
-        }
-
-        return task_id_;
+        types::TaskId task_id;
+        problem_id_.fetch_add(1);
+        task_id.problem_id(problem_id_.load());
+        task_id.iteration_id(1);
+        return task_id;
     }
 
     /**
@@ -61,18 +59,12 @@ public:
     inline void update_task_id(
             const types::TaskId& task_id)
     {
-        std::lock_guard<std::mutex> lock(mtx_);
-        if (task_id.problem_id() > task_id_.problem_id())
+        std::lock_guard<std::mutex> _{mtx_};
+        if (task_id.problem_id() > problem_id_.load())
         {
-            task_id_.problem_id() = task_id.problem_id();
-        }
-
-        if (task_id.data_id() > task_id_.data_id())
-        {
-            task_id_.data_id() = task_id.data_id();
+            problem_id_.exchange(task_id.problem_id());
         }
     }
-
 };
 
 

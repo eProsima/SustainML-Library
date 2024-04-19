@@ -89,7 +89,7 @@ bool TaskDB<Args...>::insert_task_data(
 
     if (it_problem_id != db_.end())
     {
-        auto it_id = db_[task_id.problem_id()].find(task_id.data_id());
+        auto it_id = db_[task_id.problem_id()].find(task_id.iteration_id());
         if (it_id != db_[task_id.problem_id()].end())
         {
             T& db_data = std::get<T>(it_id->second);
@@ -98,12 +98,12 @@ bool TaskDB<Args...>::insert_task_data(
         }
         else
         {
-            EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to insert a data element with an unknown task id");
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to insert a data element with an unknown iteration id " << task_id);
         }
     }
     else
     {
-        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to insert a data element with an unknown task name");
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to insert a data element with an unknown problem id" << task_id);
     }
 
     return ret_code;
@@ -122,7 +122,7 @@ bool TaskDB<Args...>::get_task_data(
 
     if (it_problem_id != db_.end())
     {
-        auto it_id = db_[task_id.problem_id()].find(task_id.data_id());
+        auto it_id = db_[task_id.problem_id()].find(task_id.iteration_id());
         if (it_id != db_[task_id.problem_id()].end())
         {
             T& db_data = std::get<T>(it_id->second);
@@ -131,12 +131,12 @@ bool TaskDB<Args...>::get_task_data(
         }
         else
         {
-            EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown task id");
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown iteration id " << task_id);
         }
     }
     else
     {
-        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown task name");
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown problem id" << task_id);
     }
 
     return ret_code;
@@ -153,7 +153,7 @@ bool TaskDB<Args...>::prepare_new_entry(
 
     if (it_problem_id == db_.end())
     {
-        db_[task_id.problem_id()][task_id.data_id()];
+        db_[task_id.problem_id()][task_id.iteration_id()];
         ret_code = true;
     }
     else

@@ -51,14 +51,14 @@ TaskIdImpl::TaskIdImpl(
         const TaskIdImpl& x)
 {
     m_problem_id = x.m_problem_id;
-    m_data_id = x.m_data_id;
+    m_iteration_id = x.m_iteration_id;
 }
 
 TaskIdImpl::TaskIdImpl(
         TaskIdImpl&& x) noexcept
 {
     m_problem_id = x.m_problem_id;
-    m_data_id = x.m_data_id;
+    m_iteration_id = x.m_iteration_id;
 }
 
 TaskIdImpl& TaskIdImpl::operator =(
@@ -66,7 +66,7 @@ TaskIdImpl& TaskIdImpl::operator =(
 {
 
     m_problem_id = x.m_problem_id;
-    m_data_id = x.m_data_id;
+    m_iteration_id = x.m_iteration_id;
     return *this;
 }
 
@@ -75,7 +75,7 @@ TaskIdImpl& TaskIdImpl::operator =(
 {
 
     m_problem_id = x.m_problem_id;
-    m_data_id = x.m_data_id;
+    m_iteration_id = x.m_iteration_id;
     return *this;
 }
 
@@ -83,7 +83,7 @@ bool TaskIdImpl::operator ==(
         const TaskIdImpl& x) const
 {
     return (m_problem_id == x.m_problem_id &&
-           m_data_id == x.m_data_id);
+           m_iteration_id == x.m_iteration_id);
 }
 
 bool TaskIdImpl::operator !=(
@@ -121,31 +121,31 @@ uint32_t& TaskIdImpl::problem_id()
 }
 
 /*!
- * @brief This function sets a value in member data_id
- * @param _data_id New value for member data_id
+ * @brief This function sets a value in member iteration_id
+ * @param _iteration_id New value for member iteration_id
  */
-void TaskIdImpl::data_id(
-        uint32_t _data_id)
+void TaskIdImpl::iteration_id(
+        uint32_t _iteration_id)
 {
-    m_data_id = _data_id;
+    m_iteration_id = _iteration_id;
 }
 
 /*!
- * @brief This function returns the value of member data_id
- * @return Value of member data_id
+ * @brief This function returns the value of member iteration_id
+ * @return Value of member iteration_id
  */
-uint32_t TaskIdImpl::data_id() const
+uint32_t TaskIdImpl::iteration_id() const
 {
-    return m_data_id;
+    return m_iteration_id;
 }
 
 /*!
- * @brief This function returns a reference to member data_id
- * @return Reference to member data_id
+ * @brief This function returns a reference to member iteration_id
+ * @return Reference to member iteration_id
  */
-uint32_t& TaskIdImpl::data_id()
+uint32_t& TaskIdImpl::iteration_id()
 {
-    return m_data_id;
+    return m_iteration_id;
 }
 
 NodeStatusImpl::NodeStatusImpl()

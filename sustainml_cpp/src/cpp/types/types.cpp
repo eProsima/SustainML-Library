@@ -26,15 +26,15 @@ namespace types {
 
 TaskId::TaskId()
     : problem_id_(sustainml::common::INVALID_ID)
-    , data_id_(sustainml::common::INVALID_ID)
+    , iteration_id_(sustainml::common::INVALID_ID)
 {
 }
 
 TaskId::TaskId(
         uint32_t problem_id,
-        uint32_t data_id)
+        uint32_t iteration_id)
     : problem_id_(problem_id)
-    , data_id_(data_id)
+    , iteration_id_(iteration_id)
 {
 }
 
@@ -44,21 +44,21 @@ TaskId::TaskId(
         const TaskId& x)
 {
     problem_id_ = x.problem_id_;
-    data_id_ = x.data_id_;
+    iteration_id_ = x.iteration_id_;
 }
 
 TaskId::TaskId(
         TaskId&& x) noexcept
 {
     problem_id_ = x.problem_id_;
-    data_id_ = x.data_id_;
+    iteration_id_ = x.iteration_id_;
 }
 
 TaskId& TaskId::operator =(
         const TaskId& x)
 {
     problem_id_ = x.problem_id_;
-    data_id_ = x.data_id_;
+    iteration_id_ = x.iteration_id_;
     return *this;
 }
 
@@ -66,7 +66,7 @@ TaskId& TaskId::operator =(
         TaskId&& x) noexcept
 {
     problem_id_ = x.problem_id_;
-    data_id_ = x.data_id_;
+    iteration_id_ = x.iteration_id_;
     return *this;
 }
 
@@ -75,7 +75,7 @@ bool TaskId::operator ==(
 {
 
     return (problem_id_ == x.problem_id_ &&
-           data_id_ == x.data_id_);
+           iteration_id_ == x.iteration_id_);
 }
 
 bool TaskId::operator !=(
@@ -87,7 +87,7 @@ bool TaskId::operator !=(
 bool TaskId::operator <(
         const TaskId& x) const
 {
-    return (data_id_ < x.data_id_);
+    return (problem_id_ != x.problem_id_ ? problem_id_ < x.problem_id_ : iteration_id_ < x.iteration_id_);
 }
 
 void TaskId::problem_id(
@@ -106,27 +106,27 @@ uint32_t& TaskId::problem_id()
     return problem_id_;
 }
 
-void TaskId::data_id(
-        uint32_t _data_id)
+void TaskId::iteration_id(
+        uint32_t _iteration_id)
 {
-    data_id_ = _data_id;
+    iteration_id_ = _iteration_id;
 }
 
-uint32_t TaskId::data_id() const
+uint32_t TaskId::iteration_id() const
 {
-    return data_id_;
+    return iteration_id_;
 }
 
-uint32_t& TaskId::data_id()
+uint32_t& TaskId::iteration_id()
 {
-    return data_id_;
+    return iteration_id_;
 }
 
 std::ostream& operator << (
         std::ostream& stream,
         const TaskId& task_id)
 {
-    stream << "{" << task_id.problem_id() << "," << task_id.data_id() << "}";
+    stream << "{" << task_id.problem_id() << "," << task_id.iteration_id() << "}";
     return stream;
 }
 

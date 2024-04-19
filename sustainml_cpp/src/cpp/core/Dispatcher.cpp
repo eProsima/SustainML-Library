@@ -154,7 +154,7 @@ void Dispatcher::routine()
         taskid_buffer_.pop();
     }
 
-    if (task_id.data_id() != common::INVALID_ID)
+    if (task_id != types::TaskId{common::INVALID_ID, common::INVALID_ID})
     {
         process(task_id);
     }

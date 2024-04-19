@@ -256,9 +256,9 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     void* hw = nullptr;
     ASSERT_EQ(orchestrator.get_task_data({1, 1}, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id().problem_id(), 1);
-    ASSERT_EQ(orchestrator.get_task_data({2, 2}, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(orchestrator.get_task_data({2, 1}, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id().problem_id(), 2);
-    ASSERT_EQ(orchestrator.get_task_data({2, 2}, NodeID::ID_HW_RESOURCES, hw), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(orchestrator.get_task_data({2, 1}, NodeID::ID_HW_RESOURCES, hw), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::HWResource*)hw)->task_id().problem_id(), 2);
 }
 
