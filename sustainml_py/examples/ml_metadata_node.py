@@ -13,7 +13,7 @@
 # limitations under the License.
 """SustainML Example Python Node API."""
 
-from sustainml_py.nodes.HardwareResourcesNode import HardwareResourcesNode
+from sustainml_py.nodes.MLModelMetadataNode import MLModelMetadataNode
 
 # Manage signaling
 import signal
@@ -26,20 +26,23 @@ running = False
 # Signal handler
 def signal_handler(sig, frame):
     print("\nExiting")
-    HardwareResourcesNode.terminate()
+    MLModelMetadataNode.terminate()
     global running
     running = False
 
 # User Callback implementation
-# Inputs: ml_model
-# Outputs: node_status, hw
-def task_callback(ml_model, node_status, hw):
-    print (ml_model.model())
-    hw.hw_description("This is a HW description")
+# Inputs: user_input
+# Outputs: node_status, ml_model_metadata
+def task_callback(user_input, node_status, ml_model_metadata):
+    print (user_input.problem_definition())
+    ml_model_metadata.ml_model_metadata().append("New")
+    ml_model_metadata.ml_model_metadata().append("Model")
+    ml_model_metadata.ml_model_metadata().append("Metadata")
+    ml_model_metadata.ml_model_metadata().append("Properties")
 
 # Main workflow routine
 def run():
-    node = HardwareResourcesNode(callback=task_callback)
+    node = MLModelMetadataNode(callback=task_callback)
     global running
     running = True
     node.spin()

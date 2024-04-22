@@ -65,6 +65,14 @@
 %include std_vector.i
 %include typemaps.i
 
+// This ensures that the returned string references can be used with the string API
+// Otherwise, they will be wrapped objects without API
+%typemap(out) std::string& {
+  $result = SWIG_From_std_string(*$1);
+}
+
+%template(std_string_vec) std::vector<std::string>;
+
 // Definition of internal types
 typedef short int16_t;
 typedef int int32_t;
@@ -80,7 +88,9 @@ typedef unsigned long uint64_t;
 %include "sustainml_swig/core/Callable.i"
 %include "sustainml_swig/core/Node.i"
 
+%include "sustainml_swig/nodes/AppRequirementsNode.i"
 %include "sustainml_swig/nodes/CarbonFootprintNode.i"
+%include "sustainml_swig/nodes/HardwareConstraintsNode.i"
 %include "sustainml_swig/nodes/HardwareResourcesNode.i"
 %include "sustainml_swig/nodes/MLModelNode.i"
-%include "sustainml_swig/nodes/TaskEncoderNode.i"
+%include "sustainml_swig/nodes/MLModelMetadataNode.i"

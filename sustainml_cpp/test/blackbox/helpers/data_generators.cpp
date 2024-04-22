@@ -31,7 +31,7 @@ std::list<AppRequirementsImpl> default_apprequirements_data_generator(
             {
                 AppRequirementsImpl app_req;
                 app_req.task_id().problem_id(index);
-                app_req.task_id().data_id(index);;
+                app_req.task_id().data_id(index);
                 std::vector<std::string> requirements;
                 requirements.push_back("req1");
                 requirements.push_back("req2");
@@ -57,7 +57,7 @@ std::list<CO2FootprintImpl> default_co2footprint_data_generator(
             {
                 CO2FootprintImpl co2f;
                 co2f.task_id().problem_id(index);
-                co2f.task_id().data_id(index);;
+                co2f.task_id().data_id(index);
                 std::stringstream ss;
                 ss << "co2fWorld " << index;
                 co2f.carbon_footprint(index * 1.0);
@@ -81,7 +81,7 @@ std::list<HWConstraintsImpl> default_hwconstraints_task_generator(
             {
                 HWConstraintsImpl hw_cons;
                 hw_cons.task_id().problem_id(index);
-                hw_cons.task_id().data_id(index);;
+                hw_cons.task_id().data_id(index);
                 hw_cons.max_memory_footprint(index);
                 ++index;
                 return hw_cons;
@@ -101,7 +101,7 @@ std::list<HWResourceImpl> default_hwresource_task_generator(
             {
                 HWResourceImpl hw_res;
                 hw_res.task_id().problem_id(index);
-                hw_res.task_id().data_id(index);;
+                hw_res.task_id().data_id(index);
                 std::stringstream ss;
                 ss << "HW Description of Task id: " << index;
                 hw_res.hw_description(ss.str());
@@ -123,7 +123,7 @@ std::list<MLModelMetadataImpl> default_modelmetadata_task_generator(
             {
                 MLModelMetadataImpl enc_task;
                 enc_task.task_id().problem_id(index);
-                enc_task.task_id().data_id(index);;
+                enc_task.task_id().data_id(index);
                 std::vector<std::string> keywords;
                 keywords.push_back("EXAMPLE");
                 keywords.push_back("KEYWORD");
@@ -146,7 +146,7 @@ std::list<MLModelImpl> default_mlmodel_task_generator(
             {
                 MLModelImpl ml_model;
                 ml_model.task_id().problem_id(index);
-                ml_model.task_id().data_id(index);;
+                ml_model.task_id().data_id(index);
                 std::stringstream ss;
                 ss << "Machine learning model for Task ID " << index;
                 ml_model.model(ss.str());
@@ -168,7 +168,7 @@ std::list<UserInputImpl> default_userinput_task_generator(
             {
                 UserInputImpl ui;
                 ui.task_id().problem_id(index);
-                ui.task_id().data_id(index);;
+                ui.task_id().data_id(index);
                 std::stringstream problem_definition;
                 problem_definition << "Problem Description of Task id: " << index;
                 ui.problem_definition(problem_definition.str());

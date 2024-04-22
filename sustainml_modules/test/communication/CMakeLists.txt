@@ -47,9 +47,11 @@ if (Python3_FOUND)
             -ttp ui
             -tts co2
             --samples 20
-            -te task_encoder_node.py
+            -mlm ml_model_metadata_node.py
             -ml ml_model_provider_node.py
             -hw hw_resources_provider_node.py
-            -co2 carbon_footprint_node.py)
+            -co2 carbon_footprint_node.py
+            -hwc hw_constraints_node.py
+            -ap app_requirements_node.py)
 
 endif()

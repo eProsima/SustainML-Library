@@ -1,4 +1,4 @@
-# Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+# Copyright 2024 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
 # limitations under the License.
 """SustainML Client Node API specification."""
 
-from sustainml_swig import TaskEncoderTaskListener as cpp_TaskEncoderTaskListener
-from sustainml_swig import TaskEncoderNode as cpp_TaskEncoderNode
+from sustainml_swig import AppRequirementsTaskListener as cpp_AppRequirementsTaskListener
+from sustainml_swig import AppRequirementsNode as cpp_AppRequirementsNode
 
-from sustainml_swig import EncodedTask, NodeStatus, UserInput
+from sustainml_swig import AppRequirements, NodeStatus, UserInput
 
-class TaskEncoderTaskListener(cpp_TaskEncoderTaskListener):
+class AppRequirementsTaskListener(cpp_AppRequirementsTaskListener):
 
     def __init__(self,
                  callback):
@@ -33,23 +33,23 @@ class TaskEncoderTaskListener(cpp_TaskEncoderTaskListener):
             self,
             user_input : UserInput,
             node_status : NodeStatus,
-            encoded_task : EncodedTask):
+            app_requirements : AppRequirements):
 
         """ Invoke user callback """
-        self.callback_(user_input, node_status, encoded_task)
+        self.callback_(user_input, node_status, app_requirements)
 
 # Proxy class to instantiate by the user
-class TaskEncoderNode:
+class AppRequirementsNode:
 
     def __init__(self,
                  callback = None):
 
         if callback == None:
             raise ValueError(
-                'TaskEncoderNode constructor expects a callback.')
+                'AppRequirementsNode constructor expects a callback.')
 
-        self.listener_ = TaskEncoderTaskListener(callback)
-        self.node_ = cpp_TaskEncoderNode(self.listener_)
+        self.listener_ = AppRequirementsTaskListener(callback)
+        self.node_ = cpp_AppRequirementsNode(self.listener_)
 
     # Proxy method to run the node
     def spin(self):
@@ -59,4 +59,4 @@ class TaskEncoderNode:
     # Proxy method to manually terminate
     def terminate():
 
-        cpp_TaskEncoderNode.terminate()
+        cpp_AppRequirementsNode.terminate()

@@ -16,7 +16,7 @@
 from sustainml_swig import HardwareResourcesTaskListener as cpp_HardwareResourcesTaskListener
 from sustainml_swig import HardwareResourcesNode as cpp_HardwareResourcesNode
 
-from sustainml_swig import MLModel, NodeStatus, HWResource
+from sustainml_swig import MLModel, NodeStatus, HWResource, HWConstraints, AppRequirements
 
 class HardwareResourcesTaskListener(cpp_HardwareResourcesTaskListener):
 
@@ -32,11 +32,13 @@ class HardwareResourcesTaskListener(cpp_HardwareResourcesTaskListener):
     def on_new_task_available(
             self,
             ml_model : MLModel,
+            app_requirements : AppRequirements,
+            hw_constraints : HWConstraints,
             node_status : NodeStatus,
             hw : HWResource):
 
         """ Invoke user callback """
-        self.callback_(ml_model, node_status, hw)
+        self.callback_(ml_model, app_requirements, hw_constraints, node_status, hw)
 
 # Proxy class to instantiate by the user
 class HardwareResourcesNode:

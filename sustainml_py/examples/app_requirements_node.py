@@ -13,7 +13,7 @@
 # limitations under the License.
 """SustainML Example Python Node API."""
 
-from sustainml_py.nodes.TaskEncoderNode import TaskEncoderNode
+from sustainml_py.nodes.AppRequirementsNode import AppRequirementsNode
 
 # Manage signaling
 import signal
@@ -26,23 +26,23 @@ running = False
 # Signal handler
 def signal_handler(sig, frame):
     print("\nExiting")
-    TaskEncoderNode.terminate()
+    AppRequirementsNode.terminate()
     global running
     running = False
 
 # User Callback implementation
 # Inputs: user_input
-# Outputs: node_status, encoded_task
-def task_callback(user_input, node_status, encoded_task):
-    print (user_input.problem_description())
-    encoded_task.keywords().append("Im")
-    encoded_task.keywords().append("A")
-    encoded_task.keywords().append("New")
-    encoded_task.keywords().append("Keyword")
+# Outputs: node_status, app_requirements
+def task_callback(user_input, node_status, app_requirements):
+    print (user_input.problem_definition())
+    app_requirements.app_requirements().append("Im")
+    app_requirements.app_requirements().append("A")
+    app_requirements.app_requirements().append("New")
+    app_requirements.app_requirements().append("Requirement")
 
 # Main workflow routine
 def run():
-    node = TaskEncoderNode(callback=task_callback)
+    node = AppRequirementsNode(callback=task_callback)
     global running
     running = True
     node.spin()

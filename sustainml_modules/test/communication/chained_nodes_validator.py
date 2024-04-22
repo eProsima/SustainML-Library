@@ -79,10 +79,10 @@ class ParseOptions():
             help='Number of samples sent by the publisher and received by the subscriber.'
         )
         parser.add_argument(
-            '-te',
-            '--task-encoder',
+            '-mlm',
+            '--ml-metadata',
             type=str,
-            help='Executable name of a TaskEncoderNode in the sustainml-wp1 directory'
+            help='Executable name of a MLModelMetadata in the sustainml-wp1 directory'
         )
         parser.add_argument(
             '-ml',
@@ -101,6 +101,18 @@ class ParseOptions():
             '--co2-footprint',
             type=str,
             help='Executable name of a CarbonFootprintNode in the sustainml-wp3 directory'
+        )
+        parser.add_argument(
+            '-hwc',
+            '--hw-constraints',
+            type=str,
+            help='Executable name of a HWConstraints in the sustainml-wp2 directory'
+        )
+        parser.add_argument(
+            '-ap',
+            '--app-requirements',
+            type=str,
+            help='Executable name of a AppRequirements in the sustainml-wp1 directory'
         )
 
         return parser.parse_args()
@@ -154,12 +166,11 @@ def run(args):
         pub_command.extend(['--samples', str(args.samples)])
         sub_command.extend(['--samples', str(args.samples)])
 
-    print (args.task_encoder)
-    if args.task_encoder or args.machine_learning or args.hardware or args.co2_footprint:
+    if args.ml_metadata or args.machine_learning or args.hardware or args.co2_footprint or args.app_requirements or args.hw_constraints:
 
-        if args.task_encoder:
+        if args.ml_metadata:
             te_command = ['python3']
-            te_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp1/' + args.task_encoder)
+            te_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp1/' + args.ml_metadata)
 
             if not os.path.isfile(te_exec_file):
                 print(f'TaskEncoder executable file does not exists: {te_exec_file}')
@@ -200,6 +211,28 @@ def run(args):
 
             co2_command.extend([co2_exec_file])
             node_commands.append(co2_command)
+
+        if args.hw_constraints:
+            hwcons_command = ['python3']
+            hwcons_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp2/' + args.hw_constraints)
+
+            if not os.path.isfile(hwcons_exec_file):
+                print(f'HardwareConstraints executable file does not exists: {hwcons_exec_file}')
+                sys.exit(1)
+
+            hwcons_command.extend([hwcons_exec_file])
+            node_commands.append(hwcons_command)
+
+        if args.app_requirements:
+            app_reqs_command = ['python3']
+            app_reqs_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp1/' + args.app_requirements)
+
+            if not os.path.isfile(app_reqs_exec_file):
+                print(f'AppRequirements executable file does not exists: {app_reqs_exec_file}')
+                sys.exit(1)
+
+            app_reqs_command.extend([app_reqs_exec_file])
+            node_commands.append(app_reqs_command)
 
     node_procs = []
     for node_cmd in node_commands:

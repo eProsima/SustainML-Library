@@ -97,9 +97,11 @@ public:
     eProsima_user_DllExport TaskId();
 
     /*!
-     * @brief Intiial ids constructor.
+     * @brief Initial values TaskId constructor.
      */
-    eProsima_user_DllExport TaskId(uint32_t problem_id, uint32_t data_id);
+    eProsima_user_DllExport TaskId(
+            uint32_t problem_id,
+            uint32_t data_id);
 
     /*!
      * @brief Default destructor.
@@ -194,13 +196,11 @@ public:
     eProsima_user_DllExport uint32_t& data_id();
 
     /*!
-    * @brief This function overloads the operator << for the TaskId type.
-    */
-    friend std::ostream& operator<< (std::ostream& stream, const TaskId& task_id)
-    {
-        stream << "{" <<task_id.problem_id() << "," << task_id.data_id() << "}";
-        return stream;
-    }
+     * @brief This function overloads the operator << for the TaskId type.
+     */
+    friend std::ostream& operator << (
+            std::ostream& stream,
+            const TaskId& task_id);
 
 private:
 
@@ -215,7 +215,8 @@ private:
  * @return TaskId* The TaskId that will be converted.
  * @warning This function is assuming that both classes have the same data representation in memory
  */
-inline TaskId* to_task_id(TaskIdImpl* impl)
+inline TaskId* to_task_id(
+        TaskIdImpl* impl)
 {
     return reinterpret_cast<TaskId*>(impl);
 }
@@ -227,7 +228,8 @@ inline TaskId* to_task_id(TaskIdImpl* impl)
  * @return TaskIdImpl* The TaskIdImpl that will be converted.
  * @warning This function is assuming that both classes have the same data representation in memory
  */
-inline TaskIdImpl* to_task_id_impl(TaskId* impl)
+inline TaskIdImpl* to_task_id_impl(
+        TaskId* impl)
 {
     return reinterpret_cast<TaskIdImpl*>(impl);
 }
@@ -818,7 +820,7 @@ public:
      * @brief This function returns a copy of the hw_description member
      * @return Copy of the hw_description member
      */
-    eProsima_user_DllExport std::string hw_description();
+    eProsima_user_DllExport std::string& hw_description();
 
 
     /*!
@@ -1055,7 +1057,7 @@ public:
      * @brief This function returns a copy of the model_path member
      * @return Copy of the model_path member
      */
-    eProsima_user_DllExport std::string model_path();
+    eProsima_user_DllExport std::string& model_path();
 
 
     /*!
@@ -1082,7 +1084,7 @@ public:
      * @brief This function returns a copy of the model member
      * @return Copy of the model member
      */
-    eProsima_user_DllExport std::string model();
+    eProsima_user_DllExport std::string& model();
 
 
     /*!
@@ -1109,7 +1111,7 @@ public:
      * @brief This function returns a copy of the model_properties_path member
      * @return Copy of the model_properties_path member
      */
-    eProsima_user_DllExport std::string model_properties_path();
+    eProsima_user_DllExport std::string& model_properties_path();
 
 
     /*!
@@ -1136,7 +1138,7 @@ public:
      * @brief This function returns a copy of the model_properties member
      * @return Copy of the model_properties member
      */
-    eProsima_user_DllExport std::string model_properties();
+    eProsima_user_DllExport std::string& model_properties();
 
 
     /*!
@@ -1565,7 +1567,7 @@ public:
      * @brief This function returns a copy of the target_node member
      * @return Copy of the target_node member
      */
-    eProsima_user_DllExport std::string target_node();
+    eProsima_user_DllExport std::string& target_node();
 
     /*!
      * @brief This function copies the value in member task_id
@@ -1617,7 +1619,7 @@ public:
      * @brief This function returns a copy of the source_node member
      * @return Copy of the source_node member
      */
-    eProsima_user_DllExport std::string source_node();
+    eProsima_user_DllExport std::string& source_node();
 
     /*!
      * @brief This function returns the implementation
@@ -1800,7 +1802,7 @@ public:
      * @brief This function returns a copy of the error_description member
      * @return Copy of the error_description member
      */
-    eProsima_user_DllExport std::string error_description();
+    eProsima_user_DllExport std::string& error_description();
 
 
     /*!
@@ -1827,7 +1829,7 @@ public:
      * @brief This function returns a copy of the node_name member
      * @return Copy of the node_name member
      */
-    eProsima_user_DllExport std::string node_name();
+    eProsima_user_DllExport std::string& node_name();
 
     /*!
      * @brief This function updates and publish the new given status.
@@ -1936,7 +1938,7 @@ public:
      */
     eProsima_user_DllExport std::string& modality();
 
-/*!
+    /*!
      * @brief This function copies the value in member problem_short_description
      * @param _problem_short_description New value to be copied in member problem_short_description
      */

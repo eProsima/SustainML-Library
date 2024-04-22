@@ -21,7 +21,7 @@
 #define SWIG_WRAPPER
 #define GEN_API_VER 2
 
-%feature("director") sustainml::ml_model_provider_module::MLModelTaskListener;
+%feature("director") sustainml::ml_model_module::MLModelTaskListener;
 
 %{
 #include <sustainml_cpp/nodes/MLModelNode.hpp>

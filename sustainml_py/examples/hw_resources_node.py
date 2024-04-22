@@ -11,48 +11,46 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""SustainML SWIG Example Node API."""
+"""SustainML Example Python Node API."""
 
-import sustainml_swig
+from sustainml_py.nodes.HardwareResourcesNode import HardwareResourcesNode
+
+# Manage signaling
 import signal
 import threading
 import time
 
-global running
+# Whether to go on spinning or interrupt
 running = False
 
+# Signal handler
 def signal_handler(sig, frame):
     print("\nExiting")
-    sustainml_swig.TaskEncoderNode.terminate()
+    HardwareResourcesNode.terminate()
+    global running
     running = False
 
-class MyListener(sustainml_swig.CarbonFootprintTaskListener):
-    def __init__(
-            self):
-        """
-        """
+# User Callback implementation
+# Inputs: ml_model, app_requirements, hw_constraints
+# Outputs: node_status, hw
+def task_callback(ml_model, app_requirements,  hw_constraints, node_status, hw):
+    print (ml_model.model())
+    hw.hw_description("This is a HW description")
 
-        # Parent class constructor
-        super().__init__()
-
-    def on_new_task_available(self, arg1, arg2, arg3, arg4, arg5):
-        print (arg1.model())
-        print (arg2.problem_definition())
-        print (arg3.hw_description())
-        print (arg4.node_status())
-        arg5.carbon_intensity(4)
-        arg5.task_id(arg1.task_id())
-
+# Main workflow routine
 def run():
-    listener = MyListener()
-    task_node = sustainml_swig.CarbonFootprintNode(listener)
+    node = HardwareResourcesNode(callback=task_callback)
+    global running
     running = True
-    task_node.spin()
+    node.spin()
 
 # Call main in program execution
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
 
+    """Python does not process signals async if
+    the main thread is blocked (spin()) so, tun
+    user work flow in another thread """
     runner = threading.Thread(target=run)
     runner.start()
 

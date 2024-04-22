@@ -88,7 +88,7 @@ void SimpleTaskPublisher::wait_discovery()
 bool SimpleTaskPublisher::run()
 {
     auto data = type_.create_data();
-    size_t task_id = 0;
+    size_t task_id = 1;
 
     wait_discovery();
 
@@ -96,7 +96,7 @@ bool SimpleTaskPublisher::run()
 
     TypeFactory::set_data_task_id(type_, data, task_id);
 
-    while (samples_ > task_id)
+    while (samples_ + 1 > task_id)
     {
         std::cout << "Publishing " << type_.get_type_name() << " with Task_id " << task_id << std::endl;
 
