@@ -99,6 +99,7 @@ using MLModelMetadataManagedNode = ManagedNode<ml_model_module::MLModelMetadataN
 using MLModelManagedNode = ManagedNode<ml_model_module::MLModelNode,
                 ml_model_module::MLModelTaskListener,
                 types::MLModelMetadata, types::AppRequirements, types::HWConstraints,
+                types::MLModel, types::HWResource, types::CO2Footprint,
                 types::NodeStatus, types::MLModel>;
 
 /******* Auxiliary Signature aliases *****/

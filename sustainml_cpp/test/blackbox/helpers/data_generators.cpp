@@ -46,7 +46,7 @@ std::list<AppRequirementsImpl> default_apprequirements_data_generator(
     return returnedValue;
 }
 
-std::list<CO2FootprintImpl> default_co2footprint_data_generator(
+std::list<CO2FootprintImpl> default_carbonfootprint_data_generator(
         size_t max)
 {
     uint16_t index = 1;
