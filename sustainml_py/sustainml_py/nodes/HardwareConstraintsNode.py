@@ -1,4 +1,4 @@
-# Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+# Copyright 2024 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
 # limitations under the License.
 """SustainML Client Node API specification."""
 
-from sustainml_swig import MLModelTaskListener as cpp_MLModelTaskListener
-from sustainml_swig import MLModelNode as cpp_MLModelNode
+from sustainml_swig import HardwareConstraintsTaskListener as cpp_HardwareConstraintsTaskListener
+from sustainml_swig import HardwareConstraintsNode as cpp_HardwareConstraintsNode
 
-from sustainml_swig import MLModel, NodeStatus, MLModelMetadata, HWConstraints, AppRequirements
+from sustainml_swig import HWConstraints, NodeStatus, UserInput
 
-class MLModelTaskListener(cpp_MLModelTaskListener):
+class HardwareConstraintsTaskListener(cpp_HardwareConstraintsTaskListener):
 
     def __init__(self,
                  callback):
@@ -31,27 +31,25 @@ class MLModelTaskListener(cpp_MLModelTaskListener):
     # Callback
     def on_new_task_available(
             self,
-            ml_model_metadata : MLModelMetadata,
-            app_requirements : AppRequirements,
-            hw_constraints : HWConstraints,
+            user_input : UserInput,
             node_status : NodeStatus,
-            ml_model : MLModel):
+            hw_constraints : HWConstraints):
 
         """ Invoke user callback """
-        self.callback_(ml_model_metadata, app_requirements, hw_constraints, node_status, ml_model)
+        self.callback_(user_input, node_status, hw_constraints)
 
 # Proxy class to instantiate by the user
-class MLModelNode:
+class HardwareConstraintsNode:
 
     def __init__(self,
                  callback = None):
 
         if callback == None:
             raise ValueError(
-                'MLModelNode constructor expects a callback.')
+                'HardwareConstraintsNode constructor expects a callback.')
 
-        self.listener_ = MLModelTaskListener(callback)
-        self.node_ = cpp_MLModelNode(self.listener_)
+        self.listener_ = HardwareConstraintsTaskListener(callback)
+        self.node_ = cpp_HardwareConstraintsNode(self.listener_)
 
     # Proxy method to run the node
     def spin(self):
@@ -61,4 +59,4 @@ class MLModelNode:
     # Proxy method to manually terminate
     def terminate():
 
-        cpp_MLModelNode.terminate()
+        cpp_HardwareConstraintsNode.terminate()

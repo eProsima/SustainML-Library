@@ -11,47 +11,46 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""SustainML SWIG Example Node API."""
+"""SustainML Example Python Node API."""
 
-import sustainml_swig
+from sustainml_py.nodes.HardwareConstraintsNode import HardwareConstraintsNode
+
+# Manage signaling
 import signal
 import threading
 import time
 
-global running
+# Whether to go on spinning or interrupt
 running = False
 
+# Signal handler
 def signal_handler(sig, frame):
     print("\nExiting")
-    sustainml_swig.TaskEncoderNode.terminate()
+    HardwareConstraintsNode.terminate()
+    global running
     running = False
 
-class MyListener(sustainml_swig.TaskEncoderTaskListener):
-    def __init__(
-            self):
-        """
-        """
+# User Callback implementation
+# Inputs: user_input
+# Outputs: node_status, hw_constraints
+def task_callback(user_input, node_status, hw_constraints):
+    print (user_input.problem_definition())
+    hw_constraints.max_memory_footprint(100)
 
-        # Parent class constructor
-        super().__init__()
-
-    def on_new_task_available(self, arg1, arg2, arg3):
-        print (arg1.problem_description())
-        arg3.keywords().append("HEYYY")
-        arg3.keywords().append("IM")
-        arg3.keywords().append("A")
-        arg3.keywords().append("KEYWORD")
-
+# Main workflow routine
 def run():
-    listener = MyListener()
-    task_node = sustainml_swig.TaskEncoderNode(listener)
+    node = HardwareConstraintsNode(callback=task_callback)
+    global running
     running = True
-    task_node.spin()
+    node.spin()
 
 # Call main in program execution
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
 
+    """Python does not process signals async if
+    the main thread is blocked (spin()) so, tun
+    user work flow in another thread """
     runner = threading.Thread(target=run)
     runner.start()
 

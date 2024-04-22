@@ -26,25 +26,26 @@
 namespace sustainml {
 namespace interfaces {
 
-    struct SampleQueryable
-    {
-        /**
-        * @brief Retrieves a void-casted pointer of a sample by id.
-        *
-        * @param id task_id key of the sample.
-        *
-        * @return pointer to the sample
-        */
-        virtual void* retrieve_sample_from_taskid(const types::TaskId &id) = 0;
+struct SampleQueryable
+{
+    /**
+     * @brief Retrieves a void-casted pointer of a sample by id.
+     *
+     * @param id task_id key of the sample.
+     *
+     * @return pointer to the sample
+     */
+    virtual void* retrieve_sample_from_taskid(
+            const types::TaskId& id) = 0;
 
-        /**
-        * @brief Retrieves the id of the sample queryable.
-        *
-        * @return Id of the queryable
-        */
-        virtual const int& get_id() = 0;
+    /**
+     * @brief Retrieves the id of the sample queryable.
+     *
+     * @return Id of the queryable
+     */
+    virtual const int& get_id() = 0;
 
-    };
+};
 
 } // namespace interfaces
 } // namespace sustainml

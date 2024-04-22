@@ -52,11 +52,11 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.problem_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.problem_id(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.data_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.data_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -78,7 +78,7 @@ eProsima_user_DllExport void serialize(
     scdr
         << eprosima::fastcdr::MemberId(0) << data.problem_id()
         << eprosima::fastcdr::MemberId(1) << data.data_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -95,13 +95,13 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.problem_id();
-                                            break;
+                    case 0:
+                        dcdr >> data.problem_id();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.data_id();
-                                            break;
+                    case 1:
+                        dcdr >> data.data_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -119,9 +119,6 @@ void serialize_key(
     static_cast<void>(data);
 }
 
-
-
-
 template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
         eprosima::fastcdr::CdrSizeCalculator& calculator,
@@ -138,23 +135,23 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.node_status(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.node_status(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.task_status(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.task_status(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                data.error_code(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                    data.error_code(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                data.error_description(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                    data.error_description(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                data.node_name(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                    data.node_name(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
-                data.task_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
+                    data.task_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -180,7 +177,7 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(3) << data.error_description()
         << eprosima::fastcdr::MemberId(4) << data.node_name()
         << eprosima::fastcdr::MemberId(5) << data.task_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -197,29 +194,29 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.node_status();
-                                            break;
+                    case 0:
+                        dcdr >> data.node_status();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.task_status();
-                                            break;
+                    case 1:
+                        dcdr >> data.task_status();
+                        break;
 
-                                        case 2:
-                                                dcdr >> data.error_code();
-                                            break;
+                    case 2:
+                        dcdr >> data.error_code();
+                        break;
 
-                                        case 3:
-                                                dcdr >> data.error_description();
-                                            break;
+                    case 3:
+                        dcdr >> data.error_description();
+                        break;
 
-                                        case 4:
-                                                dcdr >> data.node_name();
-                                            break;
+                    case 4:
+                        dcdr >> data.node_name();
+                        break;
 
-                                        case 5:
-                                                dcdr >> data.task_id();
-                                            break;
+                    case 5:
+                        dcdr >> data.task_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -235,16 +232,11 @@ void serialize_key(
 {
     static_cast<void>(scdr);
     static_cast<void>(data);
-                            scdr << data.node_name();
+    scdr << data.node_name();
 
-                                scdr << data.task_id();
+    scdr << data.task_id();
 
 }
-
-
-
-
-
 
 template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
@@ -262,20 +254,20 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.cmd_node(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.cmd_node(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.cmd_task(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.cmd_task(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                data.target_node(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                    data.target_node(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                data.source_node(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                    data.source_node(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                data.task_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                    data.task_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -300,7 +292,7 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(2) << data.target_node()
         << eprosima::fastcdr::MemberId(3) << data.source_node()
         << eprosima::fastcdr::MemberId(4) << data.task_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -317,25 +309,25 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.cmd_node();
-                                            break;
+                    case 0:
+                        dcdr >> data.cmd_node();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.cmd_task();
-                                            break;
+                    case 1:
+                        dcdr >> data.cmd_task();
+                        break;
 
-                                        case 2:
-                                                dcdr >> data.target_node();
-                                            break;
+                    case 2:
+                        dcdr >> data.target_node();
+                        break;
 
-                                        case 3:
-                                                dcdr >> data.source_node();
-                                            break;
+                    case 3:
+                        dcdr >> data.source_node();
+                        break;
 
-                                        case 4:
-                                                dcdr >> data.task_id();
-                                            break;
+                    case 4:
+                        dcdr >> data.task_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -351,14 +343,11 @@ void serialize_key(
 {
     static_cast<void>(scdr);
     static_cast<void>(data);
-                            scdr << data.source_node();
+    scdr << data.source_node();
 
-                                scdr << data.task_id();
+    scdr << data.task_id();
 
 }
-
-
-
 
 template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
@@ -376,50 +365,50 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.modality(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.modality(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.problem_short_description(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.problem_short_description(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                data.problem_definition(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                    data.problem_definition(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                data.inputs(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                    data.inputs(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                data.outputs(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                    data.outputs(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
-                data.minimum_samples(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
+                    data.minimum_samples(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
-                data.maximum_samples(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
+                    data.maximum_samples(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(7),
-                data.optimize_carbon_footprint_manual(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(7),
+                    data.optimize_carbon_footprint_manual(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(8),
-                data.previous_iteration(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(8),
+                    data.previous_iteration(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(9),
-                data.optimize_carbon_footprint_auto(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(9),
+                    data.optimize_carbon_footprint_auto(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(10),
-                data.desired_carbon_footprint(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(10),
+                    data.desired_carbon_footprint(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(11),
-                data.geo_location_continent(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(11),
+                    data.geo_location_continent(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(12),
-                data.geo_location_region(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(12),
+                    data.geo_location_region(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(13),
-                data.extra_data(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(13),
+                    data.extra_data(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(14),
-                data.task_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(14),
+                    data.task_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -454,7 +443,7 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(12) << data.geo_location_region()
         << eprosima::fastcdr::MemberId(13) << data.extra_data()
         << eprosima::fastcdr::MemberId(14) << data.task_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -471,65 +460,65 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.modality();
-                                            break;
+                    case 0:
+                        dcdr >> data.modality();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.problem_short_description();
-                                            break;
+                    case 1:
+                        dcdr >> data.problem_short_description();
+                        break;
 
-                                        case 2:
-                                                dcdr >> data.problem_definition();
-                                            break;
+                    case 2:
+                        dcdr >> data.problem_definition();
+                        break;
 
-                                        case 3:
-                                                dcdr >> data.inputs();
-                                            break;
+                    case 3:
+                        dcdr >> data.inputs();
+                        break;
 
-                                        case 4:
-                                                dcdr >> data.outputs();
-                                            break;
+                    case 4:
+                        dcdr >> data.outputs();
+                        break;
 
-                                        case 5:
-                                                dcdr >> data.minimum_samples();
-                                            break;
+                    case 5:
+                        dcdr >> data.minimum_samples();
+                        break;
 
-                                        case 6:
-                                                dcdr >> data.maximum_samples();
-                                            break;
+                    case 6:
+                        dcdr >> data.maximum_samples();
+                        break;
 
-                                        case 7:
-                                                dcdr >> data.optimize_carbon_footprint_manual();
-                                            break;
+                    case 7:
+                        dcdr >> data.optimize_carbon_footprint_manual();
+                        break;
 
-                                        case 8:
-                                                dcdr >> data.previous_iteration();
-                                            break;
+                    case 8:
+                        dcdr >> data.previous_iteration();
+                        break;
 
-                                        case 9:
-                                                dcdr >> data.optimize_carbon_footprint_auto();
-                                            break;
+                    case 9:
+                        dcdr >> data.optimize_carbon_footprint_auto();
+                        break;
 
-                                        case 10:
-                                                dcdr >> data.desired_carbon_footprint();
-                                            break;
+                    case 10:
+                        dcdr >> data.desired_carbon_footprint();
+                        break;
 
-                                        case 11:
-                                                dcdr >> data.geo_location_continent();
-                                            break;
+                    case 11:
+                        dcdr >> data.geo_location_continent();
+                        break;
 
-                                        case 12:
-                                                dcdr >> data.geo_location_region();
-                                            break;
+                    case 12:
+                        dcdr >> data.geo_location_region();
+                        break;
 
-                                        case 13:
-                                                dcdr >> data.extra_data();
-                                            break;
+                    case 13:
+                        dcdr >> data.extra_data();
+                        break;
 
-                                        case 14:
-                                                dcdr >> data.task_id();
-                                            break;
+                    case 14:
+                        dcdr >> data.task_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -545,12 +534,9 @@ void serialize_key(
 {
     static_cast<void>(scdr);
     static_cast<void>(data);
-                                scdr << data.task_id();
+    scdr << data.task_id();
 
 }
-
-
-
 
 template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
@@ -568,17 +554,17 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.keywords(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.keywords(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.ml_model_metadata(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.ml_model_metadata(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                data.extra_data(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                    data.extra_data(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                data.task_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                    data.task_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -602,7 +588,7 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(1) << data.ml_model_metadata()
         << eprosima::fastcdr::MemberId(2) << data.extra_data()
         << eprosima::fastcdr::MemberId(3) << data.task_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -619,21 +605,21 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.keywords();
-                                            break;
+                    case 0:
+                        dcdr >> data.keywords();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.ml_model_metadata();
-                                            break;
+                    case 1:
+                        dcdr >> data.ml_model_metadata();
+                        break;
 
-                                        case 2:
-                                                dcdr >> data.extra_data();
-                                            break;
+                    case 2:
+                        dcdr >> data.extra_data();
+                        break;
 
-                                        case 3:
-                                                dcdr >> data.task_id();
-                                            break;
+                    case 3:
+                        dcdr >> data.task_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -649,12 +635,9 @@ void serialize_key(
 {
     static_cast<void>(scdr);
     static_cast<void>(data);
-                                scdr << data.task_id();
+    scdr << data.task_id();
 
 }
-
-
-
 
 template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
@@ -672,14 +655,14 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.app_requirements(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.app_requirements(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.extra_data(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.extra_data(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                data.task_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                    data.task_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -702,7 +685,7 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(0) << data.app_requirements()
         << eprosima::fastcdr::MemberId(1) << data.extra_data()
         << eprosima::fastcdr::MemberId(2) << data.task_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -719,17 +702,17 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.app_requirements();
-                                            break;
+                    case 0:
+                        dcdr >> data.app_requirements();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.extra_data();
-                                            break;
+                    case 1:
+                        dcdr >> data.extra_data();
+                        break;
 
-                                        case 2:
-                                                dcdr >> data.task_id();
-                                            break;
+                    case 2:
+                        dcdr >> data.task_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -745,12 +728,9 @@ void serialize_key(
 {
     static_cast<void>(scdr);
     static_cast<void>(data);
-                                scdr << data.task_id();
+    scdr << data.task_id();
 
 }
-
-
-
 
 template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
@@ -768,14 +748,14 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.max_memory_footprint(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.max_memory_footprint(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.extra_data(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.extra_data(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                data.task_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                    data.task_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -798,7 +778,7 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(0) << data.max_memory_footprint()
         << eprosima::fastcdr::MemberId(1) << data.extra_data()
         << eprosima::fastcdr::MemberId(2) << data.task_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -815,17 +795,17 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.max_memory_footprint();
-                                            break;
+                    case 0:
+                        dcdr >> data.max_memory_footprint();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.extra_data();
-                                            break;
+                    case 1:
+                        dcdr >> data.extra_data();
+                        break;
 
-                                        case 2:
-                                                dcdr >> data.task_id();
-                                            break;
+                    case 2:
+                        dcdr >> data.task_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -841,12 +821,9 @@ void serialize_key(
 {
     static_cast<void>(scdr);
     static_cast<void>(data);
-                                scdr << data.task_id();
+    scdr << data.task_id();
 
 }
-
-
-
 
 template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
@@ -864,29 +841,29 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.model_path(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.model_path(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.model(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.model(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                data.model_properties_path(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                    data.model_properties_path(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                data.model_properties(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                    data.model_properties(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                data.input_batch(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                    data.input_batch(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
-                data.target_latency(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
+                    data.target_latency(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
-                data.extra_data(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
+                    data.extra_data(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(7),
-                data.task_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(7),
+                    data.task_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -914,7 +891,7 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(5) << data.target_latency()
         << eprosima::fastcdr::MemberId(6) << data.extra_data()
         << eprosima::fastcdr::MemberId(7) << data.task_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -931,37 +908,37 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.model_path();
-                                            break;
+                    case 0:
+                        dcdr >> data.model_path();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.model();
-                                            break;
+                    case 1:
+                        dcdr >> data.model();
+                        break;
 
-                                        case 2:
-                                                dcdr >> data.model_properties_path();
-                                            break;
+                    case 2:
+                        dcdr >> data.model_properties_path();
+                        break;
 
-                                        case 3:
-                                                dcdr >> data.model_properties();
-                                            break;
+                    case 3:
+                        dcdr >> data.model_properties();
+                        break;
 
-                                        case 4:
-                                                dcdr >> data.input_batch();
-                                            break;
+                    case 4:
+                        dcdr >> data.input_batch();
+                        break;
 
-                                        case 5:
-                                                dcdr >> data.target_latency();
-                                            break;
+                    case 5:
+                        dcdr >> data.target_latency();
+                        break;
 
-                                        case 6:
-                                                dcdr >> data.extra_data();
-                                            break;
+                    case 6:
+                        dcdr >> data.extra_data();
+                        break;
 
-                                        case 7:
-                                                dcdr >> data.task_id();
-                                            break;
+                    case 7:
+                        dcdr >> data.task_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -977,12 +954,9 @@ void serialize_key(
 {
     static_cast<void>(scdr);
     static_cast<void>(data);
-                                scdr << data.task_id();
+    scdr << data.task_id();
 
 }
-
-
-
 
 template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
@@ -1000,26 +974,26 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.hw_description(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.hw_description(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.power_consumption(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.power_consumption(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                data.latency(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                    data.latency(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                data.memory_footprint_of_ml_model(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                    data.memory_footprint_of_ml_model(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                data.max_hw_memory_footprint(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                    data.max_hw_memory_footprint(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
-                data.extra_data(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
+                    data.extra_data(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
-                data.task_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
+                    data.task_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -1046,7 +1020,7 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(4) << data.max_hw_memory_footprint()
         << eprosima::fastcdr::MemberId(5) << data.extra_data()
         << eprosima::fastcdr::MemberId(6) << data.task_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -1063,33 +1037,33 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.hw_description();
-                                            break;
+                    case 0:
+                        dcdr >> data.hw_description();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.power_consumption();
-                                            break;
+                    case 1:
+                        dcdr >> data.power_consumption();
+                        break;
 
-                                        case 2:
-                                                dcdr >> data.latency();
-                                            break;
+                    case 2:
+                        dcdr >> data.latency();
+                        break;
 
-                                        case 3:
-                                                dcdr >> data.memory_footprint_of_ml_model();
-                                            break;
+                    case 3:
+                        dcdr >> data.memory_footprint_of_ml_model();
+                        break;
 
-                                        case 4:
-                                                dcdr >> data.max_hw_memory_footprint();
-                                            break;
+                    case 4:
+                        dcdr >> data.max_hw_memory_footprint();
+                        break;
 
-                                        case 5:
-                                                dcdr >> data.extra_data();
-                                            break;
+                    case 5:
+                        dcdr >> data.extra_data();
+                        break;
 
-                                        case 6:
-                                                dcdr >> data.task_id();
-                                            break;
+                    case 6:
+                        dcdr >> data.task_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -1105,12 +1079,9 @@ void serialize_key(
 {
     static_cast<void>(scdr);
     static_cast<void>(data);
-                                scdr << data.task_id();
+    scdr << data.task_id();
 
 }
-
-
-
 
 template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
@@ -1128,20 +1099,20 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                                 current_alignment)};
 
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
-                data.carbon_footprint(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0),
+                    data.carbon_footprint(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
-                data.energy_consumption(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1),
+                    data.energy_consumption(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
-                data.carbon_intensity(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(2),
+                    data.carbon_intensity(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                data.extra_data(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
+                    data.extra_data(), current_alignment);
 
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                data.task_id(), current_alignment);
+    calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
+                    data.task_id(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -1166,7 +1137,7 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(2) << data.carbon_intensity()
         << eprosima::fastcdr::MemberId(3) << data.extra_data()
         << eprosima::fastcdr::MemberId(4) << data.task_id()
-;
+    ;
     scdr.end_serialize_type(current_state);
 }
 
@@ -1183,25 +1154,25 @@ eProsima_user_DllExport void deserialize(
                 bool ret_value = true;
                 switch (mid.id)
                 {
-                                        case 0:
-                                                dcdr >> data.carbon_footprint();
-                                            break;
+                    case 0:
+                        dcdr >> data.carbon_footprint();
+                        break;
 
-                                        case 1:
-                                                dcdr >> data.energy_consumption();
-                                            break;
+                    case 1:
+                        dcdr >> data.energy_consumption();
+                        break;
 
-                                        case 2:
-                                                dcdr >> data.carbon_intensity();
-                                            break;
+                    case 2:
+                        dcdr >> data.carbon_intensity();
+                        break;
 
-                                        case 3:
-                                                dcdr >> data.extra_data();
-                                            break;
+                    case 3:
+                        dcdr >> data.extra_data();
+                        break;
 
-                                        case 4:
-                                                dcdr >> data.task_id();
-                                            break;
+                    case 4:
+                        dcdr >> data.task_id();
+                        break;
 
                     default:
                         ret_value = false;
@@ -1217,11 +1188,9 @@ void serialize_key(
 {
     static_cast<void>(scdr);
     static_cast<void>(data);
-                                scdr << data.task_id();
+    scdr << data.task_id();
 
 }
-
-
 
 } // namespace fastcdr
 } // namespace eprosima

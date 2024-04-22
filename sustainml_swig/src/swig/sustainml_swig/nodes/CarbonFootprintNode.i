@@ -21,7 +21,7 @@
 #define SWIG_WRAPPER
 #define GEN_API_VER 2
 
-%feature("director") sustainml::co2_tracker_module::CarbonFootprintTaskListener;
+%feature("director") sustainml::carbon_tracker_module::CarbonFootprintTaskListener;
 
 %{
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
