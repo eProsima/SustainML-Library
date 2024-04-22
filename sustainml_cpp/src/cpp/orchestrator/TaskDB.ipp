@@ -24,6 +24,7 @@
 #include <shared_mutex>
 #include <tuple>
 
+#include <core/Constants.hpp>
 #include <types/types.h>
 
 #include <fastrtps/log/Log.h>
@@ -46,24 +47,42 @@ public:
      * @brief Inserts new data in the DB.
      */
     template <typename T>
-    bool insert_task_data(
+    bool insert_task_data_nts(
             const types::TaskId& task_id,
             const T& data);
 
     /**
      * @brief Retrieves data from the DB given the task name
+     * @warning Non thread safe
      */
     template <typename T>
-    bool get_task_data(
+    bool get_task_data_nts(
             const types::TaskId& task_id,
             T*&);
 
     /**
      * @brief Allocates a new entry in the DB
+     * @warning Non thread safe
      */
-    bool prepare_new_entry(
+    bool prepare_new_entry_nts(
+            const types::TaskId& task_id, bool is_new_iteration);
+
+    /**
+     * @brief Checks whether a given entry exists in the DB
+     * @warning Non thread safe
+     */
+    bool entry_exists_nts(
             const types::TaskId& task_id);
 
+
+    /**
+     * @brief Checks whether a given entry exists in the DB
+     * Non thread safe
+     */
+    inline std::mutex& get_mutex()
+    {
+        return mtx_;
+    }
 
     /**
      * @brief Copies the data indicated in data_to_copy from one TaskId to another
@@ -107,32 +126,21 @@ TaskDB<Args...>::~TaskDB()
 
 template <typename ... Args>
 template <typename T>
-bool TaskDB<Args...>::insert_task_data(
+bool TaskDB<Args...>::insert_task_data_nts(
         const types::TaskId& task_id,
         const T& data)
 {
     bool ret_code = false;
 
-    std::lock_guard<std::mutex> lock(mtx_);
-    auto it_problem_id = db_.find(task_id.problem_id());
-
-    if (it_problem_id != db_.end())
+    if(entry_exists_nts(task_id))
     {
-        auto it_id = db_[task_id.problem_id()].find(task_id.iteration_id());
-        if (it_id != db_[task_id.problem_id()].end())
-        {
-            T& db_data = std::get<T>(it_id->second);
-            db_data = data;
-            ret_code = true;
-        }
-        else
-        {
-            EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to insert a data element with an unknown iteration id " << task_id);
-        }
+        T& db_data = std::get<T>(db_[task_id.problem_id()][task_id.iteration_id()]);
+        db_data = data;
+        ret_code = true;
     }
     else
     {
-        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to insert a data element with an unknown problem id" << task_id);
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to insert a data element with an unknown task id" << task_id);
     }
 
     return ret_code;
@@ -140,13 +148,51 @@ bool TaskDB<Args...>::insert_task_data(
 
 template <typename ... Args>
 template <typename T>
-bool TaskDB<Args...>::get_task_data(
+bool TaskDB<Args...>::get_task_data_nts(
         const types::TaskId& task_id,
         T*& data)
 {
     bool ret_code = false;
 
-    std::lock_guard<std::mutex> lock(mtx_);
+    if(entry_exists_nts(task_id))
+    {
+        T& db_data = std::get<T>(db_[task_id.problem_id()][task_id.iteration_id()]);
+        data = &db_data;
+        ret_code = true;
+    }
+    else
+    {
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown task id" << task_id);
+    }
+
+    return ret_code;
+}
+
+template <typename ... Args>
+bool TaskDB<Args...>::prepare_new_entry_nts(
+        const types::TaskId& task_id, bool is_new_iteration)
+{
+    bool ret_code = false;
+
+    if (!entry_exists_nts(task_id))
+    {
+        db_[task_id.problem_id()][task_id.iteration_id()];
+        ret_code = true;
+    }
+    else
+    {
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to prepare an already existing entry " << task_id);
+    }
+
+    return ret_code;
+}
+
+template <typename ... Args>
+bool TaskDB<Args...>::entry_exists_nts(
+        const types::TaskId& task_id)
+{
+    bool ret_code = false;
+
     auto it_problem_id = db_.find(task_id.problem_id());
 
     if (it_problem_id != db_.end())
@@ -154,21 +200,18 @@ bool TaskDB<Args...>::get_task_data(
         auto it_id = db_[task_id.problem_id()].find(task_id.iteration_id());
         if (it_id != db_[task_id.problem_id()].end())
         {
-            T& db_data = std::get<T>(it_id->second);
-            data = &db_data;
             ret_code = true;
         }
-        else
-        {
-            EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown iteration id " << task_id);
-        }
-    }
-    else
-    {
-        EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to get a data element with an unknown problem id" << task_id);
     }
 
     return ret_code;
+}
+
+template<typename T>
+void substitute_data(const T& old_data, T& new_data)
+{
+    new_data = old_data;
+    new_data.task_id(old_data.task_id());
 }
 
 template <typename ... Args>

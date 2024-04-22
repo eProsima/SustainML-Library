@@ -195,7 +195,7 @@ ModuleNodeProxy::~ModuleNodeProxy()
 
 void ModuleNodeProxy::notify_status_change()
 {
-    std::lock_guard<std::mutex> lock(orchestrator_->mtx_);
+    std::lock_guard<std::mutex> lock(orchestrator_->get_mutex());
     std::shared_ptr<OrchestratorNodeHandle> handler_ptr = orchestrator_->get_handler().lock();
     if (handler_ptr != nullptr)
     {
@@ -207,7 +207,7 @@ void ModuleNodeProxy::notify_new_node_ouput()
 {
     store_data_in_db();
     void* untyped_data = get_tmp_untyped_data();
-    std::lock_guard<std::mutex> lock(orchestrator_->mtx_);
+    std::lock_guard<std::mutex> lock(orchestrator_->get_mutex());
     std::shared_ptr<OrchestratorNodeHandle> handler_ptr = orchestrator_->get_handler().lock();
     if (handler_ptr != nullptr)
     {
@@ -215,10 +215,10 @@ void ModuleNodeProxy::notify_new_node_ouput()
     }
 }
 
-void ModuleNodeProxy::reset_and_prepare_task_id(
+void ModuleNodeProxy::reset_and_prepare_task_id_nts(
         const types::TaskId& task_id)
 {
-    task_db_->prepare_new_entry(task_id);
+    task_db_->prepare_new_entry_nts(task_id, false);
     orchestrator_->task_man_->update_task_id(task_id);
 }
 
@@ -235,105 +235,161 @@ const types::NodeStatus& ModuleNodeProxy::get_status()
 
 AppRequirementsNodeProxy::AppRequirementsNodeProxy(
         OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::APP_REQUIREMENTS_NODE)
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+        bool need_to_publish_baseline)
+    : ModuleNodeProxy(orchestrator, task_db, common::APP_REQUIREMENTS_NODE, need_to_publish_baseline)
 {
 
+}
+
+void AppRequirementsNodeProxy::publish_data_for_iteration(
+        const types::TaskId& task_id)
+{
+    types::AppRequirements* iter_data = nullptr;
+    ModuleNodeProxy::publish_data_for_iteration_(task_id, iter_data);
 }
 
 void AppRequirementsNodeProxy::store_data_in_db()
 {
-    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    std::lock_guard<std::mutex> lock(task_db_->get_mutex());
+    if (!task_db_->entry_exists_nts(tmp_data_.task_id()))
     {
-        reset_and_prepare_task_id(tmp_data_.task_id());
-        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+        reset_and_prepare_task_id_nts(tmp_data_.task_id());
     }
+    task_db_->insert_task_data_nts(tmp_data_.task_id(), tmp_data_);
 }
 
 CarbonFootprintNodeProxy::CarbonFootprintNodeProxy(
         OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::CARBON_FOOTPRINT_NODE)
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+        bool need_to_publish_baseline)
+    : ModuleNodeProxy(orchestrator, task_db, common::CARBON_FOOTPRINT_NODE, need_to_publish_baseline)
 {
 
+}
+
+void CarbonFootprintNodeProxy::publish_data_for_iteration(
+        const types::TaskId& task_id)
+{
+    types::CO2Footprint* iter_data = nullptr;
+    ModuleNodeProxy::publish_data_for_iteration_(task_id, iter_data);
 }
 
 void CarbonFootprintNodeProxy::store_data_in_db()
 {
-    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    std::lock_guard<std::mutex> lock(task_db_->get_mutex());
+    if (!task_db_->entry_exists_nts(tmp_data_.task_id()))
     {
-        reset_and_prepare_task_id(tmp_data_.task_id());
-        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+        reset_and_prepare_task_id_nts(tmp_data_.task_id());
     }
+    task_db_->insert_task_data_nts(tmp_data_.task_id(), tmp_data_);
 }
 
 HardwareConstraintsNodeProxy::HardwareConstraintsNodeProxy(
         OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::HW_CONSTRAINTS_NODE)
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+        bool need_to_publish_baseline)
+    : ModuleNodeProxy(orchestrator, task_db, common::HW_CONSTRAINTS_NODE, need_to_publish_baseline)
 {
 
+}
+
+void HardwareConstraintsNodeProxy::publish_data_for_iteration(
+        const types::TaskId& task_id)
+{
+    types::HWConstraints* iter_data = nullptr;
+    ModuleNodeProxy::publish_data_for_iteration_(task_id, iter_data);
 }
 
 void HardwareConstraintsNodeProxy::store_data_in_db()
 {
-    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    std::lock_guard<std::mutex> lock(task_db_->get_mutex());
+    if (!task_db_->entry_exists_nts(tmp_data_.task_id()))
     {
-        reset_and_prepare_task_id(tmp_data_.task_id());
-        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+        reset_and_prepare_task_id_nts(tmp_data_.task_id());
     }
+    task_db_->insert_task_data_nts(tmp_data_.task_id(), tmp_data_);
 }
 
 HardwareResourcesNodeProxy::HardwareResourcesNodeProxy(
         OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::HW_RESOURCES_NODE)
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+        bool need_to_publish_baseline)
+    : ModuleNodeProxy(orchestrator, task_db, common::HW_RESOURCES_NODE, need_to_publish_baseline)
 {
 
+}
+
+void HardwareResourcesNodeProxy::publish_data_for_iteration(
+        const types::TaskId& task_id)
+{
+    types::HWResource* iter_data = nullptr;
+    ModuleNodeProxy::publish_data_for_iteration_(task_id, iter_data);
 }
 
 void HardwareResourcesNodeProxy::store_data_in_db()
 {
-    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    std::lock_guard<std::mutex> lock(task_db_->get_mutex());
+    if (!task_db_->entry_exists_nts(tmp_data_.task_id()))
     {
-        reset_and_prepare_task_id(tmp_data_.task_id());
-        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+        reset_and_prepare_task_id_nts(tmp_data_.task_id());
     }
+    task_db_->insert_task_data_nts(tmp_data_.task_id(), tmp_data_);
 }
 
 MLModelMetadataNodeProxy::MLModelMetadataNodeProxy(
         OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::ML_MODEL_METADATA_NODE)
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+        bool need_to_publish_baseline)
+    : ModuleNodeProxy(orchestrator, task_db, common::ML_MODEL_METADATA_NODE, need_to_publish_baseline)
 {
 
+}
+
+void MLModelMetadataNodeProxy::publish_data_for_iteration(
+        const types::TaskId& task_id)
+{
+    types::MLModelMetadata* iter_data = nullptr;
+    ModuleNodeProxy::publish_data_for_iteration_(task_id, iter_data);
 }
 
 void MLModelMetadataNodeProxy::store_data_in_db()
 {
-    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    std::lock_guard<std::mutex> lock(task_db_->get_mutex());
+    if (!task_db_->entry_exists_nts(tmp_data_.task_id()))
     {
-        reset_and_prepare_task_id(tmp_data_.task_id());
-        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+        reset_and_prepare_task_id_nts(tmp_data_.task_id());
     }
+    task_db_->insert_task_data_nts(tmp_data_.task_id(), tmp_data_);
 }
 
 MLModelProviderNodeProxy::MLModelProviderNodeProxy(
         OrchestratorNode* orchestrator,
-        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db)
-    : ModuleNodeProxy(orchestrator, task_db, common::ML_MODEL_NODE)
+        std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+        bool need_to_publish_baseline)
+    : ModuleNodeProxy(orchestrator, task_db, common::ML_MODEL_NODE, need_to_publish_baseline)
 {
 
+}
+
+void MLModelProviderNodeProxy::publish_data_for_iteration(
+        const types::TaskId& task_id)
+{
+    types::MLModel* iter_data = nullptr;
+    ModuleNodeProxy::publish_data_for_iteration_(task_id, iter_data);
 }
 
 void MLModelProviderNodeProxy::store_data_in_db()
 {
-    if (!task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_))
+    std::lock_guard<std::mutex> lock(task_db_->get_mutex());
+    if (!task_db_->entry_exists_nts(tmp_data_.task_id()))
     {
-        reset_and_prepare_task_id(tmp_data_.task_id());
-        task_db_->insert_task_data(tmp_data_.task_id(), tmp_data_);
+        reset_and_prepare_task_id_nts(tmp_data_.task_id());
     }
+    task_db_->insert_task_data_nts(tmp_data_.task_id(), tmp_data_);
 }
 
 } // namespace orchestrator
 } // namespace sustainml
+
+#include "ModuleNodeProxy.ipp"
