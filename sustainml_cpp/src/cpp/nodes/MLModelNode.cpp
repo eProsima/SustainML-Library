@@ -71,6 +71,11 @@ void MLModelNode::init (
     listener_app_requirements_queue_.reset(new core::QueuedNodeListener<AppRequirements>(this));
     listener_hw_constraints_queue_.reset(new core::QueuedNodeListener<HWConstraints>(this));
 
+    // Baselines
+    listener_mlmodel_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
+    listener_hw_queue_.reset(new core::QueuedNodeListener<HWResource>(this));
+    listener_carbon_footprint_queue_.reset(new core::QueuedNodeListener<CO2Footprint>(this));
+
     task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, MLModel>>(opts));
 
     initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].first.c_str(),
@@ -88,6 +93,19 @@ void MLModelNode::init (
     initialize_publication(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
             sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
             opts);
+
+    // Baselines topics
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL_BASELINE].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
+            &(*listener_mlmodel_queue_), opts);
+
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::HW_RESOURCES_BASELINE].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str(),
+            &(*listener_hw_queue_), opts);
+
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::CARBON_FOOTPRINT_BASELINE].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::CARBON_FOOTPRINT].second.c_str(),
+            &(*listener_carbon_footprint_queue_), opts);
 }
 
 void MLModelNode::publish_to_user(

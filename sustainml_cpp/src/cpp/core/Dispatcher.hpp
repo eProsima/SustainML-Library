@@ -38,7 +38,7 @@ namespace sustainml {
 namespace core {
 
 constexpr int N_THREADS_DEFAULT = 2;
-constexpr int INITIAL_N_QUEUES = 3;
+constexpr int INITIAL_N_QUEUES = 6;
 constexpr eprosima::utils::TaskId DISPATCHER_ROUTINE_ID = 1;
 
 class Node;

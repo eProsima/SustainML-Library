@@ -93,11 +93,15 @@ void ModuleNodeProxy::ModuleNodeProxyStatusListener::on_subscription_matched(
 ModuleNodeProxy::ModuleNodeProxy(
         OrchestratorNode* orchestrator,
         std::shared_ptr<TaskDB_t> task_db,
-        const char* name)
+        const char* name,
+        bool need_to_publish_baseline)
     : name_(name)
     , node_id_(common::get_node_id_from_name(name_))
+    , publish_baseline_(need_to_publish_baseline)
     , orchestrator_(orchestrator)
     , task_db_(task_db)
+    , baseline_topic_(nullptr)
+    , baseline_writer_(nullptr)
     , listener_(this)
     , status_listener_(this)
 {
@@ -112,8 +116,8 @@ ModuleNodeProxy::ModuleNodeProxy(
     status_.node_name(name);
 
     node_output_topic_ = orchestrator_->participant_->create_topic(
-        common::TopicCollection::get()[common::get_topic_from_name(name)].first.c_str(),
-        common::TopicCollection::get()[common::get_topic_from_name(name)].second.c_str(), TOPIC_QOS_DEFAULT);
+        common::TopicCollection::get()[common::get_topic_from_name(name, false)].first.c_str(),
+        common::TopicCollection::get()[common::get_topic_from_name(name, false)].second.c_str(), TOPIC_QOS_DEFAULT);
 
     if (node_output_topic_ == nullptr)
     {
@@ -147,6 +151,32 @@ ModuleNodeProxy::ModuleNodeProxy(
     {
         EPROSIMA_LOG_ERROR(ORCHESTRATOR_NODE_PROXY, "Error creating the status datareader in " << name);
         return;
+    }
+
+    std::string baseline_topic_name;
+    if (publish_baseline_)
+    {
+        baseline_topic_name = (common::TopicCollection::get()[common::get_topic_from_name(name_, true)].first);
+        baseline_topic_ = orchestrator_->participant_->create_topic(
+        baseline_topic_name,
+        common::TopicCollection::get()[common::get_topic_from_name(name_,true)].second.c_str(), TOPIC_QOS_DEFAULT);
+
+        if (baseline_topic_ == nullptr)
+        {
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR_NODE_PROXY, "Error creating the iteration topic in " << name);
+            return;
+        }
+
+        baseline_writer_ = orchestrator_->pub_->create_datawriter(
+        baseline_topic_,
+        DATAWRITER_QOS_DEFAULT,
+        nullptr);
+
+        if (baseline_writer_ == nullptr)
+        {
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR_NODE_PROXY, "Error creating the iteration writer in " << name);
+            return;
+        }
     }
 }
 

@@ -85,11 +85,15 @@ enum Topics
     ML_MODEL_METADATA,
     ML_MODEL,
     USER_INPUT,
+    HW_RESOURCES_BASELINE,
+    ML_MODEL_BASELINE,
+    CARBON_FOOTPRINT_BASELINE,
     MAX
 };
 
 inline Topics get_topic_from_name(
-        const char* name)
+        const char* name,
+        bool baseline)
 {
     Topics output = Topics::MAX;
 
@@ -99,7 +103,14 @@ inline Topics get_topic_from_name(
     }
     else if (name == CARBON_FOOTPRINT_NODE)
     {
-        output = Topics::CARBON_FOOTPRINT;
+        if (baseline)
+        {
+            output = Topics::CARBON_FOOTPRINT_BASELINE;
+        }
+        else
+        {
+            output = Topics::CARBON_FOOTPRINT;
+        }
     }
     else if (name == HW_CONSTRAINTS_NODE)
     {
@@ -107,7 +118,14 @@ inline Topics get_topic_from_name(
     }
     else if (name == HW_RESOURCES_NODE)
     {
-        output = Topics::HW_RESOURCE;
+        if (baseline)
+        {
+            output = Topics::HW_RESOURCES_BASELINE;
+        }
+        else
+        {
+            output = Topics::HW_RESOURCE;
+        }
     }
     if (name == ML_MODEL_METADATA_NODE)
     {
@@ -115,7 +133,14 @@ inline Topics get_topic_from_name(
     }
     else if (name == ML_MODEL_NODE)
     {
-        output = Topics::ML_MODEL;
+        if (baseline)
+        {
+            output = Topics::ML_MODEL_BASELINE;
+        }
+        else
+        {
+            output = Topics::ML_MODEL;
+        }
     }
     return output;
 }
@@ -138,7 +163,10 @@ public:
             {HW_RESOURCE, {"/sustainml/hw_resources/output", "HWResourceImpl"}},
             {ML_MODEL_METADATA, {"/sustainml/ml_model_metadata/output", "MLModelMetadataImpl"}},
             {ML_MODEL, {"/sustainml/ml_model_provider/output", "MLModelImpl"}},
-            {USER_INPUT, {"/sustainml/user_input", "UserInputImpl"}}
+            {USER_INPUT, {"/sustainml/user_input", "UserInputImpl"}},
+            {ML_MODEL_BASELINE, {"/sustainml/ml_model_provider/baseline", "MLModelImpl"}},
+            {HW_RESOURCES_BASELINE, {"/sustainml/hw_resources/baseline", "HWResourceImpl"}},
+            {CARBON_FOOTPRINT_BASELINE, {"/sustainml/carbon_tracker/baseline", "CO2FootprintImpl"}}
         };
 
         return topics;

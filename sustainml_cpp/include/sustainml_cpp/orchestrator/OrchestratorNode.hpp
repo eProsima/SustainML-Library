@@ -128,12 +128,29 @@ public:
     std::pair<types::TaskId, types::UserInput*> prepare_new_task();
 
     /**
+     * @brief This method reserves a new Task cache in the DB and returns the place
+     * where to fill the UserInput entry structure.
+     * @param [in] task_id identifier of the previous task from which to iterate
+     * @note It must be called before start_task()
+     */
+    std::pair<types::TaskId, types::UserInput*> prepare_new_iteration(const types::TaskId& task_id);
+
+    /**
      * @brief This method triggers a new task with a previously prepared task_id and
      * a pointer to the UserInput data structure.
      * @param [in] task_id id task identifier of the desired task
      * @param [in]      ui pointer to the user input data
      */
     bool start_task(
+            const types::TaskId& task_id,
+            types::UserInput* ui);
+
+    /**
+     * @brief This method triggers a new iteration on a previous task.
+     * @param [in] task_id id task identifier of the desired task
+     * @param [in]      ui pointer to the user input data
+     */
+    bool start_iteration(
             const types::TaskId& task_id,
             types::UserInput* ui);
 
@@ -161,12 +178,22 @@ public:
         return handler_;
     }
 
+    /**
+     * @brief Used to retrieve the associated OrchestratorNodeHandle.
+     */
+    void print_db();
+
 protected:
 
     /**
      * @brief Used for intializing the Orchestrator
      */
     bool init();
+
+    /**
+     * @brief Publishes node baselines
+     */
+    void publish_baselines(const types::TaskId& task_id);
 
     uint32_t domain_;
 
@@ -185,6 +212,7 @@ protected:
     eprosima::fastdds::dds::DataWriter* user_input_writer_;
 
     std::array<ModuleNodeProxy*, (size_t)NodeID::MAX> node_proxies_;
+    std::mutex proxies_mtx_;
 
     std::shared_ptr<TaskDB_t> task_db_;
 
