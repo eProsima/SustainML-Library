@@ -31,9 +31,18 @@ def signal_handler(sig, frame):
     running = False
 
 # User Callback implementation
-# Inputs: ml_model_metadata, app_requirements, hw_constraints
+# Inputs: ml_model_metadata, app_requirements, hw_constraints, ml_model_baseline, hw_baseline, carbonfootprint_baseline
 # Outputs: node_status, ml_model
-def task_callback(ml_model_metadata, app_requirements, hw_constraints, node_status, ml_model):
+def task_callback(
+        ml_model_metadata,
+        app_requirements,
+        hw_constraints,
+        ml_model_baseline,
+        hw_baseline,
+        carbonfootprint_baseline,
+        node_status,
+        ml_model):
+
     for metadata in ml_model_metadata.ml_model_metadata():
         print("Received metadata " + metadata)
     for requirement in app_requirements.app_requirements():
