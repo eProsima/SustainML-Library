@@ -264,7 +264,8 @@ std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_task()
     return output;
 }
 
-std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_iteration( const types::TaskId& old_task_id)
+std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_iteration(
+        const types::TaskId& old_task_id)
 
 {
     std::pair<types::TaskId, types::UserInput*> output;
@@ -300,14 +301,15 @@ bool OrchestratorNode::start_iteration(
     return true;
 }
 
-void OrchestratorNode::publish_baselines(const types::TaskId& task_id)
+void OrchestratorNode::publish_baselines(
+        const types::TaskId& task_id)
 {
     //publish in the iteration topics
     for (size_t i = 0; i < (size_t)NodeID::MAX; i++)
     {
         std::lock_guard<std::mutex> lock(proxies_mtx_);
         if (node_proxies_[i] != nullptr &&
-            node_proxies_[i]->publishes_baseline())
+                node_proxies_[i]->publishes_baseline())
         {
             node_proxies_[i]->publish_data_for_iteration(task_id);
         }

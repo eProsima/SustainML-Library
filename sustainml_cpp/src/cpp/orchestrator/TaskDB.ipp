@@ -65,7 +65,8 @@ public:
      * @warning Non thread safe
      */
     bool prepare_new_entry_nts(
-            const types::TaskId& task_id, bool is_new_iteration);
+            const types::TaskId& task_id,
+            bool is_new_iteration);
 
     /**
      * @brief Checks whether a given entry exists in the DB
@@ -92,11 +93,13 @@ public:
             const types::TaskId& dest,
             const std::vector<NodeID>& data_to_copy);
 
-    friend std::ostream& operator<<(std::ostream& os, const TaskDB<Args...>& db)
+    friend std::ostream& operator <<(
+            std::ostream& os,
+            const TaskDB<Args...>& db)
     {
-        for (auto &db_problem : db.db_)
+        for (auto& db_problem : db.db_)
         {
-            for (auto &db_iteration : db_problem.second)
+            for (auto& db_iteration : db_problem.second)
             {
                 os << types::TaskId{db_problem.first, db_iteration.first} << " : [ ";
                 os << std::get<types::AppRequirements>(db_iteration.second).task_id() << " ";
@@ -106,7 +109,7 @@ public:
                 os << std::get<types::MLModelMetadata>(db_iteration.second).task_id() << " ";
                 os << std::get<types::MLModel>(db_iteration.second).task_id() << " ";
                 os << std::get<types::UserInput>(db_iteration.second).task_id() << " ";
-                os << "]"<< std::endl;
+                os << "]" << std::endl;
             }
         }
         return os;
@@ -132,7 +135,7 @@ bool TaskDB<Args...>::insert_task_data_nts(
 {
     bool ret_code = false;
 
-    if(entry_exists_nts(task_id))
+    if (entry_exists_nts(task_id))
     {
         T& db_data = std::get<T>(db_[task_id.problem_id()][task_id.iteration_id()]);
         db_data = data;
@@ -154,7 +157,7 @@ bool TaskDB<Args...>::get_task_data_nts(
 {
     bool ret_code = false;
 
-    if(entry_exists_nts(task_id))
+    if (entry_exists_nts(task_id))
     {
         T& db_data = std::get<T>(db_[task_id.problem_id()][task_id.iteration_id()]);
         data = &db_data;
@@ -170,7 +173,8 @@ bool TaskDB<Args...>::get_task_data_nts(
 
 template <typename ... Args>
 bool TaskDB<Args...>::prepare_new_entry_nts(
-        const types::TaskId& task_id, bool is_new_iteration)
+        const types::TaskId& task_id,
+        bool is_new_iteration)
 {
     bool ret_code = false;
 
@@ -208,7 +212,9 @@ bool TaskDB<Args...>::entry_exists_nts(
 }
 
 template<typename T>
-void substitute_data(const T& old_data, T& new_data)
+void substitute_data(
+        const T& old_data,
+        T& new_data)
 {
     new_data = old_data;
     new_data.task_id(old_data.task_id());
@@ -237,53 +243,64 @@ bool TaskDB<Args...>::copy_data_nts(
                 if (it_dest_iteration_id != db_[dest.problem_id()].end())
                 {
                     // copy the data
-                    for(size_t i=0; i < data_to_copy.size(); i++)
+                    for (size_t i = 0; i < data_to_copy.size(); i++)
                     {
                         switch (data_to_copy[i])
                         {
                             case NodeID::ID_APP_REQUIREMENTS:
                             {
-                                types::AppRequirements& source_db_data = std::get<types::AppRequirements>(it_source_iteration_id->second);
-                                types::AppRequirements& dest_db_data = std::get<types::AppRequirements>(it_dest_iteration_id->second);
+                                types::AppRequirements& source_db_data = std::get<types::AppRequirements>(
+                                    it_source_iteration_id->second);
+                                types::AppRequirements& dest_db_data = std::get<types::AppRequirements>(
+                                    it_dest_iteration_id->second);
                                 substitute_data(source_db_data, dest_db_data);
                                 ret_code = true;
                                 break;
                             }
                             case NodeID::ID_CARBON_FOOTPRINT:
                             {
-                                types::CO2Footprint& source_db_data = std::get<types::CO2Footprint>(it_source_iteration_id->second);
-                                types::CO2Footprint& dest_db_data = std::get<types::CO2Footprint>(it_dest_iteration_id->second);
+                                types::CO2Footprint& source_db_data = std::get<types::CO2Footprint>(
+                                    it_source_iteration_id->second);
+                                types::CO2Footprint& dest_db_data = std::get<types::CO2Footprint>(
+                                    it_dest_iteration_id->second);
                                 substitute_data(source_db_data, dest_db_data);
                                 ret_code = true;
                                 break;
                             }
                             case NodeID::ID_HW_CONSTRAINTS:
                             {
-                                types::HWConstraints& source_db_data = std::get<types::HWConstraints>(it_source_iteration_id->second);
-                                types::HWConstraints& dest_db_data = std::get<types::HWConstraints>(it_dest_iteration_id->second);
+                                types::HWConstraints& source_db_data = std::get<types::HWConstraints>(
+                                    it_source_iteration_id->second);
+                                types::HWConstraints& dest_db_data = std::get<types::HWConstraints>(
+                                    it_dest_iteration_id->second);
                                 substitute_data(source_db_data, dest_db_data);
                                 ret_code = true;
                                 break;
                             }
                             case NodeID::ID_HW_RESOURCES:
                             {
-                                types::HWResource& source_db_data = std::get<types::HWResource>(it_source_iteration_id->second);
-                                types::HWResource& dest_db_data = std::get<types::HWResource>(it_dest_iteration_id->second);
+                                types::HWResource& source_db_data = std::get<types::HWResource>(
+                                    it_source_iteration_id->second);
+                                types::HWResource& dest_db_data = std::get<types::HWResource>(
+                                    it_dest_iteration_id->second);
                                 substitute_data(source_db_data, dest_db_data);
                                 ret_code = true;
                                 break;
                             }
                             case NodeID::ID_ML_MODEL_METADATA:
                             {
-                                types::MLModelMetadata& source_db_data = std::get<types::MLModelMetadata>(it_source_iteration_id->second);
-                                types::MLModelMetadata& dest_db_data = std::get<types::MLModelMetadata>(it_dest_iteration_id->second);
+                                types::MLModelMetadata& source_db_data = std::get<types::MLModelMetadata>(
+                                    it_source_iteration_id->second);
+                                types::MLModelMetadata& dest_db_data = std::get<types::MLModelMetadata>(
+                                    it_dest_iteration_id->second);
                                 substitute_data(source_db_data, dest_db_data);
                                 ret_code = true;
                                 break;
                             }
                             case NodeID::ID_ML_MODEL:
                             {
-                                types::MLModel& source_db_data = std::get<types::MLModel>(it_source_iteration_id->second);
+                                types::MLModel& source_db_data =
+                                        std::get<types::MLModel>(it_source_iteration_id->second);
                                 types::MLModel& dest_db_data = std::get<types::MLModel>(it_dest_iteration_id->second);
                                 substitute_data(source_db_data, dest_db_data);
                                 ret_code = true;
@@ -291,8 +308,10 @@ bool TaskDB<Args...>::copy_data_nts(
                             }
                             case NodeID::ID_ORCHESTRATOR:
                             {
-                                types::UserInput& source_db_data = std::get<types::UserInput>(it_source_iteration_id->second);
-                                types::UserInput& dest_db_data = std::get<types::UserInput>(it_dest_iteration_id->second);
+                                types::UserInput& source_db_data = std::get<types::UserInput>(
+                                    it_source_iteration_id->second);
+                                types::UserInput& dest_db_data =
+                                        std::get<types::UserInput>(it_dest_iteration_id->second);
                                 substitute_data(source_db_data, dest_db_data);
                                 ret_code = true;
                                 break;
@@ -307,12 +326,14 @@ bool TaskDB<Args...>::copy_data_nts(
                 }
                 else
                 {
-                    EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to copy data to an unknown destination iteration id " << dest);
+                    EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB,
+                            "Trying to copy data to an unknown destination iteration id " << dest);
                 }
             }
             else
             {
-                EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB, "Trying to copy data to an unknown destination problem id " << dest);
+                EPROSIMA_LOG_ERROR(ORCHESTRATOR_DB,
+                        "Trying to copy data to an unknown destination problem id " << dest);
             }
 
         }

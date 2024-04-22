@@ -991,7 +991,8 @@ const TypeObject* GetMinimalTaskIdImplObject()
     mst_iteration_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     mst_iteration_id.common().member_flags().IS_KEY(false);
     mst_iteration_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_iteration_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t", false));
+    mst_iteration_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
 
 
     MD5 iteration_id_hash("iteration_id");
@@ -1083,7 +1084,8 @@ const TypeObject* GetCompleteTaskIdImplObject()
     cst_iteration_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     cst_iteration_id.common().member_flags().IS_KEY(false);
     cst_iteration_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_iteration_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t", false));
+    cst_iteration_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
 
 
     cst_iteration_id.detail().name("iteration_id");

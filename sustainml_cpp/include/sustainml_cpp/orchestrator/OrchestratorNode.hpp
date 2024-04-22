@@ -133,7 +133,8 @@ public:
      * @param [in] task_id identifier of the previous task from which to iterate
      * @note It must be called before start_task()
      */
-    std::pair<types::TaskId, types::UserInput*> prepare_new_iteration(const types::TaskId& task_id);
+    std::pair<types::TaskId, types::UserInput*> prepare_new_iteration(
+            const types::TaskId& task_id);
 
     /**
      * @brief This method triggers a new task with a previously prepared task_id and
@@ -193,7 +194,8 @@ protected:
     /**
      * @brief Publishes node baselines
      */
-    void publish_baselines(const types::TaskId& task_id);
+    void publish_baselines(
+            const types::TaskId& task_id);
 
     uint32_t domain_;
 

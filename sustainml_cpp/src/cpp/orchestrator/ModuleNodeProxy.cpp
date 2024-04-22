@@ -158,8 +158,8 @@ ModuleNodeProxy::ModuleNodeProxy(
     {
         baseline_topic_name = (common::TopicCollection::get()[common::get_topic_from_name(name_, true)].first);
         baseline_topic_ = orchestrator_->participant_->create_topic(
-        baseline_topic_name,
-        common::TopicCollection::get()[common::get_topic_from_name(name_,true)].second.c_str(), TOPIC_QOS_DEFAULT);
+            baseline_topic_name,
+            common::TopicCollection::get()[common::get_topic_from_name(name_, true)].second.c_str(), TOPIC_QOS_DEFAULT);
 
         if (baseline_topic_ == nullptr)
         {
@@ -168,9 +168,9 @@ ModuleNodeProxy::ModuleNodeProxy(
         }
 
         baseline_writer_ = orchestrator_->pub_->create_datawriter(
-        baseline_topic_,
-        DATAWRITER_QOS_DEFAULT,
-        nullptr);
+            baseline_topic_,
+            DATAWRITER_QOS_DEFAULT,
+            nullptr);
 
         if (baseline_writer_ == nullptr)
         {

@@ -400,7 +400,7 @@ TEST(OrchestratorNode, OrchestratorTaskIteration)
     tonh->prepare_expected_data(test_iteration_data);
 
     //! Prepare a new iteration based on task {1,1}
-    auto iteration_data = orchestrator.prepare_new_iteration({1,1});
+    auto iteration_data = orchestrator.prepare_new_iteration({1, 1});
 
     ASSERT_EQ(1, iteration_data.first.problem_id());
     ASSERT_EQ(2, iteration_data.first.iteration_id());
@@ -414,7 +414,8 @@ TEST(OrchestratorNode, OrchestratorTaskIteration)
     orchestrator.print_db();
 
     void* data;
-    ASSERT_EQ(RetCode_t::RETCODE_OK, orchestrator.get_task_data(iteration_data.first, NodeID::ID_CARBON_FOOTPRINT, data));
+    ASSERT_EQ(RetCode_t::RETCODE_OK,
+            orchestrator.get_task_data(iteration_data.first, NodeID::ID_CARBON_FOOTPRINT, data));
     auto carbon_iterated_data = (types::CO2Footprint*)data;
     ASSERT_EQ(1, carbon_iterated_data->task_id().problem_id());
     ASSERT_EQ(2, carbon_iterated_data->task_id().iteration_id());

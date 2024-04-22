@@ -29,7 +29,8 @@ namespace orchestrator {
 
 template<typename T>
 void ModuleNodeProxy::publish_data_for_iteration_(
-        const types::TaskId& task_id, T* iter_data)
+        const types::TaskId& task_id,
+        T* iter_data)
 {
     types::TaskId task_id_to_take_from_db(task_id);
 

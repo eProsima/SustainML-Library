@@ -43,9 +43,12 @@ TEST(BlackboxTestsCallbackProcessing, TasksCorrectlyFinishDespiteDifferentProces
     CarbonFootprintManagedNode co2_node(co2_cb);
 
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
-    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].first);
-    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::HW_RESOURCES_BASELINE].first);
-    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::CARBON_FOOTPRINT_BASELINE].first);
+    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].
+                    first);
+    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::
+                    HW_RESOURCES_BASELINE].first);
+    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::
+                    CARBON_FOOTPRINT_BASELINE].first);
 
     co2_node.start();
     hw_node.start();

@@ -138,7 +138,8 @@ protected:
      */
     template<typename T>
     void publish_data_for_iteration_(
-            const types::TaskId& task_id, T* data);
+            const types::TaskId& task_id,
+            T* data);
 
     /**
      * @brief Notifies the Orchestrator about

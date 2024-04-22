@@ -564,13 +564,16 @@ class CustomMLModelListener : public sustainml::ml_model_module::MLModelTaskList
                 std::to_string(model_metadata.task_id().iteration_id())
                 + " ONNX would go here, parsed to string");
         output.model_path("/opt/sustainml/ml_model/" + std::to_string(
-                    model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().iteration_id())
+                    model_metadata.task_id().problem_id()) + " " +
+                std::to_string(model_metadata.task_id().iteration_id())
                 + "/model.onnx");
         output.model_properties("ML model #" + std::to_string(
-                    model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().iteration_id())
+                    model_metadata.task_id().problem_id()) + " " +
+                std::to_string(model_metadata.task_id().iteration_id())
                 + " properties would go here, parsed to string");
         output.model_path("/opt/sustainml/ml_model/" + std::to_string(
-                    model_metadata.task_id().problem_id()) + " " + std::to_string(model_metadata.task_id().iteration_id())
+                    model_metadata.task_id().problem_id()) + " " +
+                std::to_string(model_metadata.task_id().iteration_id())
                 + "/properties.json");
 
         // Wait the time it takes the node to generate the output

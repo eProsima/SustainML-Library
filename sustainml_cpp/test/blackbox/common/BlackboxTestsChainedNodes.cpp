@@ -22,9 +22,12 @@ TEST(BlackboxTestsPairedNodes, MLModelMetadataWithMLNode)
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
     TaskInjector<HWConstraintsImplPubSubType> hw_cons_inj(common::TopicCollection::get()[common::HW_CONSTRAINT].first);
     TaskInjector<AppRequirementsImplPubSubType> appreq_inj(common::TopicCollection::get()[common::APP_REQUIREMENT].first);
-    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].first);
-    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::HW_RESOURCES_BASELINE].first);
-    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::CARBON_FOOTPRINT_BASELINE].first);
+    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].
+                    first);
+    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::
+                    HW_RESOURCES_BASELINE].first);
+    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::
+                    CARBON_FOOTPRINT_BASELINE].first);
 
 
     ml_md_node.start();
@@ -67,9 +70,12 @@ TEST(BlackboxTestsPairedNodes, MachineLearningWithHardwareResourcesNode)
                     first);
     TaskInjector<UserInputImplPubSubType> user_input_inj(common::TopicCollection::get()[common::USER_INPUT].
                     first);
-    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].first);
-    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::HW_RESOURCES_BASELINE].first);
-    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::CARBON_FOOTPRINT_BASELINE].first);
+    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].
+                    first);
+    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::
+                    HW_RESOURCES_BASELINE].first);
+    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::
+                    CARBON_FOOTPRINT_BASELINE].first);
 
     hw_node.start();
     ml_node.start();
@@ -142,9 +148,12 @@ TEST(BlackboxTestsPairedNodes, CompleteChain)
     MLModelManagedNode ml_node;
 
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
-    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].first);
-    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::HW_RESOURCES_BASELINE].first);
-    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::CARBON_FOOTPRINT_BASELINE].first);
+    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].
+                    first);
+    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::
+                    HW_RESOURCES_BASELINE].first);
+    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::
+                    CARBON_FOOTPRINT_BASELINE].first);
 
     co2_node.start();
     hw_cons_node.start();

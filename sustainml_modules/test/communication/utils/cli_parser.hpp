@@ -32,9 +32,9 @@ inline bool parse_cli_args(
     bool ret = true;
     int arg_count = 1;
 
-    for(int i=0;i<argc-1;i++)
+    for (int i = 0; i < argc - 1; i++)
     {
-        printf("%s ",argv[i]);
+        printf("%s ", argv[i]);
     }
 
     while (arg_count < argc)
