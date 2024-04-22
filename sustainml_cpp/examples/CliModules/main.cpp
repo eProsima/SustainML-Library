@@ -531,6 +531,9 @@ class CustomMLModelListener : public sustainml::ml_model_module::MLModelTaskList
             types::MLModelMetadata& model_metadata,
             types::AppRequirements& app_requirements,
             types::HWConstraints& hw_constraints,
+            types::MLModel& ml_model_baseline,
+            types::HWResource& hw_baseline,
+            types::CO2Footprint& carbonf_baseline,
             types::NodeStatus& status,
             types::MLModel& output) override
     {
