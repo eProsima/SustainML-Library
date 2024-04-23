@@ -17,6 +17,7 @@ import argparse
 import os
 import subprocess
 import sys
+from time import sleep
 
 class ParseOptions():
     """Parse arguments."""
@@ -279,6 +280,7 @@ def run(args):
     print(
            f'Running Subscriber - commmand:  ' + str(sub_command))
 
+    sleep(1)
     pub_procs = []
     for pub_cmd in pub_commands:
 
@@ -287,9 +289,10 @@ def run(args):
            'Running Publisher - commmand:  ' + str(pub_cmd))
 
         pub_procs.append(pub_proc)
+        sleep(1)
 
     try:
-        outs, errs = sub_proc.communicate(timeout=15)
+        outs, errs = sub_proc.communicate(timeout=20)
     except subprocess.TimeoutExpired:
         print('Subscriber process timed out, terminating...')
         sub_proc.kill()

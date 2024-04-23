@@ -43,6 +43,7 @@ class SimpleTaskPublisher : public SimpleTaskBase
             if (info.current_count_change == 1)
             {
                 std::cout << "SimpleTaskPublisher matched" << std::endl;
+                task_pub_->matched_ = true;
                 task_pub_->cv_.notify_all();
             }
             else if (info.current_count_change == -1)
@@ -80,6 +81,8 @@ private:
     std::mutex mtx_;
 
     std::condition_variable cv_;
+
+    bool matched_;
 
     SimpleTaskPublisherListener listener_;
 
