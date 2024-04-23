@@ -1,68 +1,77 @@
 version: '3'
 
 services:
-  front_end_container:
+  image_container:
+    image:
+      sustainml:v0.1.0
     build:
       context: .
-      dockerfile: SustainML.dockerfile
+      dockerfile: SustainML.Dockerfile
+    container_name: image_container
+    command: echo "Image container is running..."
+
+  front_end_container:
+    image:
+      sustainml:v0.1.0
     container_name: front_end_container
     environment:
       - node=orchestrator
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-    network_mode: "host"
+    network_mode: host
+    depends_on: [image_container]
 
   app_requirements_container:
-    build:
-      context: .
-      dockerfile: SustainML.dockerfile
+    image:
+      sustainml:v0.1.0
     container_name: app_requirements_container
     environment:
       - node=app_requirements
-    network_mode: "host"
+    network_mode: host
+    depends_on: [image_container]
 
   carbon_tracker_container:
-    build:
-      context: .
-      dockerfile: SustainML.dockerfile
+    image:
+      sustainml:v0.1.0
     container_name: carbon_tracker_container
     environment:
       - node=carbon_tracker
-    network_mode: "host"
+    network_mode: host
+    depends_on: [image_container]
 
   hw_constraints_container:
-    build:
-      context: .
-      dockerfile: SustainML.dockerfile
+    image:
+      sustainml:v0.1.0
     container_name: hw_constraints_container
     environment:
       - node=hw_constraints
-    network_mode: "host"
+    network_mode: host
+    depends_on: [image_container]
 
   hw_resources_container:
-    build:
-      context: .
-      dockerfile: SustainML.dockerfile
+    image:
+      sustainml:v0.1.0
     container_name: hw_resources_container
     environment:
       - node=hw_resources
-    network_mode: "host"
+    network_mode: host
+    depends_on: [image_container]
 
   ml_model_container:
-    build:
-      context: .
-      dockerfile: SustainML.dockerfile
+    image:
+      sustainml:v0.1.0
     container_name: ml_model_container
     environment:
       - node=ml_model
-    network_mode: "host"
+    network_mode: host
+    depends_on: [image_container]
 
   ml_model_metadata_container:
-    build:
-      context: .
-      dockerfile: SustainML.dockerfile
+    image:
+      sustainml:v0.1.0
     container_name: ml_model_metadata_container
     environment:
       - node=ml_model_metadata
-    network_mode: "host"
+    network_mode: host
+    depends_on: [image_container]
