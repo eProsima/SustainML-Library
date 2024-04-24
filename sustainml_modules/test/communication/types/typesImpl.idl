@@ -22,7 +22,7 @@ enum ErrorCode {
 struct TaskIdImpl
 {
     unsigned long problem_id;
-    unsigned long data_id;
+    unsigned long iteration_id;
 };
 
 struct NodeStatusImpl

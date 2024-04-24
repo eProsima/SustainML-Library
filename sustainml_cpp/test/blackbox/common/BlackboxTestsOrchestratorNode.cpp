@@ -254,11 +254,12 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
     void* enc_task = nullptr;
     void* hw = nullptr;
+    orchestrator.print_db();
     ASSERT_EQ(orchestrator.get_task_data({1, 1}, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id().problem_id(), 1);
-    ASSERT_EQ(orchestrator.get_task_data({2, 2}, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(orchestrator.get_task_data({2, 1}, NodeID::ID_ML_MODEL_METADATA, enc_task), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id().problem_id(), 2);
-    ASSERT_EQ(orchestrator.get_task_data({2, 2}, NodeID::ID_HW_RESOURCES, hw), RetCode_t::RETCODE_OK);
+    ASSERT_EQ(orchestrator.get_task_data({2, 1}, NodeID::ID_HW_RESOURCES, hw), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::HWResource*)hw)->task_id().problem_id(), 2);
 }
 
@@ -321,4 +322,102 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     ASSERT_EQ(status->node_status(), NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_APP_REQUIREMENTS, status);
     ASSERT_EQ(status->node_status(), NODE_IDLE);
+}
+
+TEST(OrchestratorNode, OrchestratorTaskIteration)
+{
+    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+
+    orchestrator::OrchestratorNode orchestrator(tonh);
+
+    MLModelMetadataManagedNode te_node;
+    MLModelManagedNode ml_node;
+    HWResourcesManagedNode hw_node;
+    HWConstraintsManagedNode hw_cons_node;
+    AppRequirementsManagedNode app_req_node;
+
+    CarbonFootprintCallbackSignature co2_cb = [](
+        types::MLModel&,
+        types::UserInput&,
+        types::HWResource& hardware_resources,
+        types::NodeStatus&,
+        types::CO2Footprint& carbon_footprint)
+            {
+                if (hardware_resources.task_id().problem_id() == 1 && hardware_resources.task_id().iteration_id() == 2)
+                {
+                    carbon_footprint.energy_consumption(325);
+                }
+            };
+
+    CarbonFootprintManagedNode co2_node(co2_cb);
+
+    co2_node.start();
+    hw_node.start();
+    ml_node.start();
+    te_node.start();
+    hw_cons_node.start();
+    app_req_node.start();
+
+    // Wait for all nodes to be idle
+    tonh->prepare_expected_data(nodes_ready_expected_data);
+
+    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(3)));
+
+    //! Ask for a first task
+    TestOrchestratorNodeHandle::DataCollection test_expected_data =
+    {
+        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
+        {NodeID::ID_ML_MODEL, {NODE_IDLE, 1}},
+        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 1}},
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}},
+        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 1}},
+        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 1}}
+    };
+
+    tonh->prepare_expected_data(test_expected_data);
+
+    auto task = orchestrator.prepare_new_task();
+
+    task.second->task_id(task.first);
+    task.second->problem_short_description("Test_Task0_name");
+    task.second->problem_definition("Test_Task0");
+
+    orchestrator.start_task(task.first, task.second);
+
+    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
+
+    //! Now, ask for iteration on the first task
+    TestOrchestratorNodeHandle::DataCollection test_iteration_data =
+    {
+        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 2}},
+        {NodeID::ID_ML_MODEL, {NODE_IDLE, 2}},
+        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 2}},
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 2}},
+        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 2}},
+        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 2}}
+    };
+
+    tonh->prepare_expected_data(test_iteration_data);
+
+    //! Prepare a new iteration based on task {1,1}
+    auto iteration_data = orchestrator.prepare_new_iteration({1, 1});
+
+    ASSERT_EQ(1, iteration_data.first.problem_id());
+    ASSERT_EQ(2, iteration_data.first.iteration_id());
+
+    iteration_data.second->task_id(iteration_data.first);
+
+    orchestrator.start_iteration(iteration_data.first, iteration_data.second);
+
+    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
+
+    orchestrator.print_db();
+
+    void* data;
+    ASSERT_EQ(RetCode_t::RETCODE_OK,
+            orchestrator.get_task_data(iteration_data.first, NodeID::ID_CARBON_FOOTPRINT, data));
+    auto carbon_iterated_data = (types::CO2Footprint*)data;
+    ASSERT_EQ(1, carbon_iterated_data->task_id().problem_id());
+    ASSERT_EQ(2, carbon_iterated_data->task_id().iteration_id());
+    ASSERT_GT(carbon_iterated_data->energy_consumption(), 300);
 }

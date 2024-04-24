@@ -16,7 +16,7 @@
 from sustainml_swig import MLModelTaskListener as cpp_MLModelTaskListener
 from sustainml_swig import MLModelNode as cpp_MLModelNode
 
-from sustainml_swig import MLModel, NodeStatus, MLModelMetadata, HWConstraints, AppRequirements
+from sustainml_swig import MLModel, NodeStatus, MLModelMetadata, HWConstraints, AppRequirements, HWResource, CO2Footprint
 
 class MLModelTaskListener(cpp_MLModelTaskListener):
 
@@ -34,11 +34,14 @@ class MLModelTaskListener(cpp_MLModelTaskListener):
             ml_model_metadata : MLModelMetadata,
             app_requirements : AppRequirements,
             hw_constraints : HWConstraints,
+            ml_model_baseline : MLModel,
+            hw_baseline : HWResource,
+            carbonfootprint_baseline : CO2Footprint,
             node_status : NodeStatus,
             ml_model : MLModel):
 
         """ Invoke user callback """
-        self.callback_(ml_model_metadata, app_requirements, hw_constraints, node_status, ml_model)
+        self.callback_(ml_model_metadata, app_requirements, hw_constraints, ml_model_baseline, hw_baseline, carbonfootprint_baseline, node_status, ml_model)
 
 # Proxy class to instantiate by the user
 class MLModelNode:

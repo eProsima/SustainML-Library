@@ -17,6 +17,7 @@ import argparse
 import os
 import subprocess
 import sys
+from time import sleep
 
 class ParseOptions():
     """Parse arguments."""
@@ -114,6 +115,22 @@ class ParseOptions():
             type=str,
             help='Executable name of a AppRequirements in the sustainml-wp1 directory'
         )
+        parser.add_argument(
+            '-bt',
+            '--baseline-topics',
+            nargs='+',
+            action='store',
+            required=False,
+            help='List of baseline topic names.'
+        )
+        parser.add_argument(
+            '-btt',
+            '--baseline-topic-types',
+            nargs='+',
+            action='store',
+            required=False,
+            help='List of baseline topic types.'
+        )
 
         return parser.parse_args()
 
@@ -126,7 +143,7 @@ def run(args):
 
     :return: The return code resulting. It is the number of failed processes.
     """
-    pub_command = []
+    pub_commands = []
     sub_command = []
     node_commands = []
 
@@ -143,6 +160,7 @@ def run(args):
             'PublisherSubscriber executable does not have execution permissions:'
             f'{args.pub_sub}')
 
+    pub_command = []
     pub_command.append(os.path.join(script_dir, args.pub_sub))
     sub_command.append(os.path.join(script_dir, args.pub_sub))
 
@@ -165,6 +183,8 @@ def run(args):
     if args.samples:
         pub_command.extend(['--samples', str(args.samples)])
         sub_command.extend(['--samples', str(args.samples)])
+
+    pub_commands.append(pub_command)
 
     if args.ml_metadata or args.machine_learning or args.hardware or args.co2_footprint or args.app_requirements or args.hw_constraints:
 
@@ -234,6 +254,19 @@ def run(args):
             app_reqs_command.extend([app_reqs_exec_file])
             node_commands.append(app_reqs_command)
 
+    if args.baseline_topics and args.baseline_topic_types and len(args.baseline_topics) == len(args.baseline_topic_types):
+        for i_baseline in range(0, len(args.baseline_topics)):
+            baseline_cmd = []
+            baseline_cmd.append(os.path.join(script_dir, args.pub_sub))
+            baseline_cmd.append('publisher')
+            baseline_cmd.extend(['--topic', str(args.baseline_topics[i_baseline])])
+            baseline_cmd.append(str('--') + str(args.baseline_topic_types[i_baseline]))
+            baseline_cmd.extend(['--samples', str(args.samples)])
+            pub_commands.append(baseline_cmd)
+    else:
+        print('Not provided simple task pubsub topic names.')
+        sys.exit(1)
+
     node_procs = []
     for node_cmd in node_commands:
 
@@ -247,16 +280,23 @@ def run(args):
     print(
            f'Running Subscriber - commmand:  ' + str(sub_command))
 
-    pub_proc = subprocess.Popen(pub_command)
-    print(
-        'Running Publisher - commmand:  ' + str(pub_command))
+    sleep(1)
+    pub_procs = []
+    for pub_cmd in pub_commands:
+
+        pub_proc = subprocess.Popen(pub_cmd)
+        print(
+           'Running Publisher - commmand:  ' + str(pub_cmd))
+
+        pub_procs.append(pub_proc)
+        sleep(1)
 
     try:
-        outs, errs = sub_proc.communicate(timeout=15)
+        outs, errs = sub_proc.communicate(timeout=20)
     except subprocess.TimeoutExpired:
         print('Subscriber process timed out, terminating...')
         sub_proc.kill()
-        pub_proc.kill()
+        [pub_proc.kill() for pub_proc in pub_procs]
         [node_proc.kill() for node_proc in node_procs]
         try:
             sys.exit(os.EX_SOFTWARE)
@@ -264,7 +304,7 @@ def run(args):
             sys.exit(1)
 
 
-    pub_proc.kill()
+    [pub_proc.kill() for pub_proc in pub_procs]
     sub_proc.kill()
     [node_proc.kill() for node_proc in node_procs]
     try:

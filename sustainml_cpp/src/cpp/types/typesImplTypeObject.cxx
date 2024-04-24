@@ -982,24 +982,25 @@ const TypeObject* GetMinimalTaskIdImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_problem_id);
 
-    MinimalStructMember mst_data_id;
-    mst_data_id.common().member_id(memberId++);
-    mst_data_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    mst_data_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    mst_data_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    mst_data_id.common().member_flags().IS_OPTIONAL(false);
-    mst_data_id.common().member_flags().IS_MUST_UNDERSTAND(false);
-    mst_data_id.common().member_flags().IS_KEY(false);
-    mst_data_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_data_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t", false));
+    MinimalStructMember mst_iteration_id;
+    mst_iteration_id.common().member_id(memberId++);
+    mst_iteration_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_iteration_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_iteration_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_iteration_id.common().member_flags().IS_OPTIONAL(false);
+    mst_iteration_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_iteration_id.common().member_flags().IS_KEY(false);
+    mst_iteration_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_iteration_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
 
 
-    MD5 data_id_hash("data_id");
+    MD5 iteration_id_hash("iteration_id");
     for (int i = 0; i < 4; ++i)
     {
-        mst_data_id.detail().name_hash()[i] = data_id_hash.digest[i];
+        mst_iteration_id.detail().name_hash()[i] = iteration_id_hash.digest[i];
     }
-    type_object->minimal().struct_type().member_seq().emplace_back(mst_data_id);
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_iteration_id);
 
 
     // Header
@@ -1074,21 +1075,22 @@ const TypeObject* GetCompleteTaskIdImplObject()
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_problem_id);
 
-    CompleteStructMember cst_data_id;
-    cst_data_id.common().member_id(memberId++);
-    cst_data_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    cst_data_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    cst_data_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    cst_data_id.common().member_flags().IS_OPTIONAL(false);
-    cst_data_id.common().member_flags().IS_MUST_UNDERSTAND(false);
-    cst_data_id.common().member_flags().IS_KEY(false);
-    cst_data_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_data_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t", false));
+    CompleteStructMember cst_iteration_id;
+    cst_iteration_id.common().member_id(memberId++);
+    cst_iteration_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_iteration_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_iteration_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_iteration_id.common().member_flags().IS_OPTIONAL(false);
+    cst_iteration_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_iteration_id.common().member_flags().IS_KEY(false);
+    cst_iteration_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_iteration_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
 
 
-    cst_data_id.detail().name("data_id");
+    cst_iteration_id.detail().name("iteration_id");
 
-    type_object->complete().struct_type().member_seq().emplace_back(cst_data_id);
+    type_object->complete().struct_type().member_seq().emplace_back(cst_iteration_id);
 
 
     // Header

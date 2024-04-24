@@ -71,7 +71,7 @@ struct TypeFactory
     {
         TaskIdImpl task_id_impl;
         task_id_impl.problem_id(task_id);
-        task_id_impl.data_id(task_id);
+        task_id_impl.iteration_id(1);
 
         if (ts.get_type_name() == "UserInputImpl")
         {

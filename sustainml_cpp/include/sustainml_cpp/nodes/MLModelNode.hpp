@@ -42,7 +42,7 @@ class Node;
 class Dispatcher;
 
 using MLModelCallable = core::Callable<types::MLModelMetadata, types::AppRequirements, types::HWConstraints,
-                types::NodeStatus, types::MLModel>;
+                types::MLModel, types::HWResource, types::CO2Footprint, types::NodeStatus, types::MLModel>;
 
 struct MLModelTaskListener : public MLModelCallable
 {
@@ -54,6 +54,9 @@ struct MLModelTaskListener : public MLModelCallable
             types::MLModelMetadata& model_metadata,
             types::AppRequirements& requirements,
             types::HWConstraints& constraints,
+            types::MLModel& ml_model_baseline,
+            types::HWResource& hw_baseline,
+            types::CO2Footprint& carbonf_baseline,
             types::NodeStatus& status,
             types::MLModel& output) override
     {
@@ -74,6 +77,9 @@ class MLModelNode : public ::sustainml::core::Node
         ML_MODEL_METADATA_SAMPLE,
         APP_REQUIREMENTS_SAMPLE,
         HW_CONSTRAINTS_SAMPLE,
+        ML_MODEL_BASELINE_SAMPLE,
+        HW_RESOURCE_BASELINE_SAMPLE,
+        CARBON_FOOTPRINT_BASELINE_SAMPLE,
         MAX
     };
 
@@ -121,6 +127,11 @@ private:
     std::unique_ptr<core::QueuedNodeListener<types::MLModelMetadata>> listener_model_metadata_queue_;
     std::unique_ptr<core::QueuedNodeListener<types::AppRequirements>> listener_app_requirements_queue_;
     std::unique_ptr<core::QueuedNodeListener<types::HWConstraints>> listener_hw_constraints_queue_;
+
+    // Baseline topics
+    std::unique_ptr<core::QueuedNodeListener<types::MLModel>> listener_mlmodel_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::HWResource>> listener_hw_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::CO2Footprint>> listener_carbon_footprint_queue_;
 
     std::mutex mtx_;
 

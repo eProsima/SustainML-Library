@@ -46,32 +46,32 @@ struct ModuleNodeProxyFactory
         {
             case NodeID::ID_APP_REQUIREMENTS:
             {
-                node_proxy = new AppRequirementsNodeProxy(orchestrator, db);
+                node_proxy = new AppRequirementsNodeProxy(orchestrator, db, false);
                 break;
             }
             case NodeID::ID_CARBON_FOOTPRINT:
             {
-                node_proxy = new CarbonFootprintNodeProxy(orchestrator, db);
+                node_proxy = new CarbonFootprintNodeProxy(orchestrator, db, true);
                 break;
             }
             case NodeID::ID_HW_CONSTRAINTS:
             {
-                node_proxy = new HardwareConstraintsNodeProxy(orchestrator, db);
+                node_proxy = new HardwareConstraintsNodeProxy(orchestrator, db, false);
                 break;
             }
             case NodeID::ID_HW_RESOURCES:
             {
-                node_proxy = new HardwareResourcesNodeProxy(orchestrator, db);
+                node_proxy = new HardwareResourcesNodeProxy(orchestrator, db, true);
                 break;
             }
             case NodeID::ID_ML_MODEL_METADATA:
             {
-                node_proxy = new MLModelMetadataNodeProxy(orchestrator, db);
+                node_proxy = new MLModelMetadataNodeProxy(orchestrator, db, false);
                 break;
             }
             case NodeID::ID_ML_MODEL:
             {
-                node_proxy = new MLModelProviderNodeProxy(orchestrator, db);
+                node_proxy = new MLModelProviderNodeProxy(orchestrator, db, true);
                 break;
             }
             default:

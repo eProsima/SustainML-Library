@@ -39,11 +39,13 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/chained_nodes_validator.py
 
 if (Python3_FOUND)
 
-    add_test(NAME SimpleCommunicationFourNodesChainedPython
+    add_test(NAME SimpleCommunicationSixNodesChainedPython
         COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/chained_nodes_validator.py
             -ps SimplePubSubTask
             -tp /sustainml/user_input
             -ts /sustainml/carbon_tracker/output
+            --baseline-topics /sustainml/ml_model_provider/baseline /sustainml/hw_resources/baseline /sustainml/carbon_tracker/baseline
+            --baseline-topic-types ml hw co2
             -ttp ui
             -tts co2
             --samples 20

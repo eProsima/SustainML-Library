@@ -101,7 +101,8 @@ public:
     ModuleNodeProxy(
             OrchestratorNode* orchestrator,
             std::shared_ptr<TaskDB_t> task_db,
-            const char* name);
+            const char* name,
+            bool need_to_publish_baseline);
 
     virtual ~ModuleNodeProxy();
 
@@ -116,7 +117,29 @@ public:
     void set_status(
             const types::NodeStatus&);
 
+    /**
+     * @brief Returns whether a proxy is publishing baseline data or not
+     */
+    bool publishes_baseline()
+    {
+        return publish_baseline_;
+    }
+
+    /**
+     * @brief Starts the publication of new iteration data
+     */
+    virtual void publish_data_for_iteration(
+            const types::TaskId& task_id) = 0;
+
 protected:
+
+    /**
+     * @brief Publihes iteration data
+     */
+    template<typename T>
+    void publish_data_for_iteration_(
+            const types::TaskId& task_id,
+            T* data);
 
     /**
      * @brief Notifies the Orchestrator about
@@ -135,8 +158,9 @@ protected:
      * @brief Prepare a new entry and resets task manager counter
      * to a certain task_id. This is useful in case the Orchestrator
      * is a late joiner.
+     * @warning This method is not thread safe
      */
-    void reset_and_prepare_task_id(
+    void reset_and_prepare_task_id_nts(
             const types::TaskId& task_id);
 
     /**
@@ -158,6 +182,7 @@ protected:
 
     const char* name_;
     const NodeID node_id_;
+    bool publish_baseline_;
 
     OrchestratorNode* orchestrator_;
 
@@ -166,9 +191,11 @@ protected:
 
     TypeSupport type_;
     Topic* node_output_topic_;
+    Topic* baseline_topic_;
     ContentFilteredTopic* filtered_status_topic_;
     DataReader* node_output_datareader_;
     DataReader* status_datareader_;
+    DataWriter* baseline_writer_;
 
     ModuleNodeProxyListener listener_;
     ModuleNodeProxyStatusListener status_listener_;
@@ -185,11 +212,15 @@ public:
 
     AppRequirementsNodeProxy(
             OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
 
     virtual ~AppRequirementsNodeProxy()
     {
     }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
 
 protected:
 
@@ -221,11 +252,15 @@ public:
 
     CarbonFootprintNodeProxy(
             OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
 
     virtual ~CarbonFootprintNodeProxy()
     {
     }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
 
 protected:
 
@@ -257,11 +292,15 @@ public:
 
     HardwareConstraintsNodeProxy(
             OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
 
     virtual ~HardwareConstraintsNodeProxy()
     {
     }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
 
 protected:
 
@@ -293,11 +332,15 @@ public:
 
     HardwareResourcesNodeProxy(
             OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
 
     virtual ~HardwareResourcesNodeProxy()
     {
     }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
 
 protected:
 
@@ -329,11 +372,15 @@ public:
 
     MLModelMetadataNodeProxy(
             OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
 
     virtual ~MLModelMetadataNodeProxy()
     {
     }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
 
 protected:
 
@@ -365,11 +412,15 @@ public:
 
     MLModelProviderNodeProxy(
             OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
 
     virtual ~MLModelProviderNodeProxy()
     {
     }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
 
 protected:
 

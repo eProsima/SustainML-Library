@@ -101,7 +101,7 @@ public:
      */
     eProsima_user_DllExport TaskId(
             uint32_t problem_id,
-            uint32_t data_id);
+            uint32_t iteration_id);
 
     /*!
      * @brief Default destructor.
@@ -177,23 +177,23 @@ public:
 
 
     /*!
-     * @brief This function sets a value in member data_id
-     * @param _data_id New value for member data_id
+     * @brief This function sets a value in member iteration_id
+     * @param _iteration_id New value for member iteration_id
      */
-    eProsima_user_DllExport void data_id(
-            uint32_t _data_id);
+    eProsima_user_DllExport void iteration_id(
+            uint32_t _iteration_id);
 
     /*!
-     * @brief This function returns the value of member data_id
-     * @return Value of member data_id
+     * @brief This function returns the value of member iteration_id
+     * @return Value of member iteration_id
      */
-    eProsima_user_DllExport uint32_t data_id() const;
+    eProsima_user_DllExport uint32_t iteration_id() const;
 
     /*!
-     * @brief This function returns a reference to member data_id
-     * @return Reference to member data_id
+     * @brief This function returns a reference to member iteration_id
+     * @return Reference to member iteration_id
      */
-    eProsima_user_DllExport uint32_t& data_id();
+    eProsima_user_DllExport uint32_t& iteration_id();
 
     /*!
      * @brief This function overloads the operator << for the TaskId type.
@@ -205,7 +205,7 @@ public:
 private:
 
     uint32_t problem_id_;
-    uint32_t data_id_;
+    uint32_t iteration_id_;
 };
 
 /**
