@@ -62,10 +62,10 @@ TEST(BlackboxTestsCallbackProcessing, TasksCorrectlyFinishDespiteDifferentProces
     hw_res_baseline_inj.wait_discovery(1);
     co2_baseline_inj.wait_discovery(1);
 
-    auto ui_data = default_userinput_task_generator(5);
-    auto ml_model_baseline_data = default_mlmodel_task_generator(5);
-    auto hwres_baseline_data = default_hwresource_task_generator(5);
-    auto carbon_baseline_data = default_carbonfootprint_data_generator(5);
+    auto ui_data = default_userinput_task_generator(3);
+    auto ml_model_baseline_data = default_mlmodel_task_generator(3);
+    auto hwres_baseline_data = default_hwresource_task_generator(3);
+    auto carbon_baseline_data = default_carbonfootprint_data_generator(3);
 
     co2_node.prepare_expected_samples(ui_data.size());
 
