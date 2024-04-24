@@ -31,11 +31,23 @@ def signal_handler(sig, frame):
     running = False
 
 # User Callback implementation
-# Inputs: encoded_task
+# Inputs: ml_model_metadata, app_requirements, hw_constraints, ml_model_baseline, hw_baseline, carbonfootprint_baseline
 # Outputs: node_status, ml_model
-def task_callback(encoded_task, node_status, ml_model):
-    for keyword in encoded_task.keywords():
-        print("Received keyword " + keyword)
+def task_callback(
+        ml_model_metadata,
+        app_requirements,
+        hw_constraints,
+        ml_model_baseline,
+        hw_baseline,
+        carbonfootprint_baseline,
+        node_status,
+        ml_model):
+
+    for metadata in ml_model_metadata.ml_model_metadata():
+        print("Received metadata " + metadata)
+    for requirement in app_requirements.app_requirements():
+        print("Received app requirement " + requirement)
+    print ("Received HW constraints: Max memory footprint: " + str(hw_constraints.max_memory_footprint()) + " MB")
     print (node_status.node_status())
     ml_model.model("MODEL in ONXX format")
 

@@ -31,14 +31,12 @@ char dummy;
 #include <mutex>
 #include <utility>
 #include <sstream>
+#include <fastdds/rtps/common/CdrSerialization.hpp>
 #include <fastrtps/rtps/common/SerializedPayload.h>
 #include <fastrtps/utils/md5.h>
 #include <fastrtps/types/TypeObjectFactory.h>
 #include <fastrtps/types/TypeNamesGenerator.h>
 #include <fastrtps/types/AnnotationParameterValue.h>
-#include <fastcdr/FastBuffer.h>
-#include <fastcdr/Cdr.h>
-#include <fastcdr/CdrSizeCalculator.hpp>
 
 using namespace eprosima::fastrtps::rtps;
 
@@ -66,6 +64,12 @@ void registertypesImplTypes()
                 GetErrorCodeObject(false));
 
 
+                factory->add_type_object("TaskIdImpl", GetTaskIdImplIdentifier(true),
+                GetTaskIdImplObject(true));
+                factory->add_type_object("TaskIdImpl", GetTaskIdImplIdentifier(false),
+                GetTaskIdImplObject(false));
+
+
                 factory->add_type_object("NodeStatusImpl", GetNodeStatusImplIdentifier(true),
                 GetNodeStatusImplObject(true));
                 factory->add_type_object("NodeStatusImpl", GetNodeStatusImplIdentifier(false),
@@ -90,22 +94,28 @@ void registertypesImplTypes()
                 GetNodeControlImplObject(false));
 
 
-                factory->add_type_object("GeoLocationImpl", GetGeoLocationImplIdentifier(true),
-                GetGeoLocationImplObject(true));
-                factory->add_type_object("GeoLocationImpl", GetGeoLocationImplIdentifier(false),
-                GetGeoLocationImplObject(false));
-
-
                 factory->add_type_object("UserInputImpl", GetUserInputImplIdentifier(true),
                 GetUserInputImplObject(true));
                 factory->add_type_object("UserInputImpl", GetUserInputImplIdentifier(false),
                 GetUserInputImplObject(false));
 
 
-                factory->add_type_object("EncodedTaskImpl", GetEncodedTaskImplIdentifier(true),
-                GetEncodedTaskImplObject(true));
-                factory->add_type_object("EncodedTaskImpl", GetEncodedTaskImplIdentifier(false),
-                GetEncodedTaskImplObject(false));
+                factory->add_type_object("MLModelMetadataImpl", GetMLModelMetadataImplIdentifier(true),
+                GetMLModelMetadataImplObject(true));
+                factory->add_type_object("MLModelMetadataImpl", GetMLModelMetadataImplIdentifier(false),
+                GetMLModelMetadataImplObject(false));
+
+
+                factory->add_type_object("AppRequirementsImpl", GetAppRequirementsImplIdentifier(true),
+                GetAppRequirementsImplObject(true));
+                factory->add_type_object("AppRequirementsImpl", GetAppRequirementsImplIdentifier(false),
+                GetAppRequirementsImplObject(false));
+
+
+                factory->add_type_object("HWConstraintsImpl", GetHWConstraintsImplIdentifier(true),
+                GetHWConstraintsImplObject(true));
+                factory->add_type_object("HWConstraintsImpl", GetHWConstraintsImplIdentifier(false),
+                GetHWConstraintsImplObject(false));
 
 
                 factory->add_type_object("MLModelImpl", GetMLModelImplIdentifier(true),
@@ -195,21 +205,21 @@ const TypeObject* GetMinimalStatusObject()
     }
     type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_NODE_INACTIVE);
 
-    MinimalEnumeratedLiteral mel_NODE_INITIALIZING;
-    mel_NODE_INITIALIZING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_NODE_INITIALIZING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_NODE_INITIALIZING.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_NODE_INITIALIZING.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_NODE_INITIALIZING.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_NODE_INITIALIZING.common().flags().IS_KEY(false); // Doesn't apply
-    mel_NODE_INITIALIZING.common().flags().IS_DEFAULT(false);
-    mel_NODE_INITIALIZING.common().value(value++);
-    MD5 NODE_INITIALIZING_hash("NODE_INITIALIZING");
+    MinimalEnumeratedLiteral mel_NODE_ERROR;
+    mel_NODE_ERROR.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_NODE_ERROR.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_NODE_ERROR.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_NODE_ERROR.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_NODE_ERROR.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_NODE_ERROR.common().flags().IS_KEY(false); // Doesn't apply
+    mel_NODE_ERROR.common().flags().IS_DEFAULT(false);
+    mel_NODE_ERROR.common().value(value++);
+    MD5 NODE_ERROR_hash("NODE_ERROR");
     for (int i = 0; i < 4; ++i)
     {
-        mel_NODE_INITIALIZING.detail().name_hash()[i] = NODE_INITIALIZING_hash.digest[i];
+        mel_NODE_ERROR.detail().name_hash()[i] = NODE_ERROR_hash.digest[i];
     }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_NODE_INITIALIZING);
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_NODE_ERROR);
 
     MinimalEnumeratedLiteral mel_NODE_IDLE;
     mel_NODE_IDLE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
@@ -227,6 +237,22 @@ const TypeObject* GetMinimalStatusObject()
     }
     type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_NODE_IDLE);
 
+    MinimalEnumeratedLiteral mel_NODE_INITIALIZING;
+    mel_NODE_INITIALIZING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_NODE_INITIALIZING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_NODE_INITIALIZING.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_NODE_INITIALIZING.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_NODE_INITIALIZING.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_NODE_INITIALIZING.common().flags().IS_KEY(false); // Doesn't apply
+    mel_NODE_INITIALIZING.common().flags().IS_DEFAULT(false);
+    mel_NODE_INITIALIZING.common().value(value++);
+    MD5 NODE_INITIALIZING_hash("NODE_INITIALIZING");
+    for (int i = 0; i < 4; ++i)
+    {
+        mel_NODE_INITIALIZING.detail().name_hash()[i] = NODE_INITIALIZING_hash.digest[i];
+    }
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_NODE_INITIALIZING);
+
     MinimalEnumeratedLiteral mel_NODE_RUNNING;
     mel_NODE_RUNNING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
     mel_NODE_RUNNING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
@@ -242,22 +268,6 @@ const TypeObject* GetMinimalStatusObject()
         mel_NODE_RUNNING.detail().name_hash()[i] = NODE_RUNNING_hash.digest[i];
     }
     type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_NODE_RUNNING);
-
-    MinimalEnumeratedLiteral mel_NODE_ERROR;
-    mel_NODE_ERROR.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_NODE_ERROR.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_NODE_ERROR.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_NODE_ERROR.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_NODE_ERROR.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_NODE_ERROR.common().flags().IS_KEY(false); // Doesn't apply
-    mel_NODE_ERROR.common().flags().IS_DEFAULT(false);
-    mel_NODE_ERROR.common().value(value++);
-    MD5 NODE_ERROR_hash("NODE_ERROR");
-    for (int i = 0; i < 4; ++i)
-    {
-        mel_NODE_ERROR.detail().name_hash()[i] = NODE_ERROR_hash.digest[i];
-    }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_NODE_ERROR);
 
     MinimalEnumeratedLiteral mel_NODE_TERMINATING;
     mel_NODE_TERMINATING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
@@ -279,19 +289,23 @@ const TypeObject* GetMinimalStatusObject()
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().enumerated_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -341,18 +355,18 @@ const TypeObject* GetCompleteStatusObject()
 
     type_object->complete().enumerated_type().literal_seq().emplace_back(cel_NODE_INACTIVE);
 
-    CompleteEnumeratedLiteral cel_NODE_INITIALIZING;
-    cel_NODE_INITIALIZING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_NODE_INITIALIZING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_NODE_INITIALIZING.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_NODE_INITIALIZING.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_NODE_INITIALIZING.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_NODE_INITIALIZING.common().flags().IS_KEY(false); // Doesn't apply
-    cel_NODE_INITIALIZING.common().flags().IS_DEFAULT(false);
-    cel_NODE_INITIALIZING.common().value(value++);
-    cel_NODE_INITIALIZING.detail().name("NODE_INITIALIZING");
+    CompleteEnumeratedLiteral cel_NODE_ERROR;
+    cel_NODE_ERROR.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_NODE_ERROR.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_NODE_ERROR.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_NODE_ERROR.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_NODE_ERROR.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_NODE_ERROR.common().flags().IS_KEY(false); // Doesn't apply
+    cel_NODE_ERROR.common().flags().IS_DEFAULT(false);
+    cel_NODE_ERROR.common().value(value++);
+    cel_NODE_ERROR.detail().name("NODE_ERROR");
 
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_NODE_INITIALIZING);
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_NODE_ERROR);
 
     CompleteEnumeratedLiteral cel_NODE_IDLE;
     cel_NODE_IDLE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
@@ -367,6 +381,19 @@ const TypeObject* GetCompleteStatusObject()
 
     type_object->complete().enumerated_type().literal_seq().emplace_back(cel_NODE_IDLE);
 
+    CompleteEnumeratedLiteral cel_NODE_INITIALIZING;
+    cel_NODE_INITIALIZING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_NODE_INITIALIZING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_NODE_INITIALIZING.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_NODE_INITIALIZING.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_NODE_INITIALIZING.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_NODE_INITIALIZING.common().flags().IS_KEY(false); // Doesn't apply
+    cel_NODE_INITIALIZING.common().flags().IS_DEFAULT(false);
+    cel_NODE_INITIALIZING.common().value(value++);
+    cel_NODE_INITIALIZING.detail().name("NODE_INITIALIZING");
+
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_NODE_INITIALIZING);
+
     CompleteEnumeratedLiteral cel_NODE_RUNNING;
     cel_NODE_RUNNING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
     cel_NODE_RUNNING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
@@ -379,19 +406,6 @@ const TypeObject* GetCompleteStatusObject()
     cel_NODE_RUNNING.detail().name("NODE_RUNNING");
 
     type_object->complete().enumerated_type().literal_seq().emplace_back(cel_NODE_RUNNING);
-
-    CompleteEnumeratedLiteral cel_NODE_ERROR;
-    cel_NODE_ERROR.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_NODE_ERROR.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_NODE_ERROR.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_NODE_ERROR.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_NODE_ERROR.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_NODE_ERROR.common().flags().IS_KEY(false); // Doesn't apply
-    cel_NODE_ERROR.common().flags().IS_DEFAULT(false);
-    cel_NODE_ERROR.common().value(value++);
-    cel_NODE_ERROR.detail().name("NODE_ERROR");
-
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_NODE_ERROR);
 
     CompleteEnumeratedLiteral cel_NODE_TERMINATING;
     cel_NODE_TERMINATING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
@@ -410,7 +424,7 @@ const TypeObject* GetCompleteStatusObject()
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().enumerated_type(),
@@ -418,12 +432,16 @@ const TypeObject* GetCompleteStatusObject()
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -504,22 +522,6 @@ const TypeObject* GetMinimalTaskStatusObject()
     }
     type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_TASK_WAITING);
 
-    MinimalEnumeratedLiteral mel_TASK_RUNNING;
-    mel_TASK_RUNNING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_TASK_RUNNING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_TASK_RUNNING.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_TASK_RUNNING.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_TASK_RUNNING.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_TASK_RUNNING.common().flags().IS_KEY(false); // Doesn't apply
-    mel_TASK_RUNNING.common().flags().IS_DEFAULT(false);
-    mel_TASK_RUNNING.common().value(value++);
-    MD5 TASK_RUNNING_hash("TASK_RUNNING");
-    for (int i = 0; i < 4; ++i)
-    {
-        mel_TASK_RUNNING.detail().name_hash()[i] = TASK_RUNNING_hash.digest[i];
-    }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_TASK_RUNNING);
-
     MinimalEnumeratedLiteral mel_TASK_ERROR;
     mel_TASK_ERROR.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
     mel_TASK_ERROR.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
@@ -535,6 +537,22 @@ const TypeObject* GetMinimalTaskStatusObject()
         mel_TASK_ERROR.detail().name_hash()[i] = TASK_ERROR_hash.digest[i];
     }
     type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_TASK_ERROR);
+
+    MinimalEnumeratedLiteral mel_TASK_RUNNING;
+    mel_TASK_RUNNING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_TASK_RUNNING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_TASK_RUNNING.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_TASK_RUNNING.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_TASK_RUNNING.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_TASK_RUNNING.common().flags().IS_KEY(false); // Doesn't apply
+    mel_TASK_RUNNING.common().flags().IS_DEFAULT(false);
+    mel_TASK_RUNNING.common().value(value++);
+    MD5 TASK_RUNNING_hash("TASK_RUNNING");
+    for (int i = 0; i < 4; ++i)
+    {
+        mel_TASK_RUNNING.detail().name_hash()[i] = TASK_RUNNING_hash.digest[i];
+    }
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_TASK_RUNNING);
 
     MinimalEnumeratedLiteral mel_TASK_SUCCEEDED;
     mel_TASK_SUCCEEDED.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
@@ -556,19 +574,23 @@ const TypeObject* GetMinimalTaskStatusObject()
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().enumerated_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -618,19 +640,6 @@ const TypeObject* GetCompleteTaskStatusObject()
 
     type_object->complete().enumerated_type().literal_seq().emplace_back(cel_TASK_WAITING);
 
-    CompleteEnumeratedLiteral cel_TASK_RUNNING;
-    cel_TASK_RUNNING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_TASK_RUNNING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_TASK_RUNNING.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_TASK_RUNNING.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_TASK_RUNNING.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_TASK_RUNNING.common().flags().IS_KEY(false); // Doesn't apply
-    cel_TASK_RUNNING.common().flags().IS_DEFAULT(false);
-    cel_TASK_RUNNING.common().value(value++);
-    cel_TASK_RUNNING.detail().name("TASK_RUNNING");
-
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_TASK_RUNNING);
-
     CompleteEnumeratedLiteral cel_TASK_ERROR;
     cel_TASK_ERROR.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
     cel_TASK_ERROR.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
@@ -643,6 +652,19 @@ const TypeObject* GetCompleteTaskStatusObject()
     cel_TASK_ERROR.detail().name("TASK_ERROR");
 
     type_object->complete().enumerated_type().literal_seq().emplace_back(cel_TASK_ERROR);
+
+    CompleteEnumeratedLiteral cel_TASK_RUNNING;
+    cel_TASK_RUNNING.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_TASK_RUNNING.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_TASK_RUNNING.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_TASK_RUNNING.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_TASK_RUNNING.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_TASK_RUNNING.common().flags().IS_KEY(false); // Doesn't apply
+    cel_TASK_RUNNING.common().flags().IS_DEFAULT(false);
+    cel_TASK_RUNNING.common().value(value++);
+    cel_TASK_RUNNING.detail().name("TASK_RUNNING");
+
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_TASK_RUNNING);
 
     CompleteEnumeratedLiteral cel_TASK_SUCCEEDED;
     cel_TASK_SUCCEEDED.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
@@ -661,7 +683,7 @@ const TypeObject* GetCompleteTaskStatusObject()
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().enumerated_type(),
@@ -669,12 +691,16 @@ const TypeObject* GetCompleteTaskStatusObject()
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -775,19 +801,23 @@ const TypeObject* GetMinimalErrorCodeObject()
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().enumerated_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -854,7 +884,7 @@ const TypeObject* GetCompleteErrorCodeObject()
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().enumerated_type(),
@@ -862,12 +892,16 @@ const TypeObject* GetCompleteErrorCodeObject()
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -879,6 +913,220 @@ const TypeObject* GetCompleteErrorCodeObject()
     TypeObjectFactory::get_instance()->add_type_object("ErrorCode", &identifier, type_object);
     delete type_object;
     return TypeObjectFactory::get_instance()->get_type_object("ErrorCode", true);
+}
+
+const TypeIdentifier* GetTaskIdImplIdentifier(
+        bool complete)
+{
+    const TypeIdentifier* c_identifier = TypeObjectFactory::get_instance()->get_type_identifier("TaskIdImpl", complete);
+    if (c_identifier != nullptr && (!complete || c_identifier->_d() == EK_COMPLETE))
+    {
+        return c_identifier;
+    }
+
+    GetTaskIdImplObject(complete); // Generated inside
+    return TypeObjectFactory::get_instance()->get_type_identifier("TaskIdImpl", complete);
+}
+
+const TypeObject* GetTaskIdImplObject(
+        bool complete)
+{
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("TaskIdImpl", complete);
+    if (c_type_object != nullptr)
+    {
+        return c_type_object;
+    }
+    else if (complete)
+    {
+        return GetCompleteTaskIdImplObject();
+    }
+    //else
+    return GetMinimalTaskIdImplObject();
+}
+
+const TypeObject* GetMinimalTaskIdImplObject()
+{
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("TaskIdImpl", false);
+    if (c_type_object != nullptr)
+    {
+        return c_type_object;
+    }
+
+    TypeObject* type_object = new TypeObject();
+    type_object->_d(EK_MINIMAL);
+    type_object->minimal()._d(TK_STRUCTURE);
+
+    type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
+    type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
+    type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
+    type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
+
+    MemberId memberId = 0;
+    MinimalStructMember mst_problem_id;
+    mst_problem_id.common().member_id(memberId++);
+    mst_problem_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_problem_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_problem_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_problem_id.common().member_flags().IS_OPTIONAL(false);
+    mst_problem_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_problem_id.common().member_flags().IS_KEY(false);
+    mst_problem_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_problem_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t", false));
+
+
+    MD5 problem_id_hash("problem_id");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_problem_id.detail().name_hash()[i] = problem_id_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_problem_id);
+
+    MinimalStructMember mst_iteration_id;
+    mst_iteration_id.common().member_id(memberId++);
+    mst_iteration_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_iteration_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_iteration_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_iteration_id.common().member_flags().IS_OPTIONAL(false);
+    mst_iteration_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_iteration_id.common().member_flags().IS_KEY(false);
+    mst_iteration_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_iteration_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
+
+
+    MD5 iteration_id_hash("iteration_id");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_iteration_id.detail().name_hash()[i] = iteration_id_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_iteration_id);
+
+
+    // Header
+    // TODO Inheritance
+    //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
+    //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
+    TypeIdentifier identifier;
+    identifier._d(EK_MINIMAL);
+
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
+    size_t current_alignment {0};
+    SerializedPayload_t payload(static_cast<uint32_t>(
+                calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
+    eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
+    // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
+    eprosima::fastcdr::Cdr ser(
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
+    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+
+    ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
+    payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
+    MD5 objectHash;
+    objectHash.update((char*)payload.data, payload.length);
+    objectHash.finalize();
+    for (int i = 0; i < 14; ++i)
+    {
+        identifier.equivalence_hash()[i] = objectHash.digest[i];
+    }
+
+    TypeObjectFactory::get_instance()->add_type_object("TaskIdImpl", &identifier, type_object);
+    delete type_object;
+    return TypeObjectFactory::get_instance()->get_type_object("TaskIdImpl", false);
+}
+
+const TypeObject* GetCompleteTaskIdImplObject()
+{
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("TaskIdImpl", true);
+    if (c_type_object != nullptr && c_type_object->_d() == EK_COMPLETE)
+    {
+        return c_type_object;
+    }
+
+    TypeObject* type_object = new TypeObject();
+    type_object->_d(EK_COMPLETE);
+    type_object->complete()._d(TK_STRUCTURE);
+
+    type_object->complete().struct_type().struct_flags().IS_FINAL(false);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
+    type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
+    type_object->complete().struct_type().struct_flags().IS_NESTED(false);
+    type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
+
+    MemberId memberId = 0;
+    CompleteStructMember cst_problem_id;
+    cst_problem_id.common().member_id(memberId++);
+    cst_problem_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_problem_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_problem_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_problem_id.common().member_flags().IS_OPTIONAL(false);
+    cst_problem_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_problem_id.common().member_flags().IS_KEY(false);
+    cst_problem_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_problem_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t", false));
+
+
+    cst_problem_id.detail().name("problem_id");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_problem_id);
+
+    CompleteStructMember cst_iteration_id;
+    cst_iteration_id.common().member_id(memberId++);
+    cst_iteration_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_iteration_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_iteration_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_iteration_id.common().member_flags().IS_OPTIONAL(false);
+    cst_iteration_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_iteration_id.common().member_flags().IS_KEY(false);
+    cst_iteration_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_iteration_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
+
+
+    cst_iteration_id.detail().name("iteration_id");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_iteration_id);
+
+
+    // Header
+    type_object->complete().struct_type().header().detail().type_name("TaskIdImpl");
+    // TODO inheritance
+    TypeIdentifier identifier;
+    identifier._d(EK_COMPLETE);
+
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
+    size_t current_alignment {0};
+    SerializedPayload_t payload(static_cast<uint32_t>(
+                calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
+    eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
+    // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
+    eprosima::fastcdr::Cdr ser(
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
+    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+
+    ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
+    payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
+    MD5 objectHash;
+    objectHash.update((char*)payload.data, payload.length);
+    objectHash.finalize();
+    for (int i = 0; i < 14; ++i)
+    {
+        identifier.equivalence_hash()[i] = objectHash.digest[i];
+    }
+
+    TypeObjectFactory::get_instance()->add_type_object("TaskIdImpl", &identifier, type_object);
+    delete type_object;
+    return TypeObjectFactory::get_instance()->get_type_object("TaskIdImpl", true);
 }
 
 const TypeIdentifier* GetNodeStatusImplIdentifier(
@@ -924,7 +1172,7 @@ const TypeObject* GetMinimalNodeStatusImplObject()
     type_object->minimal()._d(TK_STRUCTURE);
 
     type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
-    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
     type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -984,25 +1232,6 @@ const TypeObject* GetMinimalNodeStatusImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_error_code);
 
-    MinimalStructMember mst_task_id;
-    mst_task_id.common().member_id(memberId++);
-    mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    mst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    mst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    mst_task_id.common().member_flags().IS_OPTIONAL(false);
-    mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
-    mst_task_id.common().member_flags().IS_KEY(true);
-    mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
-
-    MD5 task_id_hash("task_id");
-    for (int i = 0; i < 4; ++i)
-    {
-        mst_task_id.detail().name_hash()[i] = task_id_hash.digest[i];
-    }
-    type_object->minimal().struct_type().member_seq().emplace_back(mst_task_id);
-
     MinimalStructMember mst_error_description;
     mst_error_description.common().member_id(memberId++);
     mst_error_description.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -1040,28 +1269,49 @@ const TypeObject* GetMinimalNodeStatusImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_node_name);
 
+    MinimalStructMember mst_task_id;
+    mst_task_id.common().member_id(memberId++);
+    mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_task_id.common().member_flags().IS_OPTIONAL(false);
+    mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_task_id.common().member_flags().IS_KEY(true);
+    mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(false));
+
+    MD5 task_id_hash("task_id");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_task_id.detail().name_hash()[i] = task_id_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_task_id);
+
 
     // Header
     // TODO Inheritance
     //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
     //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
-
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -1088,7 +1338,7 @@ const TypeObject* GetCompleteNodeStatusImplObject()
     type_object->complete()._d(TK_STRUCTURE);
 
     type_object->complete().struct_type().struct_flags().IS_FINAL(false);
-    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->complete().struct_type().struct_flags().IS_NESTED(false);
     type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -1139,44 +1389,6 @@ const TypeObject* GetCompleteNodeStatusImplObject()
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_error_code);
 
-    CompleteStructMember cst_task_id;
-    cst_task_id.common().member_id(memberId++);
-    cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    cst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    cst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    cst_task_id.common().member_flags().IS_OPTIONAL(false);
-    cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
-    cst_task_id.common().member_flags().IS_KEY(true);
-    cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
-
-    cst_task_id.detail().name("task_id");
-
-    {
-        AppliedAnnotation ann;
-        //ann.annotation_typeid(GetKeyIdentifier(true));
-        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("Key"));
-        {
-            AppliedAnnotationParameter annParam;
-            MD5 message_hash("value");
-            for (int i = 0; i < 4; ++i)
-            {
-                annParam.paramname_hash()[i] = message_hash.digest[i];
-            }
-            AnnotationParameterValue paramValue;
-            paramValue._d(TK_BOOLEAN);
-            paramValue.from_string("true");
-            annParam.value(paramValue);
-            ann.param_seq().push_back(annParam);
-        }
-
-        cst_task_id.detail().ann_custom().push_back(ann);
-    }
-
-
-    type_object->complete().struct_type().member_seq().emplace_back(cst_task_id);
-
     CompleteStructMember cst_error_description;
     cst_error_description.common().member_id(memberId++);
     cst_error_description.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -1208,8 +1420,8 @@ const TypeObject* GetCompleteNodeStatusImplObject()
 
     {
         AppliedAnnotation ann;
-        //ann.annotation_typeid(GetKeyIdentifier(true));
-        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("Key"));
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
         {
             AppliedAnnotationParameter annParam;
             MD5 message_hash("value");
@@ -1230,27 +1442,67 @@ const TypeObject* GetCompleteNodeStatusImplObject()
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_node_name);
 
+    CompleteStructMember cst_task_id;
+    cst_task_id.common().member_id(memberId++);
+    cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_task_id.common().member_flags().IS_OPTIONAL(false);
+    cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_task_id.common().member_flags().IS_KEY(true);
+    cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(true));
+
+    cst_task_id.detail().name("task_id");
+
+    {
+        AppliedAnnotation ann;
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
+        {
+            AppliedAnnotationParameter annParam;
+            MD5 message_hash("value");
+            for (int i = 0; i < 4; ++i)
+            {
+                annParam.paramname_hash()[i] = message_hash.digest[i];
+            }
+            AnnotationParameterValue paramValue;
+            paramValue._d(TK_BOOLEAN);
+            paramValue.from_string("true");
+            annParam.value(paramValue);
+            ann.param_seq().push_back(annParam);
+        }
+
+        cst_task_id.detail().ann_custom().push_back(ann);
+    }
+
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_task_id);
+
 
     // Header
     type_object->complete().struct_type().header().detail().type_name("NodeStatusImpl");
     // TODO inheritance
-
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -1331,87 +1583,91 @@ const TypeObject* GetMinimalCmdNodeObject()
     }
     type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_NO_CMD_NODE);
 
-    MinimalEnumeratedLiteral mel_CMD_START_NODE;
-    mel_CMD_START_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_CMD_START_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_CMD_START_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_CMD_START_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_CMD_START_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_CMD_START_NODE.common().flags().IS_KEY(false); // Doesn't apply
-    mel_CMD_START_NODE.common().flags().IS_DEFAULT(false);
-    mel_CMD_START_NODE.common().value(value++);
-    MD5 CMD_START_NODE_hash("CMD_START_NODE");
+    MinimalEnumeratedLiteral mel_START_NODE;
+    mel_START_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_START_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_START_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_START_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_START_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_START_NODE.common().flags().IS_KEY(false); // Doesn't apply
+    mel_START_NODE.common().flags().IS_DEFAULT(false);
+    mel_START_NODE.common().value(value++);
+    MD5 START_NODE_hash("START_NODE");
     for (int i = 0; i < 4; ++i)
     {
-        mel_CMD_START_NODE.detail().name_hash()[i] = CMD_START_NODE_hash.digest[i];
+        mel_START_NODE.detail().name_hash()[i] = START_NODE_hash.digest[i];
     }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_CMD_START_NODE);
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_START_NODE);
 
-    MinimalEnumeratedLiteral mel_CMD_STOP_NODE;
-    mel_CMD_STOP_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_CMD_STOP_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_CMD_STOP_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_CMD_STOP_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_CMD_STOP_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_CMD_STOP_NODE.common().flags().IS_KEY(false); // Doesn't apply
-    mel_CMD_STOP_NODE.common().flags().IS_DEFAULT(false);
-    mel_CMD_STOP_NODE.common().value(value++);
-    MD5 CMD_STOP_NODE_hash("CMD_STOP_NODE");
+    MinimalEnumeratedLiteral mel_STOP_NODE;
+    mel_STOP_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_STOP_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_STOP_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_STOP_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_STOP_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_STOP_NODE.common().flags().IS_KEY(false); // Doesn't apply
+    mel_STOP_NODE.common().flags().IS_DEFAULT(false);
+    mel_STOP_NODE.common().value(value++);
+    MD5 STOP_NODE_hash("STOP_NODE");
     for (int i = 0; i < 4; ++i)
     {
-        mel_CMD_STOP_NODE.detail().name_hash()[i] = CMD_STOP_NODE_hash.digest[i];
+        mel_STOP_NODE.detail().name_hash()[i] = STOP_NODE_hash.digest[i];
     }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_CMD_STOP_NODE);
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_STOP_NODE);
 
-    MinimalEnumeratedLiteral mel_CMD_RESET_NODE;
-    mel_CMD_RESET_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_CMD_RESET_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_CMD_RESET_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_CMD_RESET_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_CMD_RESET_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_CMD_RESET_NODE.common().flags().IS_KEY(false); // Doesn't apply
-    mel_CMD_RESET_NODE.common().flags().IS_DEFAULT(false);
-    mel_CMD_RESET_NODE.common().value(value++);
-    MD5 CMD_RESET_NODE_hash("CMD_RESET_NODE");
+    MinimalEnumeratedLiteral mel_RESET_NODE;
+    mel_RESET_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_RESET_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_RESET_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_RESET_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_RESET_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_RESET_NODE.common().flags().IS_KEY(false); // Doesn't apply
+    mel_RESET_NODE.common().flags().IS_DEFAULT(false);
+    mel_RESET_NODE.common().value(value++);
+    MD5 RESET_NODE_hash("RESET_NODE");
     for (int i = 0; i < 4; ++i)
     {
-        mel_CMD_RESET_NODE.detail().name_hash()[i] = CMD_RESET_NODE_hash.digest[i];
+        mel_RESET_NODE.detail().name_hash()[i] = RESET_NODE_hash.digest[i];
     }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_CMD_RESET_NODE);
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_RESET_NODE);
 
-    MinimalEnumeratedLiteral mel_CMD_TERMINATE_NODE;
-    mel_CMD_TERMINATE_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_CMD_TERMINATE_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_CMD_TERMINATE_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_CMD_TERMINATE_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_CMD_TERMINATE_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_CMD_TERMINATE_NODE.common().flags().IS_KEY(false); // Doesn't apply
-    mel_CMD_TERMINATE_NODE.common().flags().IS_DEFAULT(false);
-    mel_CMD_TERMINATE_NODE.common().value(value++);
-    MD5 CMD_TERMINATE_NODE_hash("CMD_TERMINATE_NODE");
+    MinimalEnumeratedLiteral mel_TERMINATE_NODE;
+    mel_TERMINATE_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_TERMINATE_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_TERMINATE_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_TERMINATE_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_TERMINATE_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_TERMINATE_NODE.common().flags().IS_KEY(false); // Doesn't apply
+    mel_TERMINATE_NODE.common().flags().IS_DEFAULT(false);
+    mel_TERMINATE_NODE.common().value(value++);
+    MD5 TERMINATE_NODE_hash("TERMINATE_NODE");
     for (int i = 0; i < 4; ++i)
     {
-        mel_CMD_TERMINATE_NODE.detail().name_hash()[i] = CMD_TERMINATE_NODE_hash.digest[i];
+        mel_TERMINATE_NODE.detail().name_hash()[i] = TERMINATE_NODE_hash.digest[i];
     }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_CMD_TERMINATE_NODE);
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_TERMINATE_NODE);
 
 
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().enumerated_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -1461,63 +1717,63 @@ const TypeObject* GetCompleteCmdNodeObject()
 
     type_object->complete().enumerated_type().literal_seq().emplace_back(cel_NO_CMD_NODE);
 
-    CompleteEnumeratedLiteral cel_CMD_START_NODE;
-    cel_CMD_START_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_CMD_START_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_CMD_START_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_CMD_START_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_CMD_START_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_CMD_START_NODE.common().flags().IS_KEY(false); // Doesn't apply
-    cel_CMD_START_NODE.common().flags().IS_DEFAULT(false);
-    cel_CMD_START_NODE.common().value(value++);
-    cel_CMD_START_NODE.detail().name("CMD_START_NODE");
+    CompleteEnumeratedLiteral cel_START_NODE;
+    cel_START_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_START_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_START_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_START_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_START_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_START_NODE.common().flags().IS_KEY(false); // Doesn't apply
+    cel_START_NODE.common().flags().IS_DEFAULT(false);
+    cel_START_NODE.common().value(value++);
+    cel_START_NODE.detail().name("START_NODE");
 
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_CMD_START_NODE);
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_START_NODE);
 
-    CompleteEnumeratedLiteral cel_CMD_STOP_NODE;
-    cel_CMD_STOP_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_CMD_STOP_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_CMD_STOP_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_CMD_STOP_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_CMD_STOP_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_CMD_STOP_NODE.common().flags().IS_KEY(false); // Doesn't apply
-    cel_CMD_STOP_NODE.common().flags().IS_DEFAULT(false);
-    cel_CMD_STOP_NODE.common().value(value++);
-    cel_CMD_STOP_NODE.detail().name("CMD_STOP_NODE");
+    CompleteEnumeratedLiteral cel_STOP_NODE;
+    cel_STOP_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_STOP_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_STOP_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_STOP_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_STOP_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_STOP_NODE.common().flags().IS_KEY(false); // Doesn't apply
+    cel_STOP_NODE.common().flags().IS_DEFAULT(false);
+    cel_STOP_NODE.common().value(value++);
+    cel_STOP_NODE.detail().name("STOP_NODE");
 
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_CMD_STOP_NODE);
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_STOP_NODE);
 
-    CompleteEnumeratedLiteral cel_CMD_RESET_NODE;
-    cel_CMD_RESET_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_CMD_RESET_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_CMD_RESET_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_CMD_RESET_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_CMD_RESET_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_CMD_RESET_NODE.common().flags().IS_KEY(false); // Doesn't apply
-    cel_CMD_RESET_NODE.common().flags().IS_DEFAULT(false);
-    cel_CMD_RESET_NODE.common().value(value++);
-    cel_CMD_RESET_NODE.detail().name("CMD_RESET_NODE");
+    CompleteEnumeratedLiteral cel_RESET_NODE;
+    cel_RESET_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_RESET_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_RESET_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_RESET_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_RESET_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_RESET_NODE.common().flags().IS_KEY(false); // Doesn't apply
+    cel_RESET_NODE.common().flags().IS_DEFAULT(false);
+    cel_RESET_NODE.common().value(value++);
+    cel_RESET_NODE.detail().name("RESET_NODE");
 
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_CMD_RESET_NODE);
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_RESET_NODE);
 
-    CompleteEnumeratedLiteral cel_CMD_TERMINATE_NODE;
-    cel_CMD_TERMINATE_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_CMD_TERMINATE_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_CMD_TERMINATE_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_CMD_TERMINATE_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_CMD_TERMINATE_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_CMD_TERMINATE_NODE.common().flags().IS_KEY(false); // Doesn't apply
-    cel_CMD_TERMINATE_NODE.common().flags().IS_DEFAULT(false);
-    cel_CMD_TERMINATE_NODE.common().value(value++);
-    cel_CMD_TERMINATE_NODE.detail().name("CMD_TERMINATE_NODE");
+    CompleteEnumeratedLiteral cel_TERMINATE_NODE;
+    cel_TERMINATE_NODE.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_TERMINATE_NODE.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_TERMINATE_NODE.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_TERMINATE_NODE.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_TERMINATE_NODE.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_TERMINATE_NODE.common().flags().IS_KEY(false); // Doesn't apply
+    cel_TERMINATE_NODE.common().flags().IS_DEFAULT(false);
+    cel_TERMINATE_NODE.common().value(value++);
+    cel_TERMINATE_NODE.detail().name("TERMINATE_NODE");
 
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_CMD_TERMINATE_NODE);
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_TERMINATE_NODE);
 
 
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().enumerated_type(),
@@ -1525,12 +1781,16 @@ const TypeObject* GetCompleteCmdNodeObject()
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -1611,87 +1871,91 @@ const TypeObject* GetMinimalCmdTaskObject()
     }
     type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_NO_CMD_TASK);
 
-    MinimalEnumeratedLiteral mel_CMD_STOP_TASK;
-    mel_CMD_STOP_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_CMD_STOP_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_CMD_STOP_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_CMD_STOP_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_CMD_STOP_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_CMD_STOP_TASK.common().flags().IS_KEY(false); // Doesn't apply
-    mel_CMD_STOP_TASK.common().flags().IS_DEFAULT(false);
-    mel_CMD_STOP_TASK.common().value(value++);
-    MD5 CMD_STOP_TASK_hash("CMD_STOP_TASK");
+    MinimalEnumeratedLiteral mel_STOP_TASK;
+    mel_STOP_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_STOP_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_STOP_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_STOP_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_STOP_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_STOP_TASK.common().flags().IS_KEY(false); // Doesn't apply
+    mel_STOP_TASK.common().flags().IS_DEFAULT(false);
+    mel_STOP_TASK.common().value(value++);
+    MD5 STOP_TASK_hash("STOP_TASK");
     for (int i = 0; i < 4; ++i)
     {
-        mel_CMD_STOP_TASK.detail().name_hash()[i] = CMD_STOP_TASK_hash.digest[i];
+        mel_STOP_TASK.detail().name_hash()[i] = STOP_TASK_hash.digest[i];
     }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_CMD_STOP_TASK);
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_STOP_TASK);
 
-    MinimalEnumeratedLiteral mel_CMD_RESET_TASK;
-    mel_CMD_RESET_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_CMD_RESET_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_CMD_RESET_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_CMD_RESET_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_CMD_RESET_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_CMD_RESET_TASK.common().flags().IS_KEY(false); // Doesn't apply
-    mel_CMD_RESET_TASK.common().flags().IS_DEFAULT(false);
-    mel_CMD_RESET_TASK.common().value(value++);
-    MD5 CMD_RESET_TASK_hash("CMD_RESET_TASK");
+    MinimalEnumeratedLiteral mel_RESET_TASK;
+    mel_RESET_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_RESET_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_RESET_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_RESET_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_RESET_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_RESET_TASK.common().flags().IS_KEY(false); // Doesn't apply
+    mel_RESET_TASK.common().flags().IS_DEFAULT(false);
+    mel_RESET_TASK.common().value(value++);
+    MD5 RESET_TASK_hash("RESET_TASK");
     for (int i = 0; i < 4; ++i)
     {
-        mel_CMD_RESET_TASK.detail().name_hash()[i] = CMD_RESET_TASK_hash.digest[i];
+        mel_RESET_TASK.detail().name_hash()[i] = RESET_TASK_hash.digest[i];
     }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_CMD_RESET_TASK);
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_RESET_TASK);
 
-    MinimalEnumeratedLiteral mel_CMD_PREEMPT_TASK;
-    mel_CMD_PREEMPT_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_CMD_PREEMPT_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_CMD_PREEMPT_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_CMD_PREEMPT_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_CMD_PREEMPT_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_CMD_PREEMPT_TASK.common().flags().IS_KEY(false); // Doesn't apply
-    mel_CMD_PREEMPT_TASK.common().flags().IS_DEFAULT(false);
-    mel_CMD_PREEMPT_TASK.common().value(value++);
-    MD5 CMD_PREEMPT_TASK_hash("CMD_PREEMPT_TASK");
+    MinimalEnumeratedLiteral mel_PREEMPT_TASK;
+    mel_PREEMPT_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_PREEMPT_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_PREEMPT_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_PREEMPT_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_PREEMPT_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_PREEMPT_TASK.common().flags().IS_KEY(false); // Doesn't apply
+    mel_PREEMPT_TASK.common().flags().IS_DEFAULT(false);
+    mel_PREEMPT_TASK.common().value(value++);
+    MD5 PREEMPT_TASK_hash("PREEMPT_TASK");
     for (int i = 0; i < 4; ++i)
     {
-        mel_CMD_PREEMPT_TASK.detail().name_hash()[i] = CMD_PREEMPT_TASK_hash.digest[i];
+        mel_PREEMPT_TASK.detail().name_hash()[i] = PREEMPT_TASK_hash.digest[i];
     }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_CMD_PREEMPT_TASK);
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_PREEMPT_TASK);
 
-    MinimalEnumeratedLiteral mel_CMD_TERMINATE_TASK;
-    mel_CMD_TERMINATE_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    mel_CMD_TERMINATE_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    mel_CMD_TERMINATE_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    mel_CMD_TERMINATE_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    mel_CMD_TERMINATE_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    mel_CMD_TERMINATE_TASK.common().flags().IS_KEY(false); // Doesn't apply
-    mel_CMD_TERMINATE_TASK.common().flags().IS_DEFAULT(false);
-    mel_CMD_TERMINATE_TASK.common().value(value++);
-    MD5 CMD_TERMINATE_TASK_hash("CMD_TERMINATE_TASK");
+    MinimalEnumeratedLiteral mel_TERMINATE_TASK;
+    mel_TERMINATE_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    mel_TERMINATE_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    mel_TERMINATE_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    mel_TERMINATE_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    mel_TERMINATE_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    mel_TERMINATE_TASK.common().flags().IS_KEY(false); // Doesn't apply
+    mel_TERMINATE_TASK.common().flags().IS_DEFAULT(false);
+    mel_TERMINATE_TASK.common().value(value++);
+    MD5 TERMINATE_TASK_hash("TERMINATE_TASK");
     for (int i = 0; i < 4; ++i)
     {
-        mel_CMD_TERMINATE_TASK.detail().name_hash()[i] = CMD_TERMINATE_TASK_hash.digest[i];
+        mel_TERMINATE_TASK.detail().name_hash()[i] = TERMINATE_TASK_hash.digest[i];
     }
-    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_CMD_TERMINATE_TASK);
+    type_object->minimal().enumerated_type().literal_seq().emplace_back(mel_TERMINATE_TASK);
 
 
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().enumerated_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -1741,63 +2005,63 @@ const TypeObject* GetCompleteCmdTaskObject()
 
     type_object->complete().enumerated_type().literal_seq().emplace_back(cel_NO_CMD_TASK);
 
-    CompleteEnumeratedLiteral cel_CMD_STOP_TASK;
-    cel_CMD_STOP_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_CMD_STOP_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_CMD_STOP_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_CMD_STOP_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_CMD_STOP_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_CMD_STOP_TASK.common().flags().IS_KEY(false); // Doesn't apply
-    cel_CMD_STOP_TASK.common().flags().IS_DEFAULT(false);
-    cel_CMD_STOP_TASK.common().value(value++);
-    cel_CMD_STOP_TASK.detail().name("CMD_STOP_TASK");
+    CompleteEnumeratedLiteral cel_STOP_TASK;
+    cel_STOP_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_STOP_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_STOP_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_STOP_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_STOP_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_STOP_TASK.common().flags().IS_KEY(false); // Doesn't apply
+    cel_STOP_TASK.common().flags().IS_DEFAULT(false);
+    cel_STOP_TASK.common().value(value++);
+    cel_STOP_TASK.detail().name("STOP_TASK");
 
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_CMD_STOP_TASK);
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_STOP_TASK);
 
-    CompleteEnumeratedLiteral cel_CMD_RESET_TASK;
-    cel_CMD_RESET_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_CMD_RESET_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_CMD_RESET_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_CMD_RESET_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_CMD_RESET_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_CMD_RESET_TASK.common().flags().IS_KEY(false); // Doesn't apply
-    cel_CMD_RESET_TASK.common().flags().IS_DEFAULT(false);
-    cel_CMD_RESET_TASK.common().value(value++);
-    cel_CMD_RESET_TASK.detail().name("CMD_RESET_TASK");
+    CompleteEnumeratedLiteral cel_RESET_TASK;
+    cel_RESET_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_RESET_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_RESET_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_RESET_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_RESET_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_RESET_TASK.common().flags().IS_KEY(false); // Doesn't apply
+    cel_RESET_TASK.common().flags().IS_DEFAULT(false);
+    cel_RESET_TASK.common().value(value++);
+    cel_RESET_TASK.detail().name("RESET_TASK");
 
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_CMD_RESET_TASK);
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_RESET_TASK);
 
-    CompleteEnumeratedLiteral cel_CMD_PREEMPT_TASK;
-    cel_CMD_PREEMPT_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_CMD_PREEMPT_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_CMD_PREEMPT_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_CMD_PREEMPT_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_CMD_PREEMPT_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_CMD_PREEMPT_TASK.common().flags().IS_KEY(false); // Doesn't apply
-    cel_CMD_PREEMPT_TASK.common().flags().IS_DEFAULT(false);
-    cel_CMD_PREEMPT_TASK.common().value(value++);
-    cel_CMD_PREEMPT_TASK.detail().name("CMD_PREEMPT_TASK");
+    CompleteEnumeratedLiteral cel_PREEMPT_TASK;
+    cel_PREEMPT_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_PREEMPT_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_PREEMPT_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_PREEMPT_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_PREEMPT_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_PREEMPT_TASK.common().flags().IS_KEY(false); // Doesn't apply
+    cel_PREEMPT_TASK.common().flags().IS_DEFAULT(false);
+    cel_PREEMPT_TASK.common().value(value++);
+    cel_PREEMPT_TASK.detail().name("PREEMPT_TASK");
 
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_CMD_PREEMPT_TASK);
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_PREEMPT_TASK);
 
-    CompleteEnumeratedLiteral cel_CMD_TERMINATE_TASK;
-    cel_CMD_TERMINATE_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
-    cel_CMD_TERMINATE_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
-    cel_CMD_TERMINATE_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
-    cel_CMD_TERMINATE_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
-    cel_CMD_TERMINATE_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
-    cel_CMD_TERMINATE_TASK.common().flags().IS_KEY(false); // Doesn't apply
-    cel_CMD_TERMINATE_TASK.common().flags().IS_DEFAULT(false);
-    cel_CMD_TERMINATE_TASK.common().value(value++);
-    cel_CMD_TERMINATE_TASK.detail().name("CMD_TERMINATE_TASK");
+    CompleteEnumeratedLiteral cel_TERMINATE_TASK;
+    cel_TERMINATE_TASK.common().flags().TRY_CONSTRUCT1(false); // Doesn't apply
+    cel_TERMINATE_TASK.common().flags().TRY_CONSTRUCT2(false); // Doesn't apply
+    cel_TERMINATE_TASK.common().flags().IS_EXTERNAL(false); // Doesn't apply
+    cel_TERMINATE_TASK.common().flags().IS_OPTIONAL(false); // Doesn't apply
+    cel_TERMINATE_TASK.common().flags().IS_MUST_UNDERSTAND(false); // Doesn't apply
+    cel_TERMINATE_TASK.common().flags().IS_KEY(false); // Doesn't apply
+    cel_TERMINATE_TASK.common().flags().IS_DEFAULT(false);
+    cel_TERMINATE_TASK.common().value(value++);
+    cel_TERMINATE_TASK.detail().name("TERMINATE_TASK");
 
-    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_CMD_TERMINATE_TASK);
+    type_object->complete().enumerated_type().literal_seq().emplace_back(cel_TERMINATE_TASK);
 
 
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().enumerated_type(),
@@ -1805,12 +2069,16 @@ const TypeObject* GetCompleteCmdTaskObject()
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -1867,7 +2135,7 @@ const TypeObject* GetMinimalNodeControlImplObject()
     type_object->minimal()._d(TK_STRUCTURE);
 
     type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
-    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
     type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -1927,25 +2195,6 @@ const TypeObject* GetMinimalNodeControlImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_target_node);
 
-    MinimalStructMember mst_task_id;
-    mst_task_id.common().member_id(memberId++);
-    mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    mst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    mst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    mst_task_id.common().member_flags().IS_OPTIONAL(false);
-    mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
-    mst_task_id.common().member_flags().IS_KEY(false);
-    mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
-
-    MD5 task_id_hash("task_id");
-    for (int i = 0; i < 4; ++i)
-    {
-        mst_task_id.detail().name_hash()[i] = task_id_hash.digest[i];
-    }
-    type_object->minimal().struct_type().member_seq().emplace_back(mst_task_id);
-
     MinimalStructMember mst_source_node;
     mst_source_node.common().member_id(memberId++);
     mst_source_node.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -1964,28 +2213,49 @@ const TypeObject* GetMinimalNodeControlImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_source_node);
 
+    MinimalStructMember mst_task_id;
+    mst_task_id.common().member_id(memberId++);
+    mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_task_id.common().member_flags().IS_OPTIONAL(false);
+    mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_task_id.common().member_flags().IS_KEY(true);
+    mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(false));
+
+    MD5 task_id_hash("task_id");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_task_id.detail().name_hash()[i] = task_id_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_task_id);
+
 
     // Header
     // TODO Inheritance
     //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
     //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
-
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -2012,7 +2282,7 @@ const TypeObject* GetCompleteNodeControlImplObject()
     type_object->complete()._d(TK_STRUCTURE);
 
     type_object->complete().struct_type().struct_flags().IS_FINAL(false);
-    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->complete().struct_type().struct_flags().IS_NESTED(false);
     type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -2063,22 +2333,6 @@ const TypeObject* GetCompleteNodeControlImplObject()
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_target_node);
 
-    CompleteStructMember cst_task_id;
-    cst_task_id.common().member_id(memberId++);
-    cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    cst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    cst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    cst_task_id.common().member_flags().IS_OPTIONAL(false);
-    cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
-    cst_task_id.common().member_flags().IS_KEY(false);
-    cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
-
-    cst_task_id.detail().name("task_id");
-
-    type_object->complete().struct_type().member_seq().emplace_back(cst_task_id);
-
     CompleteStructMember cst_source_node;
     cst_source_node.common().member_id(memberId++);
     cst_source_node.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -2094,8 +2348,8 @@ const TypeObject* GetCompleteNodeControlImplObject()
 
     {
         AppliedAnnotation ann;
-        //ann.annotation_typeid(GetKeyIdentifier(true));
-        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("Key"));
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
         {
             AppliedAnnotationParameter annParam;
             MD5 message_hash("value");
@@ -2116,27 +2370,67 @@ const TypeObject* GetCompleteNodeControlImplObject()
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_source_node);
 
+    CompleteStructMember cst_task_id;
+    cst_task_id.common().member_id(memberId++);
+    cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_task_id.common().member_flags().IS_OPTIONAL(false);
+    cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_task_id.common().member_flags().IS_KEY(true);
+    cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(true));
+
+    cst_task_id.detail().name("task_id");
+
+    {
+        AppliedAnnotation ann;
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
+        {
+            AppliedAnnotationParameter annParam;
+            MD5 message_hash("value");
+            for (int i = 0; i < 4; ++i)
+            {
+                annParam.paramname_hash()[i] = message_hash.digest[i];
+            }
+            AnnotationParameterValue paramValue;
+            paramValue._d(TK_BOOLEAN);
+            paramValue.from_string("true");
+            annParam.value(paramValue);
+            ann.param_seq().push_back(annParam);
+        }
+
+        cst_task_id.detail().ann_custom().push_back(ann);
+    }
+
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_task_id);
+
 
     // Header
     type_object->complete().struct_type().header().detail().type_name("NodeControlImpl");
     // TODO inheritance
-
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -2148,209 +2442,6 @@ const TypeObject* GetCompleteNodeControlImplObject()
     TypeObjectFactory::get_instance()->add_type_object("NodeControlImpl", &identifier, type_object);
     delete type_object;
     return TypeObjectFactory::get_instance()->get_type_object("NodeControlImpl", true);
-}
-
-const TypeIdentifier* GetGeoLocationImplIdentifier(
-        bool complete)
-{
-    const TypeIdentifier* c_identifier = TypeObjectFactory::get_instance()->get_type_identifier("GeoLocationImpl",
-                    complete);
-    if (c_identifier != nullptr && (!complete || c_identifier->_d() == EK_COMPLETE))
-    {
-        return c_identifier;
-    }
-
-    GetGeoLocationImplObject(complete); // Generated inside
-    return TypeObjectFactory::get_instance()->get_type_identifier("GeoLocationImpl", complete);
-}
-
-const TypeObject* GetGeoLocationImplObject(
-        bool complete)
-{
-    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("GeoLocationImpl", complete);
-    if (c_type_object != nullptr)
-    {
-        return c_type_object;
-    }
-    else if (complete)
-    {
-        return GetCompleteGeoLocationImplObject();
-    }
-    //else
-    return GetMinimalGeoLocationImplObject();
-}
-
-const TypeObject* GetMinimalGeoLocationImplObject()
-{
-    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("GeoLocationImpl", false);
-    if (c_type_object != nullptr)
-    {
-        return c_type_object;
-    }
-
-    TypeObject* type_object = new TypeObject();
-    type_object->_d(EK_MINIMAL);
-    type_object->minimal()._d(TK_STRUCTURE);
-
-    type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
-    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(true);
-    type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
-    type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
-    type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
-
-    MemberId memberId = 0;
-    MinimalStructMember mst_continent;
-    mst_continent.common().member_id(memberId++);
-    mst_continent.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    mst_continent.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    mst_continent.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    mst_continent.common().member_flags().IS_OPTIONAL(false);
-    mst_continent.common().member_flags().IS_MUST_UNDERSTAND(false);
-    mst_continent.common().member_flags().IS_KEY(false);
-    mst_continent.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_continent.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255, false));
-
-    MD5 continent_hash("continent");
-    for (int i = 0; i < 4; ++i)
-    {
-        mst_continent.detail().name_hash()[i] = continent_hash.digest[i];
-    }
-    type_object->minimal().struct_type().member_seq().emplace_back(mst_continent);
-
-    MinimalStructMember mst_region;
-    mst_region.common().member_id(memberId++);
-    mst_region.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    mst_region.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    mst_region.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    mst_region.common().member_flags().IS_OPTIONAL(false);
-    mst_region.common().member_flags().IS_MUST_UNDERSTAND(false);
-    mst_region.common().member_flags().IS_KEY(false);
-    mst_region.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_region.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255, false));
-
-    MD5 region_hash("region");
-    for (int i = 0; i < 4; ++i)
-    {
-        mst_region.detail().name_hash()[i] = region_hash.digest[i];
-    }
-    type_object->minimal().struct_type().member_seq().emplace_back(mst_region);
-
-
-    // Header
-    // TODO Inheritance
-    //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
-    //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
-
-    TypeIdentifier identifier;
-    identifier._d(EK_MINIMAL);
-
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
-    size_t current_alignment {0};
-    SerializedPayload_t payload(static_cast<uint32_t>(
-                calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
-    eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
-    // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
-    eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
-    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
-
-    ser << *type_object;
-    payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
-    MD5 objectHash;
-    objectHash.update((char*)payload.data, payload.length);
-    objectHash.finalize();
-    for (int i = 0; i < 14; ++i)
-    {
-        identifier.equivalence_hash()[i] = objectHash.digest[i];
-    }
-
-    TypeObjectFactory::get_instance()->add_type_object("GeoLocationImpl", &identifier, type_object);
-    delete type_object;
-    return TypeObjectFactory::get_instance()->get_type_object("GeoLocationImpl", false);
-}
-
-const TypeObject* GetCompleteGeoLocationImplObject()
-{
-    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("GeoLocationImpl", true);
-    if (c_type_object != nullptr && c_type_object->_d() == EK_COMPLETE)
-    {
-        return c_type_object;
-    }
-
-    TypeObject* type_object = new TypeObject();
-    type_object->_d(EK_COMPLETE);
-    type_object->complete()._d(TK_STRUCTURE);
-
-    type_object->complete().struct_type().struct_flags().IS_FINAL(false);
-    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(true);
-    type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
-    type_object->complete().struct_type().struct_flags().IS_NESTED(false);
-    type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
-
-    MemberId memberId = 0;
-    CompleteStructMember cst_continent;
-    cst_continent.common().member_id(memberId++);
-    cst_continent.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    cst_continent.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    cst_continent.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    cst_continent.common().member_flags().IS_OPTIONAL(false);
-    cst_continent.common().member_flags().IS_MUST_UNDERSTAND(false);
-    cst_continent.common().member_flags().IS_KEY(false);
-    cst_continent.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_continent.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255, false));
-
-    cst_continent.detail().name("continent");
-
-    type_object->complete().struct_type().member_seq().emplace_back(cst_continent);
-
-    CompleteStructMember cst_region;
-    cst_region.common().member_id(memberId++);
-    cst_region.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    cst_region.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    cst_region.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    cst_region.common().member_flags().IS_OPTIONAL(false);
-    cst_region.common().member_flags().IS_MUST_UNDERSTAND(false);
-    cst_region.common().member_flags().IS_KEY(false);
-    cst_region.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_region.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255, false));
-
-    cst_region.detail().name("region");
-
-    type_object->complete().struct_type().member_seq().emplace_back(cst_region);
-
-
-    // Header
-    type_object->complete().struct_type().header().detail().type_name("GeoLocationImpl");
-    // TODO inheritance
-
-    TypeIdentifier identifier;
-    identifier._d(EK_COMPLETE);
-
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
-    size_t current_alignment {0};
-    SerializedPayload_t payload(static_cast<uint32_t>(
-                calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
-    eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
-    // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
-    eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
-    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
-
-    ser << *type_object;
-    payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
-    MD5 objectHash;
-    objectHash.update((char*)payload.data, payload.length);
-    objectHash.finalize();
-    for (int i = 0; i < 14; ++i)
-    {
-        identifier.equivalence_hash()[i] = objectHash.digest[i];
-    }
-
-    TypeObjectFactory::get_instance()->add_type_object("GeoLocationImpl", &identifier, type_object);
-    delete type_object;
-    return TypeObjectFactory::get_instance()->get_type_object("GeoLocationImpl", true);
 }
 
 const TypeIdentifier* GetUserInputImplIdentifier(
@@ -2396,48 +2487,283 @@ const TypeObject* GetMinimalUserInputImplObject()
     type_object->minimal()._d(TK_STRUCTURE);
 
     type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
-    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
     type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
 
     MemberId memberId = 0;
-    MinimalStructMember mst_problem_description;
-    mst_problem_description.common().member_id(memberId++);
-    mst_problem_description.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    mst_problem_description.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    mst_problem_description.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    mst_problem_description.common().member_flags().IS_OPTIONAL(false);
-    mst_problem_description.common().member_flags().IS_MUST_UNDERSTAND(false);
-    mst_problem_description.common().member_flags().IS_KEY(false);
-    mst_problem_description.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_problem_description.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
+    MinimalStructMember mst_modality;
+    mst_modality.common().member_id(memberId++);
+    mst_modality.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_modality.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_modality.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_modality.common().member_flags().IS_OPTIONAL(false);
+    mst_modality.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_modality.common().member_flags().IS_KEY(false);
+    mst_modality.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_modality.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255, false));
+
+    MD5 modality_hash("modality");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_modality.detail().name_hash()[i] = modality_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_modality);
+
+    MinimalStructMember mst_problem_short_description;
+    mst_problem_short_description.common().member_id(memberId++);
+    mst_problem_short_description.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_problem_short_description.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_problem_short_description.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_problem_short_description.common().member_flags().IS_OPTIONAL(false);
+    mst_problem_short_description.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_problem_short_description.common().member_flags().IS_KEY(false);
+    mst_problem_short_description.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_problem_short_description.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
             false));
 
-    MD5 problem_description_hash("problem_description");
+    MD5 problem_short_description_hash("problem_short_description");
     for (int i = 0; i < 4; ++i)
     {
-        mst_problem_description.detail().name_hash()[i] = problem_description_hash.digest[i];
+        mst_problem_short_description.detail().name_hash()[i] = problem_short_description_hash.digest[i];
     }
-    type_object->minimal().struct_type().member_seq().emplace_back(mst_problem_description);
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_problem_short_description);
 
-    MinimalStructMember mst_geo_location;
-    mst_geo_location.common().member_id(memberId++);
-    mst_geo_location.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    mst_geo_location.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    mst_geo_location.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    mst_geo_location.common().member_flags().IS_OPTIONAL(false);
-    mst_geo_location.common().member_flags().IS_MUST_UNDERSTAND(false);
-    mst_geo_location.common().member_flags().IS_KEY(false);
-    mst_geo_location.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_geo_location.common().member_type_id(*GetGeoLocationImplIdentifier(false));
+    MinimalStructMember mst_problem_definition;
+    mst_problem_definition.common().member_id(memberId++);
+    mst_problem_definition.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_problem_definition.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_problem_definition.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_problem_definition.common().member_flags().IS_OPTIONAL(false);
+    mst_problem_definition.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_problem_definition.common().member_flags().IS_KEY(false);
+    mst_problem_definition.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_problem_definition.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
+            false));
 
-    MD5 geo_location_hash("geo_location");
+    MD5 problem_definition_hash("problem_definition");
     for (int i = 0; i < 4; ++i)
     {
-        mst_geo_location.detail().name_hash()[i] = geo_location_hash.digest[i];
+        mst_problem_definition.detail().name_hash()[i] = problem_definition_hash.digest[i];
     }
-    type_object->minimal().struct_type().member_seq().emplace_back(mst_geo_location);
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_problem_definition);
+
+    MinimalStructMember mst_inputs;
+    mst_inputs.common().member_id(memberId++);
+    mst_inputs.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_inputs.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_inputs.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_inputs.common().member_flags().IS_OPTIONAL(false);
+    mst_inputs.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_inputs.common().member_flags().IS_KEY(false);
+    mst_inputs.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_inputs.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(TypeNamesGenerator::
+                    get_string_type_name(255, false), 100, false));
+
+    MD5 inputs_hash("inputs");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_inputs.detail().name_hash()[i] = inputs_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_inputs);
+
+    MinimalStructMember mst_outputs;
+    mst_outputs.common().member_id(memberId++);
+    mst_outputs.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_outputs.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_outputs.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_outputs.common().member_flags().IS_OPTIONAL(false);
+    mst_outputs.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_outputs.common().member_flags().IS_KEY(false);
+    mst_outputs.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_outputs.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(TypeNamesGenerator::
+                    get_string_type_name(255, false), 100, false));
+
+    MD5 outputs_hash("outputs");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_outputs.detail().name_hash()[i] = outputs_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_outputs);
+
+    MinimalStructMember mst_minimum_samples;
+    mst_minimum_samples.common().member_id(memberId++);
+    mst_minimum_samples.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_minimum_samples.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_minimum_samples.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_minimum_samples.common().member_flags().IS_OPTIONAL(false);
+    mst_minimum_samples.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_minimum_samples.common().member_flags().IS_KEY(false);
+    mst_minimum_samples.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_minimum_samples.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
+
+
+    MD5 minimum_samples_hash("minimum_samples");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_minimum_samples.detail().name_hash()[i] = minimum_samples_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_minimum_samples);
+
+    MinimalStructMember mst_maximum_samples;
+    mst_maximum_samples.common().member_id(memberId++);
+    mst_maximum_samples.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_maximum_samples.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_maximum_samples.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_maximum_samples.common().member_flags().IS_OPTIONAL(false);
+    mst_maximum_samples.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_maximum_samples.common().member_flags().IS_KEY(false);
+    mst_maximum_samples.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_maximum_samples.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
+
+
+    MD5 maximum_samples_hash("maximum_samples");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_maximum_samples.detail().name_hash()[i] = maximum_samples_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_maximum_samples);
+
+    MinimalStructMember mst_optimize_carbon_footprint_manual;
+    mst_optimize_carbon_footprint_manual.common().member_id(memberId++);
+    mst_optimize_carbon_footprint_manual.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_optimize_carbon_footprint_manual.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_optimize_carbon_footprint_manual.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_optimize_carbon_footprint_manual.common().member_flags().IS_OPTIONAL(false);
+    mst_optimize_carbon_footprint_manual.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_optimize_carbon_footprint_manual.common().member_flags().IS_KEY(false);
+    mst_optimize_carbon_footprint_manual.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_optimize_carbon_footprint_manual.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier(
+                "bool",
+                false));
+
+
+    MD5 optimize_carbon_footprint_manual_hash("optimize_carbon_footprint_manual");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_optimize_carbon_footprint_manual.detail().name_hash()[i] = optimize_carbon_footprint_manual_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_optimize_carbon_footprint_manual);
+
+    MinimalStructMember mst_previous_iteration;
+    mst_previous_iteration.common().member_id(memberId++);
+    mst_previous_iteration.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_previous_iteration.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_previous_iteration.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_previous_iteration.common().member_flags().IS_OPTIONAL(false);
+    mst_previous_iteration.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_previous_iteration.common().member_flags().IS_KEY(false);
+    mst_previous_iteration.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_previous_iteration.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t",
+            false));
+
+
+    MD5 previous_iteration_hash("previous_iteration");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_previous_iteration.detail().name_hash()[i] = previous_iteration_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_previous_iteration);
+
+    MinimalStructMember mst_optimize_carbon_footprint_auto;
+    mst_optimize_carbon_footprint_auto.common().member_id(memberId++);
+    mst_optimize_carbon_footprint_auto.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_optimize_carbon_footprint_auto.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_optimize_carbon_footprint_auto.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_optimize_carbon_footprint_auto.common().member_flags().IS_OPTIONAL(false);
+    mst_optimize_carbon_footprint_auto.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_optimize_carbon_footprint_auto.common().member_flags().IS_KEY(false);
+    mst_optimize_carbon_footprint_auto.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_optimize_carbon_footprint_auto.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier(
+                "bool", false));
+
+
+    MD5 optimize_carbon_footprint_auto_hash("optimize_carbon_footprint_auto");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_optimize_carbon_footprint_auto.detail().name_hash()[i] = optimize_carbon_footprint_auto_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_optimize_carbon_footprint_auto);
+
+    MinimalStructMember mst_desired_carbon_footprint;
+    mst_desired_carbon_footprint.common().member_id(memberId++);
+    mst_desired_carbon_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_desired_carbon_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_desired_carbon_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_desired_carbon_footprint.common().member_flags().IS_OPTIONAL(false);
+    mst_desired_carbon_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_desired_carbon_footprint.common().member_flags().IS_KEY(false);
+    mst_desired_carbon_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_desired_carbon_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier(
+                "double", false));
+
+
+    MD5 desired_carbon_footprint_hash("desired_carbon_footprint");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_desired_carbon_footprint.detail().name_hash()[i] = desired_carbon_footprint_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_desired_carbon_footprint);
+
+    MinimalStructMember mst_geo_location_continent;
+    mst_geo_location_continent.common().member_id(memberId++);
+    mst_geo_location_continent.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_geo_location_continent.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_geo_location_continent.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_geo_location_continent.common().member_flags().IS_OPTIONAL(false);
+    mst_geo_location_continent.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_geo_location_continent.common().member_flags().IS_KEY(false);
+    mst_geo_location_continent.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_geo_location_continent.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
+            false));
+
+    MD5 geo_location_continent_hash("geo_location_continent");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_geo_location_continent.detail().name_hash()[i] = geo_location_continent_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_geo_location_continent);
+
+    MinimalStructMember mst_geo_location_region;
+    mst_geo_location_region.common().member_id(memberId++);
+    mst_geo_location_region.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_geo_location_region.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_geo_location_region.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_geo_location_region.common().member_flags().IS_OPTIONAL(false);
+    mst_geo_location_region.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_geo_location_region.common().member_flags().IS_KEY(false);
+    mst_geo_location_region.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_geo_location_region.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
+            false));
+
+    MD5 geo_location_region_hash("geo_location_region");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_geo_location_region.detail().name_hash()[i] = geo_location_region_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_geo_location_region);
+
+    MinimalStructMember mst_extra_data;
+    mst_extra_data.common().member_id(memberId++);
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    mst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_extra_data.common().member_flags().IS_KEY(false);
+    mst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            false));
+
+    MD5 extra_data_hash("extra_data");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_extra_data.detail().name_hash()[i] = extra_data_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_extra_data);
 
     MinimalStructMember mst_task_id;
     mst_task_id.common().member_id(memberId++);
@@ -2448,8 +2774,7 @@ const TypeObject* GetMinimalUserInputImplObject()
     mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     mst_task_id.common().member_flags().IS_KEY(true);
     mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    mst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(false));
 
     MD5 task_id_hash("task_id");
     for (int i = 0; i < 4; ++i)
@@ -2463,23 +2788,26 @@ const TypeObject* GetMinimalUserInputImplObject()
     // TODO Inheritance
     //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
     //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
-
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -2506,42 +2834,241 @@ const TypeObject* GetCompleteUserInputImplObject()
     type_object->complete()._d(TK_STRUCTURE);
 
     type_object->complete().struct_type().struct_flags().IS_FINAL(false);
-    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->complete().struct_type().struct_flags().IS_NESTED(false);
     type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
 
     MemberId memberId = 0;
-    CompleteStructMember cst_problem_description;
-    cst_problem_description.common().member_id(memberId++);
-    cst_problem_description.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    cst_problem_description.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    cst_problem_description.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    cst_problem_description.common().member_flags().IS_OPTIONAL(false);
-    cst_problem_description.common().member_flags().IS_MUST_UNDERSTAND(false);
-    cst_problem_description.common().member_flags().IS_KEY(false);
-    cst_problem_description.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_problem_description.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
+    CompleteStructMember cst_modality;
+    cst_modality.common().member_id(memberId++);
+    cst_modality.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_modality.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_modality.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_modality.common().member_flags().IS_OPTIONAL(false);
+    cst_modality.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_modality.common().member_flags().IS_KEY(false);
+    cst_modality.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_modality.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255, false));
+
+    cst_modality.detail().name("modality");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_modality);
+
+    CompleteStructMember cst_problem_short_description;
+    cst_problem_short_description.common().member_id(memberId++);
+    cst_problem_short_description.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_problem_short_description.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_problem_short_description.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_problem_short_description.common().member_flags().IS_OPTIONAL(false);
+    cst_problem_short_description.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_problem_short_description.common().member_flags().IS_KEY(false);
+    cst_problem_short_description.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_problem_short_description.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
             false));
 
-    cst_problem_description.detail().name("problem_description");
+    cst_problem_short_description.detail().name("problem_short_description");
 
-    type_object->complete().struct_type().member_seq().emplace_back(cst_problem_description);
+    type_object->complete().struct_type().member_seq().emplace_back(cst_problem_short_description);
 
-    CompleteStructMember cst_geo_location;
-    cst_geo_location.common().member_id(memberId++);
-    cst_geo_location.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    cst_geo_location.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    cst_geo_location.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    cst_geo_location.common().member_flags().IS_OPTIONAL(false);
-    cst_geo_location.common().member_flags().IS_MUST_UNDERSTAND(false);
-    cst_geo_location.common().member_flags().IS_KEY(false);
-    cst_geo_location.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_geo_location.common().member_type_id(*GetGeoLocationImplIdentifier(true));
+    CompleteStructMember cst_problem_definition;
+    cst_problem_definition.common().member_id(memberId++);
+    cst_problem_definition.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_problem_definition.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_problem_definition.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_problem_definition.common().member_flags().IS_OPTIONAL(false);
+    cst_problem_definition.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_problem_definition.common().member_flags().IS_KEY(false);
+    cst_problem_definition.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_problem_definition.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
+            false));
 
-    cst_geo_location.detail().name("geo_location");
+    cst_problem_definition.detail().name("problem_definition");
 
-    type_object->complete().struct_type().member_seq().emplace_back(cst_geo_location);
+    type_object->complete().struct_type().member_seq().emplace_back(cst_problem_definition);
+
+    CompleteStructMember cst_inputs;
+    cst_inputs.common().member_id(memberId++);
+    cst_inputs.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_inputs.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_inputs.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_inputs.common().member_flags().IS_OPTIONAL(false);
+    cst_inputs.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_inputs.common().member_flags().IS_KEY(false);
+    cst_inputs.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_inputs.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(TypeNamesGenerator::
+                    get_string_type_name(255, false), 100, true));
+
+    cst_inputs.detail().name("inputs");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_inputs);
+
+    CompleteStructMember cst_outputs;
+    cst_outputs.common().member_id(memberId++);
+    cst_outputs.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_outputs.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_outputs.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_outputs.common().member_flags().IS_OPTIONAL(false);
+    cst_outputs.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_outputs.common().member_flags().IS_KEY(false);
+    cst_outputs.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_outputs.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(TypeNamesGenerator::
+                    get_string_type_name(255, false), 100, true));
+
+    cst_outputs.detail().name("outputs");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_outputs);
+
+    CompleteStructMember cst_minimum_samples;
+    cst_minimum_samples.common().member_id(memberId++);
+    cst_minimum_samples.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_minimum_samples.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_minimum_samples.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_minimum_samples.common().member_flags().IS_OPTIONAL(false);
+    cst_minimum_samples.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_minimum_samples.common().member_flags().IS_KEY(false);
+    cst_minimum_samples.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_minimum_samples.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
+
+
+    cst_minimum_samples.detail().name("minimum_samples");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_minimum_samples);
+
+    CompleteStructMember cst_maximum_samples;
+    cst_maximum_samples.common().member_id(memberId++);
+    cst_maximum_samples.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_maximum_samples.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_maximum_samples.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_maximum_samples.common().member_flags().IS_OPTIONAL(false);
+    cst_maximum_samples.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_maximum_samples.common().member_flags().IS_KEY(false);
+    cst_maximum_samples.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_maximum_samples.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
+
+
+    cst_maximum_samples.detail().name("maximum_samples");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_maximum_samples);
+
+    CompleteStructMember cst_optimize_carbon_footprint_manual;
+    cst_optimize_carbon_footprint_manual.common().member_id(memberId++);
+    cst_optimize_carbon_footprint_manual.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_optimize_carbon_footprint_manual.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_optimize_carbon_footprint_manual.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_optimize_carbon_footprint_manual.common().member_flags().IS_OPTIONAL(false);
+    cst_optimize_carbon_footprint_manual.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_optimize_carbon_footprint_manual.common().member_flags().IS_KEY(false);
+    cst_optimize_carbon_footprint_manual.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_optimize_carbon_footprint_manual.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier(
+                "bool",
+                false));
+
+
+    cst_optimize_carbon_footprint_manual.detail().name("optimize_carbon_footprint_manual");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_optimize_carbon_footprint_manual);
+
+    CompleteStructMember cst_previous_iteration;
+    cst_previous_iteration.common().member_id(memberId++);
+    cst_previous_iteration.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_previous_iteration.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_previous_iteration.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_previous_iteration.common().member_flags().IS_OPTIONAL(false);
+    cst_previous_iteration.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_previous_iteration.common().member_flags().IS_KEY(false);
+    cst_previous_iteration.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_previous_iteration.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t",
+            false));
+
+
+    cst_previous_iteration.detail().name("previous_iteration");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_previous_iteration);
+
+    CompleteStructMember cst_optimize_carbon_footprint_auto;
+    cst_optimize_carbon_footprint_auto.common().member_id(memberId++);
+    cst_optimize_carbon_footprint_auto.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_optimize_carbon_footprint_auto.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_optimize_carbon_footprint_auto.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_optimize_carbon_footprint_auto.common().member_flags().IS_OPTIONAL(false);
+    cst_optimize_carbon_footprint_auto.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_optimize_carbon_footprint_auto.common().member_flags().IS_KEY(false);
+    cst_optimize_carbon_footprint_auto.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_optimize_carbon_footprint_auto.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier(
+                "bool", false));
+
+
+    cst_optimize_carbon_footprint_auto.detail().name("optimize_carbon_footprint_auto");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_optimize_carbon_footprint_auto);
+
+    CompleteStructMember cst_desired_carbon_footprint;
+    cst_desired_carbon_footprint.common().member_id(memberId++);
+    cst_desired_carbon_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_desired_carbon_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_desired_carbon_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_desired_carbon_footprint.common().member_flags().IS_OPTIONAL(false);
+    cst_desired_carbon_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_desired_carbon_footprint.common().member_flags().IS_KEY(false);
+    cst_desired_carbon_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_desired_carbon_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier(
+                "double", false));
+
+
+    cst_desired_carbon_footprint.detail().name("desired_carbon_footprint");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_desired_carbon_footprint);
+
+    CompleteStructMember cst_geo_location_continent;
+    cst_geo_location_continent.common().member_id(memberId++);
+    cst_geo_location_continent.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_geo_location_continent.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_geo_location_continent.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_geo_location_continent.common().member_flags().IS_OPTIONAL(false);
+    cst_geo_location_continent.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_geo_location_continent.common().member_flags().IS_KEY(false);
+    cst_geo_location_continent.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_geo_location_continent.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
+            false));
+
+    cst_geo_location_continent.detail().name("geo_location_continent");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_geo_location_continent);
+
+    CompleteStructMember cst_geo_location_region;
+    cst_geo_location_region.common().member_id(memberId++);
+    cst_geo_location_region.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_geo_location_region.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_geo_location_region.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_geo_location_region.common().member_flags().IS_OPTIONAL(false);
+    cst_geo_location_region.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_geo_location_region.common().member_flags().IS_KEY(false);
+    cst_geo_location_region.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_geo_location_region.common().member_type_id(*TypeObjectFactory::get_instance()->get_string_identifier(255,
+            false));
+
+    cst_geo_location_region.detail().name("geo_location_region");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_geo_location_region);
+
+    CompleteStructMember cst_extra_data;
+    cst_extra_data.common().member_id(memberId++);
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    cst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_extra_data.common().member_flags().IS_KEY(false);
+    cst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            true));
+
+    cst_extra_data.detail().name("extra_data");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_extra_data);
 
     CompleteStructMember cst_task_id;
     cst_task_id.common().member_id(memberId++);
@@ -2552,15 +3079,14 @@ const TypeObject* GetCompleteUserInputImplObject()
     cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     cst_task_id.common().member_flags().IS_KEY(true);
     cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    cst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(true));
 
     cst_task_id.detail().name("task_id");
 
     {
         AppliedAnnotation ann;
-        //ann.annotation_typeid(GetKeyIdentifier(true));
-        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("Key"));
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
         {
             AppliedAnnotationParameter annParam;
             MD5 message_hash("value");
@@ -2585,23 +3111,26 @@ const TypeObject* GetCompleteUserInputImplObject()
     // Header
     type_object->complete().struct_type().header().detail().type_name("UserInputImpl");
     // TODO inheritance
-
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -2615,39 +3144,40 @@ const TypeObject* GetCompleteUserInputImplObject()
     return TypeObjectFactory::get_instance()->get_type_object("UserInputImpl", true);
 }
 
-const TypeIdentifier* GetEncodedTaskImplIdentifier(
+const TypeIdentifier* GetMLModelMetadataImplIdentifier(
         bool complete)
 {
-    const TypeIdentifier* c_identifier = TypeObjectFactory::get_instance()->get_type_identifier("EncodedTaskImpl",
+    const TypeIdentifier* c_identifier = TypeObjectFactory::get_instance()->get_type_identifier("MLModelMetadataImpl",
                     complete);
     if (c_identifier != nullptr && (!complete || c_identifier->_d() == EK_COMPLETE))
     {
         return c_identifier;
     }
 
-    GetEncodedTaskImplObject(complete); // Generated inside
-    return TypeObjectFactory::get_instance()->get_type_identifier("EncodedTaskImpl", complete);
+    GetMLModelMetadataImplObject(complete); // Generated inside
+    return TypeObjectFactory::get_instance()->get_type_identifier("MLModelMetadataImpl", complete);
 }
 
-const TypeObject* GetEncodedTaskImplObject(
+const TypeObject* GetMLModelMetadataImplObject(
         bool complete)
 {
-    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("EncodedTaskImpl", complete);
+    const TypeObject* c_type_object =
+            TypeObjectFactory::get_instance()->get_type_object("MLModelMetadataImpl", complete);
     if (c_type_object != nullptr)
     {
         return c_type_object;
     }
     else if (complete)
     {
-        return GetCompleteEncodedTaskImplObject();
+        return GetCompleteMLModelMetadataImplObject();
     }
     //else
-    return GetMinimalEncodedTaskImplObject();
+    return GetMinimalMLModelMetadataImplObject();
 }
 
-const TypeObject* GetMinimalEncodedTaskImplObject()
+const TypeObject* GetMinimalMLModelMetadataImplObject()
 {
-    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("EncodedTaskImpl", false);
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("MLModelMetadataImpl", false);
     if (c_type_object != nullptr)
     {
         return c_type_object;
@@ -2658,7 +3188,7 @@ const TypeObject* GetMinimalEncodedTaskImplObject()
     type_object->minimal()._d(TK_STRUCTURE);
 
     type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
-    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
     type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -2683,6 +3213,44 @@ const TypeObject* GetMinimalEncodedTaskImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_keywords);
 
+    MinimalStructMember mst_ml_model_metadata;
+    mst_ml_model_metadata.common().member_id(memberId++);
+    mst_ml_model_metadata.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_ml_model_metadata.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_ml_model_metadata.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_ml_model_metadata.common().member_flags().IS_OPTIONAL(false);
+    mst_ml_model_metadata.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_ml_model_metadata.common().member_flags().IS_KEY(false);
+    mst_ml_model_metadata.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_ml_model_metadata.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(
+                TypeNamesGenerator::get_string_type_name(255, false), 100, false));
+
+    MD5 ml_model_metadata_hash("ml_model_metadata");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_ml_model_metadata.detail().name_hash()[i] = ml_model_metadata_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_ml_model_metadata);
+
+    MinimalStructMember mst_extra_data;
+    mst_extra_data.common().member_id(memberId++);
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    mst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_extra_data.common().member_flags().IS_KEY(false);
+    mst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            false));
+
+    MD5 extra_data_hash("extra_data");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_extra_data.detail().name_hash()[i] = extra_data_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_extra_data);
+
     MinimalStructMember mst_task_id;
     mst_task_id.common().member_id(memberId++);
     mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -2692,8 +3260,7 @@ const TypeObject* GetMinimalEncodedTaskImplObject()
     mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     mst_task_id.common().member_flags().IS_KEY(true);
     mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    mst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(false));
 
     MD5 task_id_hash("task_id");
     for (int i = 0; i < 4; ++i)
@@ -2707,23 +3274,26 @@ const TypeObject* GetMinimalEncodedTaskImplObject()
     // TODO Inheritance
     //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
     //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
-
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -2732,14 +3302,14 @@ const TypeObject* GetMinimalEncodedTaskImplObject()
         identifier.equivalence_hash()[i] = objectHash.digest[i];
     }
 
-    TypeObjectFactory::get_instance()->add_type_object("EncodedTaskImpl", &identifier, type_object);
+    TypeObjectFactory::get_instance()->add_type_object("MLModelMetadataImpl", &identifier, type_object);
     delete type_object;
-    return TypeObjectFactory::get_instance()->get_type_object("EncodedTaskImpl", false);
+    return TypeObjectFactory::get_instance()->get_type_object("MLModelMetadataImpl", false);
 }
 
-const TypeObject* GetCompleteEncodedTaskImplObject()
+const TypeObject* GetCompleteMLModelMetadataImplObject()
 {
-    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("EncodedTaskImpl", true);
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("MLModelMetadataImpl", true);
     if (c_type_object != nullptr && c_type_object->_d() == EK_COMPLETE)
     {
         return c_type_object;
@@ -2750,7 +3320,7 @@ const TypeObject* GetCompleteEncodedTaskImplObject()
     type_object->complete()._d(TK_STRUCTURE);
 
     type_object->complete().struct_type().struct_flags().IS_FINAL(false);
-    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->complete().struct_type().struct_flags().IS_NESTED(false);
     type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -2772,6 +3342,38 @@ const TypeObject* GetCompleteEncodedTaskImplObject()
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_keywords);
 
+    CompleteStructMember cst_ml_model_metadata;
+    cst_ml_model_metadata.common().member_id(memberId++);
+    cst_ml_model_metadata.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_ml_model_metadata.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_ml_model_metadata.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_ml_model_metadata.common().member_flags().IS_OPTIONAL(false);
+    cst_ml_model_metadata.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_ml_model_metadata.common().member_flags().IS_KEY(false);
+    cst_ml_model_metadata.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_ml_model_metadata.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(
+                TypeNamesGenerator::get_string_type_name(255, false), 100, true));
+
+    cst_ml_model_metadata.detail().name("ml_model_metadata");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_ml_model_metadata);
+
+    CompleteStructMember cst_extra_data;
+    cst_extra_data.common().member_id(memberId++);
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    cst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_extra_data.common().member_flags().IS_KEY(false);
+    cst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            true));
+
+    cst_extra_data.detail().name("extra_data");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_extra_data);
+
     CompleteStructMember cst_task_id;
     cst_task_id.common().member_id(memberId++);
     cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -2781,15 +3383,14 @@ const TypeObject* GetCompleteEncodedTaskImplObject()
     cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     cst_task_id.common().member_flags().IS_KEY(true);
     cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    cst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(true));
 
     cst_task_id.detail().name("task_id");
 
     {
         AppliedAnnotation ann;
-        //ann.annotation_typeid(GetKeyIdentifier(true));
-        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("Key"));
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
         {
             AppliedAnnotationParameter annParam;
             MD5 message_hash("value");
@@ -2812,25 +3413,28 @@ const TypeObject* GetCompleteEncodedTaskImplObject()
 
 
     // Header
-    type_object->complete().struct_type().header().detail().type_name("EncodedTaskImpl");
+    type_object->complete().struct_type().header().detail().type_name("MLModelMetadataImpl");
     // TODO inheritance
-
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -2839,9 +3443,548 @@ const TypeObject* GetCompleteEncodedTaskImplObject()
         identifier.equivalence_hash()[i] = objectHash.digest[i];
     }
 
-    TypeObjectFactory::get_instance()->add_type_object("EncodedTaskImpl", &identifier, type_object);
+    TypeObjectFactory::get_instance()->add_type_object("MLModelMetadataImpl", &identifier, type_object);
     delete type_object;
-    return TypeObjectFactory::get_instance()->get_type_object("EncodedTaskImpl", true);
+    return TypeObjectFactory::get_instance()->get_type_object("MLModelMetadataImpl", true);
+}
+
+const TypeIdentifier* GetAppRequirementsImplIdentifier(
+        bool complete)
+{
+    const TypeIdentifier* c_identifier = TypeObjectFactory::get_instance()->get_type_identifier("AppRequirementsImpl",
+                    complete);
+    if (c_identifier != nullptr && (!complete || c_identifier->_d() == EK_COMPLETE))
+    {
+        return c_identifier;
+    }
+
+    GetAppRequirementsImplObject(complete); // Generated inside
+    return TypeObjectFactory::get_instance()->get_type_identifier("AppRequirementsImpl", complete);
+}
+
+const TypeObject* GetAppRequirementsImplObject(
+        bool complete)
+{
+    const TypeObject* c_type_object =
+            TypeObjectFactory::get_instance()->get_type_object("AppRequirementsImpl", complete);
+    if (c_type_object != nullptr)
+    {
+        return c_type_object;
+    }
+    else if (complete)
+    {
+        return GetCompleteAppRequirementsImplObject();
+    }
+    //else
+    return GetMinimalAppRequirementsImplObject();
+}
+
+const TypeObject* GetMinimalAppRequirementsImplObject()
+{
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("AppRequirementsImpl", false);
+    if (c_type_object != nullptr)
+    {
+        return c_type_object;
+    }
+
+    TypeObject* type_object = new TypeObject();
+    type_object->_d(EK_MINIMAL);
+    type_object->minimal()._d(TK_STRUCTURE);
+
+    type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
+    type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
+    type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
+    type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
+
+    MemberId memberId = 0;
+    MinimalStructMember mst_app_requirements;
+    mst_app_requirements.common().member_id(memberId++);
+    mst_app_requirements.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_app_requirements.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_app_requirements.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_app_requirements.common().member_flags().IS_OPTIONAL(false);
+    mst_app_requirements.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_app_requirements.common().member_flags().IS_KEY(false);
+    mst_app_requirements.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_app_requirements.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(
+                TypeNamesGenerator::get_string_type_name(255, false), 100, false));
+
+    MD5 app_requirements_hash("app_requirements");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_app_requirements.detail().name_hash()[i] = app_requirements_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_app_requirements);
+
+    MinimalStructMember mst_extra_data;
+    mst_extra_data.common().member_id(memberId++);
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    mst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_extra_data.common().member_flags().IS_KEY(false);
+    mst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            false));
+
+    MD5 extra_data_hash("extra_data");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_extra_data.detail().name_hash()[i] = extra_data_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_extra_data);
+
+    MinimalStructMember mst_task_id;
+    mst_task_id.common().member_id(memberId++);
+    mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_task_id.common().member_flags().IS_OPTIONAL(false);
+    mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_task_id.common().member_flags().IS_KEY(true);
+    mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(false));
+
+    MD5 task_id_hash("task_id");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_task_id.detail().name_hash()[i] = task_id_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_task_id);
+
+
+    // Header
+    // TODO Inheritance
+    //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
+    //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
+    TypeIdentifier identifier;
+    identifier._d(EK_MINIMAL);
+
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
+    size_t current_alignment {0};
+    SerializedPayload_t payload(static_cast<uint32_t>(
+                calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
+    eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
+    // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
+    eprosima::fastcdr::Cdr ser(
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
+    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+
+    ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
+    payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
+    MD5 objectHash;
+    objectHash.update((char*)payload.data, payload.length);
+    objectHash.finalize();
+    for (int i = 0; i < 14; ++i)
+    {
+        identifier.equivalence_hash()[i] = objectHash.digest[i];
+    }
+
+    TypeObjectFactory::get_instance()->add_type_object("AppRequirementsImpl", &identifier, type_object);
+    delete type_object;
+    return TypeObjectFactory::get_instance()->get_type_object("AppRequirementsImpl", false);
+}
+
+const TypeObject* GetCompleteAppRequirementsImplObject()
+{
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("AppRequirementsImpl", true);
+    if (c_type_object != nullptr && c_type_object->_d() == EK_COMPLETE)
+    {
+        return c_type_object;
+    }
+
+    TypeObject* type_object = new TypeObject();
+    type_object->_d(EK_COMPLETE);
+    type_object->complete()._d(TK_STRUCTURE);
+
+    type_object->complete().struct_type().struct_flags().IS_FINAL(false);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
+    type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
+    type_object->complete().struct_type().struct_flags().IS_NESTED(false);
+    type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
+
+    MemberId memberId = 0;
+    CompleteStructMember cst_app_requirements;
+    cst_app_requirements.common().member_id(memberId++);
+    cst_app_requirements.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_app_requirements.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_app_requirements.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_app_requirements.common().member_flags().IS_OPTIONAL(false);
+    cst_app_requirements.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_app_requirements.common().member_flags().IS_KEY(false);
+    cst_app_requirements.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_app_requirements.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(
+                TypeNamesGenerator::get_string_type_name(255, false), 100, true));
+
+    cst_app_requirements.detail().name("app_requirements");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_app_requirements);
+
+    CompleteStructMember cst_extra_data;
+    cst_extra_data.common().member_id(memberId++);
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    cst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_extra_data.common().member_flags().IS_KEY(false);
+    cst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            true));
+
+    cst_extra_data.detail().name("extra_data");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_extra_data);
+
+    CompleteStructMember cst_task_id;
+    cst_task_id.common().member_id(memberId++);
+    cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_task_id.common().member_flags().IS_OPTIONAL(false);
+    cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_task_id.common().member_flags().IS_KEY(true);
+    cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(true));
+
+    cst_task_id.detail().name("task_id");
+
+    {
+        AppliedAnnotation ann;
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
+        {
+            AppliedAnnotationParameter annParam;
+            MD5 message_hash("value");
+            for (int i = 0; i < 4; ++i)
+            {
+                annParam.paramname_hash()[i] = message_hash.digest[i];
+            }
+            AnnotationParameterValue paramValue;
+            paramValue._d(TK_BOOLEAN);
+            paramValue.from_string("true");
+            annParam.value(paramValue);
+            ann.param_seq().push_back(annParam);
+        }
+
+        cst_task_id.detail().ann_custom().push_back(ann);
+    }
+
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_task_id);
+
+
+    // Header
+    type_object->complete().struct_type().header().detail().type_name("AppRequirementsImpl");
+    // TODO inheritance
+    TypeIdentifier identifier;
+    identifier._d(EK_COMPLETE);
+
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
+    size_t current_alignment {0};
+    SerializedPayload_t payload(static_cast<uint32_t>(
+                calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
+    eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
+    // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
+    eprosima::fastcdr::Cdr ser(
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
+    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+
+    ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
+    payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
+    MD5 objectHash;
+    objectHash.update((char*)payload.data, payload.length);
+    objectHash.finalize();
+    for (int i = 0; i < 14; ++i)
+    {
+        identifier.equivalence_hash()[i] = objectHash.digest[i];
+    }
+
+    TypeObjectFactory::get_instance()->add_type_object("AppRequirementsImpl", &identifier, type_object);
+    delete type_object;
+    return TypeObjectFactory::get_instance()->get_type_object("AppRequirementsImpl", true);
+}
+
+const TypeIdentifier* GetHWConstraintsImplIdentifier(
+        bool complete)
+{
+    const TypeIdentifier* c_identifier = TypeObjectFactory::get_instance()->get_type_identifier("HWConstraintsImpl",
+                    complete);
+    if (c_identifier != nullptr && (!complete || c_identifier->_d() == EK_COMPLETE))
+    {
+        return c_identifier;
+    }
+
+    GetHWConstraintsImplObject(complete); // Generated inside
+    return TypeObjectFactory::get_instance()->get_type_identifier("HWConstraintsImpl", complete);
+}
+
+const TypeObject* GetHWConstraintsImplObject(
+        bool complete)
+{
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("HWConstraintsImpl", complete);
+    if (c_type_object != nullptr)
+    {
+        return c_type_object;
+    }
+    else if (complete)
+    {
+        return GetCompleteHWConstraintsImplObject();
+    }
+    //else
+    return GetMinimalHWConstraintsImplObject();
+}
+
+const TypeObject* GetMinimalHWConstraintsImplObject()
+{
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("HWConstraintsImpl", false);
+    if (c_type_object != nullptr)
+    {
+        return c_type_object;
+    }
+
+    TypeObject* type_object = new TypeObject();
+    type_object->_d(EK_MINIMAL);
+    type_object->minimal()._d(TK_STRUCTURE);
+
+    type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
+    type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
+    type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
+    type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
+
+    MemberId memberId = 0;
+    MinimalStructMember mst_max_memory_footprint;
+    mst_max_memory_footprint.common().member_id(memberId++);
+    mst_max_memory_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_max_memory_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_max_memory_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_max_memory_footprint.common().member_flags().IS_OPTIONAL(false);
+    mst_max_memory_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_max_memory_footprint.common().member_flags().IS_KEY(false);
+    mst_max_memory_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_max_memory_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
+
+
+    MD5 max_memory_footprint_hash("max_memory_footprint");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_max_memory_footprint.detail().name_hash()[i] = max_memory_footprint_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_max_memory_footprint);
+
+    MinimalStructMember mst_extra_data;
+    mst_extra_data.common().member_id(memberId++);
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    mst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_extra_data.common().member_flags().IS_KEY(false);
+    mst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            false));
+
+    MD5 extra_data_hash("extra_data");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_extra_data.detail().name_hash()[i] = extra_data_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_extra_data);
+
+    MinimalStructMember mst_task_id;
+    mst_task_id.common().member_id(memberId++);
+    mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_task_id.common().member_flags().IS_OPTIONAL(false);
+    mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_task_id.common().member_flags().IS_KEY(true);
+    mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(false));
+
+    MD5 task_id_hash("task_id");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_task_id.detail().name_hash()[i] = task_id_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_task_id);
+
+
+    // Header
+    // TODO Inheritance
+    //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
+    //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
+    TypeIdentifier identifier;
+    identifier._d(EK_MINIMAL);
+
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
+    size_t current_alignment {0};
+    SerializedPayload_t payload(static_cast<uint32_t>(
+                calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
+    eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
+    // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
+    eprosima::fastcdr::Cdr ser(
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
+    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+
+    ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
+    payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
+    MD5 objectHash;
+    objectHash.update((char*)payload.data, payload.length);
+    objectHash.finalize();
+    for (int i = 0; i < 14; ++i)
+    {
+        identifier.equivalence_hash()[i] = objectHash.digest[i];
+    }
+
+    TypeObjectFactory::get_instance()->add_type_object("HWConstraintsImpl", &identifier, type_object);
+    delete type_object;
+    return TypeObjectFactory::get_instance()->get_type_object("HWConstraintsImpl", false);
+}
+
+const TypeObject* GetCompleteHWConstraintsImplObject()
+{
+    const TypeObject* c_type_object = TypeObjectFactory::get_instance()->get_type_object("HWConstraintsImpl", true);
+    if (c_type_object != nullptr && c_type_object->_d() == EK_COMPLETE)
+    {
+        return c_type_object;
+    }
+
+    TypeObject* type_object = new TypeObject();
+    type_object->_d(EK_COMPLETE);
+    type_object->complete()._d(TK_STRUCTURE);
+
+    type_object->complete().struct_type().struct_flags().IS_FINAL(false);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
+    type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
+    type_object->complete().struct_type().struct_flags().IS_NESTED(false);
+    type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
+
+    MemberId memberId = 0;
+    CompleteStructMember cst_max_memory_footprint;
+    cst_max_memory_footprint.common().member_id(memberId++);
+    cst_max_memory_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_max_memory_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_max_memory_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_max_memory_footprint.common().member_flags().IS_OPTIONAL(false);
+    cst_max_memory_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_max_memory_footprint.common().member_flags().IS_KEY(false);
+    cst_max_memory_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_max_memory_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("uint32_t",
+            false));
+
+
+    cst_max_memory_footprint.detail().name("max_memory_footprint");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_max_memory_footprint);
+
+    CompleteStructMember cst_extra_data;
+    cst_extra_data.common().member_id(memberId++);
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    cst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_extra_data.common().member_flags().IS_KEY(false);
+    cst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            true));
+
+    cst_extra_data.detail().name("extra_data");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_extra_data);
+
+    CompleteStructMember cst_task_id;
+    cst_task_id.common().member_id(memberId++);
+    cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_task_id.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_task_id.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_task_id.common().member_flags().IS_OPTIONAL(false);
+    cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_task_id.common().member_flags().IS_KEY(true);
+    cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(true));
+
+    cst_task_id.detail().name("task_id");
+
+    {
+        AppliedAnnotation ann;
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
+        {
+            AppliedAnnotationParameter annParam;
+            MD5 message_hash("value");
+            for (int i = 0; i < 4; ++i)
+            {
+                annParam.paramname_hash()[i] = message_hash.digest[i];
+            }
+            AnnotationParameterValue paramValue;
+            paramValue._d(TK_BOOLEAN);
+            paramValue.from_string("true");
+            annParam.value(paramValue);
+            ann.param_seq().push_back(annParam);
+        }
+
+        cst_task_id.detail().ann_custom().push_back(ann);
+    }
+
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_task_id);
+
+
+    // Header
+    type_object->complete().struct_type().header().detail().type_name("HWConstraintsImpl");
+    // TODO inheritance
+    TypeIdentifier identifier;
+    identifier._d(EK_COMPLETE);
+
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
+    size_t current_alignment {0};
+    SerializedPayload_t payload(static_cast<uint32_t>(
+                calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
+    eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
+    // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
+    eprosima::fastcdr::Cdr ser(
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
+    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+
+    ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
+    payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
+    MD5 objectHash;
+    objectHash.update((char*)payload.data, payload.length);
+    objectHash.finalize();
+    for (int i = 0; i < 14; ++i)
+    {
+        identifier.equivalence_hash()[i] = objectHash.digest[i];
+    }
+
+    TypeObjectFactory::get_instance()->add_type_object("HWConstraintsImpl", &identifier, type_object);
+    delete type_object;
+    return TypeObjectFactory::get_instance()->get_type_object("HWConstraintsImpl", true);
 }
 
 const TypeIdentifier* GetMLModelImplIdentifier(
@@ -2887,7 +4030,7 @@ const TypeObject* GetMinimalMLModelImplObject()
     type_object->minimal()._d(TK_STRUCTURE);
 
     type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
-    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
     type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -2966,6 +4109,64 @@ const TypeObject* GetMinimalMLModelImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_model_properties);
 
+    MinimalStructMember mst_input_batch;
+    mst_input_batch.common().member_id(memberId++);
+    mst_input_batch.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_input_batch.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_input_batch.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_input_batch.common().member_flags().IS_OPTIONAL(false);
+    mst_input_batch.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_input_batch.common().member_flags().IS_KEY(false);
+    mst_input_batch.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_input_batch.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(
+                TypeNamesGenerator::get_string_type_name(255, false), 100, false));
+
+    MD5 input_batch_hash("input_batch");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_input_batch.detail().name_hash()[i] = input_batch_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_input_batch);
+
+    MinimalStructMember mst_target_latency;
+    mst_target_latency.common().member_id(memberId++);
+    mst_target_latency.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_target_latency.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_target_latency.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_target_latency.common().member_flags().IS_OPTIONAL(false);
+    mst_target_latency.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_target_latency.common().member_flags().IS_KEY(false);
+    mst_target_latency.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_target_latency.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double",
+            false));
+
+
+    MD5 target_latency_hash("target_latency");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_target_latency.detail().name_hash()[i] = target_latency_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_target_latency);
+
+    MinimalStructMember mst_extra_data;
+    mst_extra_data.common().member_id(memberId++);
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    mst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_extra_data.common().member_flags().IS_KEY(false);
+    mst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            false));
+
+    MD5 extra_data_hash("extra_data");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_extra_data.detail().name_hash()[i] = extra_data_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_extra_data);
+
     MinimalStructMember mst_task_id;
     mst_task_id.common().member_id(memberId++);
     mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -2975,8 +4176,7 @@ const TypeObject* GetMinimalMLModelImplObject()
     mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     mst_task_id.common().member_flags().IS_KEY(true);
     mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    mst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(false));
 
     MD5 task_id_hash("task_id");
     for (int i = 0; i < 4; ++i)
@@ -2990,23 +4190,26 @@ const TypeObject* GetMinimalMLModelImplObject()
     // TODO Inheritance
     //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
     //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
-
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -3033,7 +4236,7 @@ const TypeObject* GetCompleteMLModelImplObject()
     type_object->complete()._d(TK_STRUCTURE);
 
     type_object->complete().struct_type().struct_flags().IS_FINAL(false);
-    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->complete().struct_type().struct_flags().IS_NESTED(false);
     type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -3100,6 +4303,55 @@ const TypeObject* GetCompleteMLModelImplObject()
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_model_properties);
 
+    CompleteStructMember cst_input_batch;
+    cst_input_batch.common().member_id(memberId++);
+    cst_input_batch.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_input_batch.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_input_batch.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_input_batch.common().member_flags().IS_OPTIONAL(false);
+    cst_input_batch.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_input_batch.common().member_flags().IS_KEY(false);
+    cst_input_batch.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_input_batch.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier(
+                TypeNamesGenerator::get_string_type_name(255, false), 100, true));
+
+    cst_input_batch.detail().name("input_batch");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_input_batch);
+
+    CompleteStructMember cst_target_latency;
+    cst_target_latency.common().member_id(memberId++);
+    cst_target_latency.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_target_latency.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_target_latency.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_target_latency.common().member_flags().IS_OPTIONAL(false);
+    cst_target_latency.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_target_latency.common().member_flags().IS_KEY(false);
+    cst_target_latency.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_target_latency.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double",
+            false));
+
+
+    cst_target_latency.detail().name("target_latency");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_target_latency);
+
+    CompleteStructMember cst_extra_data;
+    cst_extra_data.common().member_id(memberId++);
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    cst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_extra_data.common().member_flags().IS_KEY(false);
+    cst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            true));
+
+    cst_extra_data.detail().name("extra_data");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_extra_data);
+
     CompleteStructMember cst_task_id;
     cst_task_id.common().member_id(memberId++);
     cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -3109,15 +4361,14 @@ const TypeObject* GetCompleteMLModelImplObject()
     cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     cst_task_id.common().member_flags().IS_KEY(true);
     cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    cst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(true));
 
     cst_task_id.detail().name("task_id");
 
     {
         AppliedAnnotation ann;
-        //ann.annotation_typeid(GetKeyIdentifier(true));
-        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("Key"));
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
         {
             AppliedAnnotationParameter annParam;
             MD5 message_hash("value");
@@ -3142,23 +4393,26 @@ const TypeObject* GetCompleteMLModelImplObject()
     // Header
     type_object->complete().struct_type().header().detail().type_name("MLModelImpl");
     // TODO inheritance
-
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -3215,7 +4469,7 @@ const TypeObject* GetMinimalHWResourceImplObject()
     type_object->minimal()._d(TK_STRUCTURE);
 
     type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
-    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
     type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -3259,6 +4513,84 @@ const TypeObject* GetMinimalHWResourceImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_power_consumption);
 
+    MinimalStructMember mst_latency;
+    mst_latency.common().member_id(memberId++);
+    mst_latency.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_latency.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_latency.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_latency.common().member_flags().IS_OPTIONAL(false);
+    mst_latency.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_latency.common().member_flags().IS_KEY(false);
+    mst_latency.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_latency.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double", false));
+
+
+    MD5 latency_hash("latency");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_latency.detail().name_hash()[i] = latency_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_latency);
+
+    MinimalStructMember mst_memory_footprint_of_ml_model;
+    mst_memory_footprint_of_ml_model.common().member_id(memberId++);
+    mst_memory_footprint_of_ml_model.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_memory_footprint_of_ml_model.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_memory_footprint_of_ml_model.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_memory_footprint_of_ml_model.common().member_flags().IS_OPTIONAL(false);
+    mst_memory_footprint_of_ml_model.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_memory_footprint_of_ml_model.common().member_flags().IS_KEY(false);
+    mst_memory_footprint_of_ml_model.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_memory_footprint_of_ml_model.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier(
+                "double", false));
+
+
+    MD5 memory_footprint_of_ml_model_hash("memory_footprint_of_ml_model");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_memory_footprint_of_ml_model.detail().name_hash()[i] = memory_footprint_of_ml_model_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_memory_footprint_of_ml_model);
+
+    MinimalStructMember mst_max_hw_memory_footprint;
+    mst_max_hw_memory_footprint.common().member_id(memberId++);
+    mst_max_hw_memory_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_max_hw_memory_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_max_hw_memory_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_max_hw_memory_footprint.common().member_flags().IS_OPTIONAL(false);
+    mst_max_hw_memory_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_max_hw_memory_footprint.common().member_flags().IS_KEY(false);
+    mst_max_hw_memory_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_max_hw_memory_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double",
+            false));
+
+
+    MD5 max_hw_memory_footprint_hash("max_hw_memory_footprint");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_max_hw_memory_footprint.detail().name_hash()[i] = max_hw_memory_footprint_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_max_hw_memory_footprint);
+
+    MinimalStructMember mst_extra_data;
+    mst_extra_data.common().member_id(memberId++);
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    mst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_extra_data.common().member_flags().IS_KEY(false);
+    mst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            false));
+
+    MD5 extra_data_hash("extra_data");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_extra_data.detail().name_hash()[i] = extra_data_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_extra_data);
+
     MinimalStructMember mst_task_id;
     mst_task_id.common().member_id(memberId++);
     mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -3268,8 +4600,7 @@ const TypeObject* GetMinimalHWResourceImplObject()
     mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     mst_task_id.common().member_flags().IS_KEY(true);
     mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    mst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(false));
 
     MD5 task_id_hash("task_id");
     for (int i = 0; i < 4; ++i)
@@ -3283,23 +4614,26 @@ const TypeObject* GetMinimalHWResourceImplObject()
     // TODO Inheritance
     //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
     //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
-
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -3326,7 +4660,7 @@ const TypeObject* GetCompleteHWResourceImplObject()
     type_object->complete()._d(TK_STRUCTURE);
 
     type_object->complete().struct_type().struct_flags().IS_FINAL(false);
-    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->complete().struct_type().struct_flags().IS_NESTED(false);
     type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
@@ -3364,6 +4698,72 @@ const TypeObject* GetCompleteHWResourceImplObject()
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_power_consumption);
 
+    CompleteStructMember cst_latency;
+    cst_latency.common().member_id(memberId++);
+    cst_latency.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_latency.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_latency.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_latency.common().member_flags().IS_OPTIONAL(false);
+    cst_latency.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_latency.common().member_flags().IS_KEY(false);
+    cst_latency.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_latency.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double", false));
+
+
+    cst_latency.detail().name("latency");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_latency);
+
+    CompleteStructMember cst_memory_footprint_of_ml_model;
+    cst_memory_footprint_of_ml_model.common().member_id(memberId++);
+    cst_memory_footprint_of_ml_model.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_memory_footprint_of_ml_model.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_memory_footprint_of_ml_model.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_memory_footprint_of_ml_model.common().member_flags().IS_OPTIONAL(false);
+    cst_memory_footprint_of_ml_model.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_memory_footprint_of_ml_model.common().member_flags().IS_KEY(false);
+    cst_memory_footprint_of_ml_model.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_memory_footprint_of_ml_model.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier(
+                "double", false));
+
+
+    cst_memory_footprint_of_ml_model.detail().name("memory_footprint_of_ml_model");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_memory_footprint_of_ml_model);
+
+    CompleteStructMember cst_max_hw_memory_footprint;
+    cst_max_hw_memory_footprint.common().member_id(memberId++);
+    cst_max_hw_memory_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_max_hw_memory_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_max_hw_memory_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_max_hw_memory_footprint.common().member_flags().IS_OPTIONAL(false);
+    cst_max_hw_memory_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_max_hw_memory_footprint.common().member_flags().IS_KEY(false);
+    cst_max_hw_memory_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_max_hw_memory_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double",
+            false));
+
+
+    cst_max_hw_memory_footprint.detail().name("max_hw_memory_footprint");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_max_hw_memory_footprint);
+
+    CompleteStructMember cst_extra_data;
+    cst_extra_data.common().member_id(memberId++);
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    cst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_extra_data.common().member_flags().IS_KEY(false);
+    cst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            true));
+
+    cst_extra_data.detail().name("extra_data");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_extra_data);
+
     CompleteStructMember cst_task_id;
     cst_task_id.common().member_id(memberId++);
     cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -3373,15 +4773,14 @@ const TypeObject* GetCompleteHWResourceImplObject()
     cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     cst_task_id.common().member_flags().IS_KEY(true);
     cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    cst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(true));
 
     cst_task_id.detail().name("task_id");
 
     {
         AppliedAnnotation ann;
-        //ann.annotation_typeid(GetKeyIdentifier(true));
-        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("Key"));
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
         {
             AppliedAnnotationParameter annParam;
             MD5 message_hash("value");
@@ -3406,23 +4805,26 @@ const TypeObject* GetCompleteHWResourceImplObject()
     // Header
     type_object->complete().struct_type().header().detail().type_name("HWResourceImpl");
     // TODO inheritance
-
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -3479,30 +4881,31 @@ const TypeObject* GetMinimalCO2FootprintImplObject()
     type_object->minimal()._d(TK_STRUCTURE);
 
     type_object->minimal().struct_type().struct_flags().IS_FINAL(false);
-    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->minimal().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->minimal().struct_type().struct_flags().IS_NESTED(false);
     type_object->minimal().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
 
     MemberId memberId = 0;
-    MinimalStructMember mst_co2_footprint;
-    mst_co2_footprint.common().member_id(memberId++);
-    mst_co2_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    mst_co2_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    mst_co2_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    mst_co2_footprint.common().member_flags().IS_OPTIONAL(false);
-    mst_co2_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
-    mst_co2_footprint.common().member_flags().IS_KEY(false);
-    mst_co2_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_co2_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double", false));
+    MinimalStructMember mst_carbon_footprint;
+    mst_carbon_footprint.common().member_id(memberId++);
+    mst_carbon_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_carbon_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_carbon_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_carbon_footprint.common().member_flags().IS_OPTIONAL(false);
+    mst_carbon_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_carbon_footprint.common().member_flags().IS_KEY(false);
+    mst_carbon_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_carbon_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double",
+            false));
 
 
-    MD5 co2_footprint_hash("co2_footprint");
+    MD5 carbon_footprint_hash("carbon_footprint");
     for (int i = 0; i < 4; ++i)
     {
-        mst_co2_footprint.detail().name_hash()[i] = co2_footprint_hash.digest[i];
+        mst_carbon_footprint.detail().name_hash()[i] = carbon_footprint_hash.digest[i];
     }
-    type_object->minimal().struct_type().member_seq().emplace_back(mst_co2_footprint);
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_carbon_footprint);
 
     MinimalStructMember mst_energy_consumption;
     mst_energy_consumption.common().member_id(memberId++);
@@ -3544,6 +4947,25 @@ const TypeObject* GetMinimalCO2FootprintImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_carbon_intensity);
 
+    MinimalStructMember mst_extra_data;
+    mst_extra_data.common().member_id(memberId++);
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    mst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_extra_data.common().member_flags().IS_KEY(false);
+    mst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            false));
+
+    MD5 extra_data_hash("extra_data");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_extra_data.detail().name_hash()[i] = extra_data_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_extra_data);
+
     MinimalStructMember mst_task_id;
     mst_task_id.common().member_id(memberId++);
     mst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -3553,8 +4975,7 @@ const TypeObject* GetMinimalCO2FootprintImplObject()
     mst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     mst_task_id.common().member_flags().IS_KEY(true);
     mst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    mst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    mst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(false));
 
     MD5 task_id_hash("task_id");
     for (int i = 0; i < 4; ++i)
@@ -3568,23 +4989,26 @@ const TypeObject* GetMinimalCO2FootprintImplObject()
     // TODO Inheritance
     //type_object->minimal().struct_type().header().base_type()._d(EK_MINIMAL);
     //type_object->minimal().struct_type().header().base_type().equivalence_hash()[0..13];
-
     TypeIdentifier identifier;
     identifier._d(EK_MINIMAL);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->minimal().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();
@@ -3611,27 +5035,28 @@ const TypeObject* GetCompleteCO2FootprintImplObject()
     type_object->complete()._d(TK_STRUCTURE);
 
     type_object->complete().struct_type().struct_flags().IS_FINAL(false);
-    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(true);
+    type_object->complete().struct_type().struct_flags().IS_APPENDABLE(false);
     type_object->complete().struct_type().struct_flags().IS_MUTABLE(false);
     type_object->complete().struct_type().struct_flags().IS_NESTED(false);
     type_object->complete().struct_type().struct_flags().IS_AUTOID_HASH(false); // Unsupported
 
     MemberId memberId = 0;
-    CompleteStructMember cst_co2_footprint;
-    cst_co2_footprint.common().member_id(memberId++);
-    cst_co2_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
-    cst_co2_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
-    cst_co2_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
-    cst_co2_footprint.common().member_flags().IS_OPTIONAL(false);
-    cst_co2_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
-    cst_co2_footprint.common().member_flags().IS_KEY(false);
-    cst_co2_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_co2_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double", false));
+    CompleteStructMember cst_carbon_footprint;
+    cst_carbon_footprint.common().member_id(memberId++);
+    cst_carbon_footprint.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_carbon_footprint.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_carbon_footprint.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_carbon_footprint.common().member_flags().IS_OPTIONAL(false);
+    cst_carbon_footprint.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_carbon_footprint.common().member_flags().IS_KEY(false);
+    cst_carbon_footprint.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_carbon_footprint.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("double",
+            false));
 
 
-    cst_co2_footprint.detail().name("co2_footprint");
+    cst_carbon_footprint.detail().name("carbon_footprint");
 
-    type_object->complete().struct_type().member_seq().emplace_back(cst_co2_footprint);
+    type_object->complete().struct_type().member_seq().emplace_back(cst_carbon_footprint);
 
     CompleteStructMember cst_energy_consumption;
     cst_energy_consumption.common().member_id(memberId++);
@@ -3667,6 +5092,22 @@ const TypeObject* GetCompleteCO2FootprintImplObject()
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_carbon_intensity);
 
+    CompleteStructMember cst_extra_data;
+    cst_extra_data.common().member_id(memberId++);
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_extra_data.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_extra_data.common().member_flags().IS_OPTIONAL(false);
+    cst_extra_data.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_extra_data.common().member_flags().IS_KEY(false);
+    cst_extra_data.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_extra_data.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            true));
+
+    cst_extra_data.detail().name("extra_data");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_extra_data);
+
     CompleteStructMember cst_task_id;
     cst_task_id.common().member_id(memberId++);
     cst_task_id.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -3676,15 +5117,14 @@ const TypeObject* GetCompleteCO2FootprintImplObject()
     cst_task_id.common().member_flags().IS_MUST_UNDERSTAND(false);
     cst_task_id.common().member_flags().IS_KEY(true);
     cst_task_id.common().member_flags().IS_DEFAULT(false); // Doesn't apply
-    cst_task_id.common().member_type_id(*TypeObjectFactory::get_instance()->get_type_identifier("int32_t", false));
-
+    cst_task_id.common().member_type_id(*GetTaskIdImplIdentifier(true));
 
     cst_task_id.detail().name("task_id");
 
     {
         AppliedAnnotation ann;
-        //ann.annotation_typeid(GetKeyIdentifier(true));
-        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("Key"));
+        //ann.annotation_typeid(GetkeyIdentifier(true));
+        ann.annotation_typeid(*TypeObjectFactory::get_instance()->get_type_identifier_trying_complete("key"));
         {
             AppliedAnnotationParameter annParam;
             MD5 message_hash("value");
@@ -3709,23 +5149,26 @@ const TypeObject* GetCompleteCO2FootprintImplObject()
     // Header
     type_object->complete().struct_type().header().detail().type_name("CO2FootprintImpl");
     // TODO inheritance
-
     TypeIdentifier identifier;
     identifier._d(EK_COMPLETE);
 
-    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::CdrSizeCalculator calculator(eprosima::fastcdr::CdrVersion::XCDRv1);
     size_t current_alignment {0};
     SerializedPayload_t payload(static_cast<uint32_t>(
                 calculator.calculate_serialized_size(type_object->complete().struct_type(), current_alignment) + 4));
     eprosima::fastcdr::FastBuffer fastbuffer((char*) payload.data, payload.max_size);
     // Fixed endian (Page 221, EquivalenceHash definition of Extensible and Dynamic Topic Types for DDS document)
     eprosima::fastcdr::Cdr ser(
-        fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
-        eprosima::fastcdr::CdrVersion::XCDRv2); // Object that serializes the data.
+        fastbuffer, eprosima::fastcdr::Cdr::LITTLE_ENDIANNESS,
+        eprosima::fastcdr::CdrVersion::XCDRv1); // Object that serializes the data.
     payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
 
     ser << *type_object;
+#if FASTCDR_VERSION_MAJOR == 1
+    payload.length = (uint32_t)ser.getSerializedDataLength(); //Get the serialized length
+#else
     payload.length = (uint32_t)ser.get_serialized_data_length(); //Get the serialized length
+#endif // FASTCDR_VERSION_MAJOR == 1
     MD5 objectHash;
     objectHash.update((char*)payload.data, payload.length);
     objectHash.finalize();

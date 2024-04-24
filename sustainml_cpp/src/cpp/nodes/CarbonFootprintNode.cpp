@@ -28,11 +28,11 @@
 using namespace types;
 
 namespace sustainml {
-namespace co2_tracker_module {
+namespace carbon_tracker_module {
 
 CarbonFootprintNode::CarbonFootprintNode(
         CarbonFootprintTaskListener& user_listener)
-    : Node(common::CO2_TRACKER_NODE)
+    : Node(common::CARBON_FOOTPRINT_NODE)
     , user_listener_(user_listener)
 {
     sustainml::core::Options opts;
@@ -53,7 +53,7 @@ CarbonFootprintNode::CarbonFootprintNode(
 CarbonFootprintNode::CarbonFootprintNode(
         CarbonFootprintTaskListener& user_listener,
         sustainml::core::Options opts)
-    : Node(common::CO2_TRACKER_NODE, opts)
+    : Node(common::CARBON_FOOTPRINT_NODE, opts)
     , user_listener_(user_listener)
 {
     init(opts);
@@ -85,13 +85,13 @@ void CarbonFootprintNode::init (
             sustainml::common::TopicCollection::get()[common::USER_INPUT].second.c_str(),
             &(*listener_user_input_queue_), opts);
 
-    initialize_publication(sustainml::common::TopicCollection::get()[common::CO2_FOOTPRINT].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::CO2_FOOTPRINT].second.c_str(),
+    initialize_publication(sustainml::common::TopicCollection::get()[common::CARBON_FOOTPRINT].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::CARBON_FOOTPRINT].second.c_str(),
             opts);
 }
 
 void CarbonFootprintNode::publish_to_user(
-        const int& task_id,
+        const types::TaskId& task_id,
         const std::vector<std::pair<int, void*>> input_samples)
 {
     //! Expected inputs are the number of reader minus the control reader
@@ -157,9 +157,9 @@ void CarbonFootprintNode::publish_to_user(
     }
     else
     {
-        EPROSIMA_LOG_ERROR(CO2_NODE, "Input size mismatch");
+        EPROSIMA_LOG_ERROR(CARBON_NODE, "Input size mismatch");
     }
 }
 
-} // co2_tracker_module
+} // carbon_tracker_module
 } // sustainml

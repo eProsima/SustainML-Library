@@ -196,7 +196,8 @@ public:
         {
             if (datawriter_->write((void*)&(*it)))
             {
-                std::cout << "Injecting data with task id " << it->task_id() << std::endl;
+                std::cout << "Injecting data with task id {" << it->task_id().problem_id() << "," <<
+                    it->task_id().iteration_id() << "}" << std::endl;
                 it = msgs.erase(it);
                 std::this_thread::sleep_for(std::chrono::milliseconds(ms_period));
             }

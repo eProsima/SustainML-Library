@@ -73,7 +73,7 @@ void Dispatcher::register_sample_queryable(
 }
 
 void Dispatcher::notify(
-        const int& task_id)
+        const types::TaskId& task_id)
 {
     if (started_.load(std::memory_order_relaxed))
     {
@@ -93,7 +93,7 @@ void Dispatcher::notify(
 }
 
 void Dispatcher::process(
-        const int& task_id)
+        const types::TaskId& task_id)
 {
     int expected_hits = sample_queryables_.size();
 
@@ -146,7 +146,7 @@ void Dispatcher::process(
 
 void Dispatcher::routine()
 {
-    int task_id{-1};
+    types::TaskId task_id;
 
     {
         std::unique_lock<std::mutex> lock(mtx_);
@@ -154,7 +154,7 @@ void Dispatcher::routine()
         taskid_buffer_.pop();
     }
 
-    if (task_id != common::INVALID_ID)
+    if (task_id != types::TaskId{common::INVALID_ID, common::INVALID_ID})
     {
         process(task_id);
     }

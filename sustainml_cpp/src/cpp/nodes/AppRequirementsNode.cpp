@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * @file MLModelNode.cpp
+ * @file AppRequirementsNode.cpp
  */
 
-#include <sustainml_cpp/nodes/MLModelNode.hpp>
+#include <sustainml_cpp/nodes/AppRequirementsNode.hpp>
 
 #include <fastdds/dds/publisher/DataWriter.hpp>
 
@@ -28,11 +28,11 @@
 using namespace types;
 
 namespace sustainml {
-namespace ml_model_module {
+namespace app_requirements_module {
 
-MLModelNode::MLModelNode(
-        MLModelTaskListener& user_listener)
-    : Node(common::ML_MODEL_NODE)
+AppRequirementsNode::AppRequirementsNode(
+        AppRequirementsTaskListener& user_listener)
+    : Node(common::APP_REQUIREMENTS_NODE)
     , user_listener_(user_listener)
 {
     sustainml::core::Options opts;
@@ -46,69 +46,40 @@ MLModelNode::MLModelNode(
     opts.wqos.resource_limits().max_instances = 500;
     opts.wqos.resource_limits().max_samples_per_instance = 1;
     opts.wqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
-
     init(opts);
 }
 
-MLModelNode::MLModelNode(
-        MLModelTaskListener& user_listener,
+AppRequirementsNode::AppRequirementsNode(
+        AppRequirementsTaskListener& user_listener,
         sustainml::core::Options opts)
-    : Node(common::ML_MODEL_NODE, opts)
+    : Node(common::APP_REQUIREMENTS_NODE, opts)
     , user_listener_(user_listener)
 {
     init(opts);
 }
 
-MLModelNode::~MLModelNode()
+AppRequirementsNode::~AppRequirementsNode()
 {
 
 }
 
-void MLModelNode::init (
+void AppRequirementsNode::init (
         const sustainml::core::Options& opts)
 {
-    listener_model_metadata_queue_.reset(new core::QueuedNodeListener<MLModelMetadata>(this));
-    listener_app_requirements_queue_.reset(new core::QueuedNodeListener<AppRequirements>(this));
-    listener_hw_constraints_queue_.reset(new core::QueuedNodeListener<HWConstraints>(this));
+    listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 
-    // Baselines
-    listener_mlmodel_queue_.reset(new core::QueuedNodeListener<MLModel>(this));
-    listener_hw_queue_.reset(new core::QueuedNodeListener<HWResource>(this));
-    listener_carbon_footprint_queue_.reset(new core::QueuedNodeListener<CO2Footprint>(this));
+    task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, AppRequirements>>(opts));
 
-    task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, MLModel>>(opts));
+    initialize_subscription(sustainml::common::TopicCollection::get()[common::USER_INPUT].first.c_str(),
+            sustainml::common::TopicCollection::get()[common::USER_INPUT].second.c_str(),
+            &(*listener_user_input_queue_), opts);
 
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].second.c_str(),
-            &(*listener_model_metadata_queue_), opts);
-
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::APP_REQUIREMENT].first.c_str(),
+    initialize_publication(sustainml::common::TopicCollection::get()[common::APP_REQUIREMENT].first.c_str(),
             sustainml::common::TopicCollection::get()[common::APP_REQUIREMENT].second.c_str(),
-            &(*listener_app_requirements_queue_), opts);
-
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::HW_CONSTRAINT].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::HW_CONSTRAINT].second.c_str(),
-            &(*listener_hw_constraints_queue_), opts);
-
-    initialize_publication(sustainml::common::TopicCollection::get()[common::ML_MODEL].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
             opts);
-
-    // Baselines topics
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL_BASELINE].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::ML_MODEL].second.c_str(),
-            &(*listener_mlmodel_queue_), opts);
-
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::HW_RESOURCES_BASELINE].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::HW_RESOURCE].second.c_str(),
-            &(*listener_hw_queue_), opts);
-
-    initialize_subscription(sustainml::common::TopicCollection::get()[common::CARBON_FOOTPRINT_BASELINE].first.c_str(),
-            sustainml::common::TopicCollection::get()[common::CARBON_FOOTPRINT].second.c_str(),
-            &(*listener_carbon_footprint_queue_), opts);
 }
 
-void MLModelNode::publish_to_user(
+void AppRequirementsNode::publish_to_user(
         const types::TaskId& task_id,
         const std::vector<std::pair<int, void*>> input_samples)
 {
@@ -124,7 +95,7 @@ void MLModelNode::publish_to_user(
             ExpectedInputSamples::MAX,
             samples_retrieved);
 
-        std::pair<NodeStatus, MLModel>* task_data_cache;
+        std::pair<NodeStatus, AppRequirements>* task_data_cache;
 
         {
             std::lock_guard<std::mutex> lock (mtx_);
@@ -146,7 +117,7 @@ void MLModelNode::publish_to_user(
             publish_node_status();
         }
 
-        user_listener_.invoke_user_cb(task_id, core::helper::gen_seq<MLModelCallable::size>{});
+        user_listener_.invoke_user_cb(task_id, core::helper::gen_seq<AppRequirementsCallable::size>{});
 
         //! Ensure task_id is forwarded to the output
         task_data_cache->second.task_id(task_id);
@@ -163,9 +134,7 @@ void MLModelNode::publish_to_user(
         publish_node_status();
         writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->second.get_impl());
 
-        listener_model_metadata_queue_->remove_element_by_taskid(task_id);
-        listener_app_requirements_queue_->remove_element_by_taskid(task_id);
-        listener_hw_constraints_queue_->remove_element_by_taskid(task_id);
+        listener_user_input_queue_->remove_element_by_taskid(task_id);
 
         {
             std::lock_guard<std::mutex> lock (mtx_);
@@ -175,9 +144,9 @@ void MLModelNode::publish_to_user(
     }
     else
     {
-        EPROSIMA_LOG_ERROR(MLMODEL_NODE, "Input size mismatch");
+        EPROSIMA_LOG_ERROR(APPREQUIREMENTS_NODE, "Input size mismatch");
     }
 }
 
-} // ml_model_module
+} // app_requirements_module
 } // sustainml

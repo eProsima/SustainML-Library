@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file CarbonFootprintNode.hpp
+ * @file MLModelMetadataNode.hpp
  */
 
 
-#ifndef SUSTAINMLCPP_NODES_CARBONFOOTPRINTNODE_HPP
-#define SUSTAINMLCPP_NODES_CARBONFOOTPRINTNODE_HPP
+#ifndef SUSTAINMLCPP_NODES_MLMODELMETADATANODE_HPP
+#define SUSTAINMLCPP_NODES_MLMODELMETADATANODE_HPP
 
 #include <sustainml_cpp/core/Node.hpp>
 #include <sustainml_cpp/core/Callable.hpp>
@@ -36,47 +36,40 @@ namespace utils {
 template<class T> class SamplePool;
 } // namespace utils
 
-namespace carbon_tracker_module {
+namespace ml_model_module {
 
 class Node;
 class Dispatcher;
 
-using CarbonFootprintCallable = core::Callable<types::MLModel, types::UserInput, types::HWResource, types::NodeStatus,
-                types::CO2Footprint>;
+using MLModelMetadataCallable = core::Callable<types::UserInput, types::NodeStatus, types::MLModelMetadata>;
 
-struct CarbonFootprintTaskListener : public CarbonFootprintCallable
+struct MLModelMetadataTaskListener : public MLModelMetadataCallable
 {
-    virtual ~CarbonFootprintTaskListener()
+    virtual ~MLModelMetadataTaskListener()
     {
     }
 
     virtual void on_new_task_available(
-            types::MLModel& model,
-            types::UserInput& ui,
-            types::HWResource& hw,
+            types::UserInput& user_input,
             types::NodeStatus& status,
-            types::CO2Footprint& output) override
+            types::MLModelMetadata& output) override
     {
     }
 
 };
 
 /**
- * @brief Carbon Footprint Node Implementation
+ * @brief ML Model metadata Node Implementation
  * It requires the
  * - User Input
- * - ML Model
- * - HW Resource
- * as inputs
+ * as input
  */
-
-class CarbonFootprintNode : public ::sustainml::core::Node
+class MLModelMetadataNode : public ::sustainml::core::Node
 {
+
     enum ExpectedInputSamples
     {
-        ML_MODEL_SAMPLE,
         USER_INPUT_SAMPLE,
-        HW_RESOURCE_SAMPLE,
         MAX
     };
 
@@ -88,15 +81,16 @@ class CarbonFootprintNode : public ::sustainml::core::Node
 
 public:
 
-    SUSTAINML_CPP_DLL_API CarbonFootprintNode(
-            CarbonFootprintTaskListener& listener);
+    SUSTAINML_CPP_DLL_API MLModelMetadataNode(
+            MLModelMetadataTaskListener& user_listener);
 
 #ifndef SWIG_WRAPPER
-    SUSTAINML_CPP_DLL_API CarbonFootprintNode(
-            CarbonFootprintTaskListener& listener,
+    SUSTAINML_CPP_DLL_API MLModelMetadataNode(
+            MLModelMetadataTaskListener& user_listener,
             sustainml::core::Options opts);
 #endif // SWIG_WRAPPER
-    SUSTAINML_CPP_DLL_API virtual ~CarbonFootprintNode();
+
+    SUSTAINML_CPP_DLL_API virtual ~MLModelMetadataNode();
 
 private:
 
@@ -118,18 +112,17 @@ private:
             const types::TaskId& task_id,
             const std::vector<std::pair<int, void*>> inputs) override;
 
-    CarbonFootprintTaskListener& user_listener_;
+    MLModelMetadataTaskListener& user_listener_;
 
-    std::unique_ptr<core::QueuedNodeListener<types::MLModel>> listener_ml_model_queue_;
     std::unique_ptr<core::QueuedNodeListener<types::UserInput>> listener_user_input_queue_;
-    std::unique_ptr<core::QueuedNodeListener<types::HWResource>> listener_hw_queue_;
 
     std::mutex mtx_;
 
-    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::CO2Footprint>>> task_data_pool_;
+    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::MLModelMetadata>>> task_data_pool_;
+
 };
 
-} // namespace carbon_tracker_module
+} // namespace ml_model_module
 } // namespace sustainml
 
-#endif // SUSTAINMLCPP_NODES_CARBONFOOTPRINTNODE_HPP
+#endif // SUSTAINMLCPP_NODES_MLMODELMETADATANODE_HPP

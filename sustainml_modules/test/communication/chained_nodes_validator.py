@@ -17,6 +17,7 @@ import argparse
 import os
 import subprocess
 import sys
+from time import sleep
 
 class ParseOptions():
     """Parse arguments."""
@@ -79,10 +80,10 @@ class ParseOptions():
             help='Number of samples sent by the publisher and received by the subscriber.'
         )
         parser.add_argument(
-            '-te',
-            '--task-encoder',
+            '-mlm',
+            '--ml-metadata',
             type=str,
-            help='Executable name of a TaskEncoderNode in the sustainml-wp1 directory'
+            help='Executable name of a MLModelMetadata in the sustainml-wp1 directory'
         )
         parser.add_argument(
             '-ml',
@@ -102,6 +103,34 @@ class ParseOptions():
             type=str,
             help='Executable name of a CarbonFootprintNode in the sustainml-wp3 directory'
         )
+        parser.add_argument(
+            '-hwc',
+            '--hw-constraints',
+            type=str,
+            help='Executable name of a HWConstraints in the sustainml-wp2 directory'
+        )
+        parser.add_argument(
+            '-ap',
+            '--app-requirements',
+            type=str,
+            help='Executable name of a AppRequirements in the sustainml-wp1 directory'
+        )
+        parser.add_argument(
+            '-bt',
+            '--baseline-topics',
+            nargs='+',
+            action='store',
+            required=False,
+            help='List of baseline topic names.'
+        )
+        parser.add_argument(
+            '-btt',
+            '--baseline-topic-types',
+            nargs='+',
+            action='store',
+            required=False,
+            help='List of baseline topic types.'
+        )
 
         return parser.parse_args()
 
@@ -114,7 +143,7 @@ def run(args):
 
     :return: The return code resulting. It is the number of failed processes.
     """
-    pub_command = []
+    pub_commands = []
     sub_command = []
     node_commands = []
 
@@ -131,6 +160,7 @@ def run(args):
             'PublisherSubscriber executable does not have execution permissions:'
             f'{args.pub_sub}')
 
+    pub_command = []
     pub_command.append(os.path.join(script_dir, args.pub_sub))
     sub_command.append(os.path.join(script_dir, args.pub_sub))
 
@@ -154,12 +184,13 @@ def run(args):
         pub_command.extend(['--samples', str(args.samples)])
         sub_command.extend(['--samples', str(args.samples)])
 
-    print (args.task_encoder)
-    if args.task_encoder or args.machine_learning or args.hardware or args.co2_footprint:
+    pub_commands.append(pub_command)
 
-        if args.task_encoder:
+    if args.ml_metadata or args.machine_learning or args.hardware or args.co2_footprint or args.app_requirements or args.hw_constraints:
+
+        if args.ml_metadata:
             te_command = ['python3']
-            te_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp1/' + args.task_encoder)
+            te_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp1/' + args.ml_metadata)
 
             if not os.path.isfile(te_exec_file):
                 print(f'TaskEncoder executable file does not exists: {te_exec_file}')
@@ -201,6 +232,41 @@ def run(args):
             co2_command.extend([co2_exec_file])
             node_commands.append(co2_command)
 
+        if args.hw_constraints:
+            hwcons_command = ['python3']
+            hwcons_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp2/' + args.hw_constraints)
+
+            if not os.path.isfile(hwcons_exec_file):
+                print(f'HardwareConstraints executable file does not exists: {hwcons_exec_file}')
+                sys.exit(1)
+
+            hwcons_command.extend([hwcons_exec_file])
+            node_commands.append(hwcons_command)
+
+        if args.app_requirements:
+            app_reqs_command = ['python3']
+            app_reqs_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp1/' + args.app_requirements)
+
+            if not os.path.isfile(app_reqs_exec_file):
+                print(f'AppRequirements executable file does not exists: {app_reqs_exec_file}')
+                sys.exit(1)
+
+            app_reqs_command.extend([app_reqs_exec_file])
+            node_commands.append(app_reqs_command)
+
+    if args.baseline_topics and args.baseline_topic_types and len(args.baseline_topics) == len(args.baseline_topic_types):
+        for i_baseline in range(0, len(args.baseline_topics)):
+            baseline_cmd = []
+            baseline_cmd.append(os.path.join(script_dir, args.pub_sub))
+            baseline_cmd.append('publisher')
+            baseline_cmd.extend(['--topic', str(args.baseline_topics[i_baseline])])
+            baseline_cmd.append(str('--') + str(args.baseline_topic_types[i_baseline]))
+            baseline_cmd.extend(['--samples', str(args.samples)])
+            pub_commands.append(baseline_cmd)
+    else:
+        print('Not provided simple task pubsub topic names.')
+        sys.exit(1)
+
     node_procs = []
     for node_cmd in node_commands:
 
@@ -214,16 +280,23 @@ def run(args):
     print(
            f'Running Subscriber - commmand:  ' + str(sub_command))
 
-    pub_proc = subprocess.Popen(pub_command)
-    print(
-        'Running Publisher - commmand:  ' + str(pub_command))
+    sleep(1)
+    pub_procs = []
+    for pub_cmd in pub_commands:
+
+        pub_proc = subprocess.Popen(pub_cmd)
+        print(
+           'Running Publisher - commmand:  ' + str(pub_cmd))
+
+        pub_procs.append(pub_proc)
+        sleep(1)
 
     try:
-        outs, errs = sub_proc.communicate(timeout=15)
+        outs, errs = sub_proc.communicate(timeout=20)
     except subprocess.TimeoutExpired:
         print('Subscriber process timed out, terminating...')
         sub_proc.kill()
-        pub_proc.kill()
+        [pub_proc.kill() for pub_proc in pub_procs]
         [node_proc.kill() for node_proc in node_procs]
         try:
             sys.exit(os.EX_SOFTWARE)
@@ -231,7 +304,7 @@ def run(args):
             sys.exit(1)
 
 
-    pub_proc.kill()
+    [pub_proc.kill() for pub_proc in pub_procs]
     sub_proc.kill()
     [node_proc.kill() for node_proc in node_procs]
     try:

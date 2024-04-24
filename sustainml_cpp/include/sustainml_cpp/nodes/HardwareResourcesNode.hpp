@@ -41,7 +41,8 @@ namespace hardware_module {
 class Node;
 class Dispatcher;
 
-using HardwareResourcesCallable = core::Callable<types::MLModel, types::NodeStatus, types::HWResource>;
+using HardwareResourcesCallable = core::Callable<types::MLModel, types::AppRequirements, types::HWConstraints,
+                types::NodeStatus, types::HWResource>;
 struct HardwareResourcesTaskListener : public HardwareResourcesCallable
 {
     virtual ~HardwareResourcesTaskListener()
@@ -50,6 +51,8 @@ struct HardwareResourcesTaskListener : public HardwareResourcesCallable
 
     virtual void on_new_task_available(
             types::MLModel& model,
+            types::AppRequirements& requirements,
+            types::HWConstraints& constraints,
             types::NodeStatus& status,
             types::HWResource& output) override
     {
@@ -69,6 +72,8 @@ class HardwareResourcesNode : public ::sustainml::core::Node
     enum ExpectedInputSamples
     {
         ML_MODEL_SAMPLE,
+        APP_REQUIREMENTS_SAMPLE,
+        HW_CONSTRAINTS_SAMPLE,
         MAX
     };
 
@@ -108,12 +113,15 @@ private:
      * must correspond to the same task_id.
      */
     void publish_to_user(
-            const int& task_id,
+            const types::TaskId& task_id,
             const std::vector<std::pair<int, void*>> inputs) override;
 
     HardwareResourcesTaskListener& user_listener_;
 
     std::unique_ptr<core::QueuedNodeListener<types::MLModel>> listener_ml_model_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::AppRequirements>> listener_app_requirements_queue_;
+    std::unique_ptr<core::QueuedNodeListener<types::HWConstraints>> listener_hw_constraints_queue_;
+
 
     std::mutex mtx_;
 

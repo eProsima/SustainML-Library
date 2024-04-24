@@ -1,4 +1,4 @@
-// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2024 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,23 +13,19 @@
 // limitations under the License.
 
 ////////////////////////////////////////////////////////
-// Binding for class types
+// Binding for class AppRequirementsNode
 ////////////////////////////////////////////////////////
 
 // Any macro used on the header files will give an error if it is not redefined here
-#define eProsima_user_DllExport
+#define SUSTAINML_CPP_DLL_API
+#define SWIG_WRAPPER
 #define GEN_API_VER 2
 
-%include std_string.i
-
-// Ignore overloaded methods that have no application on Python
-// Warnings regarding equiality operators and stuff
-%ignore *::operator=;
-%ignore operator<<;
+%feature("director") sustainml::app_requirements_module::AppRequirementsTaskListener;
 
 %{
-#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/nodes/AppRequirementsNode.hpp>
 %}
 
 // Include the class interfaces
-%include <sustainml_cpp/types/types.h>
+%include <sustainml_cpp/nodes/AppRequirementsNode.hpp>

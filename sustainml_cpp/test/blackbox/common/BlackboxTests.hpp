@@ -51,55 +51,62 @@
 using namespace sustainml;
 
 /****** Auxiliary data generators *******/
-std::list<UserInputImpl> default_userinput_task_generator(
+std::list<AppRequirementsImpl> default_apprequirements_data_generator(
         size_t max = 0);
 
-std::list<EncodedTaskImpl> default_encodedtask_task_generator(
+std::list<CO2FootprintImpl> default_carbonfootprint_data_generator(
         size_t max = 0);
 
-std::list<MLModelImpl> default_mlmodel_task_generator(
+std::list<HWConstraintsImpl> default_hwconstraints_task_generator(
         size_t max = 0);
 
 std::list<HWResourceImpl> default_hwresource_task_generator(
         size_t max = 0);
 
-std::list<CO2FootprintImpl> default_co2footprint_data_generator(
+std::list<MLModelMetadataImpl> default_modelmetadata_task_generator(
+        size_t max = 0);
+
+std::list<MLModelImpl> default_mlmodel_task_generator(
+        size_t max = 0);
+
+std::list<UserInputImpl> default_userinput_task_generator(
         size_t max = 0);
 
 /******* Auxiliary Managed Nodes aliases *****/
 
-using TaskEncoderManagedNode = ManagedNode<ml_task_encoding_module::TaskEncoderNode,
-                ml_task_encoding_module::TaskEncoderTaskListener,
-                types::UserInput, types::NodeStatus, types::EncodedTask>;
+using AppRequirementsManagedNode = ManagedNode<app_requirements_module::AppRequirementsNode,
+                app_requirements_module::AppRequirementsTaskListener,
+                types::UserInput, types::NodeStatus, types::AppRequirements>;
 
-using MLModelManagedNode = ManagedNode<ml_model_provider_module::MLModelNode,
-                ml_model_provider_module::MLModelTaskListener,
-                types::EncodedTask, types::NodeStatus, types::MLModel>;
-
-using HWResourcesManagedNode = ManagedNode<hardware_module::HardwareResourcesNode,
-                hardware_module::HardwareResourcesTaskListener,
-                types::MLModel, types::NodeStatus, types::HWResource>;
-
-using CarbonFootprintManagedNode = ManagedNode<co2_tracker_module::CarbonFootprintNode,
-                co2_tracker_module::CarbonFootprintTaskListener,
+using CarbonFootprintManagedNode = ManagedNode<carbon_tracker_module::CarbonFootprintNode,
+                carbon_tracker_module::CarbonFootprintTaskListener,
                 types::MLModel, types::UserInput, types::HWResource,
                 types::NodeStatus, types::CO2Footprint>;
 
+using HWConstraintsManagedNode = ManagedNode<hardware_module::HardwareConstraintsNode,
+                hardware_module::HardwareConstraintsTaskListener,
+                types::UserInput, types::NodeStatus, types::HWConstraints>;
+
+using HWResourcesManagedNode = ManagedNode<hardware_module::HardwareResourcesNode,
+                hardware_module::HardwareResourcesTaskListener,
+                types::MLModel, types::AppRequirements, types::HWConstraints,
+                types::NodeStatus, types::HWResource>;
+
+using MLModelMetadataManagedNode = ManagedNode<ml_model_module::MLModelMetadataNode,
+                ml_model_module::MLModelMetadataTaskListener,
+                types::UserInput, types::NodeStatus, types::MLModelMetadata>;
+
+using MLModelManagedNode = ManagedNode<ml_model_module::MLModelNode,
+                ml_model_module::MLModelTaskListener,
+                types::MLModelMetadata, types::AppRequirements, types::HWConstraints,
+                types::MLModel, types::HWResource, types::CO2Footprint,
+                types::NodeStatus, types::MLModel>;
+
 /******* Auxiliary Signature aliases *****/
-using TaskEncoderCallbackSignature = std::function<void (
+using AppRequirementsCallbackSignature = std::function<void (
                     types::UserInput& user_input,
                     types::NodeStatus& status,
-                    types::EncodedTask& output)>;
-
-using MLModelCallbackSignature = std::function<void (
-                    types::EncodedTask& encoded_task,
-                    types::NodeStatus& status,
-                    types::MLModel& output)>;
-
-using HWResourcesCallbackSignature = std::function<void (
-                    types::MLModel& model,
-                    types::NodeStatus& status,
-                    types::HWResource& output)>;
+                    types::AppRequirements& output)>;
 
 using CarbonFootprintCallbackSignature = std::function<void (
                     types::MLModel& model,
@@ -107,6 +114,30 @@ using CarbonFootprintCallbackSignature = std::function<void (
                     types::HWResource& hardware_resources,
                     types::NodeStatus& status,
                     types::CO2Footprint& output)>;
+
+using HWConstraintsCallbackSignature = std::function<void (
+                    types::UserInput& model,
+                    types::NodeStatus& status,
+                    types::HWConstraints& output)>;
+
+using HWResourcesCallbackSignature = std::function<void (
+                    types::MLModel& model,
+                    types::AppRequirements& requirements,
+                    types::HWConstraints& constraints,
+                    types::NodeStatus& status,
+                    types::HWResource& output)>;
+
+using MLModelMetadataCallbackSignature = std::function<void (
+                    types::UserInput& user_input,
+                    types::NodeStatus& status,
+                    types::MLModelMetadata& output)>;
+
+using MLModelCallbackSignature = std::function<void (
+                    types::MLModelMetadata& ml_model_metadata,
+                    types::AppRequirements& requirements,
+                    types::HWConstraints& constraints,
+                    types::NodeStatus& status,
+                    types::MLModel& output)>;
 
 
 #endif // __BLACKBOX_BLACKBOX_HPP__

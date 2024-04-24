@@ -35,9 +35,9 @@ struct TypeFactory
         {
             return static_cast<eprosima::fastdds::dds::TypeSupport>(new UserInputImplPubSubType());
         }
-        else if (type_opts[TASK_ENCODER])
+        else if (type_opts[ML_MODEL_METADATA])
         {
-            return static_cast<eprosima::fastdds::dds::TypeSupport>(new EncodedTaskImplPubSubType());
+            return static_cast<eprosima::fastdds::dds::TypeSupport>(new MLModelMetadataImplPubSubType());
         }
         else if (type_opts[ML_MODEL])
         {
@@ -51,6 +51,15 @@ struct TypeFactory
         {
             return static_cast<eprosima::fastdds::dds::TypeSupport>(new CO2FootprintImplPubSubType());
         }
+        else if (type_opts[HW_CONSTRAINTS])
+        {
+            return static_cast<eprosima::fastdds::dds::TypeSupport>(new HWConstraintsImplPubSubType());
+        }
+        else if (type_opts[APP_REQUIREMENTS])
+        {
+            return static_cast<eprosima::fastdds::dds::TypeSupport>(new AppRequirementsImplPubSubType());
+        }
+
 
         return eprosima::fastdds::dds::TypeSupport();
     }
@@ -60,30 +69,44 @@ struct TypeFactory
             void* data,
             const size_t& task_id)
     {
+        TaskIdImpl task_id_impl;
+        task_id_impl.problem_id(task_id);
+        task_id_impl.iteration_id(1);
+
         if (ts.get_type_name() == "UserInputImpl")
         {
             auto ui_data = static_cast<UserInputImpl*>(data);
-            ui_data->task_id(task_id);
+            ui_data->task_id(task_id_impl);
         }
-        else if (ts.get_type_name() == "EncodedTaskImpl")
+        else if (ts.get_type_name() == "MLModelMetadataImpl")
         {
-            auto ui_data = static_cast<EncodedTaskImpl*>(data);
-            ui_data->task_id(task_id);
+            auto ui_data = static_cast<MLModelMetadataImpl*>(data);
+            ui_data->task_id(task_id_impl);
         }
         else if (ts.get_type_name() == "MLModelImpl")
         {
             auto ui_data = static_cast<MLModelImpl*>(data);
-            ui_data->task_id(task_id);
+            ui_data->task_id(task_id_impl);
         }
         else if (ts.get_type_name() == "HWResourceImpl")
         {
             auto ui_data = static_cast<HWResourceImpl*>(data);
-            ui_data->task_id(task_id);
+            ui_data->task_id(task_id_impl);
         }
         else if (ts.get_type_name() == "CO2FootprintImpl")
         {
             auto ui_data = static_cast<CO2FootprintImpl*>(data);
-            ui_data->task_id(task_id);
+            ui_data->task_id(task_id_impl);
+        }
+        else if (ts.get_type_name() == "HWResourceImpl")
+        {
+            auto ui_data = static_cast<HWResourceImpl*>(data);
+            ui_data->task_id(task_id_impl);
+        }
+        else if (ts.get_type_name() == "AppRequirementsImpl")
+        {
+            auto ui_data = static_cast<AppRequirementsImpl*>(data);
+            ui_data->task_id(task_id_impl);
         }
         else
         {

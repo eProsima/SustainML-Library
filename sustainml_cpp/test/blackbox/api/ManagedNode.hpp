@@ -22,10 +22,12 @@
 
 #include <future>
 
+#include <sustainml_cpp/nodes/AppRequirementsNode.hpp>
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
+#include <sustainml_cpp/nodes/HardwareConstraintsNode.hpp>
 #include <sustainml_cpp/nodes/HardwareResourcesNode.hpp>
 #include <sustainml_cpp/nodes/MLModelNode.hpp>
-#include <sustainml_cpp/nodes/TaskEncoderNode.hpp>
+#include <sustainml_cpp/nodes/MLModelMetadataNode.hpp>
 
 template <size_t n_inputs, typename ... PACK>
 struct GenericTaskListener : public sustainml::core::Callable<PACK...>

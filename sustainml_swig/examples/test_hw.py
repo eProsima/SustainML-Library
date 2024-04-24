@@ -35,7 +35,7 @@ class MyListener(sustainml_swig.HardwareResourcesTaskListener):
         # Parent class constructor
         super().__init__()
 
-    def on_new_task_available(self, arg1, arg2, arg3):
+    def on_new_task_available(self, arg1, arg2, arg3, arg4, arg5):
         print (arg1.model())
         print(arg3.hw_description())
         keys = arg3.hw_description("This is a HW description")

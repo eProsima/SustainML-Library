@@ -14,23 +14,47 @@
 
 #include "BlackboxTests.hpp"
 
-TEST(BlackboxTestsPairedNodes, TaskEncoderWithMLNode)
+TEST(BlackboxTestsPairedNodes, MLModelMetadataWithMLNode)
 {
-    TaskEncoderManagedNode te_node;
+    MLModelMetadataManagedNode ml_md_node;
     MLModelManagedNode ml_node;
 
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
+    TaskInjector<HWConstraintsImplPubSubType> hw_cons_inj(common::TopicCollection::get()[common::HW_CONSTRAINT].first);
+    TaskInjector<AppRequirementsImplPubSubType> appreq_inj(common::TopicCollection::get()[common::APP_REQUIREMENT].first);
+    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].
+                    first);
+    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::
+                    HW_RESOURCES_BASELINE].first);
+    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::
+                    CARBON_FOOTPRINT_BASELINE].first);
 
-    te_node.start();
+
+    ml_md_node.start();
     ml_node.start();
 
     ui_inj.wait_discovery(1);
+    hw_cons_inj.wait_discovery(1);
+    appreq_inj.wait_discovery(1);
+    ml_model_baseline_inj.wait_discovery(1);
+    hw_res_baseline_inj.wait_discovery(1);
+    co2_baseline_inj.wait_discovery(1);
 
     auto ui_data = default_userinput_task_generator();
+    auto hwcons_data = default_hwconstraints_task_generator();
+    auto appreq_data = default_apprequirements_data_generator();
+    auto ml_model_baseline_data = default_mlmodel_task_generator();
+    auto hwres_baseline_data = default_hwresource_task_generator();
+    auto carbon_baseline_data = default_carbonfootprint_data_generator();
 
     ml_node.prepare_expected_samples(ui_data.size());
 
     ui_inj.inject(ui_data);
+    hw_cons_inj.inject(hwcons_data);
+    appreq_inj.inject(appreq_data);
+    ml_model_baseline_inj.inject(ml_model_baseline_data);
+    hw_res_baseline_inj.inject(hwres_baseline_data);
+    co2_baseline_inj.inject(carbon_baseline_data);
 
     EXPECT_TRUE(ml_node.block_for_all(std::chrono::seconds(5)));
 }
@@ -39,19 +63,44 @@ TEST(BlackboxTestsPairedNodes, MachineLearningWithHardwareResourcesNode)
 {
     MLModelManagedNode ml_node;
     HWResourcesManagedNode hw_node;
+    HWConstraintsManagedNode hwc_node;
+    AppRequirementsManagedNode app_req_node;
 
-    TaskInjector<EncodedTaskImplPubSubType> enc_task_inj(common::TopicCollection::get()[common::ENCODED_TASK].first);
+    TaskInjector<MLModelMetadataImplPubSubType> enc_task_inj(common::TopicCollection::get()[common::ML_MODEL_METADATA].
+                    first);
+    TaskInjector<UserInputImplPubSubType> user_input_inj(common::TopicCollection::get()[common::USER_INPUT].
+                    first);
+    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].
+                    first);
+    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::
+                    HW_RESOURCES_BASELINE].first);
+    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::
+                    CARBON_FOOTPRINT_BASELINE].first);
 
     hw_node.start();
     ml_node.start();
+    app_req_node.start();
+    hwc_node.start();
 
     enc_task_inj.wait_discovery(1);
+    user_input_inj.wait_discovery(2);
+    ml_model_baseline_inj.wait_discovery(1);
+    hw_res_baseline_inj.wait_discovery(1);
+    co2_baseline_inj.wait_discovery(1);
 
-    auto enc_task_data = default_encodedtask_task_generator();
+    auto enc_task_data = default_modelmetadata_task_generator();
+    auto user_input_data = default_userinput_task_generator();
+    auto ml_model_baseline_data = default_mlmodel_task_generator();
+    auto hwres_baseline_data = default_hwresource_task_generator();
+    auto carbon_baseline_data = default_carbonfootprint_data_generator();
 
     hw_node.prepare_expected_samples(enc_task_data.size());
 
     enc_task_inj.inject(enc_task_data);
+    user_input_inj.inject(user_input_data);
+    ml_model_baseline_inj.inject(ml_model_baseline_data);
+    hw_res_baseline_inj.inject(hwres_baseline_data);
+    co2_baseline_inj.inject(carbon_baseline_data);
 
     EXPECT_TRUE(hw_node.block_for_all(std::chrono::seconds(5)));
 }
@@ -63,45 +112,72 @@ TEST(BlackboxTestsPairedNodes, HardwareResourcesWithCarbonFootprintNode)
 
     TaskInjector<MLModelImplPubSubType> ml_inj(common::TopicCollection::get()[common::ML_MODEL].first);
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
+    TaskInjector<HWConstraintsImplPubSubType> hw_cons_inj(common::TopicCollection::get()[common::HW_CONSTRAINT].first);
+    TaskInjector<AppRequirementsImplPubSubType> appreq_inj(common::TopicCollection::get()[common::APP_REQUIREMENT].first);
 
     co2_node.start();
     hw_node.start();
 
     ml_inj.wait_discovery(2);
     ui_inj.wait_discovery(1);
+    hw_cons_inj.wait_discovery(1);
+    appreq_inj.wait_discovery(1);
 
     auto ml_data = default_mlmodel_task_generator();
     auto ui_data = default_userinput_task_generator();
+    auto hwcons_data = default_hwconstraints_task_generator();
+    auto appreq_data = default_apprequirements_data_generator();
 
     co2_node.prepare_expected_samples(ml_data.size());
 
     ml_inj.inject(ml_data);
     ui_inj.inject(ui_data);
+    hw_cons_inj.inject(hwcons_data);
+    appreq_inj.inject(appreq_data);
 
     EXPECT_TRUE(co2_node.block_for_all(std::chrono::seconds(5)));
 }
 
 TEST(BlackboxTestsPairedNodes, CompleteChain)
 {
-    TaskEncoderManagedNode te_node;
-    MLModelManagedNode ml_node;
-    HWResourcesManagedNode hw_node;
+    AppRequirementsManagedNode app_req_node;
     CarbonFootprintManagedNode co2_node;
+    HWConstraintsManagedNode hw_cons_node;
+    HWResourcesManagedNode hw_res_node;
+    MLModelMetadataManagedNode ml_md_node;
+    MLModelManagedNode ml_node;
 
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
+    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].
+                    first);
+    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::
+                    HW_RESOURCES_BASELINE].first);
+    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::
+                    CARBON_FOOTPRINT_BASELINE].first);
 
     co2_node.start();
-    hw_node.start();
+    hw_cons_node.start();
+    hw_res_node.start();
+    ml_md_node.start();
     ml_node.start();
-    te_node.start();
+    app_req_node.start();
 
-    ui_inj.wait_discovery(2);
+    ui_inj.wait_discovery(4);
+    ml_model_baseline_inj.wait_discovery(1);
+    hw_res_baseline_inj.wait_discovery(1);
+    co2_baseline_inj.wait_discovery(1);
 
     auto ui_data = default_userinput_task_generator();
+    auto ml_model_baseline_data = default_mlmodel_task_generator();
+    auto hwres_baseline_data = default_hwresource_task_generator();
+    auto carbon_baseline_data = default_carbonfootprint_data_generator();
 
     co2_node.prepare_expected_samples(ui_data.size());
 
     ui_inj.inject(ui_data);
+    ml_model_baseline_inj.inject(ml_model_baseline_data);
+    hw_res_baseline_inj.inject(hwres_baseline_data);
+    co2_baseline_inj.inject(carbon_baseline_data);
 
     EXPECT_TRUE(co2_node.block_for_all(std::chrono::seconds(5)));
 }

@@ -20,6 +20,7 @@ SimpleTaskPublisher::SimpleTaskPublisher()
     : samples_(0)
     , publisher_(nullptr)
     , datawriter_(nullptr)
+    , matched_(false)
     , listener_(this)
 {
 
@@ -82,21 +83,26 @@ bool SimpleTaskPublisher::init(
 void SimpleTaskPublisher::wait_discovery()
 {
     std::unique_lock<std::mutex> lock(mtx_);
-    cv_.wait(lock);
+    cv_.wait_for(lock, std::chrono::seconds(2), [&]()
+            {
+                return matched_;
+            });
 }
 
 bool SimpleTaskPublisher::run()
 {
     auto data = type_.create_data();
-    size_t task_id = 0;
+    size_t task_id = 1;
 
+    std::cout << "Waiting for discovery " << type_.get_type_name() << std::endl;
     wait_discovery();
+    std::cout << "Discovery finished " << type_.get_type_name() << std::endl;
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     TypeFactory::set_data_task_id(type_, data, task_id);
 
-    while (samples_ > task_id)
+    while (samples_ + 1 > task_id)
     {
         std::cout << "Publishing " << type_.get_type_name() << " with Task_id " << task_id << std::endl;
 

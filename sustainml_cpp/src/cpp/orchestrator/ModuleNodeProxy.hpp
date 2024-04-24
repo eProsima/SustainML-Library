@@ -101,7 +101,8 @@ public:
     ModuleNodeProxy(
             OrchestratorNode* orchestrator,
             std::shared_ptr<TaskDB_t> task_db,
-            const char* name);
+            const char* name,
+            bool need_to_publish_baseline);
 
     virtual ~ModuleNodeProxy();
 
@@ -116,7 +117,29 @@ public:
     void set_status(
             const types::NodeStatus&);
 
+    /**
+     * @brief Returns whether a proxy is publishing baseline data or not
+     */
+    bool publishes_baseline()
+    {
+        return publish_baseline_;
+    }
+
+    /**
+     * @brief Starts the publication of new iteration data
+     */
+    virtual void publish_data_for_iteration(
+            const types::TaskId& task_id) = 0;
+
 protected:
+
+    /**
+     * @brief Publihes iteration data
+     */
+    template<typename T>
+    void publish_data_for_iteration_(
+            const types::TaskId& task_id,
+            T* data);
 
     /**
      * @brief Notifies the Orchestrator about
@@ -135,9 +158,10 @@ protected:
      * @brief Prepare a new entry and resets task manager counter
      * to a certain task_id. This is useful in case the Orchestrator
      * is a late joiner.
+     * @warning This method is not thread safe
      */
-    void reset_and_prepare_task_id(
-            const int& task_id);
+    void reset_and_prepare_task_id_nts(
+            const types::TaskId& task_id);
 
     /**
      * @brief Stores an untyped data into the DB
@@ -158,6 +182,7 @@ protected:
 
     const char* name_;
     const NodeID node_id_;
+    bool publish_baseline_;
 
     OrchestratorNode* orchestrator_;
 
@@ -166,103 +191,36 @@ protected:
 
     TypeSupport type_;
     Topic* node_output_topic_;
+    Topic* baseline_topic_;
     ContentFilteredTopic* filtered_status_topic_;
     DataReader* node_output_datareader_;
     DataReader* status_datareader_;
+    DataWriter* baseline_writer_;
 
     ModuleNodeProxyListener listener_;
     ModuleNodeProxyStatusListener status_listener_;
 };
 
 /**
- * @brief TaskEncoder node proxy
+ * @brief App requirements node proxy
  */
-class TaskEncoderNodeProxy : public ModuleNodeProxy
+class AppRequirementsNodeProxy : public ModuleNodeProxy
 {
-    static constexpr MapFromNodeIDToType_t<NodeID::ID_TASK_ENCODER> node_id_to_type_id_{};
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_APP_REQUIREMENTS> node_id_to_type_id_{};
 
 public:
 
-    TaskEncoderNodeProxy(
+    AppRequirementsNodeProxy(
             OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
 
-    virtual ~TaskEncoderNodeProxy()
+    virtual ~AppRequirementsNodeProxy()
     {
     }
 
-protected:
-
-    void store_data_in_db() override;
-
-    inline void* get_tmp_impl_untyped_data() override
-    {
-        return tmp_data_.get_impl();
-    }
-
-    inline void* get_tmp_untyped_data() override
-    {
-        return &tmp_data_;
-    }
-
-private:
-
-    decltype(node_id_to_type_id_)::type tmp_data_;
-};
-
-/**
- * @brief Machine Learning node proxy
- */
-class MLModelProviderNodeProxy : public ModuleNodeProxy
-{
-    static constexpr MapFromNodeIDToType_t<NodeID::ID_MACHINE_LEARNING> node_id_to_type_id_{};
-
-public:
-
-    MLModelProviderNodeProxy(
-            OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
-
-    virtual ~MLModelProviderNodeProxy()
-    {
-    }
-
-protected:
-
-    void store_data_in_db() override;
-
-    inline void* get_tmp_impl_untyped_data() override
-    {
-        return tmp_data_.get_impl();
-    }
-
-    inline void* get_tmp_untyped_data() override
-    {
-        return &tmp_data_;
-    }
-
-private:
-
-    decltype(node_id_to_type_id_)::type tmp_data_;
-
-};
-
-/**
- * @brief Hardware Resources node proxy
- */
-class HardwareResourcesProviderNodeProxy : public ModuleNodeProxy
-{
-    static constexpr MapFromNodeIDToType_t<NodeID::ID_HARDWARE_RESOURCES> node_id_to_type_id_{};
-
-public:
-
-    HardwareResourcesProviderNodeProxy(
-            OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
-
-    virtual ~HardwareResourcesProviderNodeProxy()
-    {
-    }
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
 
 protected:
 
@@ -286,19 +244,23 @@ private:
 /**
  * @brief Carbon Footprint node proxy
  */
-class CarbonFootprintProviderNodeProxy : public ModuleNodeProxy
+class CarbonFootprintNodeProxy : public ModuleNodeProxy
 {
     static constexpr MapFromNodeIDToType_t<NodeID::ID_CARBON_FOOTPRINT> node_id_to_type_id_{};
 
 public:
 
-    CarbonFootprintProviderNodeProxy(
+    CarbonFootprintNodeProxy(
             OrchestratorNode* orchestrator,
-            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db);
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
 
-    virtual ~CarbonFootprintProviderNodeProxy()
+    virtual ~CarbonFootprintNodeProxy()
     {
     }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
 
 protected:
 
@@ -317,6 +279,167 @@ protected:
 private:
 
     decltype(node_id_to_type_id_)::type tmp_data_;
+};
+
+/**
+ * @brief Hardware Resources node proxy
+ */
+class HardwareConstraintsNodeProxy : public ModuleNodeProxy
+{
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_HW_CONSTRAINTS> node_id_to_type_id_{};
+
+public:
+
+    HardwareConstraintsNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
+
+    virtual ~HardwareConstraintsNodeProxy()
+    {
+    }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
+
+protected:
+
+    void store_data_in_db() override;
+
+    inline void* get_tmp_impl_untyped_data() override
+    {
+        return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
+    }
+
+private:
+
+    decltype(node_id_to_type_id_)::type tmp_data_;
+};
+
+/**
+ * @brief Hardware Resources node proxy
+ */
+class HardwareResourcesNodeProxy : public ModuleNodeProxy
+{
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_HW_RESOURCES> node_id_to_type_id_{};
+
+public:
+
+    HardwareResourcesNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
+
+    virtual ~HardwareResourcesNodeProxy()
+    {
+    }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
+
+protected:
+
+    void store_data_in_db() override;
+
+    inline void* get_tmp_impl_untyped_data() override
+    {
+        return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
+    }
+
+private:
+
+    decltype(node_id_to_type_id_)::type tmp_data_;
+};
+
+/**
+ * @brief MLModelMetadata node proxy
+ */
+class MLModelMetadataNodeProxy : public ModuleNodeProxy
+{
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_ML_MODEL_METADATA> node_id_to_type_id_{};
+
+public:
+
+    MLModelMetadataNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
+
+    virtual ~MLModelMetadataNodeProxy()
+    {
+    }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
+
+protected:
+
+    void store_data_in_db() override;
+
+    inline void* get_tmp_impl_untyped_data() override
+    {
+        return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
+    }
+
+private:
+
+    decltype(node_id_to_type_id_)::type tmp_data_;
+};
+
+/**
+ * @brief ML Model node proxy
+ */
+class MLModelProviderNodeProxy : public ModuleNodeProxy
+{
+    static constexpr MapFromNodeIDToType_t<NodeID::ID_ML_MODEL> node_id_to_type_id_{};
+
+public:
+
+    MLModelProviderNodeProxy(
+            OrchestratorNode* orchestrator,
+            std::shared_ptr<orchestrator::OrchestratorNode::TaskDB_t> task_db,
+            bool need_to_publish_baseline);
+
+    virtual ~MLModelProviderNodeProxy()
+    {
+    }
+
+    void publish_data_for_iteration(
+            const types::TaskId& task_id) override;
+
+protected:
+
+    void store_data_in_db() override;
+
+    inline void* get_tmp_impl_untyped_data() override
+    {
+        return tmp_data_.get_impl();
+    }
+
+    inline void* get_tmp_untyped_data() override
+    {
+        return &tmp_data_;
+    }
+
+private:
+
+    decltype(node_id_to_type_id_)::type tmp_data_;
+
 };
 
 } // namespace orchestrator

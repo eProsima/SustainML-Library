@@ -75,6 +75,17 @@ eProsima_user_DllExport const TypeObject* GetErrorCodeObject(
 eProsima_user_DllExport const TypeObject* GetMinimalErrorCodeObject();
 eProsima_user_DllExport const TypeObject* GetCompleteErrorCodeObject();
 
+
+
+eProsima_user_DllExport const TypeIdentifier* GetTaskIdImplIdentifier(
+        bool complete = false);
+eProsima_user_DllExport const TypeObject* GetTaskIdImplObject(
+        bool complete = false);
+eProsima_user_DllExport const TypeObject* GetMinimalTaskIdImplObject();
+eProsima_user_DllExport const TypeObject* GetCompleteTaskIdImplObject();
+
+
+
 eProsima_user_DllExport const TypeIdentifier* GetNodeStatusImplIdentifier(
         bool complete = false);
 eProsima_user_DllExport const TypeObject* GetNodeStatusImplObject(
@@ -96,6 +107,8 @@ eProsima_user_DllExport const TypeObject* GetCmdTaskObject(
 eProsima_user_DllExport const TypeObject* GetMinimalCmdTaskObject();
 eProsima_user_DllExport const TypeObject* GetCompleteCmdTaskObject();
 
+
+
 eProsima_user_DllExport const TypeIdentifier* GetNodeControlImplIdentifier(
         bool complete = false);
 eProsima_user_DllExport const TypeObject* GetNodeControlImplObject(
@@ -103,12 +116,7 @@ eProsima_user_DllExport const TypeObject* GetNodeControlImplObject(
 eProsima_user_DllExport const TypeObject* GetMinimalNodeControlImplObject();
 eProsima_user_DllExport const TypeObject* GetCompleteNodeControlImplObject();
 
-eProsima_user_DllExport const TypeIdentifier* GetGeoLocationImplIdentifier(
-        bool complete = false);
-eProsima_user_DllExport const TypeObject* GetGeoLocationImplObject(
-        bool complete = false);
-eProsima_user_DllExport const TypeObject* GetMinimalGeoLocationImplObject();
-eProsima_user_DllExport const TypeObject* GetCompleteGeoLocationImplObject();
+
 
 eProsima_user_DllExport const TypeIdentifier* GetUserInputImplIdentifier(
         bool complete = false);
@@ -117,12 +125,34 @@ eProsima_user_DllExport const TypeObject* GetUserInputImplObject(
 eProsima_user_DllExport const TypeObject* GetMinimalUserInputImplObject();
 eProsima_user_DllExport const TypeObject* GetCompleteUserInputImplObject();
 
-eProsima_user_DllExport const TypeIdentifier* GetEncodedTaskImplIdentifier(
+
+
+eProsima_user_DllExport const TypeIdentifier* GetMLModelMetadataImplIdentifier(
         bool complete = false);
-eProsima_user_DllExport const TypeObject* GetEncodedTaskImplObject(
+eProsima_user_DllExport const TypeObject* GetMLModelMetadataImplObject(
         bool complete = false);
-eProsima_user_DllExport const TypeObject* GetMinimalEncodedTaskImplObject();
-eProsima_user_DllExport const TypeObject* GetCompleteEncodedTaskImplObject();
+eProsima_user_DllExport const TypeObject* GetMinimalMLModelMetadataImplObject();
+eProsima_user_DllExport const TypeObject* GetCompleteMLModelMetadataImplObject();
+
+
+
+eProsima_user_DllExport const TypeIdentifier* GetAppRequirementsImplIdentifier(
+        bool complete = false);
+eProsima_user_DllExport const TypeObject* GetAppRequirementsImplObject(
+        bool complete = false);
+eProsima_user_DllExport const TypeObject* GetMinimalAppRequirementsImplObject();
+eProsima_user_DllExport const TypeObject* GetCompleteAppRequirementsImplObject();
+
+
+
+eProsima_user_DllExport const TypeIdentifier* GetHWConstraintsImplIdentifier(
+        bool complete = false);
+eProsima_user_DllExport const TypeObject* GetHWConstraintsImplObject(
+        bool complete = false);
+eProsima_user_DllExport const TypeObject* GetMinimalHWConstraintsImplObject();
+eProsima_user_DllExport const TypeObject* GetCompleteHWConstraintsImplObject();
+
+
 
 eProsima_user_DllExport const TypeIdentifier* GetMLModelImplIdentifier(
         bool complete = false);
@@ -131,12 +161,16 @@ eProsima_user_DllExport const TypeObject* GetMLModelImplObject(
 eProsima_user_DllExport const TypeObject* GetMinimalMLModelImplObject();
 eProsima_user_DllExport const TypeObject* GetCompleteMLModelImplObject();
 
+
+
 eProsima_user_DllExport const TypeIdentifier* GetHWResourceImplIdentifier(
         bool complete = false);
 eProsima_user_DllExport const TypeObject* GetHWResourceImplObject(
         bool complete = false);
 eProsima_user_DllExport const TypeObject* GetMinimalHWResourceImplObject();
 eProsima_user_DllExport const TypeObject* GetCompleteHWResourceImplObject();
+
+
 
 eProsima_user_DllExport const TypeIdentifier* GetCO2FootprintImplIdentifier(
         bool complete = false);

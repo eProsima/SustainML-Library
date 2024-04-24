@@ -14,9 +14,9 @@
 
 #include "BlackboxTests.hpp"
 
-TEST(BlackboxTestsIsolatedNodes, TaskEncoderNode)
+TEST(BlackboxTestsIsolatedNodes, MLModelMetadataNode)
 {
-    TaskEncoderManagedNode node;
+    MLModelMetadataManagedNode node;
 
     TaskInjector<UserInputImplPubSubType> ui_inj(common::TopicCollection::get()[common::USER_INPUT].first);
 
@@ -37,17 +37,41 @@ TEST(BlackboxTestsIsolatedNodes, MachineLearningModelNode)
 {
     MLModelManagedNode node;
 
-    TaskInjector<EncodedTaskImplPubSubType> enc_task_inj(common::TopicCollection::get()[common::ENCODED_TASK].first);
+    TaskInjector<MLModelMetadataImplPubSubType> ml_model_metadata_inj(common::TopicCollection::get()[common::
+                    ML_MODEL_METADATA].first);
+    TaskInjector<HWConstraintsImplPubSubType> hw_cons_inj(common::TopicCollection::get()[common::HW_CONSTRAINT].first);
+    TaskInjector<AppRequirementsImplPubSubType> appreq_inj(common::TopicCollection::get()[common::APP_REQUIREMENT].first);
+    TaskInjector<MLModelImplPubSubType> ml_model_baseline_inj(common::TopicCollection::get()[common::ML_MODEL_BASELINE].
+                    first);
+    TaskInjector<HWResourceImplPubSubType> hw_res_baseline_inj(common::TopicCollection::get()[common::
+                    HW_RESOURCES_BASELINE].first);
+    TaskInjector<CO2FootprintImplPubSubType> co2_baseline_inj(common::TopicCollection::get()[common::
+                    CARBON_FOOTPRINT_BASELINE].first);
 
     node.start();
 
-    enc_task_inj.wait_discovery(1);
+    ml_model_metadata_inj.wait_discovery(1);
+    hw_cons_inj.wait_discovery(1);
+    appreq_inj.wait_discovery(1);
+    ml_model_baseline_inj.wait_discovery(1);
+    hw_res_baseline_inj.wait_discovery(1);
+    co2_baseline_inj.wait_discovery(1);
 
-    auto enc_task_data = default_encodedtask_task_generator();
+    auto ml_model_metadata_data = default_modelmetadata_task_generator();
+    auto hwcons_data = default_hwconstraints_task_generator();
+    auto appreq_data = default_apprequirements_data_generator();
+    auto ml_model_baseline_data = default_mlmodel_task_generator();
+    auto hwres_baseline_data = default_hwresource_task_generator();
+    auto carbon_baseline_data = default_carbonfootprint_data_generator();
 
-    node.prepare_expected_samples(enc_task_data.size());
+    node.prepare_expected_samples(ml_model_metadata_data.size());
 
-    enc_task_inj.inject(enc_task_data);
+    ml_model_metadata_inj.inject(ml_model_metadata_data);
+    hw_cons_inj.inject(hwcons_data);
+    appreq_inj.inject(appreq_data);
+    ml_model_baseline_inj.inject(ml_model_baseline_data);
+    hw_res_baseline_inj.inject(hwres_baseline_data);
+    co2_baseline_inj.inject(carbon_baseline_data);
 
     EXPECT_TRUE(node.block_for_all(std::chrono::seconds(4)));
 }
@@ -57,16 +81,24 @@ TEST(BlackboxTestsIsolatedNodes, HardwareResourcesNode)
     HWResourcesManagedNode node;
 
     TaskInjector<MLModelImplPubSubType> ml_inj(common::TopicCollection::get()[common::ML_MODEL].first);
+    TaskInjector<HWConstraintsImplPubSubType> hw_cons_inj(common::TopicCollection::get()[common::HW_CONSTRAINT].first);
+    TaskInjector<AppRequirementsImplPubSubType> appreq_inj(common::TopicCollection::get()[common::APP_REQUIREMENT].first);
 
     node.start();
 
     ml_inj.wait_discovery(1);
+    hw_cons_inj.wait_discovery(1);
+    appreq_inj.wait_discovery(1);
 
     auto ml_data = default_mlmodel_task_generator();
+    auto hwcons_data = default_hwconstraints_task_generator();
+    auto appreq_data = default_apprequirements_data_generator();
 
     node.prepare_expected_samples(ml_data.size());
 
     ml_inj.inject(ml_data);
+    hw_cons_inj.inject(hwcons_data);
+    appreq_inj.inject(appreq_data);
 
     EXPECT_TRUE(node.block_for_all(std::chrono::seconds(4)));
 }

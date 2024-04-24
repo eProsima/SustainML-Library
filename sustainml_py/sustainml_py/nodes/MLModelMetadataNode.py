@@ -13,12 +13,12 @@
 # limitations under the License.
 """SustainML Client Node API specification."""
 
-from sustainml_swig import HardwareResourcesTaskListener as cpp_HardwareResourcesTaskListener
-from sustainml_swig import HardwareResourcesNode as cpp_HardwareResourcesNode
+from sustainml_swig import MLModelMetadataTaskListener as cpp_MLModelMetadataTaskListener
+from sustainml_swig import MLModelMetadataNode as cpp_MLModelMetadataNode
 
-from sustainml_swig import MLModel, NodeStatus, HWResource, HWConstraints, AppRequirements
+from sustainml_swig import MLModelMetadata, NodeStatus, UserInput
 
-class HardwareResourcesTaskListener(cpp_HardwareResourcesTaskListener):
+class MLModelMetadataTaskListener(cpp_MLModelMetadataTaskListener):
 
     def __init__(self,
                  callback):
@@ -31,27 +31,25 @@ class HardwareResourcesTaskListener(cpp_HardwareResourcesTaskListener):
     # Callback
     def on_new_task_available(
             self,
-            ml_model : MLModel,
-            app_requirements : AppRequirements,
-            hw_constraints : HWConstraints,
+            user_input : UserInput,
             node_status : NodeStatus,
-            hw : HWResource):
+            ml_model_metadata : MLModelMetadata):
 
         """ Invoke user callback """
-        self.callback_(ml_model, app_requirements, hw_constraints, node_status, hw)
+        self.callback_(user_input, node_status, ml_model_metadata)
 
 # Proxy class to instantiate by the user
-class HardwareResourcesNode:
+class MLModelMetadataNode:
 
     def __init__(self,
                  callback = None):
 
         if callback == None:
             raise ValueError(
-                'HardwareResourcesNode constructor expects a callback.')
+                'MLModelMetadataNode constructor expects a callback.')
 
-        self.listener_ = HardwareResourcesTaskListener(callback)
-        self.node_ = cpp_HardwareResourcesNode(self.listener_)
+        self.listener_ = MLModelMetadataTaskListener(callback)
+        self.node_ = cpp_MLModelMetadataNode(self.listener_)
 
     # Proxy method to run the node
     def spin(self):
@@ -61,4 +59,4 @@ class HardwareResourcesNode:
     # Proxy method to manually terminate
     def terminate():
 
-        cpp_HardwareResourcesNode.terminate()
+        cpp_MLModelMetadataNode.terminate()
