@@ -1663,6 +1663,33 @@ public:
 
 
     /*!
+     * @brief This function copies the value in member raw_model
+     * @param _raw_model New value to be copied in member raw_model
+     */
+    eProsima_user_DllExport void raw_model(
+            const std::vector<uint8_t>& _raw_model);
+
+    /*!
+     * @brief This function moves the value in member raw_model
+     * @param _raw_model New value to be moved in member raw_model
+     */
+    eProsima_user_DllExport void raw_model(
+            std::vector<uint8_t>&& _raw_model);
+
+    /*!
+     * @brief This function returns a constant reference to member raw_model
+     * @return Constant reference to member raw_model
+     */
+    eProsima_user_DllExport const std::vector<uint8_t>& raw_model() const;
+
+    /*!
+     * @brief This function returns a reference to member raw_model
+     * @return Reference to member raw_model
+     */
+    eProsima_user_DllExport std::vector<uint8_t>& raw_model();
+
+
+    /*!
      * @brief This function copies the value in member model_properties_path
      * @param _model_properties_path New value to be copied in member model_properties_path
      */
@@ -1820,6 +1847,7 @@ private:
 
     std::string m_model_path;
     std::string m_model;
+    std::vector<uint8_t> m_raw_model;
     std::string m_model_properties_path;
     std::string m_model_properties;
     std::vector<std::string> m_input_batch;
