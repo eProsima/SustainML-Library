@@ -60,6 +60,7 @@ jobs:
         with:
           vcs_repos_file:  ${{ github.workspace }}/sustainml.repos
           destination_workspace: ${{ github.workspace }}/src
+          skip_existing: true
 
       - name: Sync repository
         uses: eProsima/eProsima-CI/external/checkout@v0
