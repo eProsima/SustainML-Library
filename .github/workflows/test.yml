@@ -56,9 +56,15 @@ jobs:
           upgrade: false
 
       - name: Install Python dependencies
-        uses: eProsima/eProsima-CI/multiplatform/install_python_packages@v0
+        uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0
         with:
-          packages: sphinx==3.0.3 doc8==0.8.0 sphinx_rtd_theme==0.4.3 sphinxcontrib.spelling==5.0.0 sphinxcontrib-imagehelper==1.1.1 colcon-common-extensions colcon-mixin vcstool GitPython setuptools==58.2.0 gcovr==5
+          packages: colcon-common-extensions colcon-mixin vcstool gcovr==5
+          upgrade: false
+
+      - name: Install Python documentation dependencies
+        uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0
+        with:
+          requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_docs/requirements.txt
           upgrade: false
 
       - name: Download repos file
@@ -110,7 +116,13 @@ jobs:
       - name: Install Python dependencies
         uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0
         with:
-          packages: sphinx==3.0.3 doc8==0.8.0 sphinx_rtd_theme==0.4.3 sphinxcontrib.spelling==5.0.0 sphinxcontrib-imagehelper==1.1.1 colcon-common-extensions colcon-mixin vcstool GitPython setuptools==58.2.0 gcovr==5
+          packages: colcon-common-extensions colcon-mixin vcstool gcovr==5
+          upgrade: false
+
+      - name: Install Python documentation dependencies
+        uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0
+        with:
+          requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_docs/requirements.txt
           upgrade: false
 
       - name: Download repos file
