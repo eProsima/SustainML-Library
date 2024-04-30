@@ -1086,6 +1086,31 @@ public:
      */
     eProsima_user_DllExport std::string& model();
 
+    /*!
+     * @brief This function copies the value in member raw_model
+     * @param _raw_model New value to be copied in member raw_model
+     */
+    eProsima_user_DllExport void raw_model(
+            const std::vector<uint8_t>& _raw_model);
+
+    /*!
+     * @brief This function moves the value in member raw_model
+     * @param _raw_model New value to be moved in member raw_model
+     */
+    eProsima_user_DllExport void raw_model(
+            std::vector<uint8_t>&& _raw_model);
+
+    /*!
+     * @brief This function returns a constant reference to member raw_model
+     * @return Constant reference to member raw_model
+     */
+    eProsima_user_DllExport const std::vector<uint8_t>& raw_model() const;
+
+    /*!
+     * @brief This function returns a reference to member raw_model
+     * @return Reference to member raw_model
+     */
+    eProsima_user_DllExport std::vector<uint8_t>& raw_model();
 
     /*!
      * @brief This function copies the value in member model_properties_path

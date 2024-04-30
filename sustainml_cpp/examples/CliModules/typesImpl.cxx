@@ -28,6 +28,8 @@ char dummy;
 
 #include "typesImpl.h"
 
+#include "typesImplTypeObject.h"
+
 #include <fastcdr/Cdr.h>
 
 
@@ -41,6 +43,8 @@ using namespace eprosima::fastcdr::exception;
 
 TaskIdImpl::TaskIdImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 TaskIdImpl::~TaskIdImpl()
@@ -150,6 +154,8 @@ uint32_t& TaskIdImpl::iteration_id()
 
 NodeStatusImpl::NodeStatusImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 NodeStatusImpl::~NodeStatusImpl()
@@ -421,6 +427,8 @@ TaskIdImpl& NodeStatusImpl::task_id()
 
 NodeControlImpl::NodeControlImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 NodeControlImpl::~NodeControlImpl()
@@ -659,6 +667,8 @@ TaskIdImpl& NodeControlImpl::task_id()
 
 UserInputImpl::UserInputImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 UserInputImpl::~UserInputImpl()
@@ -1287,6 +1297,8 @@ TaskIdImpl& UserInputImpl::task_id()
 
 MLModelMetadataImpl::MLModelMetadataImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 MLModelMetadataImpl::~MLModelMetadataImpl()
@@ -1502,6 +1514,8 @@ TaskIdImpl& MLModelMetadataImpl::task_id()
 
 AppRequirementsImpl::AppRequirementsImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 AppRequirementsImpl::~AppRequirementsImpl()
@@ -1674,6 +1688,8 @@ TaskIdImpl& AppRequirementsImpl::task_id()
 
 HWConstraintsImpl::HWConstraintsImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 HWConstraintsImpl::~HWConstraintsImpl()
@@ -1836,6 +1852,8 @@ TaskIdImpl& HWConstraintsImpl::task_id()
 
 MLModelImpl::MLModelImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 MLModelImpl::~MLModelImpl()
@@ -1847,6 +1865,7 @@ MLModelImpl::MLModelImpl(
 {
     m_model_path = x.m_model_path;
     m_model = x.m_model;
+    m_raw_model = x.m_raw_model;
     m_model_properties_path = x.m_model_properties_path;
     m_model_properties = x.m_model_properties;
     m_input_batch = x.m_input_batch;
@@ -1860,6 +1879,7 @@ MLModelImpl::MLModelImpl(
 {
     m_model_path = std::move(x.m_model_path);
     m_model = std::move(x.m_model);
+    m_raw_model = std::move(x.m_raw_model);
     m_model_properties_path = std::move(x.m_model_properties_path);
     m_model_properties = std::move(x.m_model_properties);
     m_input_batch = std::move(x.m_input_batch);
@@ -1874,6 +1894,7 @@ MLModelImpl& MLModelImpl::operator =(
 
     m_model_path = x.m_model_path;
     m_model = x.m_model;
+    m_raw_model = x.m_raw_model;
     m_model_properties_path = x.m_model_properties_path;
     m_model_properties = x.m_model_properties;
     m_input_batch = x.m_input_batch;
@@ -1889,6 +1910,7 @@ MLModelImpl& MLModelImpl::operator =(
 
     m_model_path = std::move(x.m_model_path);
     m_model = std::move(x.m_model);
+    m_raw_model = std::move(x.m_raw_model);
     m_model_properties_path = std::move(x.m_model_properties_path);
     m_model_properties = std::move(x.m_model_properties);
     m_input_batch = std::move(x.m_input_batch);
@@ -1903,6 +1925,7 @@ bool MLModelImpl::operator ==(
 {
     return (m_model_path == x.m_model_path &&
            m_model == x.m_model &&
+           m_raw_model == x.m_raw_model &&
            m_model_properties_path == x.m_model_properties_path &&
            m_model_properties == x.m_model_properties &&
            m_input_batch == x.m_input_batch &&
@@ -1991,6 +2014,44 @@ const std::string& MLModelImpl::model() const
 std::string& MLModelImpl::model()
 {
     return m_model;
+}
+
+/*!
+ * @brief This function copies the value in member raw_model
+ * @param _raw_model New value to be copied in member raw_model
+ */
+void MLModelImpl::raw_model(
+        const std::vector<uint8_t>& _raw_model)
+{
+    m_raw_model = _raw_model;
+}
+
+/*!
+ * @brief This function moves the value in member raw_model
+ * @param _raw_model New value to be moved in member raw_model
+ */
+void MLModelImpl::raw_model(
+        std::vector<uint8_t>&& _raw_model)
+{
+    m_raw_model = std::move(_raw_model);
+}
+
+/*!
+ * @brief This function returns a constant reference to member raw_model
+ * @return Constant reference to member raw_model
+ */
+const std::vector<uint8_t>& MLModelImpl::raw_model() const
+{
+    return m_raw_model;
+}
+
+/*!
+ * @brief This function returns a reference to member raw_model
+ * @return Reference to member raw_model
+ */
+std::vector<uint8_t>& MLModelImpl::raw_model()
+{
+    return m_raw_model;
 }
 
 /*!
@@ -2213,6 +2274,8 @@ TaskIdImpl& MLModelImpl::task_id()
 
 HWResourceImpl::HWResourceImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 HWResourceImpl::~HWResourceImpl()
@@ -2517,6 +2580,8 @@ TaskIdImpl& HWResourceImpl::task_id()
 
 CO2FootprintImpl::CO2FootprintImpl()
 {
+    // Just to register all known types
+    registertypesImplTypes();
 }
 
 CO2FootprintImpl::~CO2FootprintImpl()

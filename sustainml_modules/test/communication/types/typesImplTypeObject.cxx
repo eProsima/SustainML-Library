@@ -4072,6 +4072,25 @@ const TypeObject* GetMinimalMLModelImplObject()
     }
     type_object->minimal().struct_type().member_seq().emplace_back(mst_model);
 
+    MinimalStructMember mst_raw_model;
+    mst_raw_model.common().member_id(memberId++);
+    mst_raw_model.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    mst_raw_model.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    mst_raw_model.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    mst_raw_model.common().member_flags().IS_OPTIONAL(false);
+    mst_raw_model.common().member_flags().IS_MUST_UNDERSTAND(false);
+    mst_raw_model.common().member_flags().IS_KEY(false);
+    mst_raw_model.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    mst_raw_model.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            false));
+
+    MD5 raw_model_hash("raw_model");
+    for (int i = 0; i < 4; ++i)
+    {
+        mst_raw_model.detail().name_hash()[i] = raw_model_hash.digest[i];
+    }
+    type_object->minimal().struct_type().member_seq().emplace_back(mst_raw_model);
+
     MinimalStructMember mst_model_properties_path;
     mst_model_properties_path.common().member_id(memberId++);
     mst_model_properties_path.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
@@ -4271,6 +4290,22 @@ const TypeObject* GetCompleteMLModelImplObject()
     cst_model.detail().name("model");
 
     type_object->complete().struct_type().member_seq().emplace_back(cst_model);
+
+    CompleteStructMember cst_raw_model;
+    cst_raw_model.common().member_id(memberId++);
+    cst_raw_model.common().member_flags().TRY_CONSTRUCT1(false); // Unsupported
+    cst_raw_model.common().member_flags().TRY_CONSTRUCT2(false); // Unsupported
+    cst_raw_model.common().member_flags().IS_EXTERNAL(false); // Unsupported
+    cst_raw_model.common().member_flags().IS_OPTIONAL(false);
+    cst_raw_model.common().member_flags().IS_MUST_UNDERSTAND(false);
+    cst_raw_model.common().member_flags().IS_KEY(false);
+    cst_raw_model.common().member_flags().IS_DEFAULT(false); // Doesn't apply
+    cst_raw_model.common().member_type_id(*TypeObjectFactory::get_instance()->get_sequence_identifier("uint8_t", 100,
+            true));
+
+    cst_raw_model.detail().name("raw_model");
+
+    type_object->complete().struct_type().member_seq().emplace_back(cst_raw_model);
 
     CompleteStructMember cst_model_properties_path;
     cst_model_properties_path.common().member_id(memberId++);

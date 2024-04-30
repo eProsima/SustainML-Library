@@ -1350,6 +1350,7 @@ MLModel::MLModel(
 
     this->impl_->model() = x.impl_->model();
     this->impl_->model_path() = x.impl_->model_path();
+    this->impl_->raw_model() = x.impl_->raw_model();
     this->impl_->model_properties_path() = x.impl_->model_properties_path();
     this->impl_->model_properties() = x.impl_->model_properties();
     this->impl_->input_batch() = x.impl_->input_batch();
@@ -1370,6 +1371,7 @@ MLModel& MLModel::operator =(
 {
     this->impl_->model() = x.impl_->model();
     this->impl_->model_path() = x.impl_->model_path();
+    this->impl_->raw_model() = x.impl_->raw_model();
     this->impl_->model_properties_path() = x.impl_->model_properties_path();
     this->impl_->model_properties() = x.impl_->model_properties();
     this->impl_->input_batch() = x.impl_->input_batch();
@@ -1446,6 +1448,28 @@ const std::string& MLModel::model() const
 std::string& MLModel::model()
 {
     return impl_->model();
+}
+
+void MLModel::raw_model(
+        const std::vector<uint8_t>& _raw_model)
+{
+    impl_->raw_model(_raw_model);
+}
+
+void MLModel::raw_model(
+        std::vector<uint8_t>&& _raw_model)
+{
+    impl_->raw_model(std::forward<std::vector<uint8_t>>(_raw_model));
+}
+
+const std::vector<uint8_t>& MLModel::raw_model() const
+{
+    return impl_->raw_model();
+}
+
+std::vector<uint8_t>& MLModel::raw_model()
+{
+    return impl_->raw_model();
 }
 
 void MLModel::model_properties_path(

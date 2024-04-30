@@ -30,7 +30,7 @@ constexpr uint32_t NodeStatusImpl_max_key_cdr_typesize {272UL};
 constexpr uint32_t AppRequirementsImpl_max_cdr_typesize {26128UL};
 constexpr uint32_t AppRequirementsImpl_max_key_cdr_typesize {12UL};
 
-constexpr uint32_t MLModelImpl_max_cdr_typesize {27180UL};
+constexpr uint32_t MLModelImpl_max_cdr_typesize {27284UL};
 constexpr uint32_t MLModelImpl_max_key_cdr_typesize {12UL};
 
 constexpr uint32_t MLModelMetadataImpl_max_cdr_typesize {52136UL};

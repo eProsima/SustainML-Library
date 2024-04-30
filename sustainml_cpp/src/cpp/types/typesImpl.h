@@ -63,7 +63,7 @@ namespace eprosima {
 namespace fastcdr {
 class Cdr;
 class CdrSizeCalculator;
-} // namespace fastcdr
+}     // namespace fastcdr
 } // namespace eprosima
 
 
@@ -139,28 +139,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object TaskIdImpl that will be copied.
      */
-    eProsima_user_DllExport TaskIdImpl& operator =(
+    eProsima_user_DllExport TaskIdImpl& operator = (
             const TaskIdImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object TaskIdImpl that will be copied.
      */
-    eProsima_user_DllExport TaskIdImpl& operator =(
-            TaskIdImpl&& x) noexcept;
+    eProsima_user_DllExport TaskIdImpl& operator = (
+            TaskIdImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x TaskIdImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const TaskIdImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x TaskIdImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const TaskIdImpl& x) const;
 
     /*!
@@ -204,8 +204,12 @@ public:
 
 private:
 
-    uint32_t m_problem_id{0};
-    uint32_t m_iteration_id{0};
+    uint32_t m_problem_id {
+        0
+    };
+    uint32_t m_iteration_id {
+        0
+    };
 
 };
 
@@ -246,28 +250,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object NodeStatusImpl that will be copied.
      */
-    eProsima_user_DllExport NodeStatusImpl& operator =(
+    eProsima_user_DllExport NodeStatusImpl& operator = (
             const NodeStatusImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object NodeStatusImpl that will be copied.
      */
-    eProsima_user_DllExport NodeStatusImpl& operator =(
-            NodeStatusImpl&& x) noexcept;
+    eProsima_user_DllExport NodeStatusImpl& operator = (
+            NodeStatusImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x NodeStatusImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const NodeStatusImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x NodeStatusImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const NodeStatusImpl& x) const;
 
     /*!
@@ -412,9 +416,15 @@ public:
 
 private:
 
-    Status m_node_status{::NODE_INACTIVE};
-    TaskStatus m_task_status{::TASK_WAITING};
-    ErrorCode m_error_code{::NO_ERROR};
+    Status m_node_status {
+        ::NODE_INACTIVE
+    };
+    TaskStatus m_task_status {
+        ::TASK_WAITING
+    };
+    ErrorCode m_error_code {
+        ::NO_ERROR
+    };
     std::string m_error_description;
     std::string m_node_name;
     TaskIdImpl m_task_id;
@@ -482,28 +492,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object NodeControlImpl that will be copied.
      */
-    eProsima_user_DllExport NodeControlImpl& operator =(
+    eProsima_user_DllExport NodeControlImpl& operator = (
             const NodeControlImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object NodeControlImpl that will be copied.
      */
-    eProsima_user_DllExport NodeControlImpl& operator =(
-            NodeControlImpl&& x) noexcept;
+    eProsima_user_DllExport NodeControlImpl& operator = (
+            NodeControlImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x NodeControlImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const NodeControlImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x NodeControlImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const NodeControlImpl& x) const;
 
     /*!
@@ -628,8 +638,12 @@ public:
 
 private:
 
-    CmdNode m_cmd_node{::NO_CMD_NODE};
-    CmdTask m_cmd_task{::NO_CMD_TASK};
+    CmdNode m_cmd_node {
+        ::NO_CMD_NODE
+    };
+    CmdTask m_cmd_task {
+        ::NO_CMD_TASK
+    };
     std::string m_target_node;
     std::string m_source_node;
     TaskIdImpl m_task_id;
@@ -673,28 +687,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object UserInputImpl that will be copied.
      */
-    eProsima_user_DllExport UserInputImpl& operator =(
+    eProsima_user_DllExport UserInputImpl& operator = (
             const UserInputImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object UserInputImpl that will be copied.
      */
-    eProsima_user_DllExport UserInputImpl& operator =(
-            UserInputImpl&& x) noexcept;
+    eProsima_user_DllExport UserInputImpl& operator = (
+            UserInputImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x UserInputImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const UserInputImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x UserInputImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const UserInputImpl& x) const;
 
     /*!
@@ -783,26 +797,26 @@ public:
      * @param _inputs New value to be copied in member inputs
      */
     eProsima_user_DllExport void inputs(
-            const std::vector<std::string>& _inputs);
+            const std::vector < std::string >& _inputs);
 
     /*!
      * @brief This function moves the value in member inputs
      * @param _inputs New value to be moved in member inputs
      */
     eProsima_user_DllExport void inputs(
-            std::vector<std::string>&& _inputs);
+            std::vector < std::string >&& _inputs);
 
     /*!
      * @brief This function returns a constant reference to member inputs
      * @return Constant reference to member inputs
      */
-    eProsima_user_DllExport const std::vector<std::string>& inputs() const;
+    eProsima_user_DllExport const std::vector < std::string >& inputs() const;
 
     /*!
      * @brief This function returns a reference to member inputs
      * @return Reference to member inputs
      */
-    eProsima_user_DllExport std::vector<std::string>& inputs();
+    eProsima_user_DllExport std::vector < std::string >& inputs();
 
 
     /*!
@@ -810,26 +824,26 @@ public:
      * @param _outputs New value to be copied in member outputs
      */
     eProsima_user_DllExport void outputs(
-            const std::vector<std::string>& _outputs);
+            const std::vector < std::string >& _outputs);
 
     /*!
      * @brief This function moves the value in member outputs
      * @param _outputs New value to be moved in member outputs
      */
     eProsima_user_DllExport void outputs(
-            std::vector<std::string>&& _outputs);
+            std::vector < std::string >&& _outputs);
 
     /*!
      * @brief This function returns a constant reference to member outputs
      * @return Constant reference to member outputs
      */
-    eProsima_user_DllExport const std::vector<std::string>& outputs() const;
+    eProsima_user_DllExport const std::vector < std::string >& outputs() const;
 
     /*!
      * @brief This function returns a reference to member outputs
      * @return Reference to member outputs
      */
-    eProsima_user_DllExport std::vector<std::string>& outputs();
+    eProsima_user_DllExport std::vector < std::string >& outputs();
 
 
     /*!
@@ -1011,26 +1025,26 @@ public:
      * @param _extra_data New value to be copied in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            const std::vector<uint8_t>& _extra_data);
+            const std::vector < uint8_t >& _extra_data);
 
     /*!
      * @brief This function moves the value in member extra_data
      * @param _extra_data New value to be moved in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            std::vector<uint8_t>&& _extra_data);
+            std::vector < uint8_t >&& _extra_data);
 
     /*!
      * @brief This function returns a constant reference to member extra_data
      * @return Constant reference to member extra_data
      */
-    eProsima_user_DllExport const std::vector<uint8_t>& extra_data() const;
+    eProsima_user_DllExport const std::vector < uint8_t >& extra_data() const;
 
     /*!
      * @brief This function returns a reference to member extra_data
      * @return Reference to member extra_data
      */
-    eProsima_user_DllExport std::vector<uint8_t>& extra_data();
+    eProsima_user_DllExport std::vector < uint8_t >& extra_data();
 
 
     /*!
@@ -1064,17 +1078,29 @@ private:
     std::string m_modality;
     std::string m_problem_short_description;
     std::string m_problem_definition;
-    std::vector<std::string> m_inputs;
-    std::vector<std::string> m_outputs;
-    uint32_t m_minimum_samples{0};
-    uint32_t m_maximum_samples{0};
-    bool m_optimize_carbon_footprint_manual{false};
-    int32_t m_previous_iteration{0};
-    bool m_optimize_carbon_footprint_auto{false};
-    double m_desired_carbon_footprint{0.0};
+    std::vector < std::string > m_inputs;
+    std::vector < std::string > m_outputs;
+    uint32_t m_minimum_samples {
+        0
+    };
+    uint32_t m_maximum_samples {
+        0
+    };
+    bool m_optimize_carbon_footprint_manual {
+        false
+    };
+    int32_t m_previous_iteration {
+        0
+    };
+    bool m_optimize_carbon_footprint_auto {
+        false
+    };
+    double m_desired_carbon_footprint {
+        0.0
+    };
     std::string m_geo_location_continent;
     std::string m_geo_location_region;
-    std::vector<uint8_t> m_extra_data;
+    std::vector < uint8_t > m_extra_data;
     TaskIdImpl m_task_id;
 
 };
@@ -1116,28 +1142,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object MLModelMetadataImpl that will be copied.
      */
-    eProsima_user_DllExport MLModelMetadataImpl& operator =(
+    eProsima_user_DllExport MLModelMetadataImpl& operator = (
             const MLModelMetadataImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object MLModelMetadataImpl that will be copied.
      */
-    eProsima_user_DllExport MLModelMetadataImpl& operator =(
-            MLModelMetadataImpl&& x) noexcept;
+    eProsima_user_DllExport MLModelMetadataImpl& operator = (
+            MLModelMetadataImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x MLModelMetadataImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const MLModelMetadataImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x MLModelMetadataImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const MLModelMetadataImpl& x) const;
 
     /*!
@@ -1145,26 +1171,26 @@ public:
      * @param _keywords New value to be copied in member keywords
      */
     eProsima_user_DllExport void keywords(
-            const std::vector<std::string>& _keywords);
+            const std::vector < std::string >& _keywords);
 
     /*!
      * @brief This function moves the value in member keywords
      * @param _keywords New value to be moved in member keywords
      */
     eProsima_user_DllExport void keywords(
-            std::vector<std::string>&& _keywords);
+            std::vector < std::string >&& _keywords);
 
     /*!
      * @brief This function returns a constant reference to member keywords
      * @return Constant reference to member keywords
      */
-    eProsima_user_DllExport const std::vector<std::string>& keywords() const;
+    eProsima_user_DllExport const std::vector < std::string >& keywords() const;
 
     /*!
      * @brief This function returns a reference to member keywords
      * @return Reference to member keywords
      */
-    eProsima_user_DllExport std::vector<std::string>& keywords();
+    eProsima_user_DllExport std::vector < std::string >& keywords();
 
 
     /*!
@@ -1172,26 +1198,26 @@ public:
      * @param _ml_model_metadata New value to be copied in member ml_model_metadata
      */
     eProsima_user_DllExport void ml_model_metadata(
-            const std::vector<std::string>& _ml_model_metadata);
+            const std::vector < std::string >& _ml_model_metadata);
 
     /*!
      * @brief This function moves the value in member ml_model_metadata
      * @param _ml_model_metadata New value to be moved in member ml_model_metadata
      */
     eProsima_user_DllExport void ml_model_metadata(
-            std::vector<std::string>&& _ml_model_metadata);
+            std::vector < std::string >&& _ml_model_metadata);
 
     /*!
      * @brief This function returns a constant reference to member ml_model_metadata
      * @return Constant reference to member ml_model_metadata
      */
-    eProsima_user_DllExport const std::vector<std::string>& ml_model_metadata() const;
+    eProsima_user_DllExport const std::vector < std::string >& ml_model_metadata() const;
 
     /*!
      * @brief This function returns a reference to member ml_model_metadata
      * @return Reference to member ml_model_metadata
      */
-    eProsima_user_DllExport std::vector<std::string>& ml_model_metadata();
+    eProsima_user_DllExport std::vector < std::string >& ml_model_metadata();
 
 
     /*!
@@ -1199,26 +1225,26 @@ public:
      * @param _extra_data New value to be copied in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            const std::vector<uint8_t>& _extra_data);
+            const std::vector < uint8_t >& _extra_data);
 
     /*!
      * @brief This function moves the value in member extra_data
      * @param _extra_data New value to be moved in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            std::vector<uint8_t>&& _extra_data);
+            std::vector < uint8_t >&& _extra_data);
 
     /*!
      * @brief This function returns a constant reference to member extra_data
      * @return Constant reference to member extra_data
      */
-    eProsima_user_DllExport const std::vector<uint8_t>& extra_data() const;
+    eProsima_user_DllExport const std::vector < uint8_t >& extra_data() const;
 
     /*!
      * @brief This function returns a reference to member extra_data
      * @return Reference to member extra_data
      */
-    eProsima_user_DllExport std::vector<uint8_t>& extra_data();
+    eProsima_user_DllExport std::vector < uint8_t >& extra_data();
 
 
     /*!
@@ -1249,9 +1275,9 @@ public:
 
 private:
 
-    std::vector<std::string> m_keywords;
-    std::vector<std::string> m_ml_model_metadata;
-    std::vector<uint8_t> m_extra_data;
+    std::vector < std::string > m_keywords;
+    std::vector < std::string > m_ml_model_metadata;
+    std::vector < uint8_t > m_extra_data;
     TaskIdImpl m_task_id;
 
 };
@@ -1293,28 +1319,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object AppRequirementsImpl that will be copied.
      */
-    eProsima_user_DllExport AppRequirementsImpl& operator =(
+    eProsima_user_DllExport AppRequirementsImpl& operator = (
             const AppRequirementsImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object AppRequirementsImpl that will be copied.
      */
-    eProsima_user_DllExport AppRequirementsImpl& operator =(
-            AppRequirementsImpl&& x) noexcept;
+    eProsima_user_DllExport AppRequirementsImpl& operator = (
+            AppRequirementsImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x AppRequirementsImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const AppRequirementsImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x AppRequirementsImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const AppRequirementsImpl& x) const;
 
     /*!
@@ -1322,26 +1348,26 @@ public:
      * @param _app_requirements New value to be copied in member app_requirements
      */
     eProsima_user_DllExport void app_requirements(
-            const std::vector<std::string>& _app_requirements);
+            const std::vector < std::string >& _app_requirements);
 
     /*!
      * @brief This function moves the value in member app_requirements
      * @param _app_requirements New value to be moved in member app_requirements
      */
     eProsima_user_DllExport void app_requirements(
-            std::vector<std::string>&& _app_requirements);
+            std::vector < std::string >&& _app_requirements);
 
     /*!
      * @brief This function returns a constant reference to member app_requirements
      * @return Constant reference to member app_requirements
      */
-    eProsima_user_DllExport const std::vector<std::string>& app_requirements() const;
+    eProsima_user_DllExport const std::vector < std::string >& app_requirements() const;
 
     /*!
      * @brief This function returns a reference to member app_requirements
      * @return Reference to member app_requirements
      */
-    eProsima_user_DllExport std::vector<std::string>& app_requirements();
+    eProsima_user_DllExport std::vector < std::string >& app_requirements();
 
 
     /*!
@@ -1349,26 +1375,26 @@ public:
      * @param _extra_data New value to be copied in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            const std::vector<uint8_t>& _extra_data);
+            const std::vector < uint8_t >& _extra_data);
 
     /*!
      * @brief This function moves the value in member extra_data
      * @param _extra_data New value to be moved in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            std::vector<uint8_t>&& _extra_data);
+            std::vector < uint8_t >&& _extra_data);
 
     /*!
      * @brief This function returns a constant reference to member extra_data
      * @return Constant reference to member extra_data
      */
-    eProsima_user_DllExport const std::vector<uint8_t>& extra_data() const;
+    eProsima_user_DllExport const std::vector < uint8_t >& extra_data() const;
 
     /*!
      * @brief This function returns a reference to member extra_data
      * @return Reference to member extra_data
      */
-    eProsima_user_DllExport std::vector<uint8_t>& extra_data();
+    eProsima_user_DllExport std::vector < uint8_t >& extra_data();
 
 
     /*!
@@ -1399,8 +1425,8 @@ public:
 
 private:
 
-    std::vector<std::string> m_app_requirements;
-    std::vector<uint8_t> m_extra_data;
+    std::vector < std::string > m_app_requirements;
+    std::vector < uint8_t > m_extra_data;
     TaskIdImpl m_task_id;
 
 };
@@ -1442,28 +1468,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object HWConstraintsImpl that will be copied.
      */
-    eProsima_user_DllExport HWConstraintsImpl& operator =(
+    eProsima_user_DllExport HWConstraintsImpl& operator = (
             const HWConstraintsImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object HWConstraintsImpl that will be copied.
      */
-    eProsima_user_DllExport HWConstraintsImpl& operator =(
-            HWConstraintsImpl&& x) noexcept;
+    eProsima_user_DllExport HWConstraintsImpl& operator = (
+            HWConstraintsImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x HWConstraintsImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const HWConstraintsImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x HWConstraintsImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const HWConstraintsImpl& x) const;
 
     /*!
@@ -1491,26 +1517,26 @@ public:
      * @param _extra_data New value to be copied in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            const std::vector<uint8_t>& _extra_data);
+            const std::vector < uint8_t >& _extra_data);
 
     /*!
      * @brief This function moves the value in member extra_data
      * @param _extra_data New value to be moved in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            std::vector<uint8_t>&& _extra_data);
+            std::vector < uint8_t >&& _extra_data);
 
     /*!
      * @brief This function returns a constant reference to member extra_data
      * @return Constant reference to member extra_data
      */
-    eProsima_user_DllExport const std::vector<uint8_t>& extra_data() const;
+    eProsima_user_DllExport const std::vector < uint8_t >& extra_data() const;
 
     /*!
      * @brief This function returns a reference to member extra_data
      * @return Reference to member extra_data
      */
-    eProsima_user_DllExport std::vector<uint8_t>& extra_data();
+    eProsima_user_DllExport std::vector < uint8_t >& extra_data();
 
 
     /*!
@@ -1541,8 +1567,10 @@ public:
 
 private:
 
-    uint32_t m_max_memory_footprint{0};
-    std::vector<uint8_t> m_extra_data;
+    uint32_t m_max_memory_footprint {
+        0
+    };
+    std::vector < uint8_t > m_extra_data;
     TaskIdImpl m_task_id;
 
 };
@@ -1584,28 +1612,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object MLModelImpl that will be copied.
      */
-    eProsima_user_DllExport MLModelImpl& operator =(
+    eProsima_user_DllExport MLModelImpl& operator = (
             const MLModelImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object MLModelImpl that will be copied.
      */
-    eProsima_user_DllExport MLModelImpl& operator =(
-            MLModelImpl&& x) noexcept;
+    eProsima_user_DllExport MLModelImpl& operator = (
+            MLModelImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x MLModelImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const MLModelImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x MLModelImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const MLModelImpl& x) const;
 
     /*!
@@ -1660,6 +1688,33 @@ public:
      * @return Reference to member model
      */
     eProsima_user_DllExport std::string& model();
+
+
+    /*!
+     * @brief This function copies the value in member raw_model
+     * @param _raw_model New value to be copied in member raw_model
+     */
+    eProsima_user_DllExport void raw_model(
+            const std::vector < uint8_t >& _raw_model);
+
+    /*!
+     * @brief This function moves the value in member raw_model
+     * @param _raw_model New value to be moved in member raw_model
+     */
+    eProsima_user_DllExport void raw_model(
+            std::vector < uint8_t >&& _raw_model);
+
+    /*!
+     * @brief This function returns a constant reference to member raw_model
+     * @return Constant reference to member raw_model
+     */
+    eProsima_user_DllExport const std::vector < uint8_t >& raw_model() const;
+
+    /*!
+     * @brief This function returns a reference to member raw_model
+     * @return Reference to member raw_model
+     */
+    eProsima_user_DllExport std::vector < uint8_t >& raw_model();
 
 
     /*!
@@ -1721,26 +1776,26 @@ public:
      * @param _input_batch New value to be copied in member input_batch
      */
     eProsima_user_DllExport void input_batch(
-            const std::vector<std::string>& _input_batch);
+            const std::vector < std::string >& _input_batch);
 
     /*!
      * @brief This function moves the value in member input_batch
      * @param _input_batch New value to be moved in member input_batch
      */
     eProsima_user_DllExport void input_batch(
-            std::vector<std::string>&& _input_batch);
+            std::vector < std::string >&& _input_batch);
 
     /*!
      * @brief This function returns a constant reference to member input_batch
      * @return Constant reference to member input_batch
      */
-    eProsima_user_DllExport const std::vector<std::string>& input_batch() const;
+    eProsima_user_DllExport const std::vector < std::string >& input_batch() const;
 
     /*!
      * @brief This function returns a reference to member input_batch
      * @return Reference to member input_batch
      */
-    eProsima_user_DllExport std::vector<std::string>& input_batch();
+    eProsima_user_DllExport std::vector < std::string >& input_batch();
 
 
     /*!
@@ -1768,26 +1823,26 @@ public:
      * @param _extra_data New value to be copied in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            const std::vector<uint8_t>& _extra_data);
+            const std::vector < uint8_t >& _extra_data);
 
     /*!
      * @brief This function moves the value in member extra_data
      * @param _extra_data New value to be moved in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            std::vector<uint8_t>&& _extra_data);
+            std::vector < uint8_t >&& _extra_data);
 
     /*!
      * @brief This function returns a constant reference to member extra_data
      * @return Constant reference to member extra_data
      */
-    eProsima_user_DllExport const std::vector<uint8_t>& extra_data() const;
+    eProsima_user_DllExport const std::vector < uint8_t >& extra_data() const;
 
     /*!
      * @brief This function returns a reference to member extra_data
      * @return Reference to member extra_data
      */
-    eProsima_user_DllExport std::vector<uint8_t>& extra_data();
+    eProsima_user_DllExport std::vector < uint8_t >& extra_data();
 
 
     /*!
@@ -1820,11 +1875,14 @@ private:
 
     std::string m_model_path;
     std::string m_model;
+    std::vector < uint8_t > m_raw_model;
     std::string m_model_properties_path;
     std::string m_model_properties;
-    std::vector<std::string> m_input_batch;
-    double m_target_latency{0.0};
-    std::vector<uint8_t> m_extra_data;
+    std::vector < std::string > m_input_batch;
+    double m_target_latency {
+        0.0
+    };
+    std::vector < uint8_t > m_extra_data;
     TaskIdImpl m_task_id;
 
 };
@@ -1866,28 +1924,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object HWResourceImpl that will be copied.
      */
-    eProsima_user_DllExport HWResourceImpl& operator =(
+    eProsima_user_DllExport HWResourceImpl& operator = (
             const HWResourceImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object HWResourceImpl that will be copied.
      */
-    eProsima_user_DllExport HWResourceImpl& operator =(
-            HWResourceImpl&& x) noexcept;
+    eProsima_user_DllExport HWResourceImpl& operator = (
+            HWResourceImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x HWResourceImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const HWResourceImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x HWResourceImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const HWResourceImpl& x) const;
 
     /*!
@@ -2002,26 +2060,26 @@ public:
      * @param _extra_data New value to be copied in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            const std::vector<uint8_t>& _extra_data);
+            const std::vector < uint8_t >& _extra_data);
 
     /*!
      * @brief This function moves the value in member extra_data
      * @param _extra_data New value to be moved in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            std::vector<uint8_t>&& _extra_data);
+            std::vector < uint8_t >&& _extra_data);
 
     /*!
      * @brief This function returns a constant reference to member extra_data
      * @return Constant reference to member extra_data
      */
-    eProsima_user_DllExport const std::vector<uint8_t>& extra_data() const;
+    eProsima_user_DllExport const std::vector < uint8_t >& extra_data() const;
 
     /*!
      * @brief This function returns a reference to member extra_data
      * @return Reference to member extra_data
      */
-    eProsima_user_DllExport std::vector<uint8_t>& extra_data();
+    eProsima_user_DllExport std::vector < uint8_t >& extra_data();
 
 
     /*!
@@ -2053,11 +2111,19 @@ public:
 private:
 
     std::string m_hw_description;
-    double m_power_consumption{0.0};
-    double m_latency{0.0};
-    double m_memory_footprint_of_ml_model{0.0};
-    double m_max_hw_memory_footprint{0.0};
-    std::vector<uint8_t> m_extra_data;
+    double m_power_consumption {
+        0.0
+    };
+    double m_latency {
+        0.0
+    };
+    double m_memory_footprint_of_ml_model {
+        0.0
+    };
+    double m_max_hw_memory_footprint {
+        0.0
+    };
+    std::vector < uint8_t > m_extra_data;
     TaskIdImpl m_task_id;
 
 };
@@ -2099,28 +2165,28 @@ public:
      * @brief Copy assignment.
      * @param x Reference to the object CO2FootprintImpl that will be copied.
      */
-    eProsima_user_DllExport CO2FootprintImpl& operator =(
+    eProsima_user_DllExport CO2FootprintImpl& operator = (
             const CO2FootprintImpl& x);
 
     /*!
      * @brief Move assignment.
      * @param x Reference to the object CO2FootprintImpl that will be copied.
      */
-    eProsima_user_DllExport CO2FootprintImpl& operator =(
-            CO2FootprintImpl&& x) noexcept;
+    eProsima_user_DllExport CO2FootprintImpl& operator = (
+            CO2FootprintImpl&& x)noexcept;
 
     /*!
      * @brief Comparison operator.
      * @param x CO2FootprintImpl object to compare.
      */
-    eProsima_user_DllExport bool operator ==(
+    eProsima_user_DllExport bool operator == (
             const CO2FootprintImpl& x) const;
 
     /*!
      * @brief Comparison operator.
      * @param x CO2FootprintImpl object to compare.
      */
-    eProsima_user_DllExport bool operator !=(
+    eProsima_user_DllExport bool operator != (
             const CO2FootprintImpl& x) const;
 
     /*!
@@ -2188,26 +2254,26 @@ public:
      * @param _extra_data New value to be copied in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            const std::vector<uint8_t>& _extra_data);
+            const std::vector < uint8_t >& _extra_data);
 
     /*!
      * @brief This function moves the value in member extra_data
      * @param _extra_data New value to be moved in member extra_data
      */
     eProsima_user_DllExport void extra_data(
-            std::vector<uint8_t>&& _extra_data);
+            std::vector < uint8_t >&& _extra_data);
 
     /*!
      * @brief This function returns a constant reference to member extra_data
      * @return Constant reference to member extra_data
      */
-    eProsima_user_DllExport const std::vector<uint8_t>& extra_data() const;
+    eProsima_user_DllExport const std::vector < uint8_t >& extra_data() const;
 
     /*!
      * @brief This function returns a reference to member extra_data
      * @return Reference to member extra_data
      */
-    eProsima_user_DllExport std::vector<uint8_t>& extra_data();
+    eProsima_user_DllExport std::vector < uint8_t >& extra_data();
 
 
     /*!
@@ -2238,10 +2304,16 @@ public:
 
 private:
 
-    double m_carbon_footprint{0.0};
-    double m_energy_consumption{0.0};
-    double m_carbon_intensity{0.0};
-    std::vector<uint8_t> m_extra_data;
+    double m_carbon_footprint {
+        0.0
+    };
+    double m_energy_consumption {
+        0.0
+    };
+    double m_carbon_intensity {
+        0.0
+    };
+    std::vector < uint8_t > m_extra_data;
     TaskIdImpl m_task_id;
 
 };
