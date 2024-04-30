@@ -1,8 +1,3 @@
-# SustainML
-
-**Application Aware, Life-Cycle Oriented Model-Hardware Co-Design Framework for Sustainable, Energy Efficient ML Systems** project.
-
-
 [![SustainML](sustainml_docs/rst/figures/SustainML_GitHub.png)](https://sustainml.eu/)
 
 <br>
@@ -46,28 +41,30 @@ AI developers from all experience levels can make use of the framework through i
 
 **This project is a work in progress and the following features presented here will be extended, updated, and improved in future versions.**
 
-### Framework Architecture
+### Project Architecture
 
-The *SustainML Design Framework* is composed of different Software Modules, each one related to specific task, which are specialized in solving the different parts of the machine learning problem architecture definition, starting from the user’s problem description.
+The *SustainML Framework* is composed of different Software Modules, each one related to specific task, which are specialized in solving the different parts of the machine learning problem architecture definition, starting from the user’s problem description.
 Each of the modules conforms a Node.
 These steps are basically:
 
-1. Task encoding
-2. Generate the Machine Learning model
-3. Select an Optimized Hardware for running the proposed model
-4. Predict the Carbon footprint
+1. Encode the problem and constraints defined by the user
+2. Suggest a machine learning model
+3. Propose an optimized hardware for running the suggested model
+4. Warn about the estimated carbon footprint that would take training the model in the hardware
 
 All the Nodes shall import its corresponding Python library, so that each Node can be abstracted from the DDS communications.
 
-### Backend
+### Library
 
-The Backend is an additional module in charge of collecting all the required data for the Frontend.
-The Backend exchanges information over DDS with each of the different Nodes.
+This library repository contains all the modules definitions.
+The Framework uses the library API to deploy those different SustainML modules.
+The exchanged information between the modules is over DDS.
 
-### Frontend
+### Framework
 
-The Frontend is a *Graphical User Interface* (GUI) in which user interacts and introduces the ML problem definition.
-The ML solutions provided by the set of Nodes are displayed to the user through this GUI.
+The Framework includes a *Graphical User Interface* (GUI) in which user interacts and introduces the ML problem definition.
+That GUI implements also the **Orchestrator** node, a key node that feds the remain modules with the information provided by the user, retrieves all the results, and display them to the user though this GUI.
+
 This process can be iterative.
 So, based on a previous solution and the user's feedback, the framework provides new ML solutions.
 
@@ -78,9 +75,10 @@ So, based on a previous solution and the user's feedback, the framework provides
 This repository is divided in sub-packages with different targets:
 
 * `sustainml_cpp` Main definition and implementation of the project logic library. C++ API provided.
-* `sustainml_modules` Set of test with mocked modules.
-* `sustainml_py` Python API.
-* `sustainml_swig` Binding from `sustainml_cpp` to a Python API.
+* `sustainml_docs` ReadTheDocs documentation project ([available here](https://sustainml.readthedocs.io/en/latest/))
+* `sustainml_modules` Set of piped modules that use the Python API.
+* `sustainml_py` Wrap of the project logic library. Python API.
+* `sustainml_swig` Binding from the C++ API `sustainml_cpp` to the `sustainml_py` Python API.
 
 ### Dependencies
 
