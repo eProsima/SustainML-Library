@@ -74,36 +74,11 @@ So, based on a previous solution and the user's feedback, the framework provides
 
 This repository is divided in sub-packages with different targets:
 
-* `sustainml_cpp` Main definition and implementation of the project logic library. C++ API provided.
-* `sustainml_docs` ReadTheDocs documentation project ([available here](https://sustainml.readthedocs.io/en/latest/))
-* `sustainml_modules` Set of piped modules that use the Python API.
-* `sustainml_py` Wrap of the project logic library. Python API.
-* `sustainml_swig` Binding from the C++ API `sustainml_cpp` to the `sustainml_py` Python API.
-
-### Dependencies
-
-*SustainML* depends on several standard or eProsima projects:
-
-* Third-party libraries
-  * Dependencies to download, compile and install project:
-    * `wget`
-    * `git`
-  * Dependencies to install project:
-    * `CMake`
-    * `gcc`
-    * `python3`
-    * `pip`
-    * `colcon` [optional]
-  * Library dependencies:
-    * `Asio`
-    * `TinyXML2`
-    * `OpenSSL` [ony with security]
-    * `GTest` [ony for test]
-* eProsima libraries
-  * `fastcdr` Fast CDR for message serialization and deserialization.
-  * `fastrtps` Fast DDS library for DDS communication.
-  * `cmake_utils` CMake utilities library.
-  * `cpp_utils` C++ utilities library.
+* `sustainml_cpp`: Main definition and implementation of the project logic library. C++ API provided.
+* `sustainml_docs`: ReadTheDocs documentation project ([available here](https://sustainml.readthedocs.io/en/latest/))
+* `sustainml_modules`: Set of piped modules that use the Python API.
+* `sustainml_py`: Wrap of the project logic library. Python API.
+* `sustainml_swig`: Binding from the C++ API `sustainml_cpp` to the `sustainml_py` Python API.
 
 ## Getting Help
 
