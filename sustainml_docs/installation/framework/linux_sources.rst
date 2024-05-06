@@ -2,3 +2,81 @@
 
 SustainML Framework on Linux
 ============================
+
+The instructions for installing the :ref:`SustainML Framework <index_introduction>` from sources are provided in this page.
+It is organized as follows:
+
+.. contents::
+    :local:
+    :backlinks: none
+    :depth: 2
+
+The *SustainML Framework* is composed of different software modules, each one related to specific task, which are specialized in solving the different parts of the framework.
+Each of the modules conforms a **Node**, which shall import its corresponding Python library, so that each Node can be abstracted from the communication between other nodes.
+
+The communication is performed through DDS (Data Distribution Service) protocol, using the eProsima Fast DDS library.
+During the installation process, some of the Fast DDS requirements will need to be addressed.
+
+The following sections describe the steps to install the SustainML Framework on **Ubuntu**.
+
+.. _installation_framework_linux_dependencies:
+
+SustainML Framework dependencies
+--------------------------------
+
+The following packages provide the tools required to install SustainML and its dependencies from command line.
+General and build tools such as wget, git, cmake, g++, python3 and swig are required.
+Fast DDS dependencies such as OpenSSL, Asio, TinyXML2, PKCS11, and SoftHSM2 are also needed.
+Qt libraries and modules are necessary for the GUI components of the SustainML Framework.
+
+Install them using the package manager of the appropriate Linux distribution.
+On **Ubuntu** use the following command to install all the dependencies:
+
+.. code-block:: bash
+
+    apt install --yes --no-install-recommends \
+        wget git cmake g++ build-essential python3 python3-pip libpython3-dev swig \
+        libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2 \
+        qtdeclarative5-dev libqt5charts5-dev qtquickcontrols2-5-dev libqt5svg5 qml-module-qtquick-controls qml-module-qtquick-controls2 && \
+    pip3 install -U \
+        colcon-common-extensions vcstool
+
+.. _installation_framework_linux_build:
+
+Build SustainML Framework sources
+---------------------------------
+
+Create a SustainML directory and download the repositories file that will be used to install SustainML Framework, and all its repository dependencies (such as the SustainML library, Fast DDS, or Fast CDR).
+The following command also builds and installs the SustainML framework, and the generated libraries and applications are sourced.
+
+.. code-block:: bash
+
+    mkdir -p ~/SustainML/src && cd ~/SustainML && \
+    wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/sustainml.repos && \
+    vcs import src < sustainml.repos && \
+    colcon build && \
+    source ~/SustainML/install/setup.bash
+
+.. _installation_framework_linux_deployment:
+
+SustainML Framework deployment
+------------------------------
+
+The *SustainML Framework* application retrieves the user inputs and deliver the information to the remain nodes that conform the framework.
+To run the complete framework, both GUI application and framework nodes need to be executed.
+The following script runs all of them:
+
+.. code-block:: bash
+
+    bash -c " \
+        python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/app_requirements_node.py & \
+        python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/ml_model_metadata_node.py & \
+        python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/ml_model_provider_node.py & \
+        python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp2/hw_constraints_node.py & \
+        python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp2/hw_resources_provider_node.py & \
+        python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp3/carbon_footprint_node.py & \
+        sustainml"
+
+.. note::
+
+    The *SustainML Framework* GUI application is run with the ``sustainml`` command.
