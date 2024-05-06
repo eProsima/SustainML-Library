@@ -13,6 +13,19 @@
    :hidden:
 
    /rst/formalia/titlepage
+.. _index_installation:
+
+.. toctree::
+   :caption: Installation Manual
+   :maxdepth: 2
+   :numbered: 2
+   :hidden:
+
+   /installation/docker
+   /installation/framework/linux_sources
+   /installation/framework/windows_sources
+   /installation/library/linux_sources
+   /installation/library/windows_sources
 
 .. _index_developer_manual:
 
