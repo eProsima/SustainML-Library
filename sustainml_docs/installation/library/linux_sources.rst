@@ -14,10 +14,10 @@ It is organized as follows:
 The *SustainML Library* is composed of different software modules, each one related to specific task, which are specialized in solving the different parts of the framework.
 Each of the modules conforms a **Node**, which shall import its corresponding Python library, so that each Node can be abstracted from the communication between other nodes.
 
-The communication is performed through DDS (Data Distribution Service) protocol, using the eProsima Fast DDS library.
-During the installation process, some of the Fast DDS requirements will need to be addressed.
+The communication is performed through `DDS (Data Distribution Service) protocol <https://www.omg.org/omg-dds-portal/>`_, using the `eProsima Fast DDS <https://fast-dds.docs.eprosima.com/>`_` library.
+During the installation process, some of the `Fast DDS requirements <https://fast-dds.docs.eprosima.com/en/latest/installation/sources/sources_linux.html#requirements>`_ will need to be addressed.
 
-The following sections describe the steps to install the SustainML Library on **Ubuntu**.
+The following sections describe the steps to install the *SustainML Library* on **Ubuntu**.
 
 .. _installation_library_linux_dependencies:
 
@@ -25,8 +25,8 @@ SustainML Library dependencies
 --------------------------------
 
 The following packages provide the tools required to install SustainML and its dependencies from command line.
-General and build tools such as wget, git, cmake, g++, python3 and swig are required.
-Fast DDS dependencies such as OpenSSL, Asio, TinyXML2, PKCS11, and SoftHSM2 are also needed.
+General and build tools such as `wget <https://www.gnu.org/software/wget/>`_, `git <https://git-scm.com/>`_, `CMake <https://cmake.org/>`_, `g++ <https://gcc.gnu.org/>`_, `Python3 <https://www.python.org/>`_ and `SWIG <https://www.swig.org/>`_ are required.
+`Fast DDS dependencies <https://fast-dds.docs.eprosima.com/en/latest/notes/versions.html#library-dependencies>`_ such as `OpenSSL <https://www.openssl.org/>`_, `Asio <https://think-async.com/Asio/>`_, `TinyXML2 <https://github.com/leethomason/tinyxml2>`_, `LibP11 <https://github.com/OpenSC/libp11/>`_, and `SoftHSM2 <https://www.opendnssec.org/softhsm/>`_ are also needed.
 
 Install them using the package manager of the appropriate Linux distribution.
 On **Ubuntu** use the following command to install all the dependencies:
@@ -44,8 +44,8 @@ On **Ubuntu** use the following command to install all the dependencies:
 Build SustainML Library sources
 -------------------------------
 
-Create a SustainML directory and download the repositories file that will be used to install SustainML Library, and all its repository dependencies (such as the SustainML library, Fast DDS, or Fast CDR).
-The following command also builds and installs the SustainML library.
+Create a SustainML directory and download the repositories file that will be used to install *SustainML Library*, and all its repository dependencies (such as the `Fast DDS <https://github.com/eProsima/Fast-DDS>`_ or `Fast CDR <https://github.com/eProsima/Fast-CDR>`).
+The following command also builds and installs the *SustainML library*.
 
 .. code-block:: bash
 
