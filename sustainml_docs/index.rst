@@ -23,10 +23,8 @@
 
    /installation/docker
    /installation/framework/linux_sources
-   /installation/framework/windows_sources
    /installation/library/linux_sources
-   /installation/library/windows_sources
-
+   
 .. _index_developer_manual:
 
 .. toctree::
