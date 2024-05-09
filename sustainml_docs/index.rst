@@ -21,10 +21,10 @@
    :numbered: 2
    :hidden:
 
-   /installation/docker
-   /installation/framework/linux_sources
-   /installation/library/linux_sources
-   
+   /rst/installation/docker
+   /rst/installation/framework
+   /rst/installation/library
+
 .. _index_developer_manual:
 
 .. toctree::
