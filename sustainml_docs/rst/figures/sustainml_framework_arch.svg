@@ -1,0 +1,1614 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="215mm"
+   height="170mm"
+   viewBox="0 0 215 170"
+   version="1.1"
+   id="svg1850"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="sustainml_framework_arch.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <sodipodi:namedview
+     id="namedview1852"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.1997092"
+     inkscape:cx="616.89972"
+     inkscape:cy="371.86734"
+     inkscape:window-width="1683"
+     inkscape:window-height="1403"
+     inkscape:window-x="20"
+     inkscape:window-y="20"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g2346"
+     units="mm" />
+  <defs
+     id="defs1847">
+    <style
+       type="text/css"
+       id="style1854">svg.ge-export-svg-dark { filter: invert(100%) hue-rotate(180deg); }
+svg.ge-export-svg-dark foreignObject img,
+svg.ge-export-svg-dark image:not(svg.ge-export-svg-dark switch image),
+svg.ge-export-svg-dark svg { filter: invert(100%) hue-rotate(180deg) }</style>
+  </defs>
+  <g
+     inkscape:label="SustainML"
+     id="layer1"
+     style="display:inline">
+    <g
+       id="g2346"
+       transform="matrix(0.15883944,0,0,0.18551615,8.3466622,1.358393)"
+       inkscape:label="Architecture">
+      <g
+         id="g1862"
+         transform="matrix(1.0802844,0,0,1,-39.300409,-0.91691798)">
+        <path
+           d="m 695,767.25 -392.47,0.04 -0.03,-31.92"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1858" />
+        <path
+           d="m 302.5,730.12 3.51,7 -3.51,-1.75 -3.49,1.75 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1860" />
+      </g>
+      <g
+         id="g1872"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="M 590,417.63 V 369"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1868" />
+        <path
+           d="m 590,422.88 -3.5,-7 3.5,1.75 3.5,-1.75 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1870" />
+      </g>
+      <g
+         id="g1878"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 532.5,589 0.03,229.94 H 135 V 239.06 L 506.13,239"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1874" />
+        <path
+           d="m 511.38,239 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1876" />
+      </g>
+      <g
+         id="g1884"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 590,259 v 63.63"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1880" />
+        <path
+           d="m 590,327.88 -3.5,-7 3.5,1.75 3.5,-1.75 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1882" />
+      </g>
+      <g
+         id="g1890"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 667.5,249 165.03,0.06 -0.03,103.57"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1886" />
+        <path
+           d="m 832.5,357.88 -3.5,-7 3.5,1.75 3.5,-1.75 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1888" />
+      </g>
+      <g
+         id="g1896"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 551.25,259 0.1,20.06 H 263.82 l -0.07,403.57"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1892" />
+        <path
+           d="m 263.75,687.88 -3.5,-7 3.5,1.75 3.5,-1.75 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1894" />
+      </g>
+      <g
+         id="orchestrator"
+         class="module_node">
+        <g
+           id="g1900"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <rect
+             x="512.5"
+             y="219"
+             width="155"
+             height="40"
+             rx="20"
+             ry="20"
+             fill="#dae8fc"
+             stroke="#6c8ebf"
+             pointer-events="all"
+             id="rect1898" />
+        </g>
+        <g
+           id="g1908"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <g
+             transform="translate(-0.5,-0.5)"
+             id="g1906">
+            <switch
+               id="switch1904">
+              <foreignObject
+                 pointer-events="none"
+                 width="100%"
+                 height="100%"
+                 requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+                 style="overflow: visible; text-align: left;">
+                <xhtml:div
+                   style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 157px; height: 1px; padding-top: 239px; margin-left: 512px;">
+                  <xhtml:div
+                     data-drawio-colors="color: #1A1A1A; "
+                     style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                    <xhtml:div
+                       style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(26, 26, 26); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                      <xhtml:b>Orchestrator (Back-end)</xhtml:b>
+                    </xhtml:div>
+                  </xhtml:div>
+                </xhtml:div>
+              </foreignObject>
+              <text
+                 x="590"
+                 y="243"
+                 fill="#1a1a1a"
+                 font-family="Helvetica"
+                 font-size="12px"
+                 text-anchor="middle"
+                 id="text1902">Orchestrator (Back-end)</text>
+            </switch>
+          </g>
+        </g>
+      </g>
+      <g
+         id="ml-model-metadata"
+         class="module_node">
+        <g
+           id="g1912"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <rect
+             x="512.5"
+             y="329"
+             width="154.99928"
+             height="40"
+             rx="20"
+             ry="20"
+             fill="#d5e8d4"
+             stroke="#82b366"
+             pointer-events="all"
+             id="rect1910" />
+        </g>
+        <g
+           id="g1920"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <g
+             transform="translate(-0.5,-0.5)"
+             id="g1918">
+            <switch
+               id="switch1916">
+              <foreignObject
+                 pointer-events="none"
+                 width="100%"
+                 height="100%"
+                 requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+                 style="overflow: visible; text-align: left;">
+                <xhtml:div
+                   style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 157px; height: 1px; padding-top: 349px; margin-left: 512px;">
+                  <xhtml:div
+                     data-drawio-colors="color: #1A1A1A; "
+                     style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                    <xhtml:div
+                       style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(26, 26, 26); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                      <xhtml:b>ML Model Metadata Node</xhtml:b>
+                    </xhtml:div>
+                  </xhtml:div>
+                </xhtml:div>
+              </foreignObject>
+              <text
+                 x="590"
+                 y="353"
+                 fill="#1a1a1a"
+                 font-family="Helvetica"
+                 font-size="12px"
+                 text-anchor="middle"
+                 id="text1914">ML Model Metadata Node</text>
+            </switch>
+          </g>
+        </g>
+      </g>
+      <g
+         id="g1924"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="315"
+           y="524"
+           width="100"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect1922" />
+      </g>
+      <g
+         id="g1932"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g1930">
+          <switch
+             id="switch1928">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 102px; height: 1px; padding-top: 539px; margin-left: 314px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                    <xhtml:div>CO2 footprint</xhtml:div>
+                  </xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="365"
+               y="543"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text1926">CO2 footprint</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g1938"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 832.5,399 4.5,-0.06 v 66.12 L 711.37,465"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1934" />
+        <path
+           d="m 706.12,465 7,-3.5 -1.75,3.5 1.75,3.5 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1936" />
+      </g>
+      <g
+         id="g1944"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 910,379 65,-0.06 v 388.35 l -43.63,-0.03"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1940" />
+        <path
+           d="m 926.12,767.25 7,-3.49 -1.75,3.5 1.74,3.5 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1942" />
+      </g>
+      <g
+         id="hardware-constraints"
+         class="module_node">
+        <g
+           id="g1948"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <rect
+             x="755"
+             y="359"
+             width="155"
+             height="40"
+             rx="20"
+             ry="20"
+             fill="#ffe6cc"
+             stroke="#d79b00"
+             pointer-events="all"
+             id="rect1946" />
+        </g>
+        <g
+           id="g1956"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <text
+             x="832"
+             y="383"
+             fill="#1a1a1a"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text1950">HW Constraints Node</text>
+        </g>
+      </g>
+      <g
+         id="g1962"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 705,547.75 104.94,-0.1 0.06,131.48"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1958" />
+        <path
+           d="m 810,684.38 -3.5,-7 3.5,1.75 3.5,-1.75 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1960" />
+      </g>
+      <g
+         id="g1968"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="M 505,589 V 708.94 L 386.37,709"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1964" />
+        <path
+           d="m 381.12,709 7,-3.5 -1.75,3.5 1.75,3.5 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1966" />
+      </g>
+      <g
+         id="g1974"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 302.5,689 0.03,-182.53 166.1,0.03"
+           fill="none"
+           stroke="#1a1a1a"
+           stroke-miterlimit="10"
+           stroke-dasharray="3, 3"
+           pointer-events="stroke"
+           id="path1970" />
+        <path
+           d="m 473.88,506.5 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+           fill="#1a1a1a"
+           stroke="#1a1a1a"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1972" />
+      </g>
+      <g
+         id="g1980"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 225,709 -60,-0.06 V 249.06 L 506.13,249"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1976" />
+        <path
+           d="m 511.38,249 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1978" />
+      </g>
+      <g
+         id="carbontracker"
+         class="module_node">
+        <g
+           id="g1984"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <rect
+             x="225"
+             y="689"
+             width="155"
+             height="40"
+             rx="20"
+             ry="20"
+             fill="#e1d5e7"
+             stroke="#9673a6"
+             pointer-events="all"
+             id="rect1982" />
+        </g>
+        <g
+           id="g1992"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <g
+             transform="translate(-0.5,-0.5)"
+             id="g1990">
+            <switch
+               id="switch1988">
+              <foreignObject
+                 pointer-events="none"
+                 width="100%"
+                 height="100%"
+                 requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+                 style="overflow: visible; text-align: left;">
+                <xhtml:div
+                   style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 157px; height: 1px; padding-top: 709px; margin-left: 224px;">
+                  <xhtml:div
+                     data-drawio-colors="color: #1A1A1A; "
+                     style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                    <xhtml:div
+                       style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(26, 26, 26); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                      <xhtml:b>Carbontracker Node</xhtml:b>
+                    </xhtml:div>
+                  </xhtml:div>
+                </xhtml:div>
+              </foreignObject>
+              <text
+                 x="303"
+                 y="713"
+                 fill="#1a1a1a"
+                 font-family="Helvetica"
+                 font-size="12px"
+                 text-anchor="middle"
+                 id="text1986">Carbontracker Node</text>
+            </switch>
+          </g>
+        </g>
+      </g>
+      <g
+         id="g1998"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 810,849 -0.06,29.94 H 115 V 229.06 L 506.13,229"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path1994" />
+        <path
+           d="m 511.38,229 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path1996" />
+      </g>
+      <g
+         id="g2002"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="845"
+           y="409"
+           width="115"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2000" />
+      </g>
+      <g
+         id="g2010"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2008">
+          <switch
+             id="switch2006">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 424px; margin-left: 844px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">HW Constraints</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="902"
+               y="428"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2004">HW Constraints</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2014"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="605"
+           y="611.5"
+           width="115"
+           height="45"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2012" />
+      </g>
+      <g
+         id="g2022"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2020">
+          <switch
+             id="switch2018">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 634px; margin-left: 604px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">HW Resource</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="662"
+               y="638"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2016">HW Resource</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2026"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="395"
+           y="626.5"
+           width="85"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2024" />
+      </g>
+      <g
+         id="g2034"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2032">
+          <switch
+             id="switch2030">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 87px; height: 1px; padding-top: 641px; margin-left: 394px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">ML Model</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="438"
+               y="645"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2028">ML Model</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2040"
+         transform="matrix(1.1175662,0,0,1,-65.598403,-0.91691798)">
+        <path
+           d="M 695,726.38 589.94,726.35 590,595.37"
+           fill="none"
+           stroke="#1a1a1a"
+           stroke-miterlimit="10"
+           stroke-dasharray="3, 3"
+           pointer-events="stroke"
+           id="path2036" />
+        <path
+           d="m 590,590.12 3.5,7 -3.5,-1.75 -3.5,1.75 z"
+           fill="#1a1a1a"
+           stroke="#1a1a1a"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path2038" />
+      </g>
+      <g
+         id="g2044"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="460"
+           y="289"
+           width="115"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2042" />
+      </g>
+      <g
+         id="g2052"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2050">
+          <switch
+             id="switch2048">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 304px; margin-left: 459px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">User input data</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="518"
+               y="308"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2046">User input data</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2056"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="820"
+           y="579"
+           width="85"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2054" />
+      </g>
+      <g
+         id="g2064"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2062">
+          <switch
+             id="switch2060">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 87px; height: 1px; padding-top: 594px; margin-left: 819px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">ML Model</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="862"
+               y="598"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2058">ML Model</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2068"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="565"
+           y="779"
+           width="115"
+           height="45"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2066" />
+      </g>
+      <g
+         id="g2076"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2074">
+          <switch
+             id="switch2072">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 801px; margin-left: 564px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">HW Resource</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="623"
+               y="805"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2070">HW Resource</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2080"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="455"
+           y="379"
+           width="115"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2078" />
+      </g>
+      <g
+         id="g2088"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2086">
+          <switch
+             id="switch2084">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 394px; margin-left: 454px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">ML Metadata</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="513"
+               y="398"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2082">ML Metadata</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2092"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691794)">
+        <rect
+           x="295"
+           y="397.55725"
+           width="115"
+           height="40"
+           fill="#e51400"
+           stroke="none"
+           pointer-events="all"
+           id="rect2090"
+           style="fill:#666666" />
+        <text
+           x="353"
+           y="413"
+           fill="#ffffff"
+           font-family="Helvetica"
+           font-size="12px"
+           text-anchor="middle"
+           font-weight="bold"
+           id="text2094"><tspan
+             sodipodi:role="line"
+             id="tspan5524"
+             x="353"
+             y="413">Baseline for</tspan><tspan
+             sodipodi:role="line"
+             id="tspan5526"
+             x="353"
+             y="428">Optimization</tspan></text>
+      </g>
+      <g
+         id="g2106"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 1112.5,329 0.03,479.12 H 931.37"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path2102" />
+        <path
+           d="m 926.12,808.12 7,-3.5 -1.75,3.5 1.75,3.5 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path2104" />
+      </g>
+      <g
+         id="g2112"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 1073.75,329 -0.04,177.47 -362.34,0.03"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path2108" />
+        <path
+           d="m 706.12,506.5 7,-3.5 -1.75,3.5 1.75,3.5 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path2110" />
+      </g>
+      <g
+         id="application-requirements"
+         transform="translate(40.477473,0.49999929)"
+         class="module_node">
+        <rect
+           x="1035"
+           y="289"
+           width="155"
+           height="40"
+           rx="20"
+           ry="20"
+           fill="#d5e8d4"
+           stroke="#82b366"
+           pointer-events="all"
+           id="rect2114" />
+        <text
+           x="1112"
+           y="307.29517"
+           fill="#000000"
+           font-family="Helvetica"
+           font-size="12px"
+           text-anchor="middle"
+           id="text2118"><tspan
+             sodipodi:role="line"
+             id="tspan11814"
+             x="1112"
+             y="307.29517">Application-level</tspan><tspan
+             sodipodi:role="line"
+             id="tspan11816"
+             x="1112"
+             y="322.29517">Requirements Node</tspan></text>
+      </g>
+      <g
+         id="g2130"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 667.5,229 445.03,0.06 -0.03,53.57"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path2126" />
+        <path
+           d="m 1112.5,287.88 -3.5,-7 3.5,1.75 3.5,-1.75 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path2128" />
+      </g>
+      <g
+         id="g2134"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="975"
+           y="189"
+           width="115"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2132" />
+      </g>
+      <g
+         id="g2142"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2140">
+          <switch
+             id="switch2138">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 204px; margin-left: 974px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">User input data</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="1032"
+               y="208"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2136">User input data</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2146"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="705"
+           y="279"
+           width="115"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2144" />
+      </g>
+      <g
+         id="g2154"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2152">
+          <switch
+             id="switch2150">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 294px; margin-left: 704px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">User input data</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="762"
+               y="298"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2148">User input data</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2158"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="1125"
+           y="379"
+           width="115"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2156" />
+      </g>
+      <g
+         id="g2166"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2164">
+          <switch
+             id="switch2162">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 394px; margin-left: 1124px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">App Requirements</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="1182"
+               y="398"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2160">App Requirements</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2170"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="0"
+           y="537"
+           width="100"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2168" />
+      </g>
+      <g
+         id="g2178"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2176">
+          <switch
+             id="switch2174">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 102px; height: 1px; padding-top: 552px; margin-left: -1px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                    <xhtml:div>CO2 footprint</xhtml:div>
+                  </xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="50"
+               y="556"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2172">CO2 footprint</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="front-end"
+         class="module_node">
+        <g
+           id="g2182"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <rect
+             x="512.5"
+             y="109"
+             width="155"
+             height="40"
+             rx="20"
+             ry="20"
+             fill="#f8cecc"
+             stroke="#b85450"
+             pointer-events="all"
+             id="rect2180" />
+        </g>
+        <g
+           id="g2190"
+           transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+          <g
+             transform="translate(-0.5,-0.5)"
+             id="g2188">
+            <switch
+               id="switch2186">
+              <foreignObject
+                 pointer-events="none"
+                 width="100%"
+                 height="100%"
+                 requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+                 style="overflow: visible; text-align: left;">
+                <xhtml:div
+                   style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 157px; height: 1px; padding-top: 129px; margin-left: 512px;">
+                  <xhtml:div
+                     data-drawio-colors="color: #1A1A1A; "
+                     style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                    <xhtml:div
+                       style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(26, 26, 26); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                      <xhtml:b>Front-end</xhtml:b>
+                    </xhtml:div>
+                  </xhtml:div>
+                </xhtml:div>
+              </foreignObject>
+              <text
+                 x="590"
+                 y="133"
+                 fill="#1a1a1a"
+                 font-family="Helvetica"
+                 font-size="12px"
+                 text-anchor="middle"
+                 id="text2184">Front-end</text>
+            </switch>
+          </g>
+        </g>
+      </g>
+      <g
+         id="g2196"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 590,69 v 33.63"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path2192" />
+        <path
+           d="m 590,107.88 -3.5,-7 3.5,1.75 3.5,-1.75 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path2194" />
+      </g>
+      <g
+         id="g2202"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="M 551.25,212.63 V 149"
+           fill="none"
+           stroke="#1a1a1a"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path2198" />
+        <path
+           d="m 551.25,217.88 -3.5,-7 3.5,1.75 3.5,-1.75 z"
+           fill="#1a1a1a"
+           stroke="#1a1a1a"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path2200" />
+      </g>
+      <g
+         id="g2206"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="427.5"
+           y="166"
+           width="115"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2204" />
+      </g>
+      <g
+         id="g2214"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2212">
+          <switch
+             id="switch2210">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 181px; margin-left: 427px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">User input data</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="485"
+               y="185"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2208">User input data</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2220"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="M 628.75,219 V 155.37"
+           fill="none"
+           stroke="#1a1a1a"
+           stroke-miterlimit="10"
+           pointer-events="stroke"
+           id="path2216" />
+        <path
+           d="m 628.75,150.12 3.5,7 -3.5,-1.75 -3.5,1.75 z"
+           fill="#1a1a1a"
+           stroke="#1a1a1a"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path2218" />
+      </g>
+      <g
+         id="g2224"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="640"
+           y="171"
+           width="115"
+           height="30"
+           fill="#f9f7ed"
+           stroke="#36393d"
+           pointer-events="all"
+           id="rect2222" />
+      </g>
+      <g
+         id="g2232"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2230">
+          <switch
+             id="switch2228">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 117px; height: 1px; padding-top: 186px; margin-left: 639px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">Output data</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="697"
+               y="190"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2226">Output data</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="g2236"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="m 572.5,40 c 0,-16 0,-24 17.5,-24 -11.67,0 -11.67,-16 0,-16 11.67,0 11.67,16 0,16 17.5,0 17.5,8 17.5,24 z"
+           fill="#ffffff"
+           stroke="#3d68a8"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path2234" />
+      </g>
+      <g
+         id="g2248"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <rect
+           x="565"
+           y="40"
+           width="50"
+           height="30"
+           fill="none"
+           stroke="none"
+           pointer-events="all"
+           id="rect2246" />
+      </g>
+      <g
+         id="g2256"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <g
+           transform="translate(-0.5,-0.5)"
+           id="g2254">
+          <switch
+             id="switch2252">
+            <foreignObject
+               pointer-events="none"
+               width="100%"
+               height="100%"
+               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+               style="overflow: visible; text-align: left;">
+              <xhtml:div
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 55px; margin-left: 590px;">
+                <xhtml:div
+                   data-drawio-colors="color: rgb(0, 0, 0); "
+                   style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                  <xhtml:div
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">User</xhtml:div>
+                </xhtml:div>
+              </xhtml:div>
+            </foreignObject>
+            <text
+               x="590"
+               y="59"
+               fill="#000000"
+               font-family="Helvetica"
+               font-size="12px"
+               text-anchor="middle"
+               id="text2250">User</text>
+          </switch>
+        </g>
+      </g>
+      <g
+         id="ml-model-provider"
+         class="module_node"
+         transform="matrix(1.0479156,0,0,0.99986766,-22.749079,0.06703143)">
+        <rect
+           x="475"
+           y="424"
+           width="230"
+           height="165"
+           rx="24.75"
+           ry="24.75"
+           fill="#f5f5f5"
+           stroke="#666666"
+           pointer-events="all"
+           id="rect2260" />
+        <text
+           x="590"
+           y="445"
+           fill="#1a1a1a"
+           font-family="Helvetica"
+           font-size="12px"
+           text-anchor="middle"
+           id="text2264">Model Provider Node</text>
+        <rect
+           x="512.5"
+           y="459"
+           width="155"
+           height="40"
+           rx="20"
+           ry="20"
+           fill="#d5e8d4"
+           stroke="#82b366"
+           pointer-events="all"
+           id="rect2278" />
+        <text
+           x="590"
+           y="483"
+           fill="#1a1a1a"
+           font-family="Helvetica"
+           font-size="12px"
+           text-anchor="middle"
+           id="text2282">ML Solution Provider</text>
+        <rect
+           x="512.5"
+           y="519"
+           width="155"
+           height="40"
+           rx="20"
+           ry="20"
+           fill="#e1d5e7"
+           stroke="#9673a6"
+           pointer-events="all"
+           id="rect2290" />
+        <text
+           x="590"
+           y="543"
+           fill="#1a1a1a"
+           font-family="Helvetica"
+           font-size="12px"
+           text-anchor="middle"
+           id="text2294">ML Optimization</text>
+      </g>
+      <g
+         id="g2306"
+         transform="matrix(1.0648674,0,0,1,-34.690576,-0.91691798)">
+        <path
+           d="M 474.08,488.02 355,488.94 V 444 l 111.56,-0.03"
+           fill="none"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           stroke-dasharray="3, 3"
+           pointer-events="stroke"
+           id="path2302" />
+        <path
+           d="m 471.81,443.97 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+           fill="#000000"
+           stroke="#000000"
+           stroke-miterlimit="10"
+           pointer-events="all"
+           id="path2304" />
+      </g>
+      <g
+         id="hardware-resource-provider"
+         class="module_node"
+         transform="matrix(1.0282199,0,0,1,-2.7831994,0)">
+        <rect
+           x="695"
+           y="685.5"
+           width="230"
+           height="163.5"
+           rx="24.52"
+           ry="24.52"
+           fill="#f5f5f5"
+           stroke="#666666"
+           pointer-events="all"
+           id="rect2310" />
+        <text
+           x="810"
+           y="707"
+           fill="#1a1a1a"
+           font-family="Helvetica"
+           font-size="12px"
+           text-anchor="middle"
+           id="text2314">HW Provider Node</text>
+        <rect
+           x="733.75"
+           y="724"
+           width="155"
+           height="40"
+           rx="20"
+           ry="20"
+           fill="#ffe6cc"
+           stroke="#d79b00"
+           pointer-events="all"
+           id="rect2322" />
+        <text
+           x="811"
+           y="748"
+           fill="#1a1a1a"
+           font-family="Helvetica"
+           font-size="12px"
+           text-anchor="middle"
+           id="text2326">FPGA Selector...</text>
+        <rect
+           x="731.25"
+           y="784"
+           width="155"
+           height="40"
+           rx="20"
+           ry="20"
+           fill="#fff2cc"
+           stroke="#d6b656"
+           pointer-events="all"
+           id="rect2334" />
+        <text
+           x="809"
+           y="808"
+           fill="#000000"
+           font-family="Helvetica"
+           font-size="12px"
+           text-anchor="middle"
+           id="text2338">PIM Results</text>
+      </g>
+    </g>
+  </g>
+</svg>

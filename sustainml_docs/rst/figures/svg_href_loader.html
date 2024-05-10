@@ -1,0 +1,23 @@
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        const href_map = new Map();
+        document.querySelectorAll('a').forEach((anchor) => {
+        console.log(`forEach((anchor) ${anchor.textContent}`);
+        if (anchor.hasAttribute('href') && anchor.textContent.includes('Node')) {
+            const module_name = anchor.textContent.split(' ')[0].toLowerCase();;
+            const href = anchor.getAttribute('href');
+            href_map.set(module_name, href);
+        }
+        });
+
+        const svg = document.querySelectorAll('svg');
+
+        document.querySelectorAll('svg .module_node').forEach((layer) => {
+            const layer_name = layer.getAttribute('id').split('_')[0];
+            const href = href_map.get(layer_name);
+            if (href) {
+                layer.setAttribute('onclick', `window.location.href = '${href}'`);
+            }
+        });
+    });
+</script>

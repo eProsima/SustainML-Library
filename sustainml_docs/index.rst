@@ -13,3 +13,14 @@
    :hidden:
 
    /rst/formalia/titlepage
+
+.. _index_developer_manual:
+
+.. toctree::
+   :caption: Developer Manual
+   :maxdepth: 1
+   :numbered: 1
+   :hidden:
+
+   /rst/developer_manual/architecture/architecture
+   /rst/developer_manual/data_model/data_model
