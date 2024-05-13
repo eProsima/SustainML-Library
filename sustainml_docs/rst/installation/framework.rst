@@ -57,8 +57,7 @@ Install them using the package manager of the appropriate Linux distribution.
         .. code-block:: bash
 
             brew install \
-                wget git cmake clang python3 python3-pip libpython3-dev swig \
-                libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2 qt5 && \
+                wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm qt@5 && \
             pip3 install -U --user \
                 colcon-common-extensions vcstool
 

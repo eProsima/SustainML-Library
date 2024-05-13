@@ -51,7 +51,11 @@ The following command downloads both Dockerfile, Docker compose and script files
             wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/run.bash
 
         The *SustainML Framework* GUI application requires special privileges to access the X server.
-        To provide them, `XQuartz <https://www.xquartz.org/>`_ needs to be installed.
+        To provide them, `XQuartz <https://www.xquartz.org/>`_ and `socat <http://www.dest-unreach.org/socat/>`_ need to be installed:
+
+        .. code-block:: bash
+
+            brew install --cask socat xquartz
 
 .. _installation_framework_docker_build:
 
@@ -113,11 +117,12 @@ To run the *SustainML Framework* using Dockers, execute the following command:
 
             The XQuartz terminal may require to be restarted to apply the changes.
 
-        In the XQuartz terminal, provide privileges to the X localhost server and set the display environment variable.
-        Then, deploy the *SustainML Framework* using Docker compose:
+        In the XQuartz terminal, provide privileges to the X private server and set the display environment variable.
+        To do so, introduce your private IP address in the following command, and then deploy the *SustainML Framework* using Docker compose:
 
         .. code-block:: bash
 
-            xhost + 127.0.0.1 && \
-            export DISPLAY=`127.0.0.1:0` && \
+            socat TCP-LISTEN:11000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" && \
+            xhost + your.private.ip.address && \
+            export DISPLAY="your.private.ip.address:0" && \
             docker compose up
