@@ -80,6 +80,6 @@ The following command also builds and installs the *SustainML library*.
         .. code-block:: bash
 
             mkdir -p ~/SustainML/src && cd ~/SustainML && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Library/main/sustainml.repos && \
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Library/macos-compilation/sustainml.repos && \
             vcs import src < sustainml.repos && \
-            colcon build
+            colcon build --cmake-args -DCMAKE_CXX_STANDARD=17

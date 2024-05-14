@@ -86,10 +86,11 @@ The following command also builds and installs the SustainML framework, and the 
         .. code-block:: bash
 
             mkdir -p ~/SustainML/src && cd ~/SustainML && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/sustainml.repos && \
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/macos-compilation/sustainml.repos && \
             vcs import src < sustainml.repos && \
-            colcon build && \
-            source ~/SustainML/install/setup.bash
+            colcon build --packages-up-to sustainml --cmake-args -DCMAKE_CXX_STANDARD=17 \
+                    -DQt5_DIR=/usr/local/opt/qt5/lib/cmake/Qt5 && \
+            cd ~/SustainML/install && source setup.bash
 
 .. _installation_framework_deployment:
 
