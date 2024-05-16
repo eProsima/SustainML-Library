@@ -52,7 +52,8 @@ Host database
 ^^^^^^^^^^^^^
 
 The ``Orchestrator Node`` is where all the data reside. It can be considered similar to a ``Database``.
-All the data is indexed by a ``problem_id``.
-A ``probelm_id``, in turn, has a sorted vector of ``iteration_id`` where each element stores a single iteration for that problem.
+All the data is indexed by the ``task_id``. Each ``task_id`` is a pair of ``problem_id`` and ``iteration_id``.
+Meanwhile a ``problem_id`` is generated per user problem defined, and an ``iteration_id`` is generated per interaction during the optimization of the ``problem_id`` defined problem.
+A ``problem_id``, in turn, has a sorted vector of ``iteration_id`` where each element stores a single iteration for that problem.
 All the information is made available to the Front-end to be displayed so the user can receive online feedback on the status of each task.
 
