@@ -114,14 +114,8 @@ User is meant to implement the funcionality of the node within the ``test:callba
         # Populate ml model metadata output.
         # There is no need to specify node_status for the moment
         # as it will automatically be set to IDLE when the callback returns.
-
-        ml_model_metadata.ml_model_metadata().append("New")
-        ml_model_metadata.ml_model_metadata().append("Model")
-        ml_model_metadata.ml_model_metadata().append("Metadata")
-        ml_model_metadata.ml_model_metadata().append("Properties")
-
-        ml_model_metadata.keywords().append("New")
-        ml_model_metadata.keywords().append("Keyword")
+        ml_model_metadata.ml_model_metadata(["New", "model", "metadata", "properties"])
+        ml_model_metadata.keywords(["described", "problem", "keywords"])
 
     # Main workflow routine
     def run():

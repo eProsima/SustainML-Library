@@ -32,24 +32,24 @@ Orchestrator Node
 .. raw:: html
    :file: ../../../figures/sustainml_framework_arch.svg
 
-The :ref:`orchestrator` within the *SustainML Framework Architecture* is the entity in charge of commanding and gather the generated data by each of the ``Module Nodes`` as well as acting as the data-source for the :ref:`frontend`.
+The :ref:`orchestrator` within the *SustainML Framework* is the entity in charge of commanding and gathering the generated data by each of the :ref:`module_nodes` as well as acting as the data-source for the :ref:`frontend`.
 
 The Orchestrator Node has three main resposibilities:
 
-Lifecycle Manager
-^^^^^^^^^^^^^^^^^
+Manage nodes' lifecycle
+^^^^^^^^^^^^^^^^^^^^^^^
 
 It is the application's ``Lifecycle Manager`` meaning that it controls the lifecycle of the rest of the nodes by sending control commands and receiving the feedback status.
 
-Task Monitor
-^^^^^^^^^^^^
+Monitor tasks
+^^^^^^^^^^^^^
 
 Each user task has an associated ``task_id``. The ``Orchestrator Node`` is in charge of generating a unique ``task_id`` and keeping track of the status of every initiated task, which allows for serving multiple tasks at a time.
-The act of tracking a particular task, involves subscribing to all the intermediate data outputs from each of the ``module nodes`` as well as always monitoring the node statuses to be able to react, for instance, in case that a ``module node`` is taking too much to respond, or simply, that enters in and error state.
+The act of tracking a particular task, involves subscribing to all the intermediate data outputs from each of the :ref:`module_nodes` as well as always monitoring the node statuses to be able to react, for instance, in case that a ``module node`` is taking too much to respond, or simply, that enters in and error state.
 Each of the ``task_ids`` along with the corresponding data, has a reserved storage within the orchestrator as it is explained next.
 
-Database
-^^^^^^^^
+Host database
+^^^^^^^^^^^^^
 
 The ``Orchestrator Node`` is where all the data reside. It can be considered similar to a ``Database``.
 All the data is indexed by a ``problem_id``.

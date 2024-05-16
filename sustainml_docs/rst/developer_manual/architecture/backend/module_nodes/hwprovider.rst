@@ -119,7 +119,7 @@ User is meant to implement the funcionality of the node within the ``test:callba
         # Populate hardware resource output.
         # There is no need to specify node_status for the moment
         # as it will automatically be set to IDLE when the callback returns.
-        hw.hw_description("")
+        hw.hw_description("Description of the hardware goes here")
         hw.power_consumption(44)
         hw.latency(334)
         hw.memory_footprint_of_ml_model(23)

@@ -117,8 +117,7 @@ User is meant to implement the funcionality of the node within the ``test:callba
         # Populate app requirements output.
         # There is no need to specify node_status for the moment
         # as it will automatically be set to IDLE when the callback returns.
-        app_requirements.app_requirements().append("New")
-        app_requirements.app_requirements().append("Requirement")
+        app_requirements.app_requirements(["This", "is", "a", "new", "requirement"])
 
     # Main workflow routine
     def run():

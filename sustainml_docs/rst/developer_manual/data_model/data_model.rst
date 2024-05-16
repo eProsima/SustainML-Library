@@ -5,7 +5,7 @@ SustainML Framework Data Model
 
 Following are the Data Structures definitions using the `Interface Definition Language specification <https://www.omg.org/spec/IDL/4.2/About-IDL>`_.
 
-Every node in the *SustainML Design Framework* needs to provide a continuous feedback status to the :ref:`orchestrator`.
+Every node in the *SustainML Framework* needs to provide a continuous feedback status to the :ref:`orchestrator`.
 This is modeled with the ``NodeStatus`` data structure.
 
 .. _node_status_type:
@@ -101,7 +101,8 @@ It is comprised of the following fields:
 * ``previous_iteration``: A previous iteration from which to perform the optimization (-1 for taking the last one).
 * ``optimize_carbon_footprint_auto``: A boolean indicating if the user wants to automatically optimize the carbon footprint until a desired value.
 * ``desired_carbon_footprint``: The desired carbon footprint.
-* ``geo_location``: The geo-location in which the ML problem is going to take place.
+* ``geo_location_continent``: The geo-location continent in which the ML problem is going to take place.
+* ``geo_location_region``: The geo-location region in which the ML problem is going to take place.
 * ``extra_data``: A sequence of raw extra data for out-of-scope use cases.
 * ``task_id``: The identifier of the ML problem to solve.
 
@@ -215,7 +216,9 @@ The ``MLModel`` data structure represents the output from the ``Machine Learning
 It is divided in the following fields:
 
 * ``model_path``: A string containing the path to the ``ML`` model.
-* ``model``: A string with the raw model, in case of remote approach.
+* ``model``: A string with the model name, in case of remote approach.
+* ``raw_model``: A sequence of bytes with the raw model, in case of remote approach.
+* ``model_properties_path``: A string containing the path to the properties of the model.
 * ``model_properties_path``: A string containing the path to the properties of the model.
 * ``model_properties``: A string with the model properties, in case of remote approach.
 * ``input_batch``: A sequence of serialized numpy arrays with a dimension: Batch x Channels x Height x Width (each one representing a batch) conforming the input batch.
@@ -234,6 +237,7 @@ The reasoning for include them is to overcome situations in which the model is g
     {
         string model_path;
         string model;
+        sequence<octet> raw_model;
         string model_properties_path;
         string model_properties;
         sequence<string> input_batch;
@@ -251,7 +255,7 @@ The ``Hardware Resources Provider`` selects a best-suited energy-optimized hardw
 To represent that information, the ``HWResource`` data structure is defined containing the following fields:
 
 * ``hw_description``: A string with the detailed hardware description.
-* ``task_id``: The power consumption in ``W``.
+* ``power_consumption``: The power consumption in ``W``.
 * ``latency``: The estimation of latency of the given ONNX model for the given input batch.
 * ``memory_footprint_of_ml_model``: The maximum memory footprint that can be implemented on the target FPGA.
 * ``extra_data``: A sequence of raw extra data for out-of-scope use cases.
