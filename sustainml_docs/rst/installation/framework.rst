@@ -40,7 +40,7 @@ Install them using the package manager of the appropriate Linux distribution.
         .. code-block:: bash
 
             apt install --yes --no-install-recommends \
-                curl wget git cmake g++ build-essential python3 python3-pip libpython3-dev swig \
+                curl wget git cmake g++ build-essential python3 python3-pip python3.10-venv libpython3-dev swig \
                 libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2 \
                 qtdeclarative5-dev libqt5charts5-dev qtquickcontrols2-5-dev libqt5svg5 qml-module-qtquick-controls \
                 qml-module-qtquick-controls2

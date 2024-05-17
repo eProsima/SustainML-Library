@@ -39,7 +39,7 @@ Install them using the package manager of the appropriate OS distribution.
         .. code-block:: bash
 
             apt install --yes --no-install-recommends \
-                wget git cmake g++ build-essential python3 python3-pip libpython3-dev swig \
+                wget git cmake g++ build-essential python3 python3-pip python3.10-venv libpython3-dev swig \
                 libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2
 
     .. group-tab:: MacOS
