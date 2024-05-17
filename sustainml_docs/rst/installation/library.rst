@@ -61,7 +61,7 @@ Build SustainML Library sources
 -------------------------------
 
 Create a SustainML directory and download the repositories file that will be used to install *SustainML Library*, and all its repository dependencies (such as the `Fast DDS <https://github.com/eProsima/Fast-DDS>`_ or `Fast CDR <https://github.com/eProsima/Fast-CDR>`_).
-The following command also builds and installs the *SustainML library*.
+The following command builds and installs the *SustainML library* and its dependencies.
 
 
 .. tabs::
@@ -70,16 +70,20 @@ The following command also builds and installs the *SustainML library*.
 
         .. code-block:: bash
 
-            mkdir -p ~/SustainML/src && cd ~/SustainML && \
+            mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
+            python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && cd ~/SustainML/SustainML_ws && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Library/main/sustainml.repos && \
             vcs import src < sustainml.repos && \
+            pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build
 
     .. group-tab:: MacOS
 
         .. code-block:: bash
 
-            mkdir -p ~/SustainML/src && cd ~/SustainML && \
+            mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
+            python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && cd ~/SustainML/SustainML_ws && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Library/macos-compilation/sustainml.repos && \
             vcs import src < sustainml.repos && \
+            pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build --cmake-args -DCMAKE_CXX_STANDARD=17
