@@ -1,4 +1,4 @@
-.. architecture:
+.. _architecture:
 
 SustainML Framework Architecture
 ================================
@@ -45,7 +45,10 @@ The ``Back-End`` is composed of two main entities.
 
 The ``Orchestrator Node`` that controls the execution of the task and nourishes data to the Front-End.
 
-.. module_nodes:
+.. _module_nodes:
+
+Module Nodes
+""""""""""""
 
 And the different ``Module Nodes`` that specializes in a particular task of the solution:
 

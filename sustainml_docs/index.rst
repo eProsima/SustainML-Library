@@ -13,6 +13,17 @@
    :hidden:
 
    /rst/formalia/titlepage
+.. _index_installation:
+
+.. toctree::
+   :caption: Installation Manual
+   :maxdepth: 2
+   :numbered: 2
+   :hidden:
+
+   /rst/installation/docker
+   /rst/installation/framework
+   /rst/installation/library
 
 .. _index_developer_manual:
 
