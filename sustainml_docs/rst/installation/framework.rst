@@ -43,9 +43,7 @@ Install them using the package manager of the appropriate Linux distribution.
                 curl wget git cmake g++ build-essential python3 python3-pip libpython3-dev swig \
                 libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2 \
                 qtdeclarative5-dev libqt5charts5-dev qtquickcontrols2-5-dev libqt5svg5 qml-module-qtquick-controls \
-                qml-module-qtquick-controls2 && \
-            pip3 install -U --user \
-                colcon-common-extensions vcstool
+                qml-module-qtquick-controls2
 
     .. group-tab:: MacOS
 
@@ -57,9 +55,7 @@ Install them using the package manager of the appropriate Linux distribution.
         .. code-block:: bash
 
             brew install \
-                curl wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm qt@5 && \
-            pip3 install -U --user \
-                colcon-common-extensions vcstool
+                curl wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm qt@5
 
 .. _installation_framework_build:
 
@@ -77,6 +73,7 @@ The following command also builds and installs the SustainML framework and all i
 
             mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && \
+            pip3 install -U colcon-common-extensions vcstool && \
             curl -fsSL https://ollama.com/install.sh | sh && ollama pull llama3 && cd ~/SustainML/SustainML_ws && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/sustainml.repos && \
             vcs import src < sustainml.repos && \
@@ -90,6 +87,7 @@ The following command also builds and installs the SustainML framework and all i
 
             mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && \
+            pip3 install -U colcon-common-extensions vcstool && \
             curl -fsSL https://ollama.com/install.sh | sh && ollama pull llama3 && cd ~/SustainML/SustainML_ws && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/macos-compilation/sustainml.repos && \
             vcs import src < sustainml.repos && \

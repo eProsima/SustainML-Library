@@ -40,9 +40,7 @@ Install them using the package manager of the appropriate OS distribution.
 
             apt install --yes --no-install-recommends \
                 wget git cmake g++ build-essential python3 python3-pip libpython3-dev swig \
-                libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2 && \
-            pip3 install -U --user \
-                colcon-common-extensions vcstool
+                libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2
 
     .. group-tab:: MacOS
 
@@ -51,9 +49,7 @@ Install them using the package manager of the appropriate OS distribution.
         .. code-block:: bash
 
             brew install \
-                wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm && \
-            pip3 install -U --user \
-                colcon-common-extensions vcstool
+                wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm
 
 .. _installation_library_build:
 
@@ -72,6 +68,7 @@ The following command builds and installs the *SustainML library* and its depend
 
             mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && cd ~/SustainML/SustainML_ws && \
+            pip3 install -U colcon-common-extensions vcstool && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Library/main/sustainml.repos && \
             vcs import src < sustainml.repos && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
@@ -83,6 +80,7 @@ The following command builds and installs the *SustainML library* and its depend
 
             mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && cd ~/SustainML/SustainML_ws && \
+            pip3 install -U colcon-common-extensions vcstool && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Library/macos-compilation/sustainml.repos && \
             vcs import src < sustainml.repos && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
