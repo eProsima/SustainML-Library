@@ -57,6 +57,25 @@ The following command downloads both Dockerfile, Docker compose and script files
 
             brew install --cask socat xquartz
 
+The *SustainML Framework* also requires some dependencies to be installed in the host machine.
+Run the following commands to install and deploy `ollama <https://ollama.com/>`_ and `llama3 <https://llama.meta.com/llama3/>`_:
+
+.. tabs::
+
+    .. group-tab:: Ubuntu
+
+        .. code-block:: bash
+
+            curl -fsSL https://ollama.com/install.sh | sh && \
+            ollama pull llama3
+
+    .. group-tab:: MacOS
+
+        .. code-block:: bash
+
+            curl -fsSL https://ollama.com/install.sh | sh && \
+            ollama pull llama3
+
 .. _installation_framework_docker_build:
 
 Build the SustainML Framework Docker image
