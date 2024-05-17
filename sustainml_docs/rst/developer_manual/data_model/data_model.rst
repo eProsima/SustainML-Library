@@ -1,4 +1,4 @@
-.. data_model:
+.. _data_model:
 
 SustainML Framework Data Model
 ==============================
