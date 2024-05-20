@@ -110,7 +110,6 @@ User is meant to implement the funcionality of the node within the ``test:callba
         region = user_input.region()
         for byte in user_input.extra_data():
             print(byte)
-        task_id = user_input.task_id()
 
         # Do processing...
 

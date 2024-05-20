@@ -132,7 +132,6 @@ User is meant to implement the funcionality of the node within the ``test:callba
         for input_batch in ml_model_baseline.input_batch():
             print(input_batch)
         target_latency = ml_model_baseline.target_latency()
-        task_id = ml_model_baseline.task_id()
 
         # HWResource
         # Only in case of optimization (task_id.iteration_id() > 1)
@@ -141,7 +140,12 @@ User is meant to implement the funcionality of the node within the ``test:callba
         latency = hw_baseline.latency()
         memory_footprint_of_ml_model = hw_baseline.memory_footprint_of_ml_model()
         max_hw_memory_footprint = hw_baseline.max_hw_memory_footprint()
-        task_id = hw_baseline.task_id()
+
+        # CarbonFootprint
+        # Only in case of optimization (task_id.iteration_id() > 1)
+        carbon_footprint = carbonfootprint_baseline.carbon_footprint()
+        energy_consumption = carbonfootprint_baseline.energy_consumption()
+        carbon_intesity = carbonfootprint_baseline.carbon_intesity()
 
         # Do processing...
 
