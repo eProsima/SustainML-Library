@@ -1,3 +1,4 @@
+carbontracker
 flask
 flask-socketio==5.2.0
 kaggle
