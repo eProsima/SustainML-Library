@@ -105,7 +105,6 @@ User is meant to implement the funcionality of the node within the ``test:callba
         for input_batch in ml_model.input_batch():
             print(input_batch)
         target_latency = ml_model.target_latency()
-        task_id = ml_model.task_id()
 
         # UserInput
         # (some of the fields are for internal use only and will not be shown here)
@@ -122,7 +121,6 @@ User is meant to implement the funcionality of the node within the ``test:callba
         region = user_input.region()
         for byte in user_input.extra_data():
             print(byte)
-        task_id = user_input.task_id()
 
         # HWResource
         hw_description = hw.hw_description()
@@ -130,14 +128,13 @@ User is meant to implement the funcionality of the node within the ``test:callba
         latency = hw.latency()
         memory_footprint_of_ml_model = hw.memory_footprint_of_ml_model()
         max_hw_memory_footprint = hw.max_hw_memory_footprint()
-        task_id = hw.task_id()
 
         # Do processing...
 
         # Populate carbon footprint output.
         # There is no need to specify node_status for the moment
         # as it will automatically be set to IDLE when the callback returns.
-        co2.carbon_intensity(4)
+        co2.carbon_footprint(4)
         co2.energy_consumption(1000)
         co2.carbon_intesity(2)
 

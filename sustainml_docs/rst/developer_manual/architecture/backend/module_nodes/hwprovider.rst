@@ -105,7 +105,6 @@ User is meant to implement the funcionality of the node within the ``test:callba
         for input_batch in ml_model.input_batch():
             print(input_batch)
         target_latency = ml_model.target_latency()
-        task_id = ml_model.task_id()
 
         # Apprequirements
         for requirement in app_requirements.app_requirements():
