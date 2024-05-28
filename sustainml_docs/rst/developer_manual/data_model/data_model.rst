@@ -169,6 +169,7 @@ Application Requirements Type
 -----------------------------
 
 The ``AppRequirements`` data structure depicts the output from the ``Application Requirements Node`` and consists on:
+
 * ``app_requirements``: A sequence of application-level requirements, modeled as a sequence of strings, to be considered in the selection of the machine learning model.
 * ``extra_data``: A sequence of raw extra data for out-of-scope use cases.
 * ``task_id``: The identifier of the ML problem to solve.
