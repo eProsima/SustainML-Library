@@ -421,3 +421,80 @@ TEST(OrchestratorNode, OrchestratorTaskIteration)
     ASSERT_EQ(2, carbon_iterated_data->task_id().iteration_id());
     ASSERT_GT(carbon_iterated_data->energy_consumption(), 300);
 }
+
+TEST(OrchestratorNode, OrchestratorGetTaskDataDoesNotAccumulate)
+{
+    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+
+    orchestrator::OrchestratorNode orchestrator(tonh);
+
+    MLModelMetadataManagedNode te_node;
+    MLModelManagedNode ml_node;
+    HWResourcesManagedNode hw_node;
+    CarbonFootprintManagedNode co2_node;
+    HWConstraintsManagedNode hw_cons_node;
+
+    //! Define dummy callback filling in some requirements
+    AppRequirementsCallbackSignature app_req_cb = [](
+        types::UserInput&,
+        types::NodeStatus&,
+        types::AppRequirements& app_req)
+            {
+                //Previous data shall be always empty
+                ASSERT_EQ(app_req.app_requirements().size(), 0);
+                app_req.app_requirements().push_back("Im");
+                app_req.app_requirements().push_back("A");
+                app_req.app_requirements().push_back("New");
+                app_req.app_requirements().push_back("Requirement");
+            };
+    AppRequirementsManagedNode app_req_node(app_req_cb);
+    co2_node.start();
+    hw_node.start();
+    ml_node.start();
+    te_node.start();
+    hw_cons_node.start();
+    app_req_node.start();
+
+    // Wait for all nodes to be idle
+    tonh->prepare_expected_data(nodes_ready_expected_data);
+
+    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
+
+    TestOrchestratorNodeHandle::DataCollection test_expected_data =
+    {
+        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 3}},
+        {NodeID::ID_ML_MODEL, {NODE_IDLE, 3}},
+        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 3}},
+        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 3}},
+        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 3}},
+        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 3}}
+    };
+
+    tonh->prepare_expected_data(test_expected_data);
+
+    auto task = orchestrator.prepare_new_task();
+
+    task.second->task_id(task.first);
+    task.second->problem_short_description("Test_Task0_name");
+    task.second->problem_definition("Test_Task0");
+
+    orchestrator.start_task(task.first, task.second);
+
+    task = orchestrator.prepare_new_task();
+
+    task.second->task_id(task.first);
+    task.second->problem_short_description("Test_Task1_name");
+    task.second->problem_definition("Test_Task1");
+
+    orchestrator.start_task(task.first, task.second);
+
+    task = orchestrator.prepare_new_task();
+
+    task.second->task_id(task.first);
+    task.second->problem_short_description("Test_Task2_name");
+    task.second->problem_definition("Test_Task2");
+
+    orchestrator.start_task(task.first, task.second);
+
+    ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
+}
