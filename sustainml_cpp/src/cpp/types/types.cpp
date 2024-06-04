@@ -327,6 +327,17 @@ NodeStatusImpl* NodeStatus::get_impl()
     return impl_;
 }
 
+void NodeStatus::reset()
+{
+    impl_->node_status(Status::NODE_IDLE);
+    impl_->node_name("");
+    impl_->task_status(TaskStatus::TASK_SUCCEEDED);
+    impl_->task_id().problem_id(sustainml::common::INVALID_ID);
+    impl_->task_id().iteration_id(sustainml::common::INVALID_ID);
+    impl_->error_code(ErrorCode::NO_ERROR);
+    impl_->error_description("");
+}
+
 NodeControl::NodeControl()
 {
     impl_ = new NodeControlImpl;
@@ -496,6 +507,16 @@ std::string& NodeControl::source_node()
 NodeControlImpl* NodeControl::get_impl() const
 {
     return impl_;
+}
+
+void NodeControl::reset()
+{
+    impl_->cmd_node(CmdNode::NO_CMD_NODE);
+    impl_->source_node("");
+    impl_->target_node("");
+    impl_->cmd_task(CmdTask::NO_CMD_TASK);
+    impl_->task_id().problem_id(sustainml::common::INVALID_ID);
+    impl_->task_id().iteration_id(sustainml::common::INVALID_ID);
 }
 
 UserInput::UserInput()
@@ -886,6 +907,26 @@ UserInputImpl* UserInput::get_impl()
     return impl_;
 }
 
+void UserInput::reset()
+{
+    impl_->modality("");
+    impl_->problem_short_description("");
+    impl_->problem_definition("");
+    impl_->inputs().clear();
+    impl_->outputs().clear();
+    impl_->minimum_samples(0);
+    impl_->maximum_samples(0);
+    impl_->optimize_carbon_footprint_manual(false);
+    impl_->previous_iteration(0);
+    impl_->optimize_carbon_footprint_auto(false);
+    impl_->desired_carbon_footprint(0.0);
+    impl_->geo_location_continent("");
+    impl_->geo_location_region("");
+    impl_->extra_data().clear();
+    impl_->task_id().problem_id(sustainml::common::INVALID_ID);
+    impl_->task_id().iteration_id(sustainml::common::INVALID_ID);
+}
+
 const std::type_info& UserInput::impl_typeinfo()
 {
     return typeid(UserInputImpl);
@@ -1051,6 +1092,15 @@ MLModelMetadataImpl* MLModelMetadata::get_impl()
     return impl_;
 }
 
+void MLModelMetadata::reset()
+{
+    impl_->keywords().clear();
+    impl_->ml_model_metadata().clear();
+    impl_->extra_data().clear();
+    impl_->task_id().problem_id(sustainml::common::INVALID_ID);
+    impl_->task_id().iteration_id(sustainml::common::INVALID_ID);
+}
+
 const std::type_info& MLModelMetadata::impl_typeinfo()
 {
     return typeid(MLModelMetadataImpl);
@@ -1191,6 +1241,14 @@ AppRequirementsImpl* AppRequirements::get_impl()
     return impl_;
 }
 
+void AppRequirements::reset()
+{
+    impl_->app_requirements().clear();
+    impl_->extra_data().clear();
+    impl_->task_id().problem_id(sustainml::common::INVALID_ID);
+    impl_->task_id().iteration_id(sustainml::common::INVALID_ID);
+}
+
 const std::type_info& AppRequirements::impl_typeinfo()
 {
     return typeid(AppRequirementsImpl);
@@ -1323,6 +1381,14 @@ TaskId& HWConstraints::task_id()
 HWConstraintsImpl* HWConstraints::get_impl()
 {
     return impl_;
+}
+
+void HWConstraints::reset()
+{
+    impl_->max_memory_footprint(0);
+    impl_->extra_data().clear();
+    impl_->task_id().problem_id(sustainml::common::INVALID_ID);
+    impl_->task_id().iteration_id(sustainml::common::INVALID_ID);
 }
 
 const std::type_info& HWConstraints::impl_typeinfo()
@@ -1603,6 +1669,20 @@ MLModelImpl* MLModel::get_impl()
     return impl_;
 }
 
+void MLModel::reset()
+{
+    impl_->model("");
+    impl_->model_path("");
+    impl_->raw_model().clear();
+    impl_->model_properties_path("");
+    impl_->model_properties("");
+    impl_->input_batch().clear();
+    impl_->target_latency(0.0);
+    impl_->extra_data().clear();
+    impl_->task_id().problem_id(sustainml::common::INVALID_ID);
+    impl_->task_id().iteration_id(sustainml::common::INVALID_ID);
+}
+
 const std::type_info& MLModel::impl_typeinfo()
 {
     return typeid(MLModelImpl);
@@ -1815,6 +1895,18 @@ HWResourceImpl* HWResource::get_impl()
     return impl_;
 }
 
+void HWResource::reset()
+{
+    impl_->hw_description("");
+    impl_->power_consumption(0.0);
+    impl_->latency(0.0);
+    impl_->memory_footprint_of_ml_model(0.0);
+    impl_->max_hw_memory_footprint(0.0);
+    impl_->extra_data().clear();
+    impl_->task_id().problem_id(sustainml::common::INVALID_ID);
+    impl_->task_id().iteration_id(sustainml::common::INVALID_ID);
+}
+
 const std::type_info& HWResource::impl_typeinfo()
 {
     return typeid(HWResourceImpl);
@@ -1985,6 +2077,16 @@ TaskId& CO2Footprint::task_id()
 CO2FootprintImpl* CO2Footprint::get_impl()
 {
     return impl_;
+}
+
+void CO2Footprint::reset()
+{
+    impl_->carbon_intensity(0.0);
+    impl_->carbon_footprint(0.0);
+    impl_->energy_consumption(0.0);
+    impl_->extra_data().clear();
+    impl_->task_id().problem_id(sustainml::common::INVALID_ID);
+    impl_->task_id().iteration_id(sustainml::common::INVALID_ID);
 }
 
 const std::type_info& CO2Footprint::impl_typeinfo()

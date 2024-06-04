@@ -126,7 +126,7 @@ private:
 
     std::mutex mtx_;
 
-    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::CO2Footprint>>> task_data_pool_;
+    std::unique_ptr<utils::SamplePool<types::NodeTaskOutputData<types::CO2Footprint>>> task_data_pool_;
 };
 
 } // namespace carbon_tracker_module
