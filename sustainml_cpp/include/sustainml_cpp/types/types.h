@@ -384,7 +384,7 @@ public:
     /*!
      * @brief Resets the structure to default values
      */
-     void reset();
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -580,7 +580,7 @@ public:
     /*!
      * @brief Resets the structure to default values
      */
-     void reset();
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -737,7 +737,7 @@ public:
     /*!
      * @brief Resets the structure to default values
      */
-     void reset();
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -979,7 +979,7 @@ public:
     /*!
      * @brief Resets the structure to default values
      */
-     void reset();
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -1294,7 +1294,7 @@ public:
     /*!
      * @brief Resets the structure to default values
      */
-     void reset();
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -1484,7 +1484,7 @@ public:
     /*!
      * @brief Resets the structure to default values
      */
-     void reset();
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -1685,7 +1685,7 @@ public:
     /*!
      * @brief Resets the structure to default values
      */
-     void reset();
+    void reset();
 
 protected:
 
@@ -1907,7 +1907,7 @@ public:
     /*!
      * @brief Resets the structure to default values
      */
-     void reset();
+    void reset();
 
 protected:
 
@@ -2345,7 +2345,7 @@ public:
     /*!
      * @brief Resets the structure to default values
      */
-     void reset();
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -2371,6 +2371,7 @@ struct NodeTaskOutputData
         node_status.reset();
         output_data.reset();
     }
+
 };
 
 } // namespace types
