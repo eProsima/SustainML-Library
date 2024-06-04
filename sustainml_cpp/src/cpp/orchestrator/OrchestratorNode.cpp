@@ -333,7 +333,11 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                // check replied data corresponds to requested data
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -343,7 +347,11 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                // check replied data corresponds to requested data
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -353,7 +361,11 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                // check replied data corresponds to requested data
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -363,7 +375,11 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                // check replied data corresponds to requested data
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -373,7 +389,11 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                // check replied data corresponds to requested data
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -383,7 +403,11 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                // check replied data corresponds to requested data
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -393,7 +417,11 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                // check replied data corresponds to requested data
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
         }
         default:
