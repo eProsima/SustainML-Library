@@ -76,7 +76,7 @@ void MLModelNode::init (
     listener_hw_queue_.reset(new core::QueuedNodeListener<HWResource>(this));
     listener_carbon_footprint_queue_.reset(new core::QueuedNodeListener<CO2Footprint>(this));
 
-    task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, MLModel>>(opts));
+    task_data_pool_.reset(new utils::SamplePool<types::NodeTaskOutputData<MLModel>>(opts));
 
     initialize_subscription(sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].first.c_str(),
             sustainml::common::TopicCollection::get()[common::ML_MODEL_METADATA].second.c_str(),
@@ -124,7 +124,7 @@ void MLModelNode::publish_to_user(
             ExpectedInputSamples::MAX,
             samples_retrieved);
 
-        std::pair<NodeStatus, MLModel>* task_data_cache;
+        types::NodeTaskOutputData<MLModel>* task_data_cache;
 
         {
             std::lock_guard<std::mutex> lock (mtx_);
@@ -134,8 +134,8 @@ void MLModelNode::publish_to_user(
 
             task_data_cache = task_data_pool_->get_new_cache_nts();
 
-            status = &task_data_cache->first;
-            output = &task_data_cache->second;
+            status = &task_data_cache->node_status;
+            output = &task_data_cache->output_data;
         }
 
         //! TODO: Manage task statuses individually
@@ -149,9 +149,9 @@ void MLModelNode::publish_to_user(
         user_listener_.invoke_user_cb(task_id, core::helper::gen_seq<MLModelCallable::size>{});
 
         //! Ensure task_id is forwarded to the output
-        task_data_cache->second.task_id(task_id);
+        task_data_cache->output_data.task_id(task_id);
 
-        if (task_data_cache->first.node_status() != NODE_ERROR)
+        if (task_data_cache->node_status.node_status() != NODE_ERROR)
         {
             status(NODE_IDLE);
         }
@@ -161,7 +161,7 @@ void MLModelNode::publish_to_user(
         }
 
         publish_node_status();
-        writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->second.get_impl());
+        writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->output_data.get_impl());
 
         listener_model_metadata_queue_->remove_element_by_taskid(task_id);
         listener_app_requirements_queue_->remove_element_by_taskid(task_id);

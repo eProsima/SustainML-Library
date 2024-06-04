@@ -71,9 +71,9 @@ namespace utils {
 
         void release_cache_nts(T* cache)
         {
-
             if (nullptr != cache)
             {
+                cache->reset();
                 free_caches_.push_back(cache);
             }
             else
