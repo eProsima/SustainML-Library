@@ -71,6 +71,7 @@ The following command builds and installs the *SustainML library* and its depend
             pip3 install -U colcon-common-extensions vcstool && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Library/main/sustainml.repos && \
             vcs import src < sustainml.repos && \
+            git submodule update --init --recursive && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build
 
@@ -83,5 +84,6 @@ The following command builds and installs the *SustainML library* and its depend
             pip3 install -U colcon-common-extensions vcstool && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Library/macos-compilation/sustainml.repos && \
             vcs import src < sustainml.repos && \
+            git submodule update --init --recursive && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build --cmake-args -DCMAKE_CXX_STANDARD=17
