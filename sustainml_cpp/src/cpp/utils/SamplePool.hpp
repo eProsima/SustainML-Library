@@ -29,65 +29,67 @@
 
 namespace sustainml {
 namespace utils {
-    /*!
-    *  @brief Helper class that stores samples until they are processed.
-    *
-    *  @warning Non thread safe
-    */
-    template <typename T>
-    class SamplePool
+/*!
+ *  @brief Helper class that stores samples until they are processed.
+ *
+ *  @warning Non thread safe
+ */
+template <typename T>
+class SamplePool
+{
+
+public:
+
+    explicit SamplePool(
+            const core::Options& opts = core::Options())
+        : caches_(new T[opts.sample_pool_size])
     {
+        free_caches_.reserve(opts.sample_pool_size);
 
-    public:
-
-        explicit SamplePool(const core::Options &opts = core::Options()) :
-            caches_(new T[opts.sample_pool_size])
+        for ( std::size_t i = 0; i < opts.sample_pool_size; ++i )
         {
-            free_caches_.reserve(opts.sample_pool_size);
+            free_caches_.push_back( &caches_[i] );
+        }
+    }
 
-            for( std::size_t i = 0; i < opts.sample_pool_size; ++i )
-            {
-                free_caches_.push_back( &caches_[i] );
-            }
+    ~SamplePool()
+    {
+        delete [] caches_;
+    }
+
+    T* get_new_cache_nts()
+    {
+        T* cache = nullptr;
+
+        if (!free_caches_.empty())
+        {
+            cache = free_caches_.back();
+            free_caches_.pop_back();
         }
 
-        ~SamplePool()
+        return cache;
+    }
+
+    void release_cache_nts(
+            T* cache)
+    {
+        if (nullptr != cache)
         {
-            delete [] caches_;
+            cache->reset();
+            free_caches_.push_back(cache);
         }
-
-        T* get_new_cache_nts()
+        else
         {
-            T* cache = nullptr;
-
-            if (!free_caches_.empty())
-            {
-                cache = free_caches_.back();
-                free_caches_.pop_back();
-            }
-
-            return cache;
+            EPROSIMA_LOG_ERROR(SAMPLE_POOL, "Trying to release a null cache");
         }
+    }
 
-        void release_cache_nts(T* cache)
-        {
+private:
 
-            if (nullptr != cache)
-            {
-                free_caches_.push_back(cache);
-            }
-            else
-            {
-                EPROSIMA_LOG_ERROR(SAMPLE_POOL, "Trying to release a null cache");
-            }
-        }
+    std::vector<T*> free_caches_;
+    T* caches_;
 
-    private:
-
-        std::vector<T*> free_caches_;
-        T* caches_;
-
-    };
+};
 
 } // namespace utils
 } // namespace sustainml

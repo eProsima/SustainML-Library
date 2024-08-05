@@ -382,6 +382,11 @@ public:
     AppRequirementsImpl* get_impl();
 
     /*!
+     * @brief Resets the structure to default values
+     */
+    void reset();
+
+    /*!
      * @brief This function retrives the implementation type info
      * @return Reference to the typeid
      */
@@ -573,6 +578,11 @@ public:
     CO2FootprintImpl* get_impl();
 
     /*!
+     * @brief Resets the structure to default values
+     */
+    void reset();
+
+    /*!
      * @brief This function retrives the implementation type info
      * @return Reference to the typeid
      */
@@ -723,6 +733,11 @@ public:
      * @return Pointer to implementation
      */
     HWConstraintsImpl* get_impl();
+
+    /*!
+     * @brief Resets the structure to default values
+     */
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -960,6 +975,11 @@ public:
      * @return Pointer to implementation
      */
     HWResourceImpl* get_impl();
+
+    /*!
+     * @brief Resets the structure to default values
+     */
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -1272,6 +1292,11 @@ public:
     MLModelImpl* get_impl();
 
     /*!
+     * @brief Resets the structure to default values
+     */
+    void reset();
+
+    /*!
      * @brief This function retrives the implementation type info
      * @return Reference to the typeid
      */
@@ -1455,6 +1480,11 @@ public:
      * @return Pointer to implementation
      */
     MLModelMetadataImpl* get_impl();
+
+    /*!
+     * @brief Resets the structure to default values
+     */
+    void reset();
 
     /*!
      * @brief This function retrives the implementation type info
@@ -1651,6 +1681,11 @@ public:
      * @return Pointer to implementation
      */
     NodeControlImpl* get_impl() const;
+
+    /*!
+     * @brief Resets the structure to default values
+     */
+    void reset();
 
 protected:
 
@@ -1868,6 +1903,11 @@ public:
      * @return Pointer to implementation
      */
     NodeStatusImpl* get_impl();
+
+    /*!
+     * @brief Resets the structure to default values
+     */
+    void reset();
 
 protected:
 
@@ -2303,6 +2343,11 @@ public:
     UserInputImpl* get_impl();
 
     /*!
+     * @brief Resets the structure to default values
+     */
+    void reset();
+
+    /*!
      * @brief This function retrives the implementation type info
      * @return Reference to the typeid
      */
@@ -2315,6 +2360,19 @@ protected:
 
 };
 
+template<typename T>
+struct NodeTaskOutputData
+{
+    types::NodeStatus node_status;
+    T output_data;
+
+    inline void reset()
+    {
+        node_status.reset();
+        output_data.reset();
+    }
+
+};
 
 } // namespace types
 

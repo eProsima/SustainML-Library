@@ -135,7 +135,7 @@ private:
 
     std::mutex mtx_;
 
-    std::unique_ptr<utils::SamplePool<std::pair<types::NodeStatus, types::MLModel>>> task_data_pool_;
+    std::unique_ptr<utils::SamplePool<types::NodeTaskOutputData<types::MLModel>>> task_data_pool_;
 
 };
 

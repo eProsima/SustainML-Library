@@ -333,7 +333,12 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -343,7 +348,12 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -353,7 +363,12 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -363,7 +378,12 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -373,7 +393,12 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -383,7 +408,12 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
             break;
         }
@@ -393,7 +423,12 @@ RetCode_t OrchestratorNode::get_task_data(
             if (task_db_->get_task_data_nts(task_id, typed_data))
             {
                 data = typed_data;
-                ret = RetCode_t::RETCODE_OK;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
             }
         }
         default:

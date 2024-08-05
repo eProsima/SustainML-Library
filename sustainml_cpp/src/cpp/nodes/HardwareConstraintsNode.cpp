@@ -68,7 +68,7 @@ void HardwareConstraintsNode::init (
 {
     listener_user_input_queue_.reset(new core::QueuedNodeListener<UserInput>(this));
 
-    task_data_pool_.reset(new utils::SamplePool<std::pair<NodeStatus, HWConstraints>>(opts));
+    task_data_pool_.reset(new utils::SamplePool<types::NodeTaskOutputData<HWConstraints>>(opts));
 
     initialize_subscription(sustainml::common::TopicCollection::get()[common::USER_INPUT].first.c_str(),
             sustainml::common::TopicCollection::get()[common::USER_INPUT].second.c_str(),
@@ -95,7 +95,7 @@ void HardwareConstraintsNode::publish_to_user(
             ExpectedInputSamples::MAX,
             samples_retrieved);
 
-        std::pair<NodeStatus, HWConstraints>* task_data_cache;
+        types::NodeTaskOutputData<HWConstraints>* task_data_cache;
 
         {
             std::lock_guard<std::mutex> lock (mtx_);
@@ -105,8 +105,8 @@ void HardwareConstraintsNode::publish_to_user(
 
             task_data_cache = task_data_pool_->get_new_cache_nts();
 
-            status = &task_data_cache->first;
-            output = &task_data_cache->second;
+            status = &task_data_cache->node_status;
+            output = &task_data_cache->output_data;
         }
 
         //! TODO: Manage task statuses individually
@@ -120,9 +120,9 @@ void HardwareConstraintsNode::publish_to_user(
         user_listener_.invoke_user_cb(task_id, core::helper::gen_seq<HardwareConstraintsCallable::size>{});
 
         //! Ensure task_id is forwarded to the output
-        task_data_cache->second.task_id(task_id);
+        task_data_cache->output_data.task_id(task_id);
 
-        if (task_data_cache->first.node_status() != NODE_ERROR)
+        if (task_data_cache->node_status.node_status() != NODE_ERROR)
         {
             status(NODE_IDLE);
         }
@@ -132,7 +132,7 @@ void HardwareConstraintsNode::publish_to_user(
         }
 
         publish_node_status();
-        writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->second.get_impl());
+        writers()[OUTPUT_WRITER_IDX]->write(task_data_cache->output_data.get_impl());
 
         listener_user_input_queue_->remove_element_by_taskid(task_id);
 
