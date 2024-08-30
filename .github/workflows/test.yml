@@ -42,6 +42,7 @@ jobs:
         uses: eProsima/eProsima-CI/external/checkout@v0
         with:
           path: ${{ github.workspace }}/src/sustainml_lib
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Install Fast DDS dependencies
         uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@v0
@@ -73,18 +74,10 @@ jobs:
           requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/requirements.txt
           upgrade: false
 
-      - name: Download repos file
-        uses: eProsima/eProsima-CI/multiplatform/get_file_from_repo@v0
-        with:
-          source_repository: eProsima/SustainML-Library
-          source_repository_branch: main
-          file_name: sustainml.repos
-          file_result: ${{ github.workspace }}/sustainml.repos
-
       - name: Fetch SustainML repositories
         uses: eProsima/eProsima-CI/multiplatform/vcs_import@v0
         with:
-          vcs_repos_file:  ${{ github.workspace }}/sustainml.repos
+          vcs_repos_file:  ${{ github.workspace }}/src/sustainml_lib/sustainml.repos
           destination_workspace: ${{ github.workspace }}/src
           skip_existing: true
 
@@ -106,6 +99,7 @@ jobs:
         uses: eProsima/eProsima-CI/external/checkout@v0
         with:
           path: ${{ github.workspace }}/src/sustainml_lib
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Install Fast DDS dependencies
         uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@v0
@@ -137,18 +131,10 @@ jobs:
           requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/requirements.txt
           upgrade: false
 
-      - name: Download repos file
-        uses: eProsima/eProsima-CI/multiplatform/get_file_from_repo@v0
-        with:
-          source_repository: eProsima/SustainML
-          source_repository_branch: main
-          file_name: sustainml.repos
-          file_result: ${{ github.workspace }}/sustainml.repos
-
       - name: Fetch SustainML repositories
         uses: eProsima/eProsima-CI/multiplatform/vcs_import@v0
         with:
-          vcs_repos_file:  ${{ github.workspace }}/sustainml.repos
+          vcs_repos_file:  ${{ github.workspace }}/src/sustainml_lib/sustainml.repos
           destination_workspace: ${{ github.workspace }}/src
           skip_existing: true
 
