@@ -74,12 +74,20 @@ jobs:
           requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/requirements.txt
           upgrade: false
 
+      - name: Install ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
       - name: Fetch SustainML repositories
         uses: eProsima/eProsima-CI/multiplatform/vcs_import@v0
         with:
           vcs_repos_file:  ${{ github.workspace }}/src/sustainml_lib/sustainml.repos
           destination_workspace: ${{ github.workspace }}/src
           skip_existing: true
+
+      - name: Run ollama
+        run: |
+          ollama serve &
+          ollama pull llama3
 
       - name: Compile and run tests
         uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@v0
@@ -131,12 +139,20 @@ jobs:
           requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/requirements.txt
           upgrade: false
 
+      - name: Install ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
       - name: Fetch SustainML repositories
         uses: eProsima/eProsima-CI/multiplatform/vcs_import@v0
         with:
           vcs_repos_file:  ${{ github.workspace }}/src/sustainml_lib/sustainml.repos
           destination_workspace: ${{ github.workspace }}/src
           skip_existing: true
+
+      - name: Run ollama
+        run: |
+          ollama serve &
+          ollama pull llama3
 
       - name: Compile and run tests
         uses: eProsima/eProsima-CI/multiplatform/clang_build_test@v0
