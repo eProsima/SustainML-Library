@@ -67,6 +67,12 @@ jobs:
           requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_docs/requirements.txt
           upgrade: false
 
+      - name: Install Python submodules dependencies
+        uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0
+        with:
+          requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/requirements.txt
+          upgrade: false
+
       - name: Download repos file
         uses: eProsima/eProsima-CI/multiplatform/get_file_from_repo@v0
         with:
@@ -123,6 +129,12 @@ jobs:
         uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0
         with:
           requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_docs/requirements.txt
+          upgrade: false
+
+      - name: Install Python submodules dependencies
+        uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0
+        with:
+          requirements_file_name: ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/requirements.txt
           upgrade: false
 
       - name: Download repos file
