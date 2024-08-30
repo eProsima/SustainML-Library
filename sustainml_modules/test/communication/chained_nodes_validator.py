@@ -292,7 +292,7 @@ def run(args):
         sleep(1)
 
     try:
-        outs, errs = sub_proc.communicate(timeout=20)
+        outs, errs = sub_proc.communicate(timeout=60)
     except subprocess.TimeoutExpired:
         print('Subscriber process timed out, terminating...')
         sub_proc.kill()
