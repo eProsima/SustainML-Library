@@ -102,6 +102,13 @@ bool SimpleTaskPublisher::run()
 
     TypeFactory::set_data_task_id(type_, data, task_id);
 
+    if (type_.get_type_name() == "UserInputImpl")
+    {
+        auto ui_data = static_cast<UserInputImpl*>(data);
+        ui_data->modality("video");
+        ui_data->problem_definition("Classify cars in a video sequence.");
+    }
+
     while (samples_ + 1 > task_id)
     {
         std::cout << "Publishing " << type_.get_type_name() << " with Task_id " << task_id << std::endl;

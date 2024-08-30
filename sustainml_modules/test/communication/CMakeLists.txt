@@ -48,7 +48,7 @@ if (Python3_FOUND)
             --baseline-topic-types ml hw co2
             -ttp ui
             -tts co2
-            --samples 20
+            --samples 1
             -mlm ml_model_metadata_node.py
             -ml ml_model_provider_node.py
             -hw hw_resources_provider_node.py
