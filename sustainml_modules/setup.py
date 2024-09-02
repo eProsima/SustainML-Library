@@ -33,4 +33,8 @@ setup(
     description=description,
     license='Apache License, Version 2.0',
     entry_points={},
+    package_data=
+    {
+        "": ["*.ttl", "*/*"]
+    }
 )

@@ -42,35 +42,30 @@ class ParseOptions():
             '-ps',
             '--pub-sub',
             type=str,
-            required=True,
             help='Path to the SimpleTaskPubSub executable.'
         )
         parser.add_argument(
             '-tp',
             '--topic-pub',
             type=str,
-            required=True,
             help='String identifying the publisher topic.'
         )
         parser.add_argument(
             '-ttp',
             '--topic-type-pub',
             type=str,
-            required=True,
             help='String identifying the publisher topic type [ui, task, ml, hw, co2].'
         )
         parser.add_argument(
             '-ts',
             '--topic-sub',
             type=str,
-            required=True,
             help='String identifying the subscriber topic.'
         )
         parser.add_argument(
             '-tts',
             '--topic-type-sub',
             type=str,
-            required=True,
             help='String identifying the publisher topic type [ui, task, ml, hw, co2].'
         )
         parser.add_argument(
@@ -131,6 +126,12 @@ class ParseOptions():
             required=False,
             help='List of baseline topic types.'
         )
+        parser.add_argument(
+            '-orc',
+            '--orchestrator',
+            type=str,
+            help='Executable name of the OrchestratorNode'
+        )
 
         return parser.parse_args()
 
@@ -151,40 +152,44 @@ def run(args):
     nodes_base_dir = script_dir+'/../../lib/sustainml_modules/'
     print (nodes_base_dir)
 
-    if not os.path.isfile(args.pub_sub):
+    if args.pub_sub and not os.path.isfile(args.pub_sub):
         print(f'PublisherSubscriber executable file does not exists: {args.pub}')
         sys.exit(1)
 
-    if not os.access(args.pub_sub, os.X_OK):
+    if args.pub_sub and not os.access(args.pub_sub, os.X_OK):
         print(
             'PublisherSubscriber executable does not have execution permissions:'
             f'{args.pub_sub}')
 
     pub_command = []
-    pub_command.append(os.path.join(script_dir, args.pub_sub))
-    sub_command.append(os.path.join(script_dir, args.pub_sub))
+    if args.pub_sub:
+        pub_command.append(os.path.join(script_dir, args.pub_sub))
+        sub_command.append(os.path.join(script_dir, args.pub_sub))
 
     if args.topic_pub and args.topic_sub:
         pub_command.append('publisher')
         pub_command.extend(['--topic', str(args.topic_pub)])
         sub_command.append('subscriber')
         sub_command.extend(['--topic', str(args.topic_sub)])
-    else:
-        print('Not provided simple task pubsub topic names.')
+
+    if not args.topic_pub and not args.topic_sub and not args.orchestrator:
+        print('Not provided basic executable names.')
         sys.exit(1)
 
     if args.topic_type_pub and args.topic_type_sub:
         pub_command.append(str('--'+ str(args.topic_type_pub)))
         sub_command.append(str('--'+ str(args.topic_type_sub)))
-    else:
-        print('Not provided simple task pubsub topic names.')
+
+    if not args.topic_type_pub and not args.topic_type_sub and not args.orchestrator:
+        print('Not provided basic topic types.')
         sys.exit(1)
 
     if args.samples:
         pub_command.extend(['--samples', str(args.samples)])
         sub_command.extend(['--samples', str(args.samples)])
 
-    pub_commands.append(pub_command)
+    if args.topic_pub:
+        pub_commands.append(pub_command)
 
     if args.ml_metadata or args.machine_learning or args.hardware or args.co2_footprint or args.app_requirements or args.hw_constraints:
 
@@ -263,7 +268,7 @@ def run(args):
             baseline_cmd.append(str('--') + str(args.baseline_topic_types[i_baseline]))
             baseline_cmd.extend(['--samples', str(args.samples)])
             pub_commands.append(baseline_cmd)
-    else:
+    elif args.baseline_topics and (not args.baseline_topic_types and not len(args.baseline_topics) == len(args.baseline_topic_types)):
         print('Not provided simple task pubsub topic names.')
         sys.exit(1)
 
@@ -275,12 +280,24 @@ def run(args):
            'Running Node - commmand:  ' + str(node_cmd))
 
         node_procs.append(node_proc)
+        sleep(1)
 
-    sub_proc = subprocess.Popen(sub_command)
-    print(
-           f'Running Subscriber - commmand:  ' + str(sub_command))
+    if args.topic_sub:
+        listener_proc = subprocess.Popen(sub_command)
+        print(
+            f'Running Subscriber - commmand:  ' + str(sub_command))
+    elif args.orchestrator:
+        orch_exec = os.path.join(script_dir, args.orchestrator)
 
-    sleep(1)
+        if not os.path.isfile(orch_exec):
+            print(f'OrchestratorNode executable file does not exists: {orch_exec}')
+            sys.exit(1)
+
+        listener_proc = subprocess.Popen(orch_exec)
+        print(
+            f'Running Orchestrator - commmand:  ' + str(orch_exec))
+        sleep(1)
+
     pub_procs = []
     for pub_cmd in pub_commands:
 
@@ -292,10 +309,10 @@ def run(args):
         sleep(1)
 
     try:
-        outs, errs = sub_proc.communicate(timeout=20)
+        outs, errs = listener_proc.communicate(timeout=60)
     except subprocess.TimeoutExpired:
         print('Subscriber process timed out, terminating...')
-        sub_proc.kill()
+        listener_proc.kill()
         [pub_proc.kill() for pub_proc in pub_procs]
         [node_proc.kill() for node_proc in node_procs]
         try:
@@ -305,7 +322,7 @@ def run(args):
 
 
     [pub_proc.kill() for pub_proc in pub_procs]
-    sub_proc.kill()
+    listener_proc.kill()
     [node_proc.kill() for node_proc in node_procs]
     try:
         sys.exit(os.EX_OK)
