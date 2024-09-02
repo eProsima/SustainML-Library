@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+find_package(sustainml_cpp REQUIRED)
+
+include_directories(${sustainml_cpp_INCLUDE_DIR})
+
 set(TYPES_SOURCE
     types/typesImpl.cxx
     types/typesImplPubSubTypes.cxx
@@ -30,6 +34,13 @@ target_link_libraries(SimplePubSubTask
     fastrtps
     fastcdr
     foonathan_memory)
+
+add_executable(SimpleOrchestratorNode SimpleOrchestratorNode.cpp)
+target_link_libraries(SimpleOrchestratorNode
+    fastrtps
+    fastcdr
+    foonathan_memory
+    sustainml_cpp)
 
 ###############################################################################
 # Necessary files
@@ -55,5 +66,15 @@ if (Python3_FOUND)
             -co2 carbon_footprint_node.py
             -hwc hw_constraints_node.py
             -ap app_requirements_node.py)
+
+    add_test(NAME SimpleCommunicationOrchestratorSixNodesPython
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/chained_nodes_validator.py
+            -mlm ml_model_metadata_node.py
+            -ml ml_model_provider_node.py
+            -hw hw_resources_provider_node.py
+            -co2 carbon_footprint_node.py
+            -hwc hw_constraints_node.py
+            -ap app_requirements_node.py
+            -orc SimpleOrchestratorNode)
 
 endif()
