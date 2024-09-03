@@ -27,7 +27,7 @@
 #include <core/Constants.hpp>
 #include <types/types.h>
 
-#include <fastrtps/log/Log.h>
+#include <fastdds/dds/log/Log.hpp>
 
 namespace sustainml {
 namespace orchestrator {

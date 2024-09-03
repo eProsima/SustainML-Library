@@ -19,7 +19,7 @@
 #ifndef SUSTAINMLCPP_UTILS_SAMPLEPOOL_HPP
 #define SUSTAINMLCPP_UTILS_SAMPLEPOOL_HPP
 
-#include <fastrtps/log/Log.h>
+#include <fastdds/dds/log/Log.hpp>
 #include <core/Options.hpp>
 
 #include <memory>

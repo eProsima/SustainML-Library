@@ -23,7 +23,7 @@
 #include <sustainml_cpp/types/types.h>
 
 #include <core/Options.hpp>
-#include <types/typesImplPubSubTypes.h>
+#include <types/typesImplPubSubTypes.hpp>
 
 #include <utility>
 #include <vector>

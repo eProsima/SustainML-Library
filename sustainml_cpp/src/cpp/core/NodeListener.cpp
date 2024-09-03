@@ -67,7 +67,7 @@ void NodeListener<T>::on_data_available(
     while (!stop_.load(std::memory_order_relaxed))
     {
         if (reader->take_next_sample(data_cache->get_impl(),
-                &info) == eprosima::fastrtps::types::ReturnCode_t::RETCODE_OK)
+                &info) == eprosima::fastdds::dds::RETCODE_OK)
         {
             if (info.instance_state == eprosima::fastdds::dds::ALIVE_INSTANCE_STATE)
             {

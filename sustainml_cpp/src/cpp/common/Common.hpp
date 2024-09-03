@@ -22,8 +22,7 @@
 #include <sustainml_cpp/core/Constants.hpp>
 #include <types/types.h>
 
-#include <fastrtps/log/Log.h>
-#include <fastrtps/utils/fixed_size_string.hpp>
+#include <fastdds/dds/log/Log.hpp>
 
 #include <iostream>
 #include <map>
@@ -43,7 +42,7 @@ constexpr const char* ML_MODEL_METADATA_NODE = "ML_MODEL_METADATA_NODE";
 constexpr const char* ML_MODEL_NODE = "ML_MODEL_NODE";
 
 inline NodeID get_node_id_from_name(
-        const eprosima::fastrtps::string_255& name)
+        const eprosima::fastcdr::string_255& name)
 {
     NodeID id = NodeID::UNKNOWN;
 

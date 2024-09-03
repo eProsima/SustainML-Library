@@ -23,7 +23,7 @@
 #include <common/Common.hpp>
 #include <core/Options.hpp>
 #include <core/QueuedNodeListener.hpp>
-#include <types/typesImpl.h>
+#include <types/typesImpl.hpp>
 
 using namespace types;
 
@@ -122,9 +122,9 @@ void HardwareResourcesNode::publish_to_user(
 
         //! TODO: Manage task statuses individually
 
-        if (status() != NODE_RUNNING)
+        if (status() != Status::NODE_RUNNING)
         {
-            status(NODE_RUNNING);
+            status(Status::NODE_RUNNING);
             publish_node_status();
         }
 
@@ -133,13 +133,13 @@ void HardwareResourcesNode::publish_to_user(
         //! Ensure task_id is forwarded to the output
         task_data_cache->output_data.task_id(task_id);
 
-        if (task_data_cache->node_status.node_status() != NODE_ERROR)
+        if (task_data_cache->node_status.node_status() != Status::NODE_ERROR)
         {
-            status(NODE_IDLE);
+            status(Status::NODE_IDLE);
         }
         else
         {
-            status(NODE_ERROR);
+            status(Status::NODE_ERROR);
         }
 
         publish_node_status();

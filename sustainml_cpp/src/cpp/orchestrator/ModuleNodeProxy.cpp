@@ -40,7 +40,7 @@ void ModuleNodeProxy::ModuleNodeProxyListener::on_data_available(
     eprosima::fastdds::dds::SampleInfo info;
 
     void* tmp_untyped_impl_data = proxy_parent_->get_tmp_impl_untyped_data();
-    if (reader->take_next_sample(tmp_untyped_impl_data, &info) == eprosima::fastrtps::types::ReturnCode_t::RETCODE_OK)
+    if (reader->take_next_sample(tmp_untyped_impl_data, &info) == RETCODE_OK)
     {
         if (info.instance_state == eprosima::fastdds::dds::ALIVE_INSTANCE_STATE)
         {
@@ -69,14 +69,14 @@ void ModuleNodeProxy::ModuleNodeProxyStatusListener::on_data_available(
 {
     SampleInfo info;
     // Take next sample from DataReader's history
-    if (ReturnCode_t::RETCODE_OK == reader->take_next_sample(proxy_parent_->status_.get_impl(), &info))
+    if (RETCODE_OK == reader->take_next_sample(proxy_parent_->status_.get_impl(), &info))
     {
         // Some samples only update the instance state. Only if it is a valid sample (with data)
         if (ALIVE_INSTANCE_STATE == info.instance_state)
         {
             // Print structure data
             EPROSIMA_LOG_INFO(MODULE_PROXY,
-                    "New Status " << proxy_parent_->status_.node_name() << " " << proxy_parent_->status_.node_status() <<
+                    "New Status " << proxy_parent_->status_.node_name() << " " << (int)proxy_parent_->status_.node_status() <<
                     " RECEIVED");
             proxy_parent_->notify_status_change();
         }

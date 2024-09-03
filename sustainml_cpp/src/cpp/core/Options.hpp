@@ -24,7 +24,6 @@
 #include <fastdds/dds/publisher/qos/PublisherQos.hpp>
 #include <fastdds/dds/subscriber/qos/DataReaderQos.hpp>
 #include <fastdds/dds/subscriber/qos/SubscriberQos.hpp>
-#include <fastrtps/types/TypesBase.h>
 
 namespace sustainml {
 namespace core {
