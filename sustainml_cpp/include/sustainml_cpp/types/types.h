@@ -76,11 +76,11 @@ class NodeStatusImpl;
 class TaskIdImpl;
 class UserInputImpl;
 
-enum Status : uint32_t;
-enum TaskStatus : uint32_t;
-enum ErrorCode : uint32_t;
-enum CmdNode : uint32_t;
-enum CmdTask : uint32_t;
+enum class Status : int32_t;
+enum class TaskStatus : int32_t;
+enum class ErrorCode : int32_t;
+enum class CmdNode : int32_t;
+enum class CmdTask : int32_t;
 
 namespace types {
 /*!
@@ -1896,7 +1896,7 @@ public:
      * @param new_status new status to be updated and published.
      */
     eProsima_user_DllExport void update(
-            uint32_t new_status);
+            Status new_status);
 
     /*!
      * @brief This function returns the implementation

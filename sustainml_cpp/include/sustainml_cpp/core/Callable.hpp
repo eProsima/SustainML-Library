@@ -27,7 +27,7 @@
 #include <sustainml_cpp/config/Macros.hpp>
 #include <sustainml_cpp/types/types.h>
 
-#include <fastrtps/log/Log.h>
+#include <fastdds/dds/log/Log.hpp>
 
 namespace sustainml {
 namespace core {
