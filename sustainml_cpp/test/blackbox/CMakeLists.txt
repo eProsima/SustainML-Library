@@ -15,7 +15,7 @@
 
 file(GLOB BLACKBOXTESTS_TEST_SOURCE "common/BlackboxTests*.cpp")
 set(BLACKBOXTESTS_SOURCE ${BLACKBOXTESTS_TEST_SOURCE}
-    ${PROJECT_SOURCE_DIR}/src/cpp/types/typesImpl.cxx
+    ${PROJECT_SOURCE_DIR}/src/cpp/types/typesImplTypeObjectSupport.cxx
     ${PROJECT_SOURCE_DIR}/src/cpp/types/typesImplPubSubTypes.cxx
 
     helpers/data_generators.cpp
@@ -24,7 +24,7 @@ add_executable(BlackboxTests ${BLACKBOXTESTS_SOURCE})
 
 target_link_libraries(BlackboxTests
     sustainml_cpp
-    fastrtps
+    fastdds
     fastcdr
     foonathan_memory
     GTest::gtest)

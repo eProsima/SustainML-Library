@@ -194,7 +194,8 @@ public:
 
         while (it != msgs.end())
         {
-            if (datawriter_->write((void*)&(*it)))
+            if (eprosima::fastdds::dds::RETCODE_OK ==
+                    datawriter_->write((void*)&(*it)))
             {
                 std::cout << "Injecting data with task id {" << it->task_id().problem_id() << "," <<
                     it->task_id().iteration_id() << "}" << std::endl;

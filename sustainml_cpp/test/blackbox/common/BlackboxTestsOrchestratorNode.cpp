@@ -55,11 +55,11 @@ struct TestOrchestratorNodeHandle : public orchestrator::OrchestratorNodeHandle
                 {
                     for (auto& x : node_data_received_)
                     {
-                        std::cout << "Arrived " << (int)x.first << x.second.first << x.second.second << std::endl;
+                        std::cout << "Arrived " << (int)x.first << (int)x.second.first << x.second.second << std::endl;
                     }
                     for (auto& x : expected_node_data_)
                     {
-                        std::cout << "Expected " << (int)x.first << x.second.first << x.second.second << std::endl;
+                        std::cout << "Expected " << (int)x.first << (int)x.second.first << x.second.second << std::endl;
                     }
                     return expected_node_data_ == node_data_received_;
                 });
@@ -80,12 +80,12 @@ private:
 
 static TestOrchestratorNodeHandle::DataCollection nodes_ready_expected_data =
 {
-    {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 0}},
-    {NodeID::ID_ML_MODEL, {NODE_IDLE, 0}},
-    {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 0}},
-    {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}},
-    {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 0}},
-    {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 0}}
+    {NodeID::ID_ML_MODEL_METADATA, {Status::NODE_IDLE, 0}},
+    {NodeID::ID_ML_MODEL, {Status::NODE_IDLE, 0}},
+    {NodeID::ID_HW_RESOURCES, {Status::NODE_IDLE, 0}},
+    {NodeID::ID_CARBON_FOOTPRINT, {Status::NODE_IDLE, 0}},
+    {NodeID::ID_APP_REQUIREMENTS, {Status::NODE_IDLE, 0}},
+    {NodeID::ID_HW_CONSTRAINTS, {Status::NODE_IDLE, 0}}
 };
 
 TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
@@ -119,12 +119,12 @@ TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
 
     TestOrchestratorNodeHandle::DataCollection expected_data =
     {
-        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 0}},
-        {NodeID::ID_ML_MODEL, {NODE_IDLE, 0}},
-        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 0}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 0}},
-        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 0}},
-        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 0}}
+        {NodeID::ID_ML_MODEL_METADATA, {Status::NODE_IDLE, 0}},
+        {NodeID::ID_ML_MODEL, {Status::NODE_IDLE, 0}},
+        {NodeID::ID_HW_RESOURCES, {Status::NODE_IDLE, 0}},
+        {NodeID::ID_CARBON_FOOTPRINT, {Status::NODE_IDLE, 0}},
+        {NodeID::ID_HW_CONSTRAINTS, {Status::NODE_IDLE, 0}},
+        {NodeID::ID_APP_REQUIREMENTS, {Status::NODE_IDLE, 0}}
     };
 
     tonh->prepare_expected_data(expected_data);
@@ -177,12 +177,12 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
-        {NodeID::ID_ML_MODEL, {NODE_IDLE, 1}},
-        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 1}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}},
-        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 1}},
-        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 1}}
+        {NodeID::ID_ML_MODEL_METADATA, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_ML_MODEL, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_HW_RESOURCES, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_CARBON_FOOTPRINT, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_HW_CONSTRAINTS, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_APP_REQUIREMENTS, {Status::NODE_IDLE, 1}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -225,12 +225,12 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 2}},
-        {NodeID::ID_ML_MODEL, {NODE_IDLE, 2}},
-        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 2}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 2}},
-        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 2}},
-        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 2}}
+        {NodeID::ID_ML_MODEL_METADATA, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_ML_MODEL, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_HW_RESOURCES, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_CARBON_FOOTPRINT, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_HW_CONSTRAINTS, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_APP_REQUIREMENTS, {Status::NODE_IDLE, 2}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -290,12 +290,12 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
-        {NodeID::ID_ML_MODEL, {NODE_IDLE, 1}},
-        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 1}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}},
-        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 1}},
-        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 1}}
+        {NodeID::ID_ML_MODEL_METADATA, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_ML_MODEL, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_HW_RESOURCES, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_CARBON_FOOTPRINT, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_HW_CONSTRAINTS, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_APP_REQUIREMENTS, {Status::NODE_IDLE, 1}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -311,17 +311,17 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
     const types::NodeStatus* status;
     orchestrator.get_node_status(NodeID::ID_ML_MODEL_METADATA, status);
-    ASSERT_EQ(status->node_status(), NODE_IDLE);
+    ASSERT_EQ(status->node_status(), Status::NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_ML_MODEL, status);
-    ASSERT_EQ(status->node_status(), NODE_IDLE);
+    ASSERT_EQ(status->node_status(), Status::NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_HW_RESOURCES, status);
-    ASSERT_EQ(status->node_status(), NODE_IDLE);
+    ASSERT_EQ(status->node_status(), Status::NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_CARBON_FOOTPRINT, status);
-    ASSERT_EQ(status->node_status(), NODE_IDLE);
+    ASSERT_EQ(status->node_status(), Status::NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_HW_CONSTRAINTS, status);
-    ASSERT_EQ(status->node_status(), NODE_IDLE);
+    ASSERT_EQ(status->node_status(), Status::NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_APP_REQUIREMENTS, status);
-    ASSERT_EQ(status->node_status(), NODE_IDLE);
+    ASSERT_EQ(status->node_status(), Status::NODE_IDLE);
 }
 
 TEST(OrchestratorNode, OrchestratorTaskIteration)
@@ -366,12 +366,12 @@ TEST(OrchestratorNode, OrchestratorTaskIteration)
     //! Ask for a first task
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 1}},
-        {NodeID::ID_ML_MODEL, {NODE_IDLE, 1}},
-        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 1}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 1}},
-        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 1}},
-        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 1}}
+        {NodeID::ID_ML_MODEL_METADATA, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_ML_MODEL, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_HW_RESOURCES, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_CARBON_FOOTPRINT, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_HW_CONSTRAINTS, {Status::NODE_IDLE, 1}},
+        {NodeID::ID_APP_REQUIREMENTS, {Status::NODE_IDLE, 1}}
     };
 
     tonh->prepare_expected_data(test_expected_data);
@@ -389,12 +389,12 @@ TEST(OrchestratorNode, OrchestratorTaskIteration)
     //! Now, ask for iteration on the first task
     TestOrchestratorNodeHandle::DataCollection test_iteration_data =
     {
-        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 2}},
-        {NodeID::ID_ML_MODEL, {NODE_IDLE, 2}},
-        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 2}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 2}},
-        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 2}},
-        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 2}}
+        {NodeID::ID_ML_MODEL_METADATA, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_ML_MODEL, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_HW_RESOURCES, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_CARBON_FOOTPRINT, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_HW_CONSTRAINTS, {Status::NODE_IDLE, 2}},
+        {NodeID::ID_APP_REQUIREMENTS, {Status::NODE_IDLE, 2}}
     };
 
     tonh->prepare_expected_data(test_iteration_data);
@@ -462,12 +462,12 @@ TEST(OrchestratorNode, OrchestratorGetTaskDataDoesNotAccumulate)
 
     TestOrchestratorNodeHandle::DataCollection test_expected_data =
     {
-        {NodeID::ID_ML_MODEL_METADATA, {NODE_IDLE, 3}},
-        {NodeID::ID_ML_MODEL, {NODE_IDLE, 3}},
-        {NodeID::ID_HW_RESOURCES, {NODE_IDLE, 3}},
-        {NodeID::ID_CARBON_FOOTPRINT, {NODE_IDLE, 3}},
-        {NodeID::ID_HW_CONSTRAINTS, {NODE_IDLE, 3}},
-        {NodeID::ID_APP_REQUIREMENTS, {NODE_IDLE, 3}}
+        {NodeID::ID_ML_MODEL_METADATA, {Status::NODE_IDLE, 3}},
+        {NodeID::ID_ML_MODEL, {Status::NODE_IDLE, 3}},
+        {NodeID::ID_HW_RESOURCES, {Status::NODE_IDLE, 3}},
+        {NodeID::ID_CARBON_FOOTPRINT, {Status::NODE_IDLE, 3}},
+        {NodeID::ID_HW_CONSTRAINTS, {Status::NODE_IDLE, 3}},
+        {NodeID::ID_APP_REQUIREMENTS, {Status::NODE_IDLE, 3}}
     };
 
     tonh->prepare_expected_data(test_expected_data);

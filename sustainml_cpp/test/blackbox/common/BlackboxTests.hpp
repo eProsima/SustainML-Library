@@ -37,7 +37,7 @@
 #include "../api/TaskInjector.hpp"
 
 #include <sustainml_cpp/types/types.h>
-#include <types/typesImplPubSubTypes.h>
+#include <types/typesImplPubSubTypes.hpp>
 
 #include <algorithm>
 #include <cstddef>
