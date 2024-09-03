@@ -37,7 +37,7 @@
 #include <fastdds/dds/subscriber/Subscriber.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
 #include <fastdds/dds/common/InstanceHandle.hpp>
-#include <fastrtps/types/TypesBase.h>
+
 #include <sustainml_cpp/nodes/AppRequirementsNode.hpp>
 #include <sustainml_cpp/nodes/CarbonFootprintNode.hpp>
 #include <sustainml_cpp/nodes/HardwareConstraintsNode.hpp>
@@ -45,7 +45,7 @@
 #include <sustainml_cpp/nodes/MLModelMetadataNode.hpp>
 #include <sustainml_cpp/nodes/MLModelNode.hpp>
 
-#include "typesImplPubSubTypes.h"
+#include "typesImplPubSubTypes.hpp"
 
 bool DEBUG_MODE  = false;
 
@@ -104,11 +104,11 @@ public:
         while (1)
         {
             auto ret = reader->take_next_sample(&co2_f, &info);
-            if (ret == ReturnCode_t::RETCODE_NO_DATA)
+            if (ret == eprosima::fastdds::dds::RETCODE_NO_DATA)
             {
                 break;
             }
-            else if (ret != ReturnCode_t::RETCODE_OK)
+            else if (ret != eprosima::fastdds::dds::RETCODE_OK)
             {
                 std::cerr << "take_next_sample() failed!" << std::endl;
                 break;
