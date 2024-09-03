@@ -94,8 +94,9 @@ void SimpleTaskSubscriber::SimpleTaskSubscriberListener::on_data_available(
         eprosima::fastdds::dds::DataReader* reader)
 {
     eprosima::fastdds::dds::SampleInfo info;
-    void* data = task_sub_->type_->createData();
-    while ((reader->take_next_sample(data, &info) == ReturnCode_t::RETCODE_OK) && !task_sub_->is_stopped())
+    void* data = task_sub_->type_->create_data();
+    while ((reader->take_next_sample(data, &info) == eprosima::fastdds::dds::RETCODE_OK)
+        && !task_sub_->is_stopped())
     {
         if (info.instance_state == eprosima::fastdds::dds::ALIVE_INSTANCE_STATE)
         {

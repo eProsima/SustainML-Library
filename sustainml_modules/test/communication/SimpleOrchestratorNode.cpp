@@ -54,11 +54,11 @@ struct SimpleOrchestratorNodeHandle : public sustainml::orchestrator::Orchestrat
                 {
                     for (auto& x : node_data_received_)
                     {
-                        std::cout << "Arrived " << (int)x.first << x.second.first << x.second.second << std::endl;
+                        std::cout << "Arrived " << (int)x.first << (int)x.second.first << x.second.second << std::endl;
                     }
                     for (auto& x : expected_node_data_)
                     {
-                        std::cout << "Expected " << (int)x.first << x.second.first << x.second.second << std::endl;
+                        std::cout << "Expected " << (int)x.first << (int)x.second.first << x.second.second << std::endl;
                     }
                     return expected_node_data_ == node_data_received_;
                 });
