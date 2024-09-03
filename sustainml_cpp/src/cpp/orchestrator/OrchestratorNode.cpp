@@ -52,7 +52,8 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
         bool& should_be_ignored)
 {
     eprosima::fastcdr::string_255 participant_name = info.participant_name;
-    EPROSIMA_LOG_INFO(ORCHESTRATOR, "Orchestrator discovered a new Participant with name " << participant_name.to_string());
+    EPROSIMA_LOG_INFO(ORCHESTRATOR,
+            "Orchestrator discovered a new Participant with name " << participant_name.to_string());
 
     // Synchronise with Orchestrator initialization
     if (!orchestrator_->initialized_.load())
@@ -79,7 +80,7 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
             orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]);
     }
     else if ((reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DROPPED_PARTICIPANT ||
-              reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::REMOVED_PARTICIPANT) &&
+            reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::REMOVED_PARTICIPANT) &&
             orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] != nullptr)
     {
         EPROSIMA_LOG_INFO(ORCHESTRATOR, "Setting inactive " << participant_name << " node");
