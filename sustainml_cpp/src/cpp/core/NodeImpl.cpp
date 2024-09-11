@@ -25,8 +25,8 @@
 #include <common/Common.hpp>
 #include <core/NodeImpl.hpp>
 #include <core/Dispatcher.hpp>
-#include <types/typesImplPubSubTypes.h>
-#include <types/typesImplTypeObject.h>
+#include <types/typesImplPubSubTypes.hpp>
+#include <types/typesImplTypeObjectSupport.hpp>
 
 using namespace eprosima::fastdds::dds;
 
@@ -140,8 +140,6 @@ bool NodeImpl::init(
         participant_->register_type(type);
     }
 
-    registertypesImplTypes();
-
     //! Initialize common topics
     initialize_subscription(common::TopicCollection::get()[common::Topics::NODE_CONTROL].first.c_str(),
             common::TopicCollection::get()[common::Topics::NODE_CONTROL].second.c_str(),
@@ -153,7 +151,7 @@ bool NodeImpl::init(
 
     //! Initialize node
     node_status_.node_name(name);
-    node_status_.node_status(::NODE_INITIALIZING);
+    node_status_.node_status(Status::NODE_INITIALIZING);
 
     publish_node_status();
 
@@ -164,7 +162,7 @@ void NodeImpl::spin()
 {
     EPROSIMA_LOG_INFO(NODE, "Spinning Node... ");
 
-    node_status_.node_status(::NODE_IDLE);
+    node_status_.node_status(Status::NODE_IDLE);
     publish_node_status();
 
     std::unique_lock<std::mutex> lock(spin_mtx_);

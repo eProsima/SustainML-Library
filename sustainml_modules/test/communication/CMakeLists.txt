@@ -13,13 +13,13 @@
 # limitations under the License.
 
 find_package(sustainml_cpp REQUIRED)
+find_package(fastdds 3 REQUIRED)
 
 include_directories(${sustainml_cpp_INCLUDE_DIR})
 
 set(TYPES_SOURCE
-    types/typesImpl.cxx
     types/typesImplPubSubTypes.cxx
-    types/typesImplTypeObject.cxx
+    types/typesImplTypeObjectSupport.cxx
     )
 
 set(SIMPLE_TASK_PUBSUB_SOURCE ${TYPES_SOURCE}
@@ -31,13 +31,13 @@ set(SIMPLE_TASK_PUBSUB_SOURCE ${TYPES_SOURCE}
 
 add_executable(SimplePubSubTask ${SIMPLE_TASK_PUBSUB_SOURCE})
 target_link_libraries(SimplePubSubTask
-    fastrtps
+    fastdds
     fastcdr
     foonathan_memory)
 
 add_executable(SimpleOrchestratorNode SimpleOrchestratorNode.cpp)
 target_link_libraries(SimpleOrchestratorNode
-    fastrtps
+    fastdds
     fastcdr
     foonathan_memory
     sustainml_cpp)

@@ -25,7 +25,7 @@
 #include <sustainml_cpp/core/Constants.hpp>
 #include <sustainml_cpp/types/types.h>
 
-#include <types/typesImpl.h>
+#include <types/typesImpl.hpp>
 
 namespace sustainml {
 namespace orchestrator {

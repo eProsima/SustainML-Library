@@ -20,7 +20,7 @@
 #include <sustainml_cpp/types/types.h>
 
 #include <common/Common.hpp>
-#include <types/typesImpl.h>
+#include <types/typesImpl.hpp>
 
 namespace types {
 
@@ -317,7 +317,7 @@ std::string& NodeStatus::node_name()
 }
 
 void NodeStatus::update(
-        uint32_t new_status)
+        Status new_status)
 {
     impl_->node_status((Status)new_status);
 }

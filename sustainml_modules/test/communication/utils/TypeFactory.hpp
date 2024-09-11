@@ -19,7 +19,7 @@
 
 #include "EnumTypes.hpp"
 
-#include "../types/typesImplPubSubTypes.h"
+#include "../types/typesImplPubSubTypes.hpp"
 
 #include <fastdds/dds/topic/TypeSupport.hpp>
 

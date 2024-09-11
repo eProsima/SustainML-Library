@@ -15,7 +15,7 @@
 #include "SimpleTaskPublisher.hpp"
 #include "SimpleTaskSubscriber.hpp"
 
-#include "types/typesImplPubSubTypes.h"
+#include "types/typesImplPubSubTypes.hpp"
 
 #include "utils/cli_parser.hpp"
 #include "utils/TypeFactory.hpp"

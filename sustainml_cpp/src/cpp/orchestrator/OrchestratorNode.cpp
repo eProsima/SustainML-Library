@@ -23,8 +23,8 @@
 
 #include <common/Common.hpp>
 #include <orchestrator/TaskManager.hpp>
-#include <types/typesImplPubSubTypes.h>
-#include <types/typesImplTypeObject.h>
+#include <types/typesImplPubSubTypes.hpp>
+#include <types/typesImplTypeObjectSupport.hpp>
 
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
@@ -47,10 +47,13 @@ OrchestratorNode::OrchestratorParticipantListener::OrchestratorParticipantListen
 
 void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery(
         eprosima::fastdds::dds::DomainParticipant* participant,
-        eprosima::fastrtps::rtps::ParticipantDiscoveryInfo&& info)
+        eprosima::fastdds::rtps::ParticipantDiscoveryStatus reason,
+        const eprosima::fastdds::rtps::ParticipantBuiltinTopicData& info,
+        bool& should_be_ignored)
 {
-    eprosima::fastrtps::string_255 participant_name = info.info.m_participantName;
-    EPROSIMA_LOG_INFO(ORCHESTRATOR, "Orchestrator discovered a new Participant with name " << participant_name);
+    eprosima::fastcdr::string_255 participant_name = info.participant_name;
+    EPROSIMA_LOG_INFO(ORCHESTRATOR,
+            "Orchestrator discovered a new Participant with name " << participant_name.to_string());
 
     // Synchronise with Orchestrator initialization
     if (!orchestrator_->initialized_.load())
@@ -66,7 +69,7 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
     NodeID node_id = common::get_node_id_from_name(participant_name);
 
     std::lock_guard<std::mutex> lock(orchestrator_->proxies_mtx_);
-    if (info.status == info.DISCOVERED_PARTICIPANT &&
+    if (reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DISCOVERED_PARTICIPANT &&
             orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] == nullptr)
     {
         EPROSIMA_LOG_INFO(ORCHESTRATOR, "Creating node proxy for " << participant_name << " node");
@@ -76,12 +79,13 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
             orchestrator_->task_db_,
             orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]);
     }
-    else if ((info.status == info.DROPPED_PARTICIPANT || info.status == info.REMOVED_PARTICIPANT) &&
+    else if ((reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DROPPED_PARTICIPANT ||
+            reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::REMOVED_PARTICIPANT) &&
             orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] != nullptr)
     {
         EPROSIMA_LOG_INFO(ORCHESTRATOR, "Setting inactive " << participant_name << " node");
         types::NodeStatus status = orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]->get_status();
-        status.node_status(NODE_INACTIVE);
+        status.node_status(Status::NODE_INACTIVE);
         orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]->set_status(status);
         orchestrator_->handler_->on_node_status_change(node_id, status);
     }
@@ -187,9 +191,6 @@ bool OrchestratorNode::init()
     {
         participant_->register_type(type);
     }
-
-    // Register type objects
-    registertypesImplTypes();
 
     status_topic_ = participant_->create_topic(
         common::TopicCollection::get()[common::Topics::NODE_STATUS].first.c_str(),
