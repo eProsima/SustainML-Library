@@ -76,11 +76,42 @@ class NodeStatusImpl;
 class TaskIdImpl;
 class UserInputImpl;
 
-enum class Status : int32_t;
-enum class TaskStatus : int32_t;
-enum class ErrorCode : int32_t;
 enum class CmdNode : int32_t;
 enum class CmdTask : int32_t;
+
+/*!
+ * @brief This class represents the enumeration Status defined by the user in the IDL file.
+ * @ingroup typesImpl
+ */
+enum class Status : int32_t
+{
+    NODE_INACTIVE,
+    NODE_ERROR,
+    NODE_IDLE,
+    NODE_INITIALIZING,
+    NODE_RUNNING,
+    NODE_TERMINATING
+};
+/*!
+ * @brief This class represents the enumeration TaskStatus defined by the user in the IDL file.
+ * @ingroup typesImpl
+ */
+enum class TaskStatus : int32_t
+{
+    TASK_WAITING,
+    TASK_ERROR,
+    TASK_RUNNING,
+    TASK_SUCCEEDED
+};
+/*!
+ * @brief This class represents the enumeration ErrorCode defined by the user in the IDL file.
+ * @ingroup typesImpl
+ */
+enum class ErrorCode : int32_t
+{
+    NO_ERROR,
+    INTERNAL_ERROR
+};
 
 namespace types {
 /*!

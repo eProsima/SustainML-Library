@@ -29,6 +29,8 @@
 
 #include <fastcdr/cdr/fixed_size_string.hpp>
 
+#include <sustainml_cpp/types/types.h>
+
 #if defined(_WIN32)
 #if defined(EPROSIMA_USER_DLL_EXPORT)
 #define eProsima_user_DllExport __declspec( dllexport )
@@ -53,39 +55,6 @@
 #define TYPESIMPL_DllAPI
 #endif // _WIN32
 
-/*!
- * @brief This class represents the enumeration Status defined by the user in the IDL file.
- * @ingroup typesImpl
- */
-enum class Status : int32_t
-{
-    NODE_INACTIVE,
-    NODE_ERROR,
-    NODE_IDLE,
-    NODE_INITIALIZING,
-    NODE_RUNNING,
-    NODE_TERMINATING
-};
-/*!
- * @brief This class represents the enumeration TaskStatus defined by the user in the IDL file.
- * @ingroup typesImpl
- */
-enum class TaskStatus : int32_t
-{
-    TASK_WAITING,
-    TASK_ERROR,
-    TASK_RUNNING,
-    TASK_SUCCEEDED
-};
-/*!
- * @brief This class represents the enumeration ErrorCode defined by the user in the IDL file.
- * @ingroup typesImpl
- */
-enum class ErrorCode : int32_t
-{
-    NO_ERROR,
-    INTERNAL_ERROR
-};
 /*!
  * @brief This class represents the structure TaskIdImpl defined by the user in the IDL file.
  * @ingroup typesImpl
