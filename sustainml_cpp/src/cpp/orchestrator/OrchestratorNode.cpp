@@ -91,11 +91,14 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
     }
 }
 
+std::atomic<bool> OrchestratorNode::terminate_(false);
+std::condition_variable OrchestratorNode::spin_cv_;
+
 OrchestratorNode::OrchestratorNode(
-        std::shared_ptr<OrchestratorNodeHandle> handle,
+        OrchestratorNodeHandle& handle,
         uint32_t domain)
     : domain_(domain)
-    , handler_(handle)
+    , handler_(&handle)
     , node_proxies_({
             nullptr,
             nullptr,
@@ -463,6 +466,24 @@ void OrchestratorNode::send_control_command(
 {
     control_writer_->write(cmd.get_impl());
 }
+
+void OrchestratorNode::spin()
+{
+    EPROSIMA_LOG_INFO(ORCHESTRATOR, "Spinning Orchestrator... ");
+
+    std::unique_lock<std::mutex> lock(mtx_);
+    spin_cv_.wait(lock, [&]
+            {
+                return terminate_.load();
+            });
+}
+
+void OrchestratorNode::terminate()
+{
+    terminate_.store(true);
+    spin_cv_.notify_all();
+}
+
 
 } // namespace orchestrator
 } // namespace orchestrator

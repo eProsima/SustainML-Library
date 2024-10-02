@@ -16,7 +16,6 @@
  * @file OrchestratorNode.hpp
  */
 
-
 #ifndef SUSTAINMLCPP_ORCHESTRATOR_ORCHESTRATORNODE_HPP
 #define SUSTAINMLCPP_ORCHESTRATOR_ORCHESTRATORNODE_HPP
 
@@ -94,7 +93,7 @@ public:
         types::UserInput>;
 
     OrchestratorNode(
-            std::shared_ptr<OrchestratorNodeHandle> handler,
+            OrchestratorNodeHandle& handler,
             uint32_t domain = 0);
 
     ~OrchestratorNode();
@@ -174,15 +173,25 @@ public:
     /**
      * @brief Used to retrieve the associated OrchestratorNodeHandle.
      */
-    inline std::weak_ptr<OrchestratorNodeHandle> get_handler()
+    inline OrchestratorNodeHandle& get_handler()
     {
-        return handler_;
+        return *handler_;
     }
 
     /**
      * @brief Used to retrieve the associated OrchestratorNodeHandle.
      */
     void print_db();
+
+    /**
+     * @brief Called by the user to run the run.
+     */
+    void spin();
+
+    /**
+     * @brief Stops the execution of the node.
+     */
+    static void terminate();
 
 protected:
 
@@ -199,7 +208,7 @@ protected:
 
     uint32_t domain_;
 
-    std::shared_ptr<OrchestratorNodeHandle> handler_;
+    OrchestratorNodeHandle* handler_;
 
     eprosima::fastdds::dds::DomainParticipant* participant_;
 
@@ -246,6 +255,10 @@ protected:
         OrchestratorNode* orchestrator_{nullptr};
 
     };
+
+    static std::condition_variable spin_cv_;
+    static std::atomic_bool terminate_;
+
     std::unique_ptr<OrchestratorParticipantListener> participant_listener_;
 
 };
