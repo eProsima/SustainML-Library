@@ -10,4 +10,5 @@ ollama
 ultralytics
 optimum
 onnx
+onnxruntime
 timm
