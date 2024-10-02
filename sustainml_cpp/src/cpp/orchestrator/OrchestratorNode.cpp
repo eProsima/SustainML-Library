@@ -484,7 +484,6 @@ void OrchestratorNode::terminate()
     spin_cv_.notify_all();
 }
 
-
 } // namespace orchestrator
 } // namespace orchestrator
 
