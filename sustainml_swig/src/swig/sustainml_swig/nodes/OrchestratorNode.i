@@ -21,9 +21,14 @@
 #define SWIG_WRAPPER
 #define GEN_API_VER 2
 
+%include <std_pair.i>
+
 %feature("director") sustainml::orchestrator::OrchestratorNodeHandle;
 
+%template(sustainml_pair) std::pair<types::TaskId, types::UserInput*>;
+
 %{
+#include <sustainml_cpp/types/types.h>
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
 %}
 

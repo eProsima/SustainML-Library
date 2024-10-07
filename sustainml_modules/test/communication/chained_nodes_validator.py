@@ -132,6 +132,12 @@ class ParseOptions():
             type=str,
             help='Executable name of the OrchestratorNode'
         )
+        parser.add_argument(
+            '-py-orc',
+            '--python-orchestrator',
+            type=str,
+            help='Executable name of the python OrchestratorNode'
+        )
 
         return parser.parse_args()
 
@@ -172,7 +178,7 @@ def run(args):
         sub_command.append('subscriber')
         sub_command.extend(['--topic', str(args.topic_sub)])
 
-    if not args.topic_pub and not args.topic_sub and not args.orchestrator:
+    if not args.topic_pub and not args.topic_sub and not (args.orchestrator or args.python_orchestrator):
         print('Not provided basic executable names.')
         sys.exit(1)
 
@@ -180,7 +186,7 @@ def run(args):
         pub_command.append(str('--'+ str(args.topic_type_pub)))
         sub_command.append(str('--'+ str(args.topic_type_sub)))
 
-    if not args.topic_type_pub and not args.topic_type_sub and not args.orchestrator:
+    if not args.topic_type_pub and not args.topic_type_sub and not (args.orchestrator or args.python_orchestrator):
         print('Not provided basic topic types.')
         sys.exit(1)
 
@@ -296,6 +302,17 @@ def run(args):
         listener_proc = subprocess.Popen(orch_exec)
         print(
             f'Running Orchestrator - commmand:  ' + str(orch_exec))
+        sleep(1)
+    elif args.python_orchestrator:
+        py_orch_exec = os.path.join(script_dir, args.python_orchestrator)
+
+        if not os.path.isfile(py_orch_exec):
+            print(f'OrchestratorNode python file does not exists: {py_orch_exec}')
+            sys.exit(1)
+
+        listener_proc = subprocess.Popen(['python3', py_orch_exec])
+        print(
+            f'Running Python Orchestrator - commmand:  ' + str(py_orch_exec))
         sleep(1)
 
     pub_procs = []
