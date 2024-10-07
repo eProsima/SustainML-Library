@@ -81,7 +81,7 @@ int main(
         int argc,
         char** argv)
 {
-    std::shared_ptr<SimpleOrchestratorNodeHandle> sonh = std::make_shared<SimpleOrchestratorNodeHandle>();
+    SimpleOrchestratorNodeHandle* sonh = new SimpleOrchestratorNodeHandle();
 
     // NodeID, <Node Status, Output counter>
     SimpleOrchestratorNodeHandle::DataCollection expected_data_nodes_ready =
@@ -107,7 +107,7 @@ int main(
 
     sonh->prepare_expected_data(expected_data_nodes_ready);
 
-    sustainml::orchestrator::OrchestratorNode orchestrator(sonh);
+    sustainml::orchestrator::OrchestratorNode orchestrator(*sonh);
 
     // First, wait for all nodes to be ready
     sonh->wait_for_data(std::chrono::hours(24));

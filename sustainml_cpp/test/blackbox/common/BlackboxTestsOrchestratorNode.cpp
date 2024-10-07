@@ -90,11 +90,11 @@ static TestOrchestratorNodeHandle::DataCollection nodes_ready_expected_data =
 
 TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
 {
-    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+    TestOrchestratorNodeHandle* tonh = new TestOrchestratorNodeHandle();
 
     tonh->prepare_expected_data(nodes_ready_expected_data);
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*tonh);
 
     MLModelMetadataManagedNode ml_met_node;
     MLModelManagedNode ml_node;
@@ -115,7 +115,7 @@ TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
 
 TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
 {
-    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+    TestOrchestratorNodeHandle* tonh = new TestOrchestratorNodeHandle();
 
     TestOrchestratorNodeHandle::DataCollection expected_data =
     {
@@ -145,16 +145,16 @@ TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*tonh);
 
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
 }
 
 TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
 {
-    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+    TestOrchestratorNodeHandle* tonh = new TestOrchestratorNodeHandle();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*tonh);
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
@@ -200,9 +200,9 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
 
 TEST(OrchestratorNode, OrchestratorGetTaskData)
 {
-    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+    TestOrchestratorNodeHandle* tonh = new TestOrchestratorNodeHandle();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*tonh);
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
@@ -265,9 +265,9 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
 
 TEST(OrchestratorNode, OrchestratorGetNodeStatus)
 {
-    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+    TestOrchestratorNodeHandle* tonh = new TestOrchestratorNodeHandle();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*tonh);
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
@@ -326,9 +326,9 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
 
 TEST(OrchestratorNode, OrchestratorTaskIteration)
 {
-    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+    TestOrchestratorNodeHandle* tonh = new TestOrchestratorNodeHandle();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*tonh);
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
@@ -424,9 +424,9 @@ TEST(OrchestratorNode, OrchestratorTaskIteration)
 
 TEST(OrchestratorNode, OrchestratorGetTaskDataDoesNotAccumulate)
 {
-    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+    TestOrchestratorNodeHandle* tonh = new TestOrchestratorNodeHandle();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*tonh);
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
