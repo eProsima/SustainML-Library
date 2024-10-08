@@ -32,5 +32,44 @@
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
 %}
 
+%feature("director") types::AppRequirements;
+%feature("director") types::CO2Footprint;
+%feature("director") types::HWConstraints;
+%feature("director") types::HWResource;
+%feature("director") types::MLModelMetadata;
+%feature("director") types::MLModel;
+
+// Retrieve the pointer to the C++ object
+%inline %{
+    types::AppRequirements* cast_to_AppRequirements(void* ptr) {
+        return static_cast<types::AppRequirements*>(ptr);
+    }
+
+    types::CO2Footprint* cast_to_CO2Footprint(void* ptr) {
+        return static_cast<types::CO2Footprint*>(ptr);
+    }
+
+    types::HWConstraints* cast_to_HWConstraints(void* ptr) {
+        return static_cast<types::HWConstraints*>(ptr);
+    }
+
+    types::HWResource* cast_to_HWResource(void* ptr) {
+        return static_cast<types::HWResource*>(ptr);
+    }
+
+    types::MLModel* cast_to_MLModel(void* ptr) {
+        return static_cast<types::MLModel*>(ptr);
+    }
+
+    types::MLModelMetadata* cast_to_MLModelMetadata(void* ptr) {
+        return static_cast<types::MLModelMetadata*>(ptr);
+    }
+
+    void* new_voidp() {
+        return new void*;
+    }
+%}
+
 // Include the class interfaces
+%include <sustainml_cpp/types/types.h>
 %include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>

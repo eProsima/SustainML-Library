@@ -15,6 +15,7 @@
 
 from enum import Enum
 from sustainml_swig import AppRequirements, CO2Footprint, HWConstraints, HWResource, MLModelMetadata, MLModel
+import sustainml_swig
 
 class node_id(Enum):
     APP_REQUIREMENTS = 0
@@ -52,7 +53,7 @@ def string_status(status):
     elif status == node_status.TERMINATING.value:     # NODE_TERMINATING
         return "TERMINATING"
     else:
-        return "UNKNOWN"
+        return "Unknown status"
 
 def string_node(node):
     if node == node_id.APP_REQUIREMENTS.value:        # ID_APP_REQUIREMENTS
@@ -70,30 +71,40 @@ def string_node(node):
     elif node == node_id.ORCHESTRATOR.value:          # ID_ORCHESTRATOR (MAX is ID 6)
         return "Orchestrator"
     else:
-        return "UNKNOWN"
+        return "Unknown node"
 
 def string_task(task):
-    return "{" + task.problem_id() + ", " + task.iteration_id() + "}"
+    return "{" + str(task.problem_id()) + ", " + str(task.iteration_id()) + "}"
 
-def string_task(id, data):
+def get_task(id, data):
+    casted_data = None
     if id == node_id.APP_REQUIREMENTS.value:          # ID_APP_REQUIREMENTS
-        casted_data = AppRequirements(data)
-        return string_task(casted_data.task_id())
+        casted_data = sustainml_swig.cast_to_AppRequirements(data)
     elif id == node_id.CARBONTRACKER.value:           # ID_CARBON_FOOTPRINT
-        casted_data = CO2Footprint(data)
-        return string_task(casted_data.task_id())
+        casted_data = sustainml_swig.cast_to_CO2Footprint(data)
     elif id == node_id.HW_CONSTRAINTS.value:          # ID_HW_CONSTRAINTS
-        casted_data = HWConstraints(data)
-        return string_task(casted_data.task_id())
+        casted_data = sustainml_swig.cast_to_HWConstraints(data)
     elif id == node_id.HW_PROVIDER.value:             # ID_HW_RESOURCES
-        casted_data = HWResource(data)
-        return string_task(casted_data.task_id())
+        casted_data = sustainml_swig.cast_to_HWResource(data)
     elif id == node_id.ML_MODEL_METADATA.value:       # ID_ML_MODEL_METADATA
-        casted_data = MLModelMetadata(data)
-        return string_task(casted_data.task_id())
+        casted_data = sustainml_swig.cast_to_MLModelMetadata(data)
     elif id == node_id.ML_MODEL_PROVIDER.value:       # ID_ML_MODEL
-        casted_data = MLModel(data)
-        return string_task(casted_data.task_id())
-    else:
-        return "UNKNOWN"
+        casted_data = sustainml_swig.cast_to_MLModel(data)
+    return casted_data.task_id()
+
+def get_data(id, data_void_ptr):
+    data = None
+    if id == node_id.APP_REQUIREMENTS.value:
+        data = sustainml_swig.cast_to_AppRequirements(data_void_ptr)
+    elif id == node_id.CARBONTRACKER.value:
+        data = sustainml_swig.cast_to_CO2Footprint(data_void_ptr)
+    elif id == node_id.HW_CONSTRAINTS.value:
+        data = sustainml_swig.cast_to_HWConstraints(data_void_ptr)
+    elif id == node_id.HW_PROVIDER.value:
+        data = sustainml_swig.cast_to_HWResource(data_void_ptr)
+    elif id == node_id.ML_MODEL_METADATA.value:
+        data = sustainml_swig.cast_to_MLModelMetadata(data_void_ptr)
+    elif id == node_id.ML_MODEL_PROVIDER.value:
+        data = sustainml_swig.cast_to_MLModel(data_void_ptr)
+    return data
 
