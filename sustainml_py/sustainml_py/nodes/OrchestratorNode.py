@@ -74,6 +74,7 @@ class OrchestratorNode:
         self.node_.spin()
 
     # Proxy method to manually terminate
-    def terminate():
+    def terminate(self):
 
-        cpp_OrchestratorNode.terminate()
+        self.node_.terminate()
+        self.node_.destroy()

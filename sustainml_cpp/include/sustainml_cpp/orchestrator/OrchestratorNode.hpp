@@ -173,9 +173,9 @@ public:
     /**
      * @brief Used to retrieve the associated OrchestratorNodeHandle.
      */
-    inline OrchestratorNodeHandle& get_handler()
+    inline OrchestratorNodeHandle* get_handler() const
     {
-        return *handler_;
+        return handler_;
     }
 
     /**
@@ -189,9 +189,15 @@ public:
     void spin();
 
     /**
+     * @brief Remove all Fast DDS entities and clean up the OrchestratorNode and OrchestratorNodeHandle.
+     *
+     */
+    void destroy();
+
+    /**
      * @brief Stops the execution of the node.
      */
-    static void terminate();
+    void terminate();
 
 protected:
 
@@ -232,6 +238,7 @@ protected:
     std::mutex mtx_;
 
     std::atomic_bool initialized_{false};
+    std::atomic_bool terminated_{false};
     std::condition_variable initialization_cv_;
 
     /**
@@ -256,8 +263,8 @@ protected:
 
     };
 
-    static std::condition_variable spin_cv_;
-    static std::atomic_bool terminate_;
+    std::condition_variable spin_cv_;
+    std::atomic_bool terminate_;
 
     std::unique_ptr<OrchestratorParticipantListener> participant_listener_;
 

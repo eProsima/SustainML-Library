@@ -101,9 +101,10 @@ class OrchestratorNode:
         self.node_.spin()
 
     # Proxy method to manually terminate
-    def terminate():
+    def terminate(self):
 
-        cpp_OrchestratorNode.terminate()
+        self.node_.terminate()
+        self.node_.destroy()
 
 # Call main in program execution
 if __name__ == '__main__':
@@ -129,3 +130,4 @@ if __name__ == '__main__':
     ui.problem_definition("Classify cars in a video sequence.")
     node.node_.start_task(task_id, ui)
     node.handler_.wait_for_data()
+    node.terminate()

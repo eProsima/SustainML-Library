@@ -196,7 +196,7 @@ ModuleNodeProxy::~ModuleNodeProxy()
 void ModuleNodeProxy::notify_status_change()
 {
     std::lock_guard<std::mutex> lock(orchestrator_->get_mutex());
-    OrchestratorNodeHandle* handler_ptr = &(orchestrator_->get_handler());
+    OrchestratorNodeHandle* handler_ptr = orchestrator_->get_handler();
     if (handler_ptr != nullptr)
     {
         handler_ptr->on_node_status_change(node_id_, status_);
@@ -208,7 +208,7 @@ void ModuleNodeProxy::notify_new_node_ouput()
     store_data_in_db();
     void* untyped_data = get_tmp_untyped_data();
     std::lock_guard<std::mutex> lock(orchestrator_->get_mutex());
-    OrchestratorNodeHandle* handler_ptr = &(orchestrator_->get_handler());
+    OrchestratorNodeHandle* handler_ptr = orchestrator_->get_handler();
     if (handler_ptr != nullptr)
     {
         handler_ptr->on_new_node_output(node_id_, untyped_data);
