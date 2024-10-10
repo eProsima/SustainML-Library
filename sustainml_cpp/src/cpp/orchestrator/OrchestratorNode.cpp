@@ -459,6 +459,132 @@ RetCode_t OrchestratorNode::get_task_data(
     return ret;
 }
 
+RetCode_t OrchestratorNode::get_task_data_(
+        const types::TaskId& task_id,
+        const NodeID& node_id,
+        void* data)
+{
+    RetCode_t ret = RetCode_t::RETCODE_NO_DATA;
+
+    std::lock_guard<std::mutex> lock(task_db_->get_mutex());
+
+    switch (node_id)
+    {
+        case NodeID::ID_ML_MODEL_METADATA:
+        {
+            MapFromNodeIDToType_t<NodeID::ID_ML_MODEL_METADATA>::type* typed_data = nullptr;
+            if (task_db_->get_task_data_nts(task_id, typed_data))
+            {
+                data = typed_data;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
+            }
+            break;
+        }
+        case NodeID::ID_ML_MODEL:
+        {
+            MapFromNodeIDToType_t<NodeID::ID_ML_MODEL>::type* typed_data = nullptr;
+            if (task_db_->get_task_data_nts(task_id, typed_data))
+            {
+                data = typed_data;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
+            }
+            break;
+        }
+        case NodeID::ID_HW_RESOURCES:
+        {
+            MapFromNodeIDToType_t<NodeID::ID_HW_RESOURCES>::type* typed_data = nullptr;
+            if (task_db_->get_task_data_nts(task_id, typed_data))
+            {
+                data = typed_data;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
+            }
+            break;
+        }
+        case NodeID::ID_CARBON_FOOTPRINT:
+        {
+            MapFromNodeIDToType_t<NodeID::ID_CARBON_FOOTPRINT>::type* typed_data = nullptr;
+            if (task_db_->get_task_data_nts(task_id, typed_data))
+            {
+                data = typed_data;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
+            }
+            break;
+        }
+        case NodeID::ID_HW_CONSTRAINTS:
+        {
+            MapFromNodeIDToType_t<NodeID::ID_HW_CONSTRAINTS>::type* typed_data = nullptr;
+            if (task_db_->get_task_data_nts(task_id, typed_data))
+            {
+                data = typed_data;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
+            }
+            break;
+        }
+        case NodeID::ID_APP_REQUIREMENTS:
+        {
+            MapFromNodeIDToType_t<NodeID::ID_APP_REQUIREMENTS>::type* typed_data = nullptr;
+            if (task_db_->get_task_data_nts(task_id, typed_data))
+            {
+                data = typed_data;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
+            }
+            break;
+        }
+        case NodeID::ID_ORCHESTRATOR:
+        {
+            MapFromNodeIDToType_t<NodeID::ID_ORCHESTRATOR>::type* typed_data = nullptr;
+            if (task_db_->get_task_data_nts(task_id, typed_data))
+            {
+                data = typed_data;
+                //! Check if the task_id is the same as the one requested
+                //! meaning that the data has already been received
+                if (typed_data->task_id() == task_id)
+                {
+                    ret = RetCode_t::RETCODE_OK;
+                }
+            }
+        }
+        default:
+        {
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR, "Requested Data from non-existing node ID");
+            break;
+        }
+    }
+
+    return ret;
+}
+
+
 RetCode_t OrchestratorNode::get_node_status(
         const NodeID& node_id,
         const types::NodeStatus*& status)

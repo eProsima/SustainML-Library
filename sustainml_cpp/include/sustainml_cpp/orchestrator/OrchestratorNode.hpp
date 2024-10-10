@@ -109,6 +109,11 @@ public:
             const NodeID& node_id,
             void*& data);
 
+    RetCode_t get_task_data_(
+            const types::TaskId& task_id,
+            const NodeID& node_id,
+            void* data);
+
     /**
      * @brief Get the node status from DB given node identifier.
      * @param [in] node_id id identifier of the node that triggered the new status
