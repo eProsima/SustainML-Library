@@ -107,7 +107,7 @@ int main(
 
     sonh->prepare_expected_data(expected_data_nodes_ready);
 
-    sustainml::orchestrator::OrchestratorNode orchestrator(sonh);
+    sustainml::orchestrator::OrchestratorNode orchestrator(*(sonh.get()));
 
     // First, wait for all nodes to be ready
     sonh->wait_for_data(std::chrono::hours(24));
@@ -123,6 +123,7 @@ int main(
 
     // Now all nodes should have publish one output i.e the one for {1,1}
     sonh->wait_for_data(std::chrono::hours(24));
+    orchestrator.destroy();
 
     return 0;
 }

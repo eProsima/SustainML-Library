@@ -1,4 +1,4 @@
-// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2024 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 ////////////////////////////////////////////////////////
-// Binding for class Node
+// Binding for class Constants
 ////////////////////////////////////////////////////////
 
 // Any macro used on the header files will give an error if it is not redefined here
@@ -26,8 +26,8 @@
 %ignore *::operator=;
 
 %{
-#include <sustainml_cpp/core/Node.hpp>
+#include <sustainml_cpp/core/Constants.hpp>
 %}
 
 // Include the class interfaces
-%include <sustainml_cpp/core/Node.hpp>
+%include <sustainml_cpp/core/Constants.hpp>

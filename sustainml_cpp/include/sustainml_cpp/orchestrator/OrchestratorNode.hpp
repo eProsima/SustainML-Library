@@ -16,7 +16,6 @@
  * @file OrchestratorNode.hpp
  */
 
-
 #ifndef SUSTAINMLCPP_ORCHESTRATOR_ORCHESTRATORNODE_HPP
 #define SUSTAINMLCPP_ORCHESTRATOR_ORCHESTRATORNODE_HPP
 
@@ -94,7 +93,7 @@ public:
         types::UserInput>;
 
     OrchestratorNode(
-            std::shared_ptr<OrchestratorNodeHandle> handler,
+            OrchestratorNodeHandle& handler,
             uint32_t domain = 0);
 
     ~OrchestratorNode();
@@ -174,7 +173,7 @@ public:
     /**
      * @brief Used to retrieve the associated OrchestratorNodeHandle.
      */
-    inline std::weak_ptr<OrchestratorNodeHandle> get_handler()
+    inline OrchestratorNodeHandle* get_handler() const
     {
         return handler_;
     }
@@ -183,6 +182,22 @@ public:
      * @brief Used to retrieve the associated OrchestratorNodeHandle.
      */
     void print_db();
+
+    /**
+     * @brief Called by the user to run the run.
+     */
+    void spin();
+
+    /**
+     * @brief Remove all Fast DDS entities and clean up the OrchestratorNode and OrchestratorNodeHandle.
+     *
+     */
+    void destroy();
+
+    /**
+     * @brief Stops the execution of the node.
+     */
+    void terminate();
 
 protected:
 
@@ -199,7 +214,7 @@ protected:
 
     uint32_t domain_;
 
-    std::shared_ptr<OrchestratorNodeHandle> handler_;
+    OrchestratorNodeHandle* handler_;
 
     eprosima::fastdds::dds::DomainParticipant* participant_;
 
@@ -223,6 +238,7 @@ protected:
     std::mutex mtx_;
 
     std::atomic_bool initialized_{false};
+    std::atomic_bool terminated_{false};
     std::condition_variable initialization_cv_;
 
     /**
@@ -246,6 +262,10 @@ protected:
         OrchestratorNode* orchestrator_{nullptr};
 
     };
+
+    std::condition_variable spin_cv_;
+    std::atomic_bool terminate_;
+
     std::unique_ptr<OrchestratorParticipantListener> participant_listener_;
 
 };

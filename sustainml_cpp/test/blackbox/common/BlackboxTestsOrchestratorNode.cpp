@@ -94,7 +94,7 @@ TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
 
     tonh->prepare_expected_data(nodes_ready_expected_data);
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
 
     MLModelMetadataManagedNode ml_met_node;
     MLModelManagedNode ml_node;
@@ -111,6 +111,7 @@ TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
     hw_cons_node.start();
 
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
+    orchestrator.destroy();
 }
 
 TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
@@ -145,16 +146,17 @@ TEST(OrchestratorNode, AlateJoinerOrchestratorInitializesProperly)
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
 
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
+    orchestrator.destroy();
 }
 
 TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
 {
     std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
@@ -196,13 +198,14 @@ TEST(OrchestratorNode, OrchestratorReceivesNodeOutputs)
     orchestrator.start_task(task.first, task.second);
 
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
+    orchestrator.destroy();
 }
 
 TEST(OrchestratorNode, OrchestratorGetTaskData)
 {
     std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
@@ -261,13 +264,14 @@ TEST(OrchestratorNode, OrchestratorGetTaskData)
     ASSERT_EQ(((types::MLModelMetadata*)enc_task)->task_id().problem_id(), 2);
     ASSERT_EQ(orchestrator.get_task_data({2, 1}, NodeID::ID_HW_RESOURCES, hw), RetCode_t::RETCODE_OK);
     ASSERT_EQ(((types::HWResource*)hw)->task_id().problem_id(), 2);
+    orchestrator.destroy();
 }
 
 TEST(OrchestratorNode, OrchestratorGetNodeStatus)
 {
     std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
@@ -322,13 +326,14 @@ TEST(OrchestratorNode, OrchestratorGetNodeStatus)
     ASSERT_EQ(status->node_status(), Status::NODE_IDLE);
     orchestrator.get_node_status(NodeID::ID_APP_REQUIREMENTS, status);
     ASSERT_EQ(status->node_status(), Status::NODE_IDLE);
+    orchestrator.destroy();
 }
 
 TEST(OrchestratorNode, OrchestratorTaskIteration)
 {
     std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
@@ -420,13 +425,14 @@ TEST(OrchestratorNode, OrchestratorTaskIteration)
     ASSERT_EQ(1, carbon_iterated_data->task_id().problem_id());
     ASSERT_EQ(2, carbon_iterated_data->task_id().iteration_id());
     ASSERT_GT(carbon_iterated_data->energy_consumption(), 300);
+    orchestrator.destroy();
 }
 
 TEST(OrchestratorNode, OrchestratorGetTaskDataDoesNotAccumulate)
 {
     std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
 
-    orchestrator::OrchestratorNode orchestrator(tonh);
+    orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
 
     MLModelMetadataManagedNode te_node;
     MLModelManagedNode ml_node;
@@ -497,4 +503,5 @@ TEST(OrchestratorNode, OrchestratorGetTaskDataDoesNotAccumulate)
     orchestrator.start_task(task.first, task.second);
 
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(10)));
+    orchestrator.destroy();
 }
