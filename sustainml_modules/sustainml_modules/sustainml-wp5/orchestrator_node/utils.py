@@ -15,6 +15,7 @@
 
 from enum import Enum
 from sustainml_swig import AppRequirements, CO2Footprint, HWConstraints, HWResource, MLModelMetadata, MLModel
+import sustainml_swig
 
 class node_id(Enum):
     APP_REQUIREMENTS = 0
@@ -52,7 +53,7 @@ def string_status(status):
     elif status == node_status.TERMINATING.value:     # NODE_TERMINATING
         return "TERMINATING"
     else:
-        return "UNKNOWN"
+        return "Unknown status"
 
 def string_node(node):
     if node == node_id.APP_REQUIREMENTS.value:        # ID_APP_REQUIREMENTS
@@ -70,5 +71,19 @@ def string_node(node):
     elif node == node_id.ORCHESTRATOR.value:          # ID_ORCHESTRATOR (MAX is ID 6)
         return "Orchestrator"
     else:
-        return "UNKNOWN"
+        return "Unknown node"
+
+def string_std_vector(vector):
+    output = ""
+    vector_size = 0
+    if vector is not None:
+        vector_size = vector.size()
+    for i in range(vector_size):
+        if output != "":
+            output += ", "
+        output += str(vector[i])
+    return output
+
+def string_task(task):
+    return "{" + str(task.problem_id()) + ", " + str(task.iteration_id()) + "}"
 
