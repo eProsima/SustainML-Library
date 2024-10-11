@@ -13,12 +13,12 @@
 # limitations under the License.
 """SustainML Backend Node Implementation."""
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import threading
 import time
 import signal
 import sys
-from orchestrator_node import orchestrator_node
+from orchestrator_node import orchestrator_node, utils
 from werkzeug.serving import make_server
 
 running = True
@@ -35,6 +35,39 @@ def hello_world():
 @server.route('/status', methods=['GET'])
 def status():
     return orchestrator.get_all_status()
+
+@server.route('/status', methods=['POST'])
+def status_args():
+    data = request.json
+    node_id = data.get('node_id')
+    return jsonify({'status': f'{orchestrator.get_status(node_id)}'}), 200
+
+@server.route('/results', methods=['GET'])
+def results():
+    last_task_id = orchestrator.get_last_task_id()
+    if last_task_id is None:
+        return 'Nodes have not reported any output yet.\n', 200
+    app_req = orchestrator.get_results(utils.node_id.APP_REQUIREMENTS.value, last_task_id)
+    metadata = orchestrator.get_results(utils.node_id.ML_MODEL_METADATA.value, last_task_id)
+    constraints = orchestrator.get_results(utils.node_id.HW_CONSTRAINTS.value, last_task_id)
+    model = orchestrator.get_results(utils.node_id.ML_MODEL_PROVIDER.value, last_task_id)
+    hardware = orchestrator.get_results(utils.node_id.HW_PROVIDER.value, last_task_id)
+    carbontracker = orchestrator.get_results(utils.node_id.CARBONTRACKER.value, last_task_id)
+    json = {f'{utils.string_node(utils.node_id.APP_REQUIREMENTS.value)}': f'{app_req}',
+            f'{utils.string_node(utils.node_id.ML_MODEL_METADATA.value)}': f'{metadata}',
+            f'{utils.string_node(utils.node_id.HW_CONSTRAINTS.value)}': f'{constraints}',
+            f'{utils.string_node(utils.node_id.ML_MODEL_PROVIDER.value)}': f'{model}',
+            f'{utils.string_node(utils.node_id.HW_PROVIDER.value)}': f'{hardware}',
+            f'{utils.string_node(utils.node_id.CARBONTRACKER.value)}': f'{carbontracker}'}
+    return jsonify(json), 200
+
+@server.route('/results', methods=['POST'])
+def results_args():
+    data = request.json
+    node_id = data.get('node_id')
+    task_id = data.get('task_id')
+    return jsonify({f'{utils.string_node(node_id)}': f'{orchestrator.get_results(node_id, task_id)}'}), 200
+
 
 # Flask server shutdown route
 @server.route('/shutdown', methods=['GET'])
