@@ -92,10 +92,23 @@ public:
         types::MLModel,
         types::UserInput>;
 
+    /**
+     * @brief Construct a new Orchestrator Node object
+     *
+     * @param handler OrchestratorNodeHandle object to handle the callbacks
+     * @param domain Domain ID to use for the DDS entities
+     *
+     * @note The deletion of the handler is responsibility of the user.
+     */
     OrchestratorNode(
             OrchestratorNodeHandle& handler,
             uint32_t domain = 0);
 
+    /**
+     * @brief Destroy the Orchestrator Node object
+     *
+     * @note The deletion of the handler is responsibility of the user.
+     */
     ~OrchestratorNode();
 
     /**
@@ -214,6 +227,10 @@ protected:
 
     uint32_t domain_;
 
+    /**
+     * @brief Handle to manage the node status and node output callbacks
+     * @note The deletion of the handler is responsibility of the user.
+     */
     OrchestratorNodeHandle* handler_;
 
     eprosima::fastdds::dds::DomainParticipant* participant_;
