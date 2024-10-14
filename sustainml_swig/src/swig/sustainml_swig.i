@@ -86,6 +86,7 @@ typedef unsigned long uint64_t;
 %include "sustainml_swig/types/types.i"
 
 %include "sustainml_swig/core/Callable.i"
+%include "sustainml_swig/core/Constants.i"
 %include "sustainml_swig/core/Node.i"
 
 %include "sustainml_swig/nodes/AppRequirementsNode.i"
@@ -94,3 +95,4 @@ typedef unsigned long uint64_t;
 %include "sustainml_swig/nodes/HardwareResourcesNode.i"
 %include "sustainml_swig/nodes/MLModelNode.i"
 %include "sustainml_swig/nodes/MLModelMetadataNode.i"
+%include "sustainml_swig/nodes/OrchestratorNode.i"

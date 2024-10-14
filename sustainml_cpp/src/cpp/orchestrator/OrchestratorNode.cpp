@@ -69,33 +69,38 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
     NodeID node_id = common::get_node_id_from_name(participant_name);
 
     std::lock_guard<std::mutex> lock(orchestrator_->proxies_mtx_);
-    if (reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DISCOVERED_PARTICIPANT &&
-            orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] == nullptr)
+
+    // check if the node has been terminated
+    if (!orchestrator_->terminated_.load())
     {
-        EPROSIMA_LOG_INFO(ORCHESTRATOR, "Creating node proxy for " << participant_name << " node");
-        ModuleNodeProxyFactory::make_node_proxy(
-            node_id,
-            orchestrator_,
-            orchestrator_->task_db_,
-            orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]);
-    }
-    else if ((reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DROPPED_PARTICIPANT ||
-            reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::REMOVED_PARTICIPANT) &&
-            orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] != nullptr)
-    {
-        EPROSIMA_LOG_INFO(ORCHESTRATOR, "Setting inactive " << participant_name << " node");
-        types::NodeStatus status = orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]->get_status();
-        status.node_status(Status::NODE_INACTIVE);
-        orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]->set_status(status);
-        orchestrator_->handler_->on_node_status_change(node_id, status);
+        if (reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DISCOVERED_PARTICIPANT &&
+                orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] == nullptr)
+        {
+            EPROSIMA_LOG_INFO(ORCHESTRATOR, "Creating node proxy for " << participant_name << " node");
+            ModuleNodeProxyFactory::make_node_proxy(
+                node_id,
+                orchestrator_,
+                orchestrator_->task_db_,
+                orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]);
+        }
+        else if ((reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DROPPED_PARTICIPANT ||
+                reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::REMOVED_PARTICIPANT) &&
+                orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] != nullptr)
+        {
+            EPROSIMA_LOG_INFO(ORCHESTRATOR, "Setting inactive " << participant_name << " node");
+            types::NodeStatus status = orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]->get_status();
+            status.node_status(Status::NODE_INACTIVE);
+            orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)]->set_status(status);
+            orchestrator_->handler_->on_node_status_change(node_id, status);
+        }
     }
 }
 
 OrchestratorNode::OrchestratorNode(
-        std::shared_ptr<OrchestratorNodeHandle> handle,
+        OrchestratorNodeHandle& handle,
         uint32_t domain)
     : domain_(domain)
-    , handler_(handle)
+    , handler_(&handle)
     , node_proxies_({
             nullptr,
             nullptr,
@@ -116,34 +121,46 @@ OrchestratorNode::OrchestratorNode(
 
 OrchestratorNode::~OrchestratorNode()
 {
-    std::lock_guard<std::mutex> lock(mtx_);
-    for (size_t i = 0; i < (size_t)NodeID::MAX; i++)
+    destroy();
+}
+
+void OrchestratorNode::destroy()
+{
+    if (!terminated_.load())
     {
-        std::lock_guard<std::mutex> lock(proxies_mtx_);
-        if (node_proxies_[i] != nullptr)
+        std::lock_guard<std::mutex> lock_proxies(proxies_mtx_);
+        std::lock_guard<std::mutex> lock(mtx_);
+        for (size_t i = 0; i < (size_t)NodeID::MAX; i++)
         {
-            delete node_proxies_[i];
+            if (node_proxies_[i] != nullptr)
+            {
+                delete node_proxies_[i];
+                node_proxies_[i] = nullptr;
+            }
         }
+
+        if (sub_ != nullptr)
+        {
+            sub_->delete_contained_entities();
+        }
+
+        if (pub_ != nullptr)
+        {
+            pub_->delete_contained_entities();
+        }
+
+        if (participant_ != nullptr)
+        {
+            participant_->delete_contained_entities();
+        }
+
+        DomainParticipantFactory::get_instance()->delete_participant(participant_);
+
+        delete task_man_;
+
+        handler_ = nullptr;
+        terminated_.store(true);
     }
-
-    if (sub_ != nullptr)
-    {
-        sub_->delete_contained_entities();
-    }
-
-    if (pub_ != nullptr)
-    {
-        pub_->delete_contained_entities();
-    }
-
-    if (participant_ != nullptr)
-    {
-        participant_->delete_contained_entities();
-    }
-
-    DomainParticipantFactory::get_instance()->delete_participant(participant_);
-
-    delete task_man_;
 }
 
 void OrchestratorNode::print_db()
@@ -464,6 +481,23 @@ void OrchestratorNode::send_control_command(
     control_writer_->write(cmd.get_impl());
 }
 
+void OrchestratorNode::spin()
+{
+    EPROSIMA_LOG_INFO(ORCHESTRATOR, "Spinning Orchestrator... ");
+    std::unique_lock<std::mutex> lock(mtx_);
+    spin_cv_.wait(lock, [&]
+            {
+                return terminate_.load();
+            });
+}
+
+void OrchestratorNode::terminate()
+{
+    terminate_.store(true);
+    destroy();
+    spin_cv_.notify_all();
+}
+
 } // namespace orchestrator
-} // namespace orchestrator
+} // namespace sustainml
 

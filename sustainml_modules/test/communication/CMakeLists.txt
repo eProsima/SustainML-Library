@@ -48,6 +48,9 @@ target_link_libraries(SimpleOrchestratorNode
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/chained_nodes_validator.py
     ${CMAKE_CURRENT_BINARY_DIR}/chained_nodes_validator.py COPYONLY)
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/SimpleOrchestratorNode.py
+    ${CMAKE_CURRENT_BINARY_DIR}/SimpleOrchestratorNode.py COPYONLY)
+
 if (Python3_FOUND)
 
     add_test(NAME SimpleCommunicationSixNodesChainedPython
@@ -76,5 +79,15 @@ if (Python3_FOUND)
             -hwc hw_constraints_node.py
             -ap app_requirements_node.py
             -orc SimpleOrchestratorNode)
+
+    add_test(NAME SimpleCommunicationPythonOrchestratorSixNodesPython
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/chained_nodes_validator.py
+            -mlm ml_model_metadata_node.py
+            -ml ml_model_provider_node.py
+            -hw hw_resources_provider_node.py
+            -co2 carbon_footprint_node.py
+            -hwc hw_constraints_node.py
+            -ap app_requirements_node.py
+            -py-orc SimpleOrchestratorNode.py)
 
 endif()
