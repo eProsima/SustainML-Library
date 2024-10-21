@@ -30,11 +30,11 @@ server_port = 5001
 # Flask server default route
 @server.route('/')
 def hello_world():
-    return 'Hello world! Use "/terminate" route to stop Back-end node.\n'
+    return jsonify({'mesage': 'Hello world! Use "/terminate" route to stop Back-end node.<br>'}), 200
 
 @server.route('/status', methods=['GET'])
 def status():
-    return orchestrator.get_all_status()
+    return jsonify({'status': f'{orchestrator.get_all_status()}'}), 200
 
 @server.route('/status', methods=['POST'])
 def status_args():
@@ -42,6 +42,7 @@ def status_args():
     node_id = data.get('node_id')
     return jsonify({'status': f'{orchestrator.get_status(node_id)}'}), 200
 
+# Retrieve Node results methods
 @server.route('/results', methods=['GET'])
 def results():
     last_task_id = orchestrator.get_last_task_id()
@@ -68,21 +69,20 @@ def results_args():
     task_id = data.get('task_id')
     return jsonify({f'{utils.string_node(node_id)}': f'{orchestrator.get_results(node_id, task_id)}'}), 200
 
-
 # Flask server shutdown route
 @server.route('/shutdown', methods=['GET'])
 def shutdown():
     shutdown_func = request.environ.get('werkzeug.server.shutdown')
     if shutdown_func is None:
-        return 'Use "/terminate" route to stop Back-end node.\n'
+        return jsonify({'message': 'Use "/terminate" route to stop Back-end node.<br>'}), 200
     shutdown_func()
-    return 'Terminating...\n'
+    return jsonify({'message': 'Terminating...<br>'}), 200
 
 # Flask server terminate route
 @server.route('/terminate', methods=['GET'])
 def terminate():
     signal.raise_signal(signal.SIGINT)
-    return 'Terminating...\n'
+    return jsonify({'message': 'Terminating...<br>'}), 200
 
 class ServerThread(threading.Thread):
     def __init__(self):
