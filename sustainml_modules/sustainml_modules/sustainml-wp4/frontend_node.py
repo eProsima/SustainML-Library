@@ -227,5 +227,15 @@ def get_geolocation():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/send_pd', methods=['POST'])
+def send_pd():
+    try:
+        data = request.json
+        # pipe the information to the backend
+        requests.post('http://127.0.0.1:5001/user_input', json=data)
+        return jsonify({'message': 'Data successfully sent'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)

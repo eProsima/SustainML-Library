@@ -39,6 +39,9 @@
             <p>Model's suggestion?</p>
             <select id="model-select"></select>
         </div>
+        <div id="submit-pd" class="hidden">
+            <button class="response-button">Submit PD Info</button>
+        </div>
     </div>
     <!-- Environment section -->
     <div id="env-section" class="hidden">
@@ -177,11 +180,45 @@
                     option.textContent = model;
                     modelSelect.appendChild(option);
                 });
+                modelSelect.addEventListener('change', function() {
+                    document.getElementById('submit-pd').style.display = 'block';
+                });
             })
             .catch(error => {
                 console.error('Failed to fetch filtered options:', error);
             });
         }
+
+        document.getElementById('submit-pd').addEventListener('click', function() {
+            const modality = document.getElementById('modality-select').value;
+            const problemType = document.getElementById('problem-type-select').value;
+            const evaluationMetrics = document.getElementById('evaluation-metrics-select').value;
+            const model = document.getElementById('model-select').value;
+
+            // Handle the PD data submission (e.g., send it to your server)
+            const pdData = {
+                modality,
+                problemType,
+                evaluationMetrics,
+                model
+            };
+
+            console.log('PD Data:', pdData);
+            fetch('/send_pd', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    'modality': modality,
+                    'problem_type': problemType,
+                    'evaluation_metrics': evaluationMetrics,
+                    'model': model
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Show results ?
+            })
+        });
 
         // Handle the environment submission
         document.getElementById('submit-environment').addEventListener('click', function() {
