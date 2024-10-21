@@ -18,8 +18,14 @@ from flask import Flask, request, jsonify, send_from_directory
 import pandas as pd
 import csv
 import requests
-from kaggle.api.kaggle_api_extended import KaggleApi
-import kaggle
+
+kaggle_available = True
+try:
+    from kaggle.api.kaggle_api_extended import KaggleApi
+    import kaggle
+except IOError as error:
+    print("Kaggle API not available: \n", error)
+    kaggle_available = False
 
 app = Flask(__name__)
 
@@ -31,8 +37,9 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 uploaded_data = None
 
 # Initialize Kaggle API
-kaggle_api = KaggleApi()
-kaggle_api.authenticate()
+if kaggle_available:
+    kaggle_api = KaggleApi()
+    kaggle_api.authenticate()
 
 @app.route('/search_datasets', methods=['POST'])
 def search_datasets():
@@ -53,21 +60,25 @@ def search_datasets():
     if not search_term:
         return jsonify({'error': 'Invalid modality'}), 400
 
-    try:
-        datasets = kaggle_api.dataset_list(search=search_term, page_size=10)
-        datasets_info = []
-        for dataset in datasets:
-            datasets_info.append({
-                'title': dataset.title,
-                'url': f'https://www.kaggle.com/datasets/{dataset.ref}',
-                'description': dataset.subtitle,
-                'downloads': dataset.downloadCount,
-                'size': f'{dataset.totalBytes // (1024 * 1024)} MB',
-            })
-        return jsonify({'datasets': datasets_info})
-    except Exception as e:
-        print(f"Error searching datasets: {e}")
-        return jsonify({'error': 'Failed to fetch datasets'}), 500
+    if kaggle_available:
+        try:
+            datasets = kaggle_api.dataset_list(search=search_term, page_size=10)
+            datasets_info = []
+            for dataset in datasets:
+                datasets_info.append({
+                    'title': dataset.title,
+                    'url': f'https://www.kaggle.com/datasets/{dataset.ref}',
+                    'description': dataset.subtitle,
+                    'downloads': dataset.downloadCount,
+                    'size': f'{dataset.totalBytes // (1024 * 1024)} MB',
+                })
+            return jsonify({'datasets': datasets_info})
+        except Exception as e:
+            print(f"Error searching datasets: {e}")
+            return jsonify({'error': 'Failed to fetch datasets'}), 500
+    else:
+        return jsonify({'error': 'kaggle is not available'}), 500
+
 
 @app.route('/')
 def index():
