@@ -1,5 +1,6 @@
 flask
 flask-socketio==5.2.0
+kaggle
 networkx>=3.0
 numpy>=1.24.1
 ollama
