@@ -32,6 +32,16 @@ server_port = 5001
 def hello_world():
     return jsonify({'mesage': 'Hello world! Use "/terminate" route to stop Back-end node.<br>'}), 200
 
+# Send user input data to orchestrator
+@server.route('/user_input', methods=['POST'])
+def user_input():
+    data = request.json
+    ret = orchestrator.send_user_input(data)
+    if not ret:
+        return jsonify({'error': 'Invalid input data'}), 400
+    return jsonify({'message': 'User input data sent successfully.<br>'}), 200
+
+# Retrieve Node status methods
 @server.route('/status', methods=['GET'])
 def status():
     return jsonify({'status': f'{orchestrator.get_all_status()}'}), 200

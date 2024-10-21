@@ -192,3 +192,18 @@ class Orchestrator:
             return self.get_carbontracker(task_id)
         else:
             return utils.string_node(node_id) + " node does not have any results to show.<br>"
+
+    def send_user_input(self, json_data):
+        pair = self.node_.prepare_new_task()
+        task_id = pair[0]
+        user_input = pair[1]
+
+        user_input.task_id(task_id)
+        if (json_data.get('modality') is not None):
+            user_input.modality(json_data.get('modality'))
+        if (json_data.get('problem_type') is not None):
+            user_input.problem_definition(json_data.get('problem_type'))
+        #user_input.evaluation_metrics(evaluation_metrics)
+        #user_input.model(model)
+
+        return self.node_.start_task(task_id, user_input)
