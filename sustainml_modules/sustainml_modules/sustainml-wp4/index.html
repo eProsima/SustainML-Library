@@ -42,6 +42,18 @@
         <div id="submit-pd" class="hidden">
             <button class="response-button">Submit PD Info</button>
         </div>
+        <div id="node-status" class="hidden">
+            <!-- JSON data will be displayed here -->
+        </div>
+        <div id="refresh-status" class="hidden">
+            <button class="status-button">Refresh Node Status</button>
+        </div>
+        <div id="framework-results" class="hidden">
+            <!-- JSON data will be displayed here -->
+        </div>
+        <div id="refresh-results" class="hidden">
+            <button class="results-button">Refresh Results</button>
+        </div>
     </div>
     <!-- Environment section -->
     <div id="env-section" class="hidden">
@@ -216,8 +228,40 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Show results ?
+                // Show results
+                document.getElementById("refresh-status").style.display = 'block';
+                document.getElementById("refresh-results").style.display = 'block';
+                refreshStatusNode();
+                refreshResults();
             })
+        });
+
+        function refreshStatusNode() {
+            fetch('/get_status', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("node-status").style.display = 'block';
+                document.querySelector('#node-status').innerHTML = JSON.stringify(data, null, 6)
+                    .replace(/\n/g, "<br>");
+            })
+        }
+
+        document.getElementById('refresh-status').addEventListener('click', function() {
+            refreshStatusNode();
+        });
+
+        function refreshResults() {
+            fetch('/get_results', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("framework-results").style.display = 'block';
+                document.querySelector('#framework-results').innerHTML = JSON.stringify(data, null, 6)
+                    .replace(/\n/g, "<br>");
+            })
+        }
+
+        document.getElementById('refresh-results').addEventListener('click', function() {
+            refreshResults();
         });
 
         // Handle the environment submission

@@ -237,5 +237,23 @@ def send_pd():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/get_status', methods=['GET'])
+def get_status():
+    try:
+        # pipe the information to the backend
+        response = requests.get('http://127.0.0.1:5001/status')
+        return jsonify(response.json()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_results', methods=['GET'])
+def get_results():
+    try:
+        # pipe the information to the backend
+        response = requests.get('http://127.0.0.1:5001/results')
+        return jsonify(response.json()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
