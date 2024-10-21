@@ -200,7 +200,8 @@ def filter_options():
         evaluation_metrics = data.get('evaluation_metrics')
 
         filtered_options = []
-        with open('ResearchData.csv', newline='') as csvfile:
+        research_data_path = os.path.join(os.path.dirname(__file__), 'ResearchData.csv')
+        with open(research_data_path, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 if modality and row['Data modality'] != modality:
