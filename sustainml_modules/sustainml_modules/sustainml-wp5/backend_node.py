@@ -25,7 +25,7 @@ running = True
 orchestrator = orchestrator_node.Orchestrator()
 server = Flask(__name__)
 server_ip_address = '127.0.0.1'
-server_port = 5000
+server_port = 5001
 
 # Flask server default route
 @server.route('/')
