@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Interface</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main interface -->
+    <div id="main-interface">
+        <div id="info-icon">i</div>
+        <div class="circle-container">
+            <div class="circle data-circle" id="data-circle">Data</div>
+            <div class="circle pd-circle" id="pd-circle">PD</div>
+            <div class="circle env-circle" id="env-circle">Environment</div>
+        </div>
+    </div>
+
+    <!-- PD section -->
+    <div id="pd-section" class="hidden">
+        <p>What's your data modality?</p>
+        <select id="modality-select">
+            <option value="">Select...</option>
+            <option value="Image/video">Image/video</option>
+            <option value="Text">Text</option>
+            <option value="Sensor">Sensor</option>
+            <option value="Audio">Audio</option>
+        </select>
+        <div id="problem-type-section" class="hidden">
+            <p>What's your problem type?</p>
+            <select id="problem-type-select"></select>
+        </div>
+        <div id="evaluation-metrics-section" class="hidden">
+            <p>What are your evaluation metrics?</p>
+            <select id="evaluation-metrics-select"></select>
+        </div>
+        <div id="model-section" class="hidden">
+            <p>Model's suggestion?</p>
+            <select id="model-select"></select>
+        </div>
+        <div id="submit-pd" class="hidden">
+            <button class="response-button">Submit PD Info</button>
+        </div>
+        <div id="node-status" class="hidden">
+            <!-- JSON data will be displayed here -->
+        </div>
+        <div id="refresh-status" class="hidden">
+            <button class="status-button">Refresh Node Status</button>
+        </div>
+        <div id="framework-results" class="hidden">
+            <!-- JSON data will be displayed here -->
+        </div>
+        <div id="refresh-results" class="hidden">
+            <button class="results-button">Refresh Results</button>
+        </div>
+    </div>
+    <!-- Environment section -->
+    <div id="env-section" class="hidden">
+        <h2>Environment Information</h2>
+        <div class="environment-input">
+            <label for="hardware-input">What's your hardware?</label>
+            <input type="text" id="hardware-input" placeholder="e.g., CPU, GPU, RAM"/>
+        </div>
+        <div class="environment-input">
+            <label for="cloud-local-select">Where are you running the ML model?</label>
+            <select id="cloud-local-select">
+                <option value="">Select...</option>
+                <option value="Local">Local</option>
+                <option value="Cloud">Cloud</option>
+            </select>
+        </div>
+        <div class="environment-input">
+            <label for="location-input">What's your personal location?</label>
+            <input type="text" id="location-input" placeholder="e.g., City, Country"/>
+        </div>
+        <button id="submit-environment" class="response-button">Submit Environment Info</button>
+    </div>
+
+    <div id="navigation-overview" class="hidden">
+        <div class="circle-container small">
+            <div class="circle data-circle small-circle">Data</div>
+            <div class="circle pd-circle large-circle">PD</div>
+            <div class="circle env-circle small-circle">Environment</div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('pd-section').style.display = 'none';
+        document.getElementById('navigation-overview').style.display = 'none';
+        document.getElementById('navigation-overview').style.display = 'none';
+        document.getElementById('info-icon').addEventListener('click', function() {
+            alert("Information: This interface contains three clickable circles named 'Data', 'PD', and 'Environment'. Click on a circle to get more information.");
+        });
+
+        document.getElementById('data-circle').addEventListener('click', function() {
+            window.location.href = 'data.html';
+        });
+
+        document.getElementById('pd-circle').addEventListener('click', function() {
+            document.getElementById('main-interface').style.display = 'none';
+            document.getElementById('pd-section').style.display = 'block';
+            document.getElementById('navigation-overview').style.display = 'block';
+        });
+
+        document.getElementById('env-circle').addEventListener('click', function() {
+            document.getElementById('main-interface').style.display = 'none';
+            document.getElementById('env-section').style.display = 'block';
+            document.getElementById('navigation-overview').style.display = 'block';
+        });
+
+
+        document.getElementById('modality-select').addEventListener('change', function() {
+            const selectedModality = this.value;
+            loadProblemTypeOptions(selectedModality);
+        });
+
+        function loadProblemTypeOptions(modality) {
+            fetch('/filter_options', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ modality })
+            })
+            .then(response => response.json())
+            .then(options => {
+                console.log('Filtered options for modality:', options);
+                document.getElementById('problem-type-section').style.display = 'block';
+                const problemTypes = [...new Set(options.map(option => option['Problem type']))];
+                const problemTypeSelect = document.getElementById('problem-type-select');
+                problemTypeSelect.innerHTML = '<option value="">Select...</option>';
+                problemTypes.forEach(problemType => {
+                    const option = document.createElement('option');
+                    option.value = problemType;
+                    option.textContent = problemType;
+                    problemTypeSelect.appendChild(option);
+                });
+                problemTypeSelect.addEventListener('change', function() {
+                    const selectedProblemType = this.value;
+                    loadEvaluationMetricsOptions(modality, selectedProblemType);
+                });
+            })
+            .catch(error => {
+                console.error('Failed to fetch filtered options:', error);
+            });
+        }
+
+        function loadEvaluationMetricsOptions(modality, problemType) {
+            fetch('/filter_options', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ modality, problem_type: problemType })
+            })
+            .then(response => response.json())
+            .then(options => {
+                console.log('Filtered options for modality and problem type:', options);
+                document.getElementById('evaluation-metrics-section').style.display = 'block';
+                const evaluationMetrics = [...new Set(options.map(option => option['Evaluation metrics']))];
+                const evaluationMetricsSelect = document.getElementById('evaluation-metrics-select');
+                evaluationMetricsSelect.innerHTML = '<option value="">Select...</option>';
+                evaluationMetrics.forEach(evaluationMetric => {
+                    const option = document.createElement('option');
+                    option.value = evaluationMetric;
+                    option.textContent = evaluationMetric;
+                    evaluationMetricsSelect.appendChild(option);
+                });
+                evaluationMetricsSelect.addEventListener('change', function() {
+                    const selectedEvaluationMetric = this.value;
+                    loadModelOptions(modality, problemType, selectedEvaluationMetric);
+                });
+            })
+            .catch(error => {
+                console.error('Failed to fetch filtered options:', error);
+            });
+        }
+
+        function loadModelOptions(modality, problemType, evaluationMetric) {
+            fetch('/filter_options', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ modality, problem_type: problemType, evaluation_metrics: evaluationMetric })
+            })
+            .then(response => response.json())
+            .then(options => {
+                console.log('Filtered options for modality, problem type, and evaluation metric:', options);
+                document.getElementById('model-section').style.display = 'block';
+                const models = [...new Set(options.map(option => option['Model']))];
+                const modelSelect = document.getElementById('model-select');
+                modelSelect.innerHTML = '<option value="">Select...</option>';
+                models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+                modelSelect.addEventListener('change', function() {
+                    document.getElementById('submit-pd').style.display = 'block';
+                });
+            })
+            .catch(error => {
+                console.error('Failed to fetch filtered options:', error);
+            });
+        }
+
+        document.getElementById('submit-pd').addEventListener('click', function() {
+            const modality = document.getElementById('modality-select').value;
+            const problemType = document.getElementById('problem-type-select').value;
+            const evaluationMetrics = document.getElementById('evaluation-metrics-select').value;
+            const model = document.getElementById('model-select').value;
+
+            // Handle the PD data submission (e.g., send it to your server)
+            const pdData = {
+                modality,
+                problemType,
+                evaluationMetrics,
+                model
+            };
+
+            console.log('PD Data:', pdData);
+            fetch('/send_pd', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    'modality': modality,
+                    'problem_type': problemType,
+                    'evaluation_metrics': evaluationMetrics,
+                    'model': model
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Show results
+                document.getElementById("refresh-status").style.display = 'block';
+                document.getElementById("refresh-results").style.display = 'block';
+                refreshStatusNode();
+                refreshResults();
+            })
+        });
+
+        function refreshStatusNode() {
+            fetch('/get_status', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("node-status").style.display = 'block';
+                document.querySelector('#node-status').innerHTML = JSON.stringify(data, null, 6)
+                    .replace(/\n/g, "<br>");
+            })
+        }
+
+        document.getElementById('refresh-status').addEventListener('click', function() {
+            refreshStatusNode();
+        });
+
+        function refreshResults() {
+            fetch('/get_results', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("framework-results").style.display = 'block';
+                document.querySelector('#framework-results').innerHTML = JSON.stringify(data, null, 6)
+                    .replace(/\n/g, "<br>");
+            })
+        }
+
+        document.getElementById('refresh-results').addEventListener('click', function() {
+            refreshResults();
+        });
+
+        // Handle the environment submission
+        document.getElementById('submit-environment').addEventListener('click', function() {
+            const hardware = document.getElementById('hardware-input').value;
+            const cloudLocal = document.getElementById('cloud-local-select').value;
+            const location = document.getElementById('location-input').value;
+
+            // Handle the environment data submission (e.g., send it to your server)
+            const environmentData = {
+                hardware,
+                cloudLocal,
+                location
+            };
+
+            console.log('Environment Data:', environmentData);
+            // Here you would typically send the data to your server using fetch or another method
+        });
+    </script>
+</body>
+</html>
