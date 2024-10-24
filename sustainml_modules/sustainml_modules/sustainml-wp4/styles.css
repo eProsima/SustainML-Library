@@ -33,8 +33,6 @@ body {
     text-align: left;
 }
 
-
-
 .sidebar-content {
     padding: 10px;
 }
@@ -154,7 +152,6 @@ textarea, #modality-select, #domain-input {
     cursor: pointer;
 }
 
-
 .container {
     padding: 20px;
     background-color: #fff;
@@ -176,7 +173,6 @@ textarea, #modality-select, #domain-input {
     background-color: #ccc;
     margin: 0 20px;
 }
-
 
 .data-circle {
     background-color: #4caf50;
@@ -219,6 +215,7 @@ textarea, #modality-select, #domain-input {
     height: 100px;
     font-size: 18px;
 }
+
 .response-button {
     background-color: #2196f3;
     color: white;
@@ -285,6 +282,3 @@ textarea, #modality-select, #domain-input {
     margin-top: 20px;
     font-weight: bold;
 }
-
-
-
