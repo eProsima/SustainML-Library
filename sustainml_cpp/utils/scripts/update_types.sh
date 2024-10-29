@@ -62,9 +62,9 @@ for idl_file in "${idl_files[@]}"; do
     echo $od_src
 
     if [[ -z "$od_src" ]]; then
-        fastddsgen -replace -typeobject "$file_from_gen"
+        fastddsgen -replace "$file_from_gen"
     else
-        fastddsgen -replace -typeobject -d $od_src "$file_from_gen"
+        fastddsgen -replace -d $od_src "$file_from_gen"
     fi
 
     if [[ $? != 0 ]]; then

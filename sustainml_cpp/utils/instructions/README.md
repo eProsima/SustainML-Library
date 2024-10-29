@@ -10,7 +10,7 @@ The next steps needs to be followed to do so while trying to regenerate SustainM
 
     `cd sustainml_cpp/utils/scripts && bash update_types.sh`
 
-1. Manually introduce the `sustainml_cpp/src/cpp/types/typesImpl.h` changes in `sustainml_cpp/include/sustainml_cpp/types/types.h`, and applying these changes:
+1. Manually introduce the `sustainml_cpp/src/cpp/types/typesImpl.hpp` changes in `sustainml_cpp/include/sustainml_cpp/types/types.hpp`, and applying these changes:
     1. Copy the complete class `ClassNameImpl` in the _types.h_ file
     1. Rename it as `ClassName` (remove `Impl` suffix), as well as all its usage in its methods and comments.
     1. Introduce the following line right after the _public_ declaration:
