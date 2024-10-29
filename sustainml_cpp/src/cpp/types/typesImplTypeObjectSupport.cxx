@@ -43,8 +43,7 @@ void register_Status_type_identifier(
 {
     ReturnCode_t return_code_Status {eprosima::fastdds::dds::RETCODE_OK};
     return_code_Status =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "Status", type_ids_Status);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_Status)
     {
@@ -54,204 +53,151 @@ void register_Status_type_identifier(
         QualifiedTypeName type_name_Status = "Status";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_Status;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_Status;
-        CompleteTypeDetail detail_Status = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_Status,
-                        ann_custom_Status,
-                        type_name_Status.to_string());
-        CompleteEnumeratedHeader header_Status = TypeObjectUtils::build_complete_enumerated_header(common_Status,
-                        detail_Status);
+        CompleteTypeDetail detail_Status = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_Status, ann_custom_Status, type_name_Status.to_string());
+        CompleteEnumeratedHeader header_Status = TypeObjectUtils::build_complete_enumerated_header(common_Status, detail_Status);
         CompleteEnumeratedLiteralSeq literal_seq_Status;
         {
             EnumeratedLiteralFlag flags_NODE_INACTIVE = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_NODE_INACTIVE = TypeObjectUtils::build_common_enumerated_literal(0,
-                            flags_NODE_INACTIVE);
+            CommonEnumeratedLiteral common_NODE_INACTIVE = TypeObjectUtils::build_common_enumerated_literal(0, flags_NODE_INACTIVE);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_NODE_INACTIVE;
             ann_custom_Status.reset();
             MemberName name_NODE_INACTIVE = "NODE_INACTIVE";
-            CompleteMemberDetail detail_NODE_INACTIVE = TypeObjectUtils::build_complete_member_detail(
-                name_NODE_INACTIVE, member_ann_builtin_NODE_INACTIVE, ann_custom_Status);
-            CompleteEnumeratedLiteral literal_NODE_INACTIVE = TypeObjectUtils::build_complete_enumerated_literal(
-                common_NODE_INACTIVE, detail_NODE_INACTIVE);
+            CompleteMemberDetail detail_NODE_INACTIVE = TypeObjectUtils::build_complete_member_detail(name_NODE_INACTIVE, member_ann_builtin_NODE_INACTIVE, ann_custom_Status);
+            CompleteEnumeratedLiteral literal_NODE_INACTIVE = TypeObjectUtils::build_complete_enumerated_literal(common_NODE_INACTIVE, detail_NODE_INACTIVE);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_Status, literal_NODE_INACTIVE);
         }
         {
             EnumeratedLiteralFlag flags_NODE_ERROR = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_NODE_ERROR = TypeObjectUtils::build_common_enumerated_literal(1,
-                            flags_NODE_ERROR);
+            CommonEnumeratedLiteral common_NODE_ERROR = TypeObjectUtils::build_common_enumerated_literal(1, flags_NODE_ERROR);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_NODE_ERROR;
             ann_custom_Status.reset();
             MemberName name_NODE_ERROR = "NODE_ERROR";
-            CompleteMemberDetail detail_NODE_ERROR = TypeObjectUtils::build_complete_member_detail(name_NODE_ERROR,
-                            member_ann_builtin_NODE_ERROR,
-                            ann_custom_Status);
-            CompleteEnumeratedLiteral literal_NODE_ERROR = TypeObjectUtils::build_complete_enumerated_literal(
-                common_NODE_ERROR, detail_NODE_ERROR);
+            CompleteMemberDetail detail_NODE_ERROR = TypeObjectUtils::build_complete_member_detail(name_NODE_ERROR, member_ann_builtin_NODE_ERROR, ann_custom_Status);
+            CompleteEnumeratedLiteral literal_NODE_ERROR = TypeObjectUtils::build_complete_enumerated_literal(common_NODE_ERROR, detail_NODE_ERROR);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_Status, literal_NODE_ERROR);
         }
         {
             EnumeratedLiteralFlag flags_NODE_IDLE = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_NODE_IDLE = TypeObjectUtils::build_common_enumerated_literal(2,
-                            flags_NODE_IDLE);
+            CommonEnumeratedLiteral common_NODE_IDLE = TypeObjectUtils::build_common_enumerated_literal(2, flags_NODE_IDLE);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_NODE_IDLE;
             ann_custom_Status.reset();
             MemberName name_NODE_IDLE = "NODE_IDLE";
-            CompleteMemberDetail detail_NODE_IDLE = TypeObjectUtils::build_complete_member_detail(name_NODE_IDLE,
-                            member_ann_builtin_NODE_IDLE,
-                            ann_custom_Status);
-            CompleteEnumeratedLiteral literal_NODE_IDLE = TypeObjectUtils::build_complete_enumerated_literal(
-                common_NODE_IDLE, detail_NODE_IDLE);
+            CompleteMemberDetail detail_NODE_IDLE = TypeObjectUtils::build_complete_member_detail(name_NODE_IDLE, member_ann_builtin_NODE_IDLE, ann_custom_Status);
+            CompleteEnumeratedLiteral literal_NODE_IDLE = TypeObjectUtils::build_complete_enumerated_literal(common_NODE_IDLE, detail_NODE_IDLE);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_Status, literal_NODE_IDLE);
         }
         {
             EnumeratedLiteralFlag flags_NODE_INITIALIZING = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_NODE_INITIALIZING = TypeObjectUtils::build_common_enumerated_literal(3,
-                            flags_NODE_INITIALIZING);
+            CommonEnumeratedLiteral common_NODE_INITIALIZING = TypeObjectUtils::build_common_enumerated_literal(3, flags_NODE_INITIALIZING);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_NODE_INITIALIZING;
             ann_custom_Status.reset();
             MemberName name_NODE_INITIALIZING = "NODE_INITIALIZING";
-            CompleteMemberDetail detail_NODE_INITIALIZING = TypeObjectUtils::build_complete_member_detail(
-                name_NODE_INITIALIZING, member_ann_builtin_NODE_INITIALIZING, ann_custom_Status);
-            CompleteEnumeratedLiteral literal_NODE_INITIALIZING = TypeObjectUtils::build_complete_enumerated_literal(
-                common_NODE_INITIALIZING, detail_NODE_INITIALIZING);
+            CompleteMemberDetail detail_NODE_INITIALIZING = TypeObjectUtils::build_complete_member_detail(name_NODE_INITIALIZING, member_ann_builtin_NODE_INITIALIZING, ann_custom_Status);
+            CompleteEnumeratedLiteral literal_NODE_INITIALIZING = TypeObjectUtils::build_complete_enumerated_literal(common_NODE_INITIALIZING, detail_NODE_INITIALIZING);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_Status, literal_NODE_INITIALIZING);
         }
         {
             EnumeratedLiteralFlag flags_NODE_RUNNING = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_NODE_RUNNING = TypeObjectUtils::build_common_enumerated_literal(4,
-                            flags_NODE_RUNNING);
+            CommonEnumeratedLiteral common_NODE_RUNNING = TypeObjectUtils::build_common_enumerated_literal(4, flags_NODE_RUNNING);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_NODE_RUNNING;
             ann_custom_Status.reset();
             MemberName name_NODE_RUNNING = "NODE_RUNNING";
-            CompleteMemberDetail detail_NODE_RUNNING = TypeObjectUtils::build_complete_member_detail(name_NODE_RUNNING,
-                            member_ann_builtin_NODE_RUNNING,
-                            ann_custom_Status);
-            CompleteEnumeratedLiteral literal_NODE_RUNNING = TypeObjectUtils::build_complete_enumerated_literal(
-                common_NODE_RUNNING, detail_NODE_RUNNING);
+            CompleteMemberDetail detail_NODE_RUNNING = TypeObjectUtils::build_complete_member_detail(name_NODE_RUNNING, member_ann_builtin_NODE_RUNNING, ann_custom_Status);
+            CompleteEnumeratedLiteral literal_NODE_RUNNING = TypeObjectUtils::build_complete_enumerated_literal(common_NODE_RUNNING, detail_NODE_RUNNING);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_Status, literal_NODE_RUNNING);
         }
         {
             EnumeratedLiteralFlag flags_NODE_TERMINATING = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_NODE_TERMINATING = TypeObjectUtils::build_common_enumerated_literal(5,
-                            flags_NODE_TERMINATING);
+            CommonEnumeratedLiteral common_NODE_TERMINATING = TypeObjectUtils::build_common_enumerated_literal(5, flags_NODE_TERMINATING);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_NODE_TERMINATING;
             ann_custom_Status.reset();
             MemberName name_NODE_TERMINATING = "NODE_TERMINATING";
-            CompleteMemberDetail detail_NODE_TERMINATING = TypeObjectUtils::build_complete_member_detail(
-                name_NODE_TERMINATING, member_ann_builtin_NODE_TERMINATING, ann_custom_Status);
-            CompleteEnumeratedLiteral literal_NODE_TERMINATING = TypeObjectUtils::build_complete_enumerated_literal(
-                common_NODE_TERMINATING, detail_NODE_TERMINATING);
+            CompleteMemberDetail detail_NODE_TERMINATING = TypeObjectUtils::build_complete_member_detail(name_NODE_TERMINATING, member_ann_builtin_NODE_TERMINATING, ann_custom_Status);
+            CompleteEnumeratedLiteral literal_NODE_TERMINATING = TypeObjectUtils::build_complete_enumerated_literal(common_NODE_TERMINATING, detail_NODE_TERMINATING);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_Status, literal_NODE_TERMINATING);
         }
-        CompleteEnumeratedType enumerated_type_Status = TypeObjectUtils::build_complete_enumerated_type(
-            enum_flags_Status, header_Status,
-            literal_seq_Status);
+        CompleteEnumeratedType enumerated_type_Status = TypeObjectUtils::build_complete_enumerated_type(enum_flags_Status, header_Status,
+                literal_seq_Status);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_Status,
-                type_name_Status.to_string(), type_ids_Status))
+                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_Status, type_name_Status.to_string(), type_ids_Status))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                    "Status already registered in TypeObjectRegistry for a different type.");
+                "Status already registered in TypeObjectRegistry for a different type.");
         }
     }
-}
-
-void register_TaskStatus_type_identifier(
+}void register_TaskStatus_type_identifier(
         TypeIdentifierPair& type_ids_TaskStatus)
 {
     ReturnCode_t return_code_TaskStatus {eprosima::fastdds::dds::RETCODE_OK};
     return_code_TaskStatus =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "TaskStatus", type_ids_TaskStatus);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_TaskStatus)
     {
         EnumTypeFlag enum_flags_TaskStatus = 0;
         BitBound bit_bound_TaskStatus = 32;
-        CommonEnumeratedHeader common_TaskStatus =
-                TypeObjectUtils::build_common_enumerated_header(bit_bound_TaskStatus);
+        CommonEnumeratedHeader common_TaskStatus = TypeObjectUtils::build_common_enumerated_header(bit_bound_TaskStatus);
         QualifiedTypeName type_name_TaskStatus = "TaskStatus";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_TaskStatus;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_TaskStatus;
-        CompleteTypeDetail detail_TaskStatus = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_TaskStatus,
-                        ann_custom_TaskStatus,
-                        type_name_TaskStatus.to_string());
-        CompleteEnumeratedHeader header_TaskStatus = TypeObjectUtils::build_complete_enumerated_header(
-            common_TaskStatus, detail_TaskStatus);
+        CompleteTypeDetail detail_TaskStatus = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_TaskStatus, ann_custom_TaskStatus, type_name_TaskStatus.to_string());
+        CompleteEnumeratedHeader header_TaskStatus = TypeObjectUtils::build_complete_enumerated_header(common_TaskStatus, detail_TaskStatus);
         CompleteEnumeratedLiteralSeq literal_seq_TaskStatus;
         {
             EnumeratedLiteralFlag flags_TASK_WAITING = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_TASK_WAITING = TypeObjectUtils::build_common_enumerated_literal(0,
-                            flags_TASK_WAITING);
+            CommonEnumeratedLiteral common_TASK_WAITING = TypeObjectUtils::build_common_enumerated_literal(0, flags_TASK_WAITING);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_TASK_WAITING;
             ann_custom_TaskStatus.reset();
             MemberName name_TASK_WAITING = "TASK_WAITING";
-            CompleteMemberDetail detail_TASK_WAITING = TypeObjectUtils::build_complete_member_detail(name_TASK_WAITING,
-                            member_ann_builtin_TASK_WAITING,
-                            ann_custom_TaskStatus);
-            CompleteEnumeratedLiteral literal_TASK_WAITING = TypeObjectUtils::build_complete_enumerated_literal(
-                common_TASK_WAITING, detail_TASK_WAITING);
+            CompleteMemberDetail detail_TASK_WAITING = TypeObjectUtils::build_complete_member_detail(name_TASK_WAITING, member_ann_builtin_TASK_WAITING, ann_custom_TaskStatus);
+            CompleteEnumeratedLiteral literal_TASK_WAITING = TypeObjectUtils::build_complete_enumerated_literal(common_TASK_WAITING, detail_TASK_WAITING);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_TaskStatus, literal_TASK_WAITING);
         }
         {
             EnumeratedLiteralFlag flags_TASK_ERROR = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_TASK_ERROR = TypeObjectUtils::build_common_enumerated_literal(1,
-                            flags_TASK_ERROR);
+            CommonEnumeratedLiteral common_TASK_ERROR = TypeObjectUtils::build_common_enumerated_literal(1, flags_TASK_ERROR);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_TASK_ERROR;
             ann_custom_TaskStatus.reset();
             MemberName name_TASK_ERROR = "TASK_ERROR";
-            CompleteMemberDetail detail_TASK_ERROR = TypeObjectUtils::build_complete_member_detail(name_TASK_ERROR,
-                            member_ann_builtin_TASK_ERROR,
-                            ann_custom_TaskStatus);
-            CompleteEnumeratedLiteral literal_TASK_ERROR = TypeObjectUtils::build_complete_enumerated_literal(
-                common_TASK_ERROR, detail_TASK_ERROR);
+            CompleteMemberDetail detail_TASK_ERROR = TypeObjectUtils::build_complete_member_detail(name_TASK_ERROR, member_ann_builtin_TASK_ERROR, ann_custom_TaskStatus);
+            CompleteEnumeratedLiteral literal_TASK_ERROR = TypeObjectUtils::build_complete_enumerated_literal(common_TASK_ERROR, detail_TASK_ERROR);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_TaskStatus, literal_TASK_ERROR);
         }
         {
             EnumeratedLiteralFlag flags_TASK_RUNNING = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_TASK_RUNNING = TypeObjectUtils::build_common_enumerated_literal(2,
-                            flags_TASK_RUNNING);
+            CommonEnumeratedLiteral common_TASK_RUNNING = TypeObjectUtils::build_common_enumerated_literal(2, flags_TASK_RUNNING);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_TASK_RUNNING;
             ann_custom_TaskStatus.reset();
             MemberName name_TASK_RUNNING = "TASK_RUNNING";
-            CompleteMemberDetail detail_TASK_RUNNING = TypeObjectUtils::build_complete_member_detail(name_TASK_RUNNING,
-                            member_ann_builtin_TASK_RUNNING,
-                            ann_custom_TaskStatus);
-            CompleteEnumeratedLiteral literal_TASK_RUNNING = TypeObjectUtils::build_complete_enumerated_literal(
-                common_TASK_RUNNING, detail_TASK_RUNNING);
+            CompleteMemberDetail detail_TASK_RUNNING = TypeObjectUtils::build_complete_member_detail(name_TASK_RUNNING, member_ann_builtin_TASK_RUNNING, ann_custom_TaskStatus);
+            CompleteEnumeratedLiteral literal_TASK_RUNNING = TypeObjectUtils::build_complete_enumerated_literal(common_TASK_RUNNING, detail_TASK_RUNNING);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_TaskStatus, literal_TASK_RUNNING);
         }
         {
             EnumeratedLiteralFlag flags_TASK_SUCCEEDED = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_TASK_SUCCEEDED = TypeObjectUtils::build_common_enumerated_literal(3,
-                            flags_TASK_SUCCEEDED);
+            CommonEnumeratedLiteral common_TASK_SUCCEEDED = TypeObjectUtils::build_common_enumerated_literal(3, flags_TASK_SUCCEEDED);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_TASK_SUCCEEDED;
             ann_custom_TaskStatus.reset();
             MemberName name_TASK_SUCCEEDED = "TASK_SUCCEEDED";
-            CompleteMemberDetail detail_TASK_SUCCEEDED = TypeObjectUtils::build_complete_member_detail(
-                name_TASK_SUCCEEDED, member_ann_builtin_TASK_SUCCEEDED, ann_custom_TaskStatus);
-            CompleteEnumeratedLiteral literal_TASK_SUCCEEDED = TypeObjectUtils::build_complete_enumerated_literal(
-                common_TASK_SUCCEEDED, detail_TASK_SUCCEEDED);
+            CompleteMemberDetail detail_TASK_SUCCEEDED = TypeObjectUtils::build_complete_member_detail(name_TASK_SUCCEEDED, member_ann_builtin_TASK_SUCCEEDED, ann_custom_TaskStatus);
+            CompleteEnumeratedLiteral literal_TASK_SUCCEEDED = TypeObjectUtils::build_complete_enumerated_literal(common_TASK_SUCCEEDED, detail_TASK_SUCCEEDED);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_TaskStatus, literal_TASK_SUCCEEDED);
         }
-        CompleteEnumeratedType enumerated_type_TaskStatus = TypeObjectUtils::build_complete_enumerated_type(
-            enum_flags_TaskStatus, header_TaskStatus,
-            literal_seq_TaskStatus);
+        CompleteEnumeratedType enumerated_type_TaskStatus = TypeObjectUtils::build_complete_enumerated_type(enum_flags_TaskStatus, header_TaskStatus,
+                literal_seq_TaskStatus);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_TaskStatus,
-                type_name_TaskStatus.to_string(), type_ids_TaskStatus))
+                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_TaskStatus, type_name_TaskStatus.to_string(), type_ids_TaskStatus))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                    "TaskStatus already registered in TypeObjectRegistry for a different type.");
+                "TaskStatus already registered in TypeObjectRegistry for a different type.");
         }
     }
-}
-
-void register_ErrorCode_type_identifier(
+}void register_ErrorCode_type_identifier(
         TypeIdentifierPair& type_ids_ErrorCode)
 {
     ReturnCode_t return_code_ErrorCode {eprosima::fastdds::dds::RETCODE_OK};
     return_code_ErrorCode =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "ErrorCode", type_ids_ErrorCode);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_ErrorCode)
     {
@@ -261,72 +207,55 @@ void register_ErrorCode_type_identifier(
         QualifiedTypeName type_name_ErrorCode = "ErrorCode";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_ErrorCode;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_ErrorCode;
-        CompleteTypeDetail detail_ErrorCode = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_ErrorCode,
-                        ann_custom_ErrorCode,
-                        type_name_ErrorCode.to_string());
-        CompleteEnumeratedHeader header_ErrorCode = TypeObjectUtils::build_complete_enumerated_header(common_ErrorCode,
-                        detail_ErrorCode);
+        CompleteTypeDetail detail_ErrorCode = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_ErrorCode, ann_custom_ErrorCode, type_name_ErrorCode.to_string());
+        CompleteEnumeratedHeader header_ErrorCode = TypeObjectUtils::build_complete_enumerated_header(common_ErrorCode, detail_ErrorCode);
         CompleteEnumeratedLiteralSeq literal_seq_ErrorCode;
         {
             EnumeratedLiteralFlag flags_NO_ERROR = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_NO_ERROR =
-                    TypeObjectUtils::build_common_enumerated_literal(0, flags_NO_ERROR);
+            CommonEnumeratedLiteral common_NO_ERROR = TypeObjectUtils::build_common_enumerated_literal(0, flags_NO_ERROR);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_NO_ERROR;
             ann_custom_ErrorCode.reset();
             MemberName name_NO_ERROR = "NO_ERROR";
-            CompleteMemberDetail detail_NO_ERROR = TypeObjectUtils::build_complete_member_detail(name_NO_ERROR,
-                            member_ann_builtin_NO_ERROR,
-                            ann_custom_ErrorCode);
-            CompleteEnumeratedLiteral literal_NO_ERROR = TypeObjectUtils::build_complete_enumerated_literal(
-                common_NO_ERROR, detail_NO_ERROR);
+            CompleteMemberDetail detail_NO_ERROR = TypeObjectUtils::build_complete_member_detail(name_NO_ERROR, member_ann_builtin_NO_ERROR, ann_custom_ErrorCode);
+            CompleteEnumeratedLiteral literal_NO_ERROR = TypeObjectUtils::build_complete_enumerated_literal(common_NO_ERROR, detail_NO_ERROR);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_ErrorCode, literal_NO_ERROR);
         }
         {
             EnumeratedLiteralFlag flags_INTERNAL_ERROR = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_INTERNAL_ERROR = TypeObjectUtils::build_common_enumerated_literal(1,
-                            flags_INTERNAL_ERROR);
+            CommonEnumeratedLiteral common_INTERNAL_ERROR = TypeObjectUtils::build_common_enumerated_literal(1, flags_INTERNAL_ERROR);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_INTERNAL_ERROR;
             ann_custom_ErrorCode.reset();
             MemberName name_INTERNAL_ERROR = "INTERNAL_ERROR";
-            CompleteMemberDetail detail_INTERNAL_ERROR = TypeObjectUtils::build_complete_member_detail(
-                name_INTERNAL_ERROR, member_ann_builtin_INTERNAL_ERROR, ann_custom_ErrorCode);
-            CompleteEnumeratedLiteral literal_INTERNAL_ERROR = TypeObjectUtils::build_complete_enumerated_literal(
-                common_INTERNAL_ERROR, detail_INTERNAL_ERROR);
+            CompleteMemberDetail detail_INTERNAL_ERROR = TypeObjectUtils::build_complete_member_detail(name_INTERNAL_ERROR, member_ann_builtin_INTERNAL_ERROR, ann_custom_ErrorCode);
+            CompleteEnumeratedLiteral literal_INTERNAL_ERROR = TypeObjectUtils::build_complete_enumerated_literal(common_INTERNAL_ERROR, detail_INTERNAL_ERROR);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_ErrorCode, literal_INTERNAL_ERROR);
         }
-        CompleteEnumeratedType enumerated_type_ErrorCode = TypeObjectUtils::build_complete_enumerated_type(
-            enum_flags_ErrorCode, header_ErrorCode,
-            literal_seq_ErrorCode);
+        CompleteEnumeratedType enumerated_type_ErrorCode = TypeObjectUtils::build_complete_enumerated_type(enum_flags_ErrorCode, header_ErrorCode,
+                literal_seq_ErrorCode);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_ErrorCode,
-                type_name_ErrorCode.to_string(), type_ids_ErrorCode))
+                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_ErrorCode, type_name_ErrorCode.to_string(), type_ids_ErrorCode))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                    "ErrorCode already registered in TypeObjectRegistry for a different type.");
+                "ErrorCode already registered in TypeObjectRegistry for a different type.");
         }
     }
 }// TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
-
 void register_TaskIdImpl_type_identifier(
         TypeIdentifierPair& type_ids_TaskIdImpl)
 {
 
     ReturnCode_t return_code_TaskIdImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_TaskIdImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "TaskIdImpl", type_ids_TaskIdImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_TaskIdImpl)
     {
-        StructTypeFlag struct_flags_TaskIdImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_TaskIdImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_TaskIdImpl = "TaskIdImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_TaskIdImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_TaskIdImpl;
-        CompleteTypeDetail detail_TaskIdImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_TaskIdImpl,
-                        ann_custom_TaskIdImpl,
-                        type_name_TaskIdImpl.to_string());
+        CompleteTypeDetail detail_TaskIdImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_TaskIdImpl, ann_custom_TaskIdImpl, type_name_TaskIdImpl.to_string());
         CompleteStructHeader header_TaskIdImpl;
         header_TaskIdImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_TaskIdImpl);
         CompleteStructMemberSeq member_seq_TaskIdImpl;
@@ -334,8 +263,7 @@ void register_TaskIdImpl_type_identifier(
             TypeIdentifierPair type_ids_problem_id;
             ReturnCode_t return_code_problem_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_problem_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_uint32_t", type_ids_problem_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_problem_id)
@@ -344,37 +272,28 @@ void register_TaskIdImpl_type_identifier(
                         "problem_id Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_problem_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_problem_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_problem_id = 0x00000000;
             bool common_problem_id_ec {false};
-            CommonStructMember common_problem_id {TypeObjectUtils::build_common_struct_member(member_id_problem_id,
-                                                          member_flags_problem_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_problem_id,
-                                                              common_problem_id_ec))};
+            CommonStructMember common_problem_id {TypeObjectUtils::build_common_struct_member(member_id_problem_id, member_flags_problem_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_problem_id, common_problem_id_ec))};
             if (!common_problem_id_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure problem_id member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure problem_id member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_problem_id = "problem_id";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_problem_id;
             ann_custom_TaskIdImpl.reset();
-            CompleteMemberDetail detail_problem_id = TypeObjectUtils::build_complete_member_detail(name_problem_id,
-                            member_ann_builtin_problem_id,
-                            ann_custom_TaskIdImpl);
-            CompleteStructMember member_problem_id = TypeObjectUtils::build_complete_struct_member(common_problem_id,
-                            detail_problem_id);
+            CompleteMemberDetail detail_problem_id = TypeObjectUtils::build_complete_member_detail(name_problem_id, member_ann_builtin_problem_id, ann_custom_TaskIdImpl);
+            CompleteStructMember member_problem_id = TypeObjectUtils::build_complete_struct_member(common_problem_id, detail_problem_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_TaskIdImpl, member_problem_id);
         }
         {
             TypeIdentifierPair type_ids_iteration_id;
             ReturnCode_t return_code_iteration_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_iteration_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_uint32_t", type_ids_iteration_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_iteration_id)
@@ -383,44 +302,32 @@ void register_TaskIdImpl_type_identifier(
                         "iteration_id Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_iteration_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_iteration_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_iteration_id = 0x00000001;
             bool common_iteration_id_ec {false};
-            CommonStructMember common_iteration_id {TypeObjectUtils::build_common_struct_member(member_id_iteration_id,
-                                                            member_flags_iteration_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                type_ids_iteration_id,
-                                                                common_iteration_id_ec))};
+            CommonStructMember common_iteration_id {TypeObjectUtils::build_common_struct_member(member_id_iteration_id, member_flags_iteration_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_iteration_id, common_iteration_id_ec))};
             if (!common_iteration_id_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure iteration_id member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure iteration_id member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_iteration_id = "iteration_id";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_iteration_id;
             ann_custom_TaskIdImpl.reset();
-            CompleteMemberDetail detail_iteration_id = TypeObjectUtils::build_complete_member_detail(name_iteration_id,
-                            member_ann_builtin_iteration_id,
-                            ann_custom_TaskIdImpl);
-            CompleteStructMember member_iteration_id = TypeObjectUtils::build_complete_struct_member(
-                common_iteration_id, detail_iteration_id);
+            CompleteMemberDetail detail_iteration_id = TypeObjectUtils::build_complete_member_detail(name_iteration_id, member_ann_builtin_iteration_id, ann_custom_TaskIdImpl);
+            CompleteStructMember member_iteration_id = TypeObjectUtils::build_complete_struct_member(common_iteration_id, detail_iteration_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_TaskIdImpl, member_iteration_id);
         }
-        CompleteStructType struct_type_TaskIdImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_TaskIdImpl,
-                        header_TaskIdImpl,
-                        member_seq_TaskIdImpl);
+        CompleteStructType struct_type_TaskIdImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_TaskIdImpl, header_TaskIdImpl, member_seq_TaskIdImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_TaskIdImpl,
-                type_name_TaskIdImpl.to_string(), type_ids_TaskIdImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_TaskIdImpl, type_name_TaskIdImpl.to_string(), type_ids_TaskIdImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "TaskIdImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
-
 // TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
 void register_NodeStatusImpl_type_identifier(
         TypeIdentifierPair& type_ids_NodeStatusImpl)
@@ -428,19 +335,16 @@ void register_NodeStatusImpl_type_identifier(
 
     ReturnCode_t return_code_NodeStatusImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_NodeStatusImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "NodeStatusImpl", type_ids_NodeStatusImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_NodeStatusImpl)
     {
-        StructTypeFlag struct_flags_NodeStatusImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_NodeStatusImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_NodeStatusImpl = "NodeStatusImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_NodeStatusImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_NodeStatusImpl;
-        CompleteTypeDetail detail_NodeStatusImpl = TypeObjectUtils::build_complete_type_detail(
-            type_ann_builtin_NodeStatusImpl, ann_custom_NodeStatusImpl, type_name_NodeStatusImpl.to_string());
+        CompleteTypeDetail detail_NodeStatusImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_NodeStatusImpl, ann_custom_NodeStatusImpl, type_name_NodeStatusImpl.to_string());
         CompleteStructHeader header_NodeStatusImpl;
         header_NodeStatusImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_NodeStatusImpl);
         CompleteStructMemberSeq member_seq_NodeStatusImpl;
@@ -448,119 +352,91 @@ void register_NodeStatusImpl_type_identifier(
             TypeIdentifierPair type_ids_node_status;
             ReturnCode_t return_code_node_status {eprosima::fastdds::dds::RETCODE_OK};
             return_code_node_status =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "Status", type_ids_node_status);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_node_status)
             {
-                ::register_Status_type_identifier(type_ids_node_status);
+            ::register_Status_type_identifier(type_ids_node_status);
             }
-            StructMemberFlag member_flags_node_status = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_node_status = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_node_status = 0x00000000;
             bool common_node_status_ec {false};
-            CommonStructMember common_node_status {TypeObjectUtils::build_common_struct_member(member_id_node_status,
-                                                           member_flags_node_status, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                               type_ids_node_status,
-                                                               common_node_status_ec))};
+            CommonStructMember common_node_status {TypeObjectUtils::build_common_struct_member(member_id_node_status, member_flags_node_status, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_node_status, common_node_status_ec))};
             if (!common_node_status_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure node_status member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure node_status member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_node_status = "node_status";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_node_status;
             ann_custom_NodeStatusImpl.reset();
-            CompleteMemberDetail detail_node_status = TypeObjectUtils::build_complete_member_detail(name_node_status,
-                            member_ann_builtin_node_status,
-                            ann_custom_NodeStatusImpl);
-            CompleteStructMember member_node_status = TypeObjectUtils::build_complete_struct_member(common_node_status,
-                            detail_node_status);
+            CompleteMemberDetail detail_node_status = TypeObjectUtils::build_complete_member_detail(name_node_status, member_ann_builtin_node_status, ann_custom_NodeStatusImpl);
+            CompleteStructMember member_node_status = TypeObjectUtils::build_complete_struct_member(common_node_status, detail_node_status);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeStatusImpl, member_node_status);
         }
         {
             TypeIdentifierPair type_ids_task_status;
             ReturnCode_t return_code_task_status {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_status =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskStatus", type_ids_task_status);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_status)
             {
-                ::register_TaskStatus_type_identifier(type_ids_task_status);
+            ::register_TaskStatus_type_identifier(type_ids_task_status);
             }
-            StructMemberFlag member_flags_task_status = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_task_status = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_task_status = 0x00000001;
             bool common_task_status_ec {false};
-            CommonStructMember common_task_status {TypeObjectUtils::build_common_struct_member(member_id_task_status,
-                                                           member_flags_task_status, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                               type_ids_task_status,
-                                                               common_task_status_ec))};
+            CommonStructMember common_task_status {TypeObjectUtils::build_common_struct_member(member_id_task_status, member_flags_task_status, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_status, common_task_status_ec))};
             if (!common_task_status_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure task_status member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_status member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_task_status = "task_status";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_task_status;
             ann_custom_NodeStatusImpl.reset();
-            CompleteMemberDetail detail_task_status = TypeObjectUtils::build_complete_member_detail(name_task_status,
-                            member_ann_builtin_task_status,
-                            ann_custom_NodeStatusImpl);
-            CompleteStructMember member_task_status = TypeObjectUtils::build_complete_struct_member(common_task_status,
-                            detail_task_status);
+            CompleteMemberDetail detail_task_status = TypeObjectUtils::build_complete_member_detail(name_task_status, member_ann_builtin_task_status, ann_custom_NodeStatusImpl);
+            CompleteStructMember member_task_status = TypeObjectUtils::build_complete_struct_member(common_task_status, detail_task_status);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeStatusImpl, member_task_status);
         }
         {
             TypeIdentifierPair type_ids_error_code;
             ReturnCode_t return_code_error_code {eprosima::fastdds::dds::RETCODE_OK};
             return_code_error_code =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "ErrorCode", type_ids_error_code);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_error_code)
             {
-                ::register_ErrorCode_type_identifier(type_ids_error_code);
+            ::register_ErrorCode_type_identifier(type_ids_error_code);
             }
-            StructMemberFlag member_flags_error_code = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_error_code = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_error_code = 0x00000002;
             bool common_error_code_ec {false};
-            CommonStructMember common_error_code {TypeObjectUtils::build_common_struct_member(member_id_error_code,
-                                                          member_flags_error_code, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_error_code,
-                                                              common_error_code_ec))};
+            CommonStructMember common_error_code {TypeObjectUtils::build_common_struct_member(member_id_error_code, member_flags_error_code, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_error_code, common_error_code_ec))};
             if (!common_error_code_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure error_code member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure error_code member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_error_code = "error_code";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_error_code;
             ann_custom_NodeStatusImpl.reset();
-            CompleteMemberDetail detail_error_code = TypeObjectUtils::build_complete_member_detail(name_error_code,
-                            member_ann_builtin_error_code,
-                            ann_custom_NodeStatusImpl);
-            CompleteStructMember member_error_code = TypeObjectUtils::build_complete_struct_member(common_error_code,
-                            detail_error_code);
+            CompleteMemberDetail detail_error_code = TypeObjectUtils::build_complete_member_detail(name_error_code, member_ann_builtin_error_code, ann_custom_NodeStatusImpl);
+            CompleteStructMember member_error_code = TypeObjectUtils::build_complete_struct_member(common_error_code, detail_error_code);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeStatusImpl, member_error_code);
         }
         {
             TypeIdentifierPair type_ids_error_description;
             ReturnCode_t return_code_error_description {eprosima::fastdds::dds::RETCODE_OK};
             return_code_error_description =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_error_description);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_error_description)
@@ -573,41 +449,32 @@ void register_NodeStatusImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_error_description))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_error_description = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_error_description = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_error_description = 0x00000003;
             bool common_error_description_ec {false};
-            CommonStructMember common_error_description {TypeObjectUtils::build_common_struct_member(
-                                                             member_id_error_description,
-                                                             member_flags_error_description, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                 type_ids_error_description,
-                                                                 common_error_description_ec))};
+            CommonStructMember common_error_description {TypeObjectUtils::build_common_struct_member(member_id_error_description, member_flags_error_description, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_error_description, common_error_description_ec))};
             if (!common_error_description_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure error_description member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure error_description member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_error_description = "error_description";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_error_description;
             ann_custom_NodeStatusImpl.reset();
-            CompleteMemberDetail detail_error_description = TypeObjectUtils::build_complete_member_detail(
-                name_error_description, member_ann_builtin_error_description, ann_custom_NodeStatusImpl);
-            CompleteStructMember member_error_description = TypeObjectUtils::build_complete_struct_member(
-                common_error_description, detail_error_description);
+            CompleteMemberDetail detail_error_description = TypeObjectUtils::build_complete_member_detail(name_error_description, member_ann_builtin_error_description, ann_custom_NodeStatusImpl);
+            CompleteStructMember member_error_description = TypeObjectUtils::build_complete_struct_member(common_error_description, detail_error_description);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeStatusImpl, member_error_description);
         }
         {
             TypeIdentifierPair type_ids_node_name;
             ReturnCode_t return_code_node_name {eprosima::fastdds::dds::RETCODE_OK};
             return_code_node_name =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_node_name);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_node_name)
@@ -620,23 +487,18 @@ void register_NodeStatusImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_node_name))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_node_name = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_node_name = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_node_name = 0x00000004;
             bool common_node_name_ec {false};
-            CommonStructMember common_node_name {TypeObjectUtils::build_common_struct_member(member_id_node_name,
-                                                         member_flags_node_name, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                             type_ids_node_name,
-                                                             common_node_name_ec))};
+            CommonStructMember common_node_name {TypeObjectUtils::build_common_struct_member(member_id_node_name, member_flags_node_name, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_node_name, common_node_name_ec))};
             if (!common_node_name_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure node_name member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure node_name member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_node_name = "node_name";
@@ -647,46 +509,34 @@ void register_NodeStatusImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_node_name;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_node_name;
             eprosima::fastcdr::optional<std::string> hash_id_node_name;
-            if (unit_node_name.has_value() || min_node_name.has_value() || max_node_name.has_value() ||
-                    hash_id_node_name.has_value())
+            if (unit_node_name.has_value() || min_node_name.has_value() || max_node_name.has_value() || hash_id_node_name.has_value())
             {
-                member_ann_builtin_node_name = TypeObjectUtils::build_applied_builtin_member_annotations(unit_node_name,
-                                min_node_name,
-                                max_node_name,
-                                hash_id_node_name);
+                member_ann_builtin_node_name = TypeObjectUtils::build_applied_builtin_member_annotations(unit_node_name, min_node_name, max_node_name, hash_id_node_name);
             }
             if (!tmp_ann_custom_node_name.empty())
             {
                 ann_custom_NodeStatusImpl = tmp_ann_custom_node_name;
             }
-            CompleteMemberDetail detail_node_name = TypeObjectUtils::build_complete_member_detail(name_node_name,
-                            member_ann_builtin_node_name,
-                            ann_custom_NodeStatusImpl);
-            CompleteStructMember member_node_name = TypeObjectUtils::build_complete_struct_member(common_node_name,
-                            detail_node_name);
+            CompleteMemberDetail detail_node_name = TypeObjectUtils::build_complete_member_detail(name_node_name, member_ann_builtin_node_name, ann_custom_NodeStatusImpl);
+            CompleteStructMember member_node_name = TypeObjectUtils::build_complete_struct_member(common_node_name, detail_node_name);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeStatusImpl, member_node_name);
         }
         {
             TypeIdentifierPair type_ids_task_id;
             ReturnCode_t return_code_task_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskIdImpl", type_ids_task_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_id)
             {
-                ::register_TaskIdImpl_type_identifier(type_ids_task_id);
+            ::register_TaskIdImpl_type_identifier(type_ids_task_id);
             }
-            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_task_id = 0x00000005;
             bool common_task_id_ec {false};
-            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
-                                                       member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_task_id,
-                                                           common_task_id_ec))};
+            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id, member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_id, common_task_id_ec))};
             if (!common_task_id_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_id member TypeIdentifier inconsistent.");
@@ -700,44 +550,33 @@ void register_NodeStatusImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_task_id;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_task_id;
             eprosima::fastcdr::optional<std::string> hash_id_task_id;
-            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() ||
-                    hash_id_task_id.has_value())
+            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() || hash_id_task_id.has_value())
             {
-                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id,
-                                min_task_id,
-                                max_task_id,
-                                hash_id_task_id);
+                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id, min_task_id, max_task_id, hash_id_task_id);
             }
             if (!tmp_ann_custom_task_id.empty())
             {
                 ann_custom_NodeStatusImpl = tmp_ann_custom_task_id;
             }
-            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id,
-                            member_ann_builtin_task_id,
-                            ann_custom_NodeStatusImpl);
-            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id,
-                            detail_task_id);
+            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id, member_ann_builtin_task_id, ann_custom_NodeStatusImpl);
+            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id, detail_task_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeStatusImpl, member_task_id);
         }
-        CompleteStructType struct_type_NodeStatusImpl = TypeObjectUtils::build_complete_struct_type(
-            struct_flags_NodeStatusImpl, header_NodeStatusImpl, member_seq_NodeStatusImpl);
+        CompleteStructType struct_type_NodeStatusImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_NodeStatusImpl, header_NodeStatusImpl, member_seq_NodeStatusImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_NodeStatusImpl,
-                type_name_NodeStatusImpl.to_string(), type_ids_NodeStatusImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_NodeStatusImpl, type_name_NodeStatusImpl.to_string(), type_ids_NodeStatusImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "NodeStatusImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
-
 void register_CmdNode_type_identifier(
         TypeIdentifierPair& type_ids_CmdNode)
 {
     ReturnCode_t return_code_CmdNode {eprosima::fastdds::dds::RETCODE_OK};
     return_code_CmdNode =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "CmdNode", type_ids_CmdNode);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_CmdNode)
     {
@@ -747,101 +586,74 @@ void register_CmdNode_type_identifier(
         QualifiedTypeName type_name_CmdNode = "CmdNode";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_CmdNode;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_CmdNode;
-        CompleteTypeDetail detail_CmdNode = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_CmdNode,
-                        ann_custom_CmdNode,
-                        type_name_CmdNode.to_string());
-        CompleteEnumeratedHeader header_CmdNode = TypeObjectUtils::build_complete_enumerated_header(common_CmdNode,
-                        detail_CmdNode);
+        CompleteTypeDetail detail_CmdNode = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_CmdNode, ann_custom_CmdNode, type_name_CmdNode.to_string());
+        CompleteEnumeratedHeader header_CmdNode = TypeObjectUtils::build_complete_enumerated_header(common_CmdNode, detail_CmdNode);
         CompleteEnumeratedLiteralSeq literal_seq_CmdNode;
         {
             EnumeratedLiteralFlag flags_NO_CMD_NODE = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_NO_CMD_NODE = TypeObjectUtils::build_common_enumerated_literal(0,
-                            flags_NO_CMD_NODE);
+            CommonEnumeratedLiteral common_NO_CMD_NODE = TypeObjectUtils::build_common_enumerated_literal(0, flags_NO_CMD_NODE);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_NO_CMD_NODE;
             ann_custom_CmdNode.reset();
             MemberName name_NO_CMD_NODE = "NO_CMD_NODE";
-            CompleteMemberDetail detail_NO_CMD_NODE = TypeObjectUtils::build_complete_member_detail(name_NO_CMD_NODE,
-                            member_ann_builtin_NO_CMD_NODE,
-                            ann_custom_CmdNode);
-            CompleteEnumeratedLiteral literal_NO_CMD_NODE = TypeObjectUtils::build_complete_enumerated_literal(
-                common_NO_CMD_NODE, detail_NO_CMD_NODE);
+            CompleteMemberDetail detail_NO_CMD_NODE = TypeObjectUtils::build_complete_member_detail(name_NO_CMD_NODE, member_ann_builtin_NO_CMD_NODE, ann_custom_CmdNode);
+            CompleteEnumeratedLiteral literal_NO_CMD_NODE = TypeObjectUtils::build_complete_enumerated_literal(common_NO_CMD_NODE, detail_NO_CMD_NODE);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdNode, literal_NO_CMD_NODE);
         }
         {
             EnumeratedLiteralFlag flags_START_NODE = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_START_NODE = TypeObjectUtils::build_common_enumerated_literal(1,
-                            flags_START_NODE);
+            CommonEnumeratedLiteral common_START_NODE = TypeObjectUtils::build_common_enumerated_literal(1, flags_START_NODE);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_START_NODE;
             ann_custom_CmdNode.reset();
             MemberName name_START_NODE = "START_NODE";
-            CompleteMemberDetail detail_START_NODE = TypeObjectUtils::build_complete_member_detail(name_START_NODE,
-                            member_ann_builtin_START_NODE,
-                            ann_custom_CmdNode);
-            CompleteEnumeratedLiteral literal_START_NODE = TypeObjectUtils::build_complete_enumerated_literal(
-                common_START_NODE, detail_START_NODE);
+            CompleteMemberDetail detail_START_NODE = TypeObjectUtils::build_complete_member_detail(name_START_NODE, member_ann_builtin_START_NODE, ann_custom_CmdNode);
+            CompleteEnumeratedLiteral literal_START_NODE = TypeObjectUtils::build_complete_enumerated_literal(common_START_NODE, detail_START_NODE);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdNode, literal_START_NODE);
         }
         {
             EnumeratedLiteralFlag flags_STOP_NODE = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_STOP_NODE = TypeObjectUtils::build_common_enumerated_literal(2,
-                            flags_STOP_NODE);
+            CommonEnumeratedLiteral common_STOP_NODE = TypeObjectUtils::build_common_enumerated_literal(2, flags_STOP_NODE);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_STOP_NODE;
             ann_custom_CmdNode.reset();
             MemberName name_STOP_NODE = "STOP_NODE";
-            CompleteMemberDetail detail_STOP_NODE = TypeObjectUtils::build_complete_member_detail(name_STOP_NODE,
-                            member_ann_builtin_STOP_NODE,
-                            ann_custom_CmdNode);
-            CompleteEnumeratedLiteral literal_STOP_NODE = TypeObjectUtils::build_complete_enumerated_literal(
-                common_STOP_NODE, detail_STOP_NODE);
+            CompleteMemberDetail detail_STOP_NODE = TypeObjectUtils::build_complete_member_detail(name_STOP_NODE, member_ann_builtin_STOP_NODE, ann_custom_CmdNode);
+            CompleteEnumeratedLiteral literal_STOP_NODE = TypeObjectUtils::build_complete_enumerated_literal(common_STOP_NODE, detail_STOP_NODE);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdNode, literal_STOP_NODE);
         }
         {
             EnumeratedLiteralFlag flags_RESET_NODE = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_RESET_NODE = TypeObjectUtils::build_common_enumerated_literal(3,
-                            flags_RESET_NODE);
+            CommonEnumeratedLiteral common_RESET_NODE = TypeObjectUtils::build_common_enumerated_literal(3, flags_RESET_NODE);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_RESET_NODE;
             ann_custom_CmdNode.reset();
             MemberName name_RESET_NODE = "RESET_NODE";
-            CompleteMemberDetail detail_RESET_NODE = TypeObjectUtils::build_complete_member_detail(name_RESET_NODE,
-                            member_ann_builtin_RESET_NODE,
-                            ann_custom_CmdNode);
-            CompleteEnumeratedLiteral literal_RESET_NODE = TypeObjectUtils::build_complete_enumerated_literal(
-                common_RESET_NODE, detail_RESET_NODE);
+            CompleteMemberDetail detail_RESET_NODE = TypeObjectUtils::build_complete_member_detail(name_RESET_NODE, member_ann_builtin_RESET_NODE, ann_custom_CmdNode);
+            CompleteEnumeratedLiteral literal_RESET_NODE = TypeObjectUtils::build_complete_enumerated_literal(common_RESET_NODE, detail_RESET_NODE);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdNode, literal_RESET_NODE);
         }
         {
             EnumeratedLiteralFlag flags_TERMINATE_NODE = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_TERMINATE_NODE = TypeObjectUtils::build_common_enumerated_literal(4,
-                            flags_TERMINATE_NODE);
+            CommonEnumeratedLiteral common_TERMINATE_NODE = TypeObjectUtils::build_common_enumerated_literal(4, flags_TERMINATE_NODE);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_TERMINATE_NODE;
             ann_custom_CmdNode.reset();
             MemberName name_TERMINATE_NODE = "TERMINATE_NODE";
-            CompleteMemberDetail detail_TERMINATE_NODE = TypeObjectUtils::build_complete_member_detail(
-                name_TERMINATE_NODE, member_ann_builtin_TERMINATE_NODE, ann_custom_CmdNode);
-            CompleteEnumeratedLiteral literal_TERMINATE_NODE = TypeObjectUtils::build_complete_enumerated_literal(
-                common_TERMINATE_NODE, detail_TERMINATE_NODE);
+            CompleteMemberDetail detail_TERMINATE_NODE = TypeObjectUtils::build_complete_member_detail(name_TERMINATE_NODE, member_ann_builtin_TERMINATE_NODE, ann_custom_CmdNode);
+            CompleteEnumeratedLiteral literal_TERMINATE_NODE = TypeObjectUtils::build_complete_enumerated_literal(common_TERMINATE_NODE, detail_TERMINATE_NODE);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdNode, literal_TERMINATE_NODE);
         }
-        CompleteEnumeratedType enumerated_type_CmdNode = TypeObjectUtils::build_complete_enumerated_type(
-            enum_flags_CmdNode, header_CmdNode,
-            literal_seq_CmdNode);
+        CompleteEnumeratedType enumerated_type_CmdNode = TypeObjectUtils::build_complete_enumerated_type(enum_flags_CmdNode, header_CmdNode,
+                literal_seq_CmdNode);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_CmdNode,
-                type_name_CmdNode.to_string(), type_ids_CmdNode))
+                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_CmdNode, type_name_CmdNode.to_string(), type_ids_CmdNode))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                    "CmdNode already registered in TypeObjectRegistry for a different type.");
+                "CmdNode already registered in TypeObjectRegistry for a different type.");
         }
     }
-}
-
-void register_CmdTask_type_identifier(
+}void register_CmdTask_type_identifier(
         TypeIdentifierPair& type_ids_CmdTask)
 {
     ReturnCode_t return_code_CmdTask {eprosima::fastdds::dds::RETCODE_OK};
     return_code_CmdTask =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "CmdTask", type_ids_CmdTask);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_CmdTask)
     {
@@ -851,197 +663,149 @@ void register_CmdTask_type_identifier(
         QualifiedTypeName type_name_CmdTask = "CmdTask";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_CmdTask;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_CmdTask;
-        CompleteTypeDetail detail_CmdTask = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_CmdTask,
-                        ann_custom_CmdTask,
-                        type_name_CmdTask.to_string());
-        CompleteEnumeratedHeader header_CmdTask = TypeObjectUtils::build_complete_enumerated_header(common_CmdTask,
-                        detail_CmdTask);
+        CompleteTypeDetail detail_CmdTask = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_CmdTask, ann_custom_CmdTask, type_name_CmdTask.to_string());
+        CompleteEnumeratedHeader header_CmdTask = TypeObjectUtils::build_complete_enumerated_header(common_CmdTask, detail_CmdTask);
         CompleteEnumeratedLiteralSeq literal_seq_CmdTask;
         {
             EnumeratedLiteralFlag flags_NO_CMD_TASK = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_NO_CMD_TASK = TypeObjectUtils::build_common_enumerated_literal(0,
-                            flags_NO_CMD_TASK);
+            CommonEnumeratedLiteral common_NO_CMD_TASK = TypeObjectUtils::build_common_enumerated_literal(0, flags_NO_CMD_TASK);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_NO_CMD_TASK;
             ann_custom_CmdTask.reset();
             MemberName name_NO_CMD_TASK = "NO_CMD_TASK";
-            CompleteMemberDetail detail_NO_CMD_TASK = TypeObjectUtils::build_complete_member_detail(name_NO_CMD_TASK,
-                            member_ann_builtin_NO_CMD_TASK,
-                            ann_custom_CmdTask);
-            CompleteEnumeratedLiteral literal_NO_CMD_TASK = TypeObjectUtils::build_complete_enumerated_literal(
-                common_NO_CMD_TASK, detail_NO_CMD_TASK);
+            CompleteMemberDetail detail_NO_CMD_TASK = TypeObjectUtils::build_complete_member_detail(name_NO_CMD_TASK, member_ann_builtin_NO_CMD_TASK, ann_custom_CmdTask);
+            CompleteEnumeratedLiteral literal_NO_CMD_TASK = TypeObjectUtils::build_complete_enumerated_literal(common_NO_CMD_TASK, detail_NO_CMD_TASK);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdTask, literal_NO_CMD_TASK);
         }
         {
             EnumeratedLiteralFlag flags_STOP_TASK = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_STOP_TASK = TypeObjectUtils::build_common_enumerated_literal(1,
-                            flags_STOP_TASK);
+            CommonEnumeratedLiteral common_STOP_TASK = TypeObjectUtils::build_common_enumerated_literal(1, flags_STOP_TASK);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_STOP_TASK;
             ann_custom_CmdTask.reset();
             MemberName name_STOP_TASK = "STOP_TASK";
-            CompleteMemberDetail detail_STOP_TASK = TypeObjectUtils::build_complete_member_detail(name_STOP_TASK,
-                            member_ann_builtin_STOP_TASK,
-                            ann_custom_CmdTask);
-            CompleteEnumeratedLiteral literal_STOP_TASK = TypeObjectUtils::build_complete_enumerated_literal(
-                common_STOP_TASK, detail_STOP_TASK);
+            CompleteMemberDetail detail_STOP_TASK = TypeObjectUtils::build_complete_member_detail(name_STOP_TASK, member_ann_builtin_STOP_TASK, ann_custom_CmdTask);
+            CompleteEnumeratedLiteral literal_STOP_TASK = TypeObjectUtils::build_complete_enumerated_literal(common_STOP_TASK, detail_STOP_TASK);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdTask, literal_STOP_TASK);
         }
         {
             EnumeratedLiteralFlag flags_RESET_TASK = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_RESET_TASK = TypeObjectUtils::build_common_enumerated_literal(2,
-                            flags_RESET_TASK);
+            CommonEnumeratedLiteral common_RESET_TASK = TypeObjectUtils::build_common_enumerated_literal(2, flags_RESET_TASK);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_RESET_TASK;
             ann_custom_CmdTask.reset();
             MemberName name_RESET_TASK = "RESET_TASK";
-            CompleteMemberDetail detail_RESET_TASK = TypeObjectUtils::build_complete_member_detail(name_RESET_TASK,
-                            member_ann_builtin_RESET_TASK,
-                            ann_custom_CmdTask);
-            CompleteEnumeratedLiteral literal_RESET_TASK = TypeObjectUtils::build_complete_enumerated_literal(
-                common_RESET_TASK, detail_RESET_TASK);
+            CompleteMemberDetail detail_RESET_TASK = TypeObjectUtils::build_complete_member_detail(name_RESET_TASK, member_ann_builtin_RESET_TASK, ann_custom_CmdTask);
+            CompleteEnumeratedLiteral literal_RESET_TASK = TypeObjectUtils::build_complete_enumerated_literal(common_RESET_TASK, detail_RESET_TASK);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdTask, literal_RESET_TASK);
         }
         {
             EnumeratedLiteralFlag flags_PREEMPT_TASK = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_PREEMPT_TASK = TypeObjectUtils::build_common_enumerated_literal(3,
-                            flags_PREEMPT_TASK);
+            CommonEnumeratedLiteral common_PREEMPT_TASK = TypeObjectUtils::build_common_enumerated_literal(3, flags_PREEMPT_TASK);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_PREEMPT_TASK;
             ann_custom_CmdTask.reset();
             MemberName name_PREEMPT_TASK = "PREEMPT_TASK";
-            CompleteMemberDetail detail_PREEMPT_TASK = TypeObjectUtils::build_complete_member_detail(name_PREEMPT_TASK,
-                            member_ann_builtin_PREEMPT_TASK,
-                            ann_custom_CmdTask);
-            CompleteEnumeratedLiteral literal_PREEMPT_TASK = TypeObjectUtils::build_complete_enumerated_literal(
-                common_PREEMPT_TASK, detail_PREEMPT_TASK);
+            CompleteMemberDetail detail_PREEMPT_TASK = TypeObjectUtils::build_complete_member_detail(name_PREEMPT_TASK, member_ann_builtin_PREEMPT_TASK, ann_custom_CmdTask);
+            CompleteEnumeratedLiteral literal_PREEMPT_TASK = TypeObjectUtils::build_complete_enumerated_literal(common_PREEMPT_TASK, detail_PREEMPT_TASK);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdTask, literal_PREEMPT_TASK);
         }
         {
             EnumeratedLiteralFlag flags_TERMINATE_TASK = TypeObjectUtils::build_enumerated_literal_flag(false);
-            CommonEnumeratedLiteral common_TERMINATE_TASK = TypeObjectUtils::build_common_enumerated_literal(4,
-                            flags_TERMINATE_TASK);
+            CommonEnumeratedLiteral common_TERMINATE_TASK = TypeObjectUtils::build_common_enumerated_literal(4, flags_TERMINATE_TASK);
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_TERMINATE_TASK;
             ann_custom_CmdTask.reset();
             MemberName name_TERMINATE_TASK = "TERMINATE_TASK";
-            CompleteMemberDetail detail_TERMINATE_TASK = TypeObjectUtils::build_complete_member_detail(
-                name_TERMINATE_TASK, member_ann_builtin_TERMINATE_TASK, ann_custom_CmdTask);
-            CompleteEnumeratedLiteral literal_TERMINATE_TASK = TypeObjectUtils::build_complete_enumerated_literal(
-                common_TERMINATE_TASK, detail_TERMINATE_TASK);
+            CompleteMemberDetail detail_TERMINATE_TASK = TypeObjectUtils::build_complete_member_detail(name_TERMINATE_TASK, member_ann_builtin_TERMINATE_TASK, ann_custom_CmdTask);
+            CompleteEnumeratedLiteral literal_TERMINATE_TASK = TypeObjectUtils::build_complete_enumerated_literal(common_TERMINATE_TASK, detail_TERMINATE_TASK);
             TypeObjectUtils::add_complete_enumerated_literal(literal_seq_CmdTask, literal_TERMINATE_TASK);
         }
-        CompleteEnumeratedType enumerated_type_CmdTask = TypeObjectUtils::build_complete_enumerated_type(
-            enum_flags_CmdTask, header_CmdTask,
-            literal_seq_CmdTask);
+        CompleteEnumeratedType enumerated_type_CmdTask = TypeObjectUtils::build_complete_enumerated_type(enum_flags_CmdTask, header_CmdTask,
+                literal_seq_CmdTask);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_CmdTask,
-                type_name_CmdTask.to_string(), type_ids_CmdTask))
+                TypeObjectUtils::build_and_register_enumerated_type_object(enumerated_type_CmdTask, type_name_CmdTask.to_string(), type_ids_CmdTask))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                    "CmdTask already registered in TypeObjectRegistry for a different type.");
+                "CmdTask already registered in TypeObjectRegistry for a different type.");
         }
     }
 }// TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
-
 void register_NodeControlImpl_type_identifier(
         TypeIdentifierPair& type_ids_NodeControlImpl)
 {
 
     ReturnCode_t return_code_NodeControlImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_NodeControlImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "NodeControlImpl", type_ids_NodeControlImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_NodeControlImpl)
     {
-        StructTypeFlag struct_flags_NodeControlImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_NodeControlImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_NodeControlImpl = "NodeControlImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_NodeControlImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_NodeControlImpl;
-        CompleteTypeDetail detail_NodeControlImpl = TypeObjectUtils::build_complete_type_detail(
-            type_ann_builtin_NodeControlImpl, ann_custom_NodeControlImpl, type_name_NodeControlImpl.to_string());
+        CompleteTypeDetail detail_NodeControlImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_NodeControlImpl, ann_custom_NodeControlImpl, type_name_NodeControlImpl.to_string());
         CompleteStructHeader header_NodeControlImpl;
-        header_NodeControlImpl =
-                TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_NodeControlImpl);
+        header_NodeControlImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_NodeControlImpl);
         CompleteStructMemberSeq member_seq_NodeControlImpl;
         {
             TypeIdentifierPair type_ids_cmd_node;
             ReturnCode_t return_code_cmd_node {eprosima::fastdds::dds::RETCODE_OK};
             return_code_cmd_node =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "CmdNode", type_ids_cmd_node);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_cmd_node)
             {
-                ::register_CmdNode_type_identifier(type_ids_cmd_node);
+            ::register_CmdNode_type_identifier(type_ids_cmd_node);
             }
-            StructMemberFlag member_flags_cmd_node = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_cmd_node = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_cmd_node = 0x00000000;
             bool common_cmd_node_ec {false};
-            CommonStructMember common_cmd_node {TypeObjectUtils::build_common_struct_member(member_id_cmd_node,
-                                                        member_flags_cmd_node, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                            type_ids_cmd_node,
-                                                            common_cmd_node_ec))};
+            CommonStructMember common_cmd_node {TypeObjectUtils::build_common_struct_member(member_id_cmd_node, member_flags_cmd_node, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_cmd_node, common_cmd_node_ec))};
             if (!common_cmd_node_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure cmd_node member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure cmd_node member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_cmd_node = "cmd_node";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_cmd_node;
             ann_custom_NodeControlImpl.reset();
-            CompleteMemberDetail detail_cmd_node = TypeObjectUtils::build_complete_member_detail(name_cmd_node,
-                            member_ann_builtin_cmd_node,
-                            ann_custom_NodeControlImpl);
-            CompleteStructMember member_cmd_node = TypeObjectUtils::build_complete_struct_member(common_cmd_node,
-                            detail_cmd_node);
+            CompleteMemberDetail detail_cmd_node = TypeObjectUtils::build_complete_member_detail(name_cmd_node, member_ann_builtin_cmd_node, ann_custom_NodeControlImpl);
+            CompleteStructMember member_cmd_node = TypeObjectUtils::build_complete_struct_member(common_cmd_node, detail_cmd_node);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeControlImpl, member_cmd_node);
         }
         {
             TypeIdentifierPair type_ids_cmd_task;
             ReturnCode_t return_code_cmd_task {eprosima::fastdds::dds::RETCODE_OK};
             return_code_cmd_task =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "CmdTask", type_ids_cmd_task);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_cmd_task)
             {
-                ::register_CmdTask_type_identifier(type_ids_cmd_task);
+            ::register_CmdTask_type_identifier(type_ids_cmd_task);
             }
-            StructMemberFlag member_flags_cmd_task = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_cmd_task = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_cmd_task = 0x00000001;
             bool common_cmd_task_ec {false};
-            CommonStructMember common_cmd_task {TypeObjectUtils::build_common_struct_member(member_id_cmd_task,
-                                                        member_flags_cmd_task, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                            type_ids_cmd_task,
-                                                            common_cmd_task_ec))};
+            CommonStructMember common_cmd_task {TypeObjectUtils::build_common_struct_member(member_id_cmd_task, member_flags_cmd_task, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_cmd_task, common_cmd_task_ec))};
             if (!common_cmd_task_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure cmd_task member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure cmd_task member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_cmd_task = "cmd_task";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_cmd_task;
             ann_custom_NodeControlImpl.reset();
-            CompleteMemberDetail detail_cmd_task = TypeObjectUtils::build_complete_member_detail(name_cmd_task,
-                            member_ann_builtin_cmd_task,
-                            ann_custom_NodeControlImpl);
-            CompleteStructMember member_cmd_task = TypeObjectUtils::build_complete_struct_member(common_cmd_task,
-                            detail_cmd_task);
+            CompleteMemberDetail detail_cmd_task = TypeObjectUtils::build_complete_member_detail(name_cmd_task, member_ann_builtin_cmd_task, ann_custom_NodeControlImpl);
+            CompleteStructMember member_cmd_task = TypeObjectUtils::build_complete_struct_member(common_cmd_task, detail_cmd_task);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeControlImpl, member_cmd_task);
         }
         {
             TypeIdentifierPair type_ids_target_node;
             ReturnCode_t return_code_target_node {eprosima::fastdds::dds::RETCODE_OK};
             return_code_target_node =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_target_node);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_target_node)
@@ -1054,41 +818,32 @@ void register_NodeControlImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_target_node))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_target_node = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_target_node = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_target_node = 0x00000002;
             bool common_target_node_ec {false};
-            CommonStructMember common_target_node {TypeObjectUtils::build_common_struct_member(member_id_target_node,
-                                                           member_flags_target_node, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                               type_ids_target_node,
-                                                               common_target_node_ec))};
+            CommonStructMember common_target_node {TypeObjectUtils::build_common_struct_member(member_id_target_node, member_flags_target_node, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_target_node, common_target_node_ec))};
             if (!common_target_node_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure target_node member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure target_node member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_target_node = "target_node";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_target_node;
             ann_custom_NodeControlImpl.reset();
-            CompleteMemberDetail detail_target_node = TypeObjectUtils::build_complete_member_detail(name_target_node,
-                            member_ann_builtin_target_node,
-                            ann_custom_NodeControlImpl);
-            CompleteStructMember member_target_node = TypeObjectUtils::build_complete_struct_member(common_target_node,
-                            detail_target_node);
+            CompleteMemberDetail detail_target_node = TypeObjectUtils::build_complete_member_detail(name_target_node, member_ann_builtin_target_node, ann_custom_NodeControlImpl);
+            CompleteStructMember member_target_node = TypeObjectUtils::build_complete_struct_member(common_target_node, detail_target_node);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeControlImpl, member_target_node);
         }
         {
             TypeIdentifierPair type_ids_source_node;
             ReturnCode_t return_code_source_node {eprosima::fastdds::dds::RETCODE_OK};
             return_code_source_node =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_source_node);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_source_node)
@@ -1101,23 +856,18 @@ void register_NodeControlImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_source_node))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_source_node = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_source_node = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_source_node = 0x00000003;
             bool common_source_node_ec {false};
-            CommonStructMember common_source_node {TypeObjectUtils::build_common_struct_member(member_id_source_node,
-                                                           member_flags_source_node, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                               type_ids_source_node,
-                                                               common_source_node_ec))};
+            CommonStructMember common_source_node {TypeObjectUtils::build_common_struct_member(member_id_source_node, member_flags_source_node, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_source_node, common_source_node_ec))};
             if (!common_source_node_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure source_node member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure source_node member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_source_node = "source_node";
@@ -1128,44 +878,34 @@ void register_NodeControlImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_source_node;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_source_node;
             eprosima::fastcdr::optional<std::string> hash_id_source_node;
-            if (unit_source_node.has_value() || min_source_node.has_value() || max_source_node.has_value() ||
-                    hash_id_source_node.has_value())
+            if (unit_source_node.has_value() || min_source_node.has_value() || max_source_node.has_value() || hash_id_source_node.has_value())
             {
-                member_ann_builtin_source_node = TypeObjectUtils::build_applied_builtin_member_annotations(
-                    unit_source_node, min_source_node, max_source_node, hash_id_source_node);
+                member_ann_builtin_source_node = TypeObjectUtils::build_applied_builtin_member_annotations(unit_source_node, min_source_node, max_source_node, hash_id_source_node);
             }
             if (!tmp_ann_custom_source_node.empty())
             {
                 ann_custom_NodeControlImpl = tmp_ann_custom_source_node;
             }
-            CompleteMemberDetail detail_source_node = TypeObjectUtils::build_complete_member_detail(name_source_node,
-                            member_ann_builtin_source_node,
-                            ann_custom_NodeControlImpl);
-            CompleteStructMember member_source_node = TypeObjectUtils::build_complete_struct_member(common_source_node,
-                            detail_source_node);
+            CompleteMemberDetail detail_source_node = TypeObjectUtils::build_complete_member_detail(name_source_node, member_ann_builtin_source_node, ann_custom_NodeControlImpl);
+            CompleteStructMember member_source_node = TypeObjectUtils::build_complete_struct_member(common_source_node, detail_source_node);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeControlImpl, member_source_node);
         }
         {
             TypeIdentifierPair type_ids_task_id;
             ReturnCode_t return_code_task_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskIdImpl", type_ids_task_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_id)
             {
-                ::register_TaskIdImpl_type_identifier(type_ids_task_id);
+            ::register_TaskIdImpl_type_identifier(type_ids_task_id);
             }
-            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_task_id = 0x00000004;
             bool common_task_id_ec {false};
-            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
-                                                       member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_task_id,
-                                                           common_task_id_ec))};
+            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id, member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_id, common_task_id_ec))};
             if (!common_task_id_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_id member TypeIdentifier inconsistent.");
@@ -1179,37 +919,27 @@ void register_NodeControlImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_task_id;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_task_id;
             eprosima::fastcdr::optional<std::string> hash_id_task_id;
-            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() ||
-                    hash_id_task_id.has_value())
+            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() || hash_id_task_id.has_value())
             {
-                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id,
-                                min_task_id,
-                                max_task_id,
-                                hash_id_task_id);
+                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id, min_task_id, max_task_id, hash_id_task_id);
             }
             if (!tmp_ann_custom_task_id.empty())
             {
                 ann_custom_NodeControlImpl = tmp_ann_custom_task_id;
             }
-            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id,
-                            member_ann_builtin_task_id,
-                            ann_custom_NodeControlImpl);
-            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id,
-                            detail_task_id);
+            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id, member_ann_builtin_task_id, ann_custom_NodeControlImpl);
+            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id, detail_task_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_NodeControlImpl, member_task_id);
         }
-        CompleteStructType struct_type_NodeControlImpl = TypeObjectUtils::build_complete_struct_type(
-            struct_flags_NodeControlImpl, header_NodeControlImpl, member_seq_NodeControlImpl);
+        CompleteStructType struct_type_NodeControlImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_NodeControlImpl, header_NodeControlImpl, member_seq_NodeControlImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_NodeControlImpl,
-                type_name_NodeControlImpl.to_string(), type_ids_NodeControlImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_NodeControlImpl, type_name_NodeControlImpl.to_string(), type_ids_NodeControlImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "NodeControlImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
-
 // TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
 void register_UserInputImpl_type_identifier(
         TypeIdentifierPair& type_ids_UserInputImpl)
@@ -1217,19 +947,16 @@ void register_UserInputImpl_type_identifier(
 
     ReturnCode_t return_code_UserInputImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_UserInputImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "UserInputImpl", type_ids_UserInputImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_UserInputImpl)
     {
-        StructTypeFlag struct_flags_UserInputImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_UserInputImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_UserInputImpl = "UserInputImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_UserInputImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_UserInputImpl;
-        CompleteTypeDetail detail_UserInputImpl = TypeObjectUtils::build_complete_type_detail(
-            type_ann_builtin_UserInputImpl, ann_custom_UserInputImpl, type_name_UserInputImpl.to_string());
+        CompleteTypeDetail detail_UserInputImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_UserInputImpl, ann_custom_UserInputImpl, type_name_UserInputImpl.to_string());
         CompleteStructHeader header_UserInputImpl;
         header_UserInputImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_UserInputImpl);
         CompleteStructMemberSeq member_seq_UserInputImpl;
@@ -1237,8 +964,7 @@ void register_UserInputImpl_type_identifier(
             TypeIdentifierPair type_ids_modality;
             ReturnCode_t return_code_modality {eprosima::fastdds::dds::RETCODE_OK};
             return_code_modality =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_modality);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_modality)
@@ -1251,41 +977,32 @@ void register_UserInputImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_modality))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_modality = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_modality = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_modality = 0x00000000;
             bool common_modality_ec {false};
-            CommonStructMember common_modality {TypeObjectUtils::build_common_struct_member(member_id_modality,
-                                                        member_flags_modality, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                            type_ids_modality,
-                                                            common_modality_ec))};
+            CommonStructMember common_modality {TypeObjectUtils::build_common_struct_member(member_id_modality, member_flags_modality, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_modality, common_modality_ec))};
             if (!common_modality_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure modality member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure modality member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_modality = "modality";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_modality;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_modality = TypeObjectUtils::build_complete_member_detail(name_modality,
-                            member_ann_builtin_modality,
-                            ann_custom_UserInputImpl);
-            CompleteStructMember member_modality = TypeObjectUtils::build_complete_struct_member(common_modality,
-                            detail_modality);
+            CompleteMemberDetail detail_modality = TypeObjectUtils::build_complete_member_detail(name_modality, member_ann_builtin_modality, ann_custom_UserInputImpl);
+            CompleteStructMember member_modality = TypeObjectUtils::build_complete_struct_member(common_modality, detail_modality);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_modality);
         }
         {
             TypeIdentifierPair type_ids_problem_short_description;
             ReturnCode_t return_code_problem_short_description {eprosima::fastdds::dds::RETCODE_OK};
             return_code_problem_short_description =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_problem_short_description);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_problem_short_description)
@@ -1298,42 +1015,32 @@ void register_UserInputImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_problem_short_description))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_problem_short_description = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_problem_short_description = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_problem_short_description = 0x00000001;
             bool common_problem_short_description_ec {false};
-            CommonStructMember common_problem_short_description {TypeObjectUtils::build_common_struct_member(
-                                                                     member_id_problem_short_description,
-                                                                     member_flags_problem_short_description, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                         type_ids_problem_short_description,
-                                                                         common_problem_short_description_ec))};
+            CommonStructMember common_problem_short_description {TypeObjectUtils::build_common_struct_member(member_id_problem_short_description, member_flags_problem_short_description, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_problem_short_description, common_problem_short_description_ec))};
             if (!common_problem_short_description_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure problem_short_description member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure problem_short_description member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_problem_short_description = "problem_short_description";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_problem_short_description;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_problem_short_description = TypeObjectUtils::build_complete_member_detail(
-                name_problem_short_description, member_ann_builtin_problem_short_description,
-                ann_custom_UserInputImpl);
-            CompleteStructMember member_problem_short_description = TypeObjectUtils::build_complete_struct_member(
-                common_problem_short_description, detail_problem_short_description);
+            CompleteMemberDetail detail_problem_short_description = TypeObjectUtils::build_complete_member_detail(name_problem_short_description, member_ann_builtin_problem_short_description, ann_custom_UserInputImpl);
+            CompleteStructMember member_problem_short_description = TypeObjectUtils::build_complete_struct_member(common_problem_short_description, detail_problem_short_description);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_problem_short_description);
         }
         {
             TypeIdentifierPair type_ids_problem_definition;
             ReturnCode_t return_code_problem_definition {eprosima::fastdds::dds::RETCODE_OK};
             return_code_problem_definition =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_problem_definition);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_problem_definition)
@@ -1346,48 +1053,38 @@ void register_UserInputImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_problem_definition))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_problem_definition = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_problem_definition = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_problem_definition = 0x00000002;
             bool common_problem_definition_ec {false};
-            CommonStructMember common_problem_definition {TypeObjectUtils::build_common_struct_member(
-                                                              member_id_problem_definition,
-                                                              member_flags_problem_definition, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                  type_ids_problem_definition,
-                                                                  common_problem_definition_ec))};
+            CommonStructMember common_problem_definition {TypeObjectUtils::build_common_struct_member(member_id_problem_definition, member_flags_problem_definition, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_problem_definition, common_problem_definition_ec))};
             if (!common_problem_definition_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure problem_definition member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure problem_definition member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_problem_definition = "problem_definition";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_problem_definition;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_problem_definition = TypeObjectUtils::build_complete_member_detail(
-                name_problem_definition, member_ann_builtin_problem_definition, ann_custom_UserInputImpl);
-            CompleteStructMember member_problem_definition = TypeObjectUtils::build_complete_struct_member(
-                common_problem_definition, detail_problem_definition);
+            CompleteMemberDetail detail_problem_definition = TypeObjectUtils::build_complete_member_detail(name_problem_definition, member_ann_builtin_problem_definition, ann_custom_UserInputImpl);
+            CompleteStructMember member_problem_definition = TypeObjectUtils::build_complete_struct_member(common_problem_definition, detail_problem_definition);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_problem_definition);
         }
         {
             TypeIdentifierPair type_ids_inputs;
             ReturnCode_t return_code_inputs {eprosima::fastdds::dds::RETCODE_OK};
             return_code_inputs =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_inputs);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_inputs)
             {
                 return_code_inputs =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "anonymous_string_unbounded", type_ids_inputs);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_inputs)
@@ -1400,15 +1097,12 @@ void register_UserInputImpl_type_identifier(
                                 "anonymous_string_unbounded", type_ids_inputs))
                         {
                             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                    "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                         }
                     }
                 }
                 bool element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new
-                                                                                                            TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                                        type_ids_inputs,
-                                                                                                                        element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
+                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_inputs, element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
                 if (!element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
@@ -1420,34 +1114,24 @@ void register_UserInputImpl_type_identifier(
                     equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_BOTH;
                 }
                 CollectionElementFlag element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(
-                    equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded,
-                    element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
+                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded, element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_inputs))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_inputs))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_inputs = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_inputs = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_inputs = 0x00000003;
             bool common_inputs_ec {false};
-            CommonStructMember common_inputs {TypeObjectUtils::build_common_struct_member(member_id_inputs,
-                                                      member_flags_inputs, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                          type_ids_inputs,
-                                                          common_inputs_ec))};
+            CommonStructMember common_inputs {TypeObjectUtils::build_common_struct_member(member_id_inputs, member_flags_inputs, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_inputs, common_inputs_ec))};
             if (!common_inputs_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure inputs member TypeIdentifier inconsistent.");
@@ -1456,26 +1140,21 @@ void register_UserInputImpl_type_identifier(
             MemberName name_inputs = "inputs";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_inputs;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_inputs = TypeObjectUtils::build_complete_member_detail(name_inputs,
-                            member_ann_builtin_inputs,
-                            ann_custom_UserInputImpl);
-            CompleteStructMember member_inputs = TypeObjectUtils::build_complete_struct_member(common_inputs,
-                            detail_inputs);
+            CompleteMemberDetail detail_inputs = TypeObjectUtils::build_complete_member_detail(name_inputs, member_ann_builtin_inputs, ann_custom_UserInputImpl);
+            CompleteStructMember member_inputs = TypeObjectUtils::build_complete_struct_member(common_inputs, detail_inputs);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_inputs);
         }
         {
             TypeIdentifierPair type_ids_outputs;
             ReturnCode_t return_code_outputs {eprosima::fastdds::dds::RETCODE_OK};
             return_code_outputs =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_outputs);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_outputs)
             {
                 return_code_outputs =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "anonymous_string_unbounded", type_ids_outputs);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_outputs)
@@ -1488,15 +1167,12 @@ void register_UserInputImpl_type_identifier(
                                 "anonymous_string_unbounded", type_ids_outputs))
                         {
                             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                    "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                         }
                     }
                 }
                 bool element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new
-                                                                                                            TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                                        type_ids_outputs,
-                                                                                                                        element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
+                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_outputs, element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
                 if (!element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
@@ -1508,34 +1184,24 @@ void register_UserInputImpl_type_identifier(
                     equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_BOTH;
                 }
                 CollectionElementFlag element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(
-                    equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded,
-                    element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
+                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded, element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_outputs))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_outputs))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_outputs = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_outputs = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_outputs = 0x00000004;
             bool common_outputs_ec {false};
-            CommonStructMember common_outputs {TypeObjectUtils::build_common_struct_member(member_id_outputs,
-                                                       member_flags_outputs, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_outputs,
-                                                           common_outputs_ec))};
+            CommonStructMember common_outputs {TypeObjectUtils::build_common_struct_member(member_id_outputs, member_flags_outputs, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_outputs, common_outputs_ec))};
             if (!common_outputs_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure outputs member TypeIdentifier inconsistent.");
@@ -1544,19 +1210,15 @@ void register_UserInputImpl_type_identifier(
             MemberName name_outputs = "outputs";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_outputs;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_outputs = TypeObjectUtils::build_complete_member_detail(name_outputs,
-                            member_ann_builtin_outputs,
-                            ann_custom_UserInputImpl);
-            CompleteStructMember member_outputs = TypeObjectUtils::build_complete_struct_member(common_outputs,
-                            detail_outputs);
+            CompleteMemberDetail detail_outputs = TypeObjectUtils::build_complete_member_detail(name_outputs, member_ann_builtin_outputs, ann_custom_UserInputImpl);
+            CompleteStructMember member_outputs = TypeObjectUtils::build_complete_struct_member(common_outputs, detail_outputs);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_outputs);
         }
         {
             TypeIdentifierPair type_ids_minimum_samples;
             ReturnCode_t return_code_minimum_samples {eprosima::fastdds::dds::RETCODE_OK};
             return_code_minimum_samples =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_uint32_t", type_ids_minimum_samples);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_minimum_samples)
@@ -1565,36 +1227,28 @@ void register_UserInputImpl_type_identifier(
                         "minimum_samples Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_minimum_samples = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_minimum_samples = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_minimum_samples = 0x00000005;
             bool common_minimum_samples_ec {false};
-            CommonStructMember common_minimum_samples {TypeObjectUtils::build_common_struct_member(
-                                                           member_id_minimum_samples, member_flags_minimum_samples, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                               type_ids_minimum_samples,
-                                                               common_minimum_samples_ec))};
+            CommonStructMember common_minimum_samples {TypeObjectUtils::build_common_struct_member(member_id_minimum_samples, member_flags_minimum_samples, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_minimum_samples, common_minimum_samples_ec))};
             if (!common_minimum_samples_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure minimum_samples member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure minimum_samples member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_minimum_samples = "minimum_samples";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_minimum_samples;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_minimum_samples = TypeObjectUtils::build_complete_member_detail(
-                name_minimum_samples, member_ann_builtin_minimum_samples, ann_custom_UserInputImpl);
-            CompleteStructMember member_minimum_samples = TypeObjectUtils::build_complete_struct_member(
-                common_minimum_samples, detail_minimum_samples);
+            CompleteMemberDetail detail_minimum_samples = TypeObjectUtils::build_complete_member_detail(name_minimum_samples, member_ann_builtin_minimum_samples, ann_custom_UserInputImpl);
+            CompleteStructMember member_minimum_samples = TypeObjectUtils::build_complete_struct_member(common_minimum_samples, detail_minimum_samples);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_minimum_samples);
         }
         {
             TypeIdentifierPair type_ids_maximum_samples;
             ReturnCode_t return_code_maximum_samples {eprosima::fastdds::dds::RETCODE_OK};
             return_code_maximum_samples =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_uint32_t", type_ids_maximum_samples);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_maximum_samples)
@@ -1603,36 +1257,28 @@ void register_UserInputImpl_type_identifier(
                         "maximum_samples Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_maximum_samples = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_maximum_samples = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_maximum_samples = 0x00000006;
             bool common_maximum_samples_ec {false};
-            CommonStructMember common_maximum_samples {TypeObjectUtils::build_common_struct_member(
-                                                           member_id_maximum_samples, member_flags_maximum_samples, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                               type_ids_maximum_samples,
-                                                               common_maximum_samples_ec))};
+            CommonStructMember common_maximum_samples {TypeObjectUtils::build_common_struct_member(member_id_maximum_samples, member_flags_maximum_samples, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_maximum_samples, common_maximum_samples_ec))};
             if (!common_maximum_samples_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure maximum_samples member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure maximum_samples member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_maximum_samples = "maximum_samples";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_maximum_samples;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_maximum_samples = TypeObjectUtils::build_complete_member_detail(
-                name_maximum_samples, member_ann_builtin_maximum_samples, ann_custom_UserInputImpl);
-            CompleteStructMember member_maximum_samples = TypeObjectUtils::build_complete_struct_member(
-                common_maximum_samples, detail_maximum_samples);
+            CompleteMemberDetail detail_maximum_samples = TypeObjectUtils::build_complete_member_detail(name_maximum_samples, member_ann_builtin_maximum_samples, ann_custom_UserInputImpl);
+            CompleteStructMember member_maximum_samples = TypeObjectUtils::build_complete_struct_member(common_maximum_samples, detail_maximum_samples);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_maximum_samples);
         }
         {
             TypeIdentifierPair type_ids_optimize_carbon_footprint_manual;
             ReturnCode_t return_code_optimize_carbon_footprint_manual {eprosima::fastdds::dds::RETCODE_OK};
             return_code_optimize_carbon_footprint_manual =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_bool", type_ids_optimize_carbon_footprint_manual);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_optimize_carbon_footprint_manual)
@@ -1641,42 +1287,28 @@ void register_UserInputImpl_type_identifier(
                         "optimize_carbon_footprint_manual Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_optimize_carbon_footprint_manual = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_optimize_carbon_footprint_manual = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_optimize_carbon_footprint_manual = 0x00000007;
             bool common_optimize_carbon_footprint_manual_ec {false};
-            CommonStructMember common_optimize_carbon_footprint_manual {TypeObjectUtils::build_common_struct_member(
-                                                                            member_id_optimize_carbon_footprint_manual,
-                                                                            member_flags_optimize_carbon_footprint_manual, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                type_ids_optimize_carbon_footprint_manual,
-                                                                                common_optimize_carbon_footprint_manual_ec))};
+            CommonStructMember common_optimize_carbon_footprint_manual {TypeObjectUtils::build_common_struct_member(member_id_optimize_carbon_footprint_manual, member_flags_optimize_carbon_footprint_manual, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_optimize_carbon_footprint_manual, common_optimize_carbon_footprint_manual_ec))};
             if (!common_optimize_carbon_footprint_manual_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure optimize_carbon_footprint_manual member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure optimize_carbon_footprint_manual member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_optimize_carbon_footprint_manual = "optimize_carbon_footprint_manual";
-            eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations>
-            member_ann_builtin_optimize_carbon_footprint_manual;
+            eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_optimize_carbon_footprint_manual;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_optimize_carbon_footprint_manual =
-                    TypeObjectUtils::build_complete_member_detail(name_optimize_carbon_footprint_manual,
-                            member_ann_builtin_optimize_carbon_footprint_manual,
-                            ann_custom_UserInputImpl);
-            CompleteStructMember member_optimize_carbon_footprint_manual =
-                    TypeObjectUtils::build_complete_struct_member(common_optimize_carbon_footprint_manual,
-                            detail_optimize_carbon_footprint_manual);
-            TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl,
-                    member_optimize_carbon_footprint_manual);
+            CompleteMemberDetail detail_optimize_carbon_footprint_manual = TypeObjectUtils::build_complete_member_detail(name_optimize_carbon_footprint_manual, member_ann_builtin_optimize_carbon_footprint_manual, ann_custom_UserInputImpl);
+            CompleteStructMember member_optimize_carbon_footprint_manual = TypeObjectUtils::build_complete_struct_member(common_optimize_carbon_footprint_manual, detail_optimize_carbon_footprint_manual);
+            TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_optimize_carbon_footprint_manual);
         }
         {
             TypeIdentifierPair type_ids_previous_iteration;
             ReturnCode_t return_code_previous_iteration {eprosima::fastdds::dds::RETCODE_OK};
             return_code_previous_iteration =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_int32_t", type_ids_previous_iteration);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_previous_iteration)
@@ -1685,37 +1317,28 @@ void register_UserInputImpl_type_identifier(
                         "previous_iteration Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_previous_iteration = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_previous_iteration = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_previous_iteration = 0x00000008;
             bool common_previous_iteration_ec {false};
-            CommonStructMember common_previous_iteration {TypeObjectUtils::build_common_struct_member(
-                                                              member_id_previous_iteration,
-                                                              member_flags_previous_iteration, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                  type_ids_previous_iteration,
-                                                                  common_previous_iteration_ec))};
+            CommonStructMember common_previous_iteration {TypeObjectUtils::build_common_struct_member(member_id_previous_iteration, member_flags_previous_iteration, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_previous_iteration, common_previous_iteration_ec))};
             if (!common_previous_iteration_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure previous_iteration member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure previous_iteration member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_previous_iteration = "previous_iteration";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_previous_iteration;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_previous_iteration = TypeObjectUtils::build_complete_member_detail(
-                name_previous_iteration, member_ann_builtin_previous_iteration, ann_custom_UserInputImpl);
-            CompleteStructMember member_previous_iteration = TypeObjectUtils::build_complete_struct_member(
-                common_previous_iteration, detail_previous_iteration);
+            CompleteMemberDetail detail_previous_iteration = TypeObjectUtils::build_complete_member_detail(name_previous_iteration, member_ann_builtin_previous_iteration, ann_custom_UserInputImpl);
+            CompleteStructMember member_previous_iteration = TypeObjectUtils::build_complete_struct_member(common_previous_iteration, detail_previous_iteration);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_previous_iteration);
         }
         {
             TypeIdentifierPair type_ids_optimize_carbon_footprint_auto;
             ReturnCode_t return_code_optimize_carbon_footprint_auto {eprosima::fastdds::dds::RETCODE_OK};
             return_code_optimize_carbon_footprint_auto =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_bool", type_ids_optimize_carbon_footprint_auto);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_optimize_carbon_footprint_auto)
@@ -1724,40 +1347,28 @@ void register_UserInputImpl_type_identifier(
                         "optimize_carbon_footprint_auto Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_optimize_carbon_footprint_auto = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_optimize_carbon_footprint_auto = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_optimize_carbon_footprint_auto = 0x00000009;
             bool common_optimize_carbon_footprint_auto_ec {false};
-            CommonStructMember common_optimize_carbon_footprint_auto {TypeObjectUtils::build_common_struct_member(
-                                                                          member_id_optimize_carbon_footprint_auto,
-                                                                          member_flags_optimize_carbon_footprint_auto, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                              type_ids_optimize_carbon_footprint_auto,
-                                                                              common_optimize_carbon_footprint_auto_ec))};
+            CommonStructMember common_optimize_carbon_footprint_auto {TypeObjectUtils::build_common_struct_member(member_id_optimize_carbon_footprint_auto, member_flags_optimize_carbon_footprint_auto, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_optimize_carbon_footprint_auto, common_optimize_carbon_footprint_auto_ec))};
             if (!common_optimize_carbon_footprint_auto_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure optimize_carbon_footprint_auto member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure optimize_carbon_footprint_auto member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_optimize_carbon_footprint_auto = "optimize_carbon_footprint_auto";
-            eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations>
-            member_ann_builtin_optimize_carbon_footprint_auto;
+            eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_optimize_carbon_footprint_auto;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_optimize_carbon_footprint_auto = TypeObjectUtils::build_complete_member_detail(
-                name_optimize_carbon_footprint_auto, member_ann_builtin_optimize_carbon_footprint_auto,
-                ann_custom_UserInputImpl);
-            CompleteStructMember member_optimize_carbon_footprint_auto = TypeObjectUtils::build_complete_struct_member(
-                common_optimize_carbon_footprint_auto, detail_optimize_carbon_footprint_auto);
-            TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl,
-                    member_optimize_carbon_footprint_auto);
+            CompleteMemberDetail detail_optimize_carbon_footprint_auto = TypeObjectUtils::build_complete_member_detail(name_optimize_carbon_footprint_auto, member_ann_builtin_optimize_carbon_footprint_auto, ann_custom_UserInputImpl);
+            CompleteStructMember member_optimize_carbon_footprint_auto = TypeObjectUtils::build_complete_struct_member(common_optimize_carbon_footprint_auto, detail_optimize_carbon_footprint_auto);
+            TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_optimize_carbon_footprint_auto);
         }
         {
             TypeIdentifierPair type_ids_desired_carbon_footprint;
             ReturnCode_t return_code_desired_carbon_footprint {eprosima::fastdds::dds::RETCODE_OK};
             return_code_desired_carbon_footprint =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_double", type_ids_desired_carbon_footprint);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_desired_carbon_footprint)
@@ -1766,38 +1377,28 @@ void register_UserInputImpl_type_identifier(
                         "desired_carbon_footprint Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_desired_carbon_footprint = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_desired_carbon_footprint = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_desired_carbon_footprint = 0x0000000a;
             bool common_desired_carbon_footprint_ec {false};
-            CommonStructMember common_desired_carbon_footprint {TypeObjectUtils::build_common_struct_member(
-                                                                    member_id_desired_carbon_footprint,
-                                                                    member_flags_desired_carbon_footprint, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                        type_ids_desired_carbon_footprint,
-                                                                        common_desired_carbon_footprint_ec))};
+            CommonStructMember common_desired_carbon_footprint {TypeObjectUtils::build_common_struct_member(member_id_desired_carbon_footprint, member_flags_desired_carbon_footprint, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_desired_carbon_footprint, common_desired_carbon_footprint_ec))};
             if (!common_desired_carbon_footprint_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure desired_carbon_footprint member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure desired_carbon_footprint member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_desired_carbon_footprint = "desired_carbon_footprint";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_desired_carbon_footprint;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_desired_carbon_footprint = TypeObjectUtils::build_complete_member_detail(
-                name_desired_carbon_footprint, member_ann_builtin_desired_carbon_footprint,
-                ann_custom_UserInputImpl);
-            CompleteStructMember member_desired_carbon_footprint = TypeObjectUtils::build_complete_struct_member(
-                common_desired_carbon_footprint, detail_desired_carbon_footprint);
+            CompleteMemberDetail detail_desired_carbon_footprint = TypeObjectUtils::build_complete_member_detail(name_desired_carbon_footprint, member_ann_builtin_desired_carbon_footprint, ann_custom_UserInputImpl);
+            CompleteStructMember member_desired_carbon_footprint = TypeObjectUtils::build_complete_struct_member(common_desired_carbon_footprint, detail_desired_carbon_footprint);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_desired_carbon_footprint);
         }
         {
             TypeIdentifierPair type_ids_geo_location_continent;
             ReturnCode_t return_code_geo_location_continent {eprosima::fastdds::dds::RETCODE_OK};
             return_code_geo_location_continent =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_geo_location_continent);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_geo_location_continent)
@@ -1810,41 +1411,32 @@ void register_UserInputImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_geo_location_continent))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_geo_location_continent = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_geo_location_continent = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_geo_location_continent = 0x0000000b;
             bool common_geo_location_continent_ec {false};
-            CommonStructMember common_geo_location_continent {TypeObjectUtils::build_common_struct_member(
-                                                                  member_id_geo_location_continent,
-                                                                  member_flags_geo_location_continent, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                      type_ids_geo_location_continent,
-                                                                      common_geo_location_continent_ec))};
+            CommonStructMember common_geo_location_continent {TypeObjectUtils::build_common_struct_member(member_id_geo_location_continent, member_flags_geo_location_continent, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_geo_location_continent, common_geo_location_continent_ec))};
             if (!common_geo_location_continent_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure geo_location_continent member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure geo_location_continent member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_geo_location_continent = "geo_location_continent";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_geo_location_continent;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_geo_location_continent = TypeObjectUtils::build_complete_member_detail(
-                name_geo_location_continent, member_ann_builtin_geo_location_continent, ann_custom_UserInputImpl);
-            CompleteStructMember member_geo_location_continent = TypeObjectUtils::build_complete_struct_member(
-                common_geo_location_continent, detail_geo_location_continent);
+            CompleteMemberDetail detail_geo_location_continent = TypeObjectUtils::build_complete_member_detail(name_geo_location_continent, member_ann_builtin_geo_location_continent, ann_custom_UserInputImpl);
+            CompleteStructMember member_geo_location_continent = TypeObjectUtils::build_complete_struct_member(common_geo_location_continent, detail_geo_location_continent);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_geo_location_continent);
         }
         {
             TypeIdentifierPair type_ids_geo_location_region;
             ReturnCode_t return_code_geo_location_region {eprosima::fastdds::dds::RETCODE_OK};
             return_code_geo_location_region =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_geo_location_region);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_geo_location_region)
@@ -1857,48 +1449,38 @@ void register_UserInputImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_geo_location_region))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_geo_location_region = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_geo_location_region = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_geo_location_region = 0x0000000c;
             bool common_geo_location_region_ec {false};
-            CommonStructMember common_geo_location_region {TypeObjectUtils::build_common_struct_member(
-                                                               member_id_geo_location_region,
-                                                               member_flags_geo_location_region, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                   type_ids_geo_location_region,
-                                                                   common_geo_location_region_ec))};
+            CommonStructMember common_geo_location_region {TypeObjectUtils::build_common_struct_member(member_id_geo_location_region, member_flags_geo_location_region, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_geo_location_region, common_geo_location_region_ec))};
             if (!common_geo_location_region_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure geo_location_region member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure geo_location_region member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_geo_location_region = "geo_location_region";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_geo_location_region;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_geo_location_region = TypeObjectUtils::build_complete_member_detail(
-                name_geo_location_region, member_ann_builtin_geo_location_region, ann_custom_UserInputImpl);
-            CompleteStructMember member_geo_location_region = TypeObjectUtils::build_complete_struct_member(
-                common_geo_location_region, detail_geo_location_region);
+            CompleteMemberDetail detail_geo_location_region = TypeObjectUtils::build_complete_member_detail(name_geo_location_region, member_ann_builtin_geo_location_region, ann_custom_UserInputImpl);
+            CompleteStructMember member_geo_location_region = TypeObjectUtils::build_complete_struct_member(common_geo_location_region, detail_geo_location_region);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_geo_location_region);
         }
         {
             TypeIdentifierPair type_ids_extra_data;
             ReturnCode_t return_code_extra_data {eprosima::fastdds::dds::RETCODE_OK};
             return_code_extra_data =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
                 return_code_extra_data =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "_byte", type_ids_extra_data);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
@@ -1907,85 +1489,65 @@ void register_UserInputImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded, element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_byte_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_extra_data = 0x0000000d;
             bool common_extra_data_ec {false};
-            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data,
-                                                          member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_extra_data,
-                                                              common_extra_data_ec))};
+            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data, member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, common_extra_data_ec))};
             if (!common_extra_data_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure extra_data member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure extra_data member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_extra_data = "extra_data";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_extra_data;
             ann_custom_UserInputImpl.reset();
-            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data,
-                            member_ann_builtin_extra_data,
-                            ann_custom_UserInputImpl);
-            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data,
-                            detail_extra_data);
+            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data, member_ann_builtin_extra_data, ann_custom_UserInputImpl);
+            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data, detail_extra_data);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_extra_data);
         }
         {
             TypeIdentifierPair type_ids_task_id;
             ReturnCode_t return_code_task_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskIdImpl", type_ids_task_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_id)
             {
-                ::register_TaskIdImpl_type_identifier(type_ids_task_id);
+            ::register_TaskIdImpl_type_identifier(type_ids_task_id);
             }
-            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_task_id = 0x0000000e;
             bool common_task_id_ec {false};
-            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
-                                                       member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_task_id,
-                                                           common_task_id_ec))};
+            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id, member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_id, common_task_id_ec))};
             if (!common_task_id_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_id member TypeIdentifier inconsistent.");
@@ -1999,37 +1561,27 @@ void register_UserInputImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_task_id;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_task_id;
             eprosima::fastcdr::optional<std::string> hash_id_task_id;
-            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() ||
-                    hash_id_task_id.has_value())
+            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() || hash_id_task_id.has_value())
             {
-                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id,
-                                min_task_id,
-                                max_task_id,
-                                hash_id_task_id);
+                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id, min_task_id, max_task_id, hash_id_task_id);
             }
             if (!tmp_ann_custom_task_id.empty())
             {
                 ann_custom_UserInputImpl = tmp_ann_custom_task_id;
             }
-            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id,
-                            member_ann_builtin_task_id,
-                            ann_custom_UserInputImpl);
-            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id,
-                            detail_task_id);
+            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id, member_ann_builtin_task_id, ann_custom_UserInputImpl);
+            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id, detail_task_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_UserInputImpl, member_task_id);
         }
-        CompleteStructType struct_type_UserInputImpl = TypeObjectUtils::build_complete_struct_type(
-            struct_flags_UserInputImpl, header_UserInputImpl, member_seq_UserInputImpl);
+        CompleteStructType struct_type_UserInputImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_UserInputImpl, header_UserInputImpl, member_seq_UserInputImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_UserInputImpl,
-                type_name_UserInputImpl.to_string(), type_ids_UserInputImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_UserInputImpl, type_name_UserInputImpl.to_string(), type_ids_UserInputImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "UserInputImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
-
 // TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
 void register_MLModelMetadataImpl_type_identifier(
         TypeIdentifierPair& type_ids_MLModelMetadataImpl)
@@ -2037,37 +1589,30 @@ void register_MLModelMetadataImpl_type_identifier(
 
     ReturnCode_t return_code_MLModelMetadataImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_MLModelMetadataImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "MLModelMetadataImpl", type_ids_MLModelMetadataImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_MLModelMetadataImpl)
     {
-        StructTypeFlag struct_flags_MLModelMetadataImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_MLModelMetadataImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_MLModelMetadataImpl = "MLModelMetadataImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_MLModelMetadataImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_MLModelMetadataImpl;
-        CompleteTypeDetail detail_MLModelMetadataImpl = TypeObjectUtils::build_complete_type_detail(
-            type_ann_builtin_MLModelMetadataImpl, ann_custom_MLModelMetadataImpl,
-            type_name_MLModelMetadataImpl.to_string());
+        CompleteTypeDetail detail_MLModelMetadataImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_MLModelMetadataImpl, ann_custom_MLModelMetadataImpl, type_name_MLModelMetadataImpl.to_string());
         CompleteStructHeader header_MLModelMetadataImpl;
-        header_MLModelMetadataImpl = TypeObjectUtils::build_complete_struct_header(
-            TypeIdentifier(), detail_MLModelMetadataImpl);
+        header_MLModelMetadataImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_MLModelMetadataImpl);
         CompleteStructMemberSeq member_seq_MLModelMetadataImpl;
         {
             TypeIdentifierPair type_ids_keywords;
             ReturnCode_t return_code_keywords {eprosima::fastdds::dds::RETCODE_OK};
             return_code_keywords =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_keywords);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_keywords)
             {
                 return_code_keywords =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "anonymous_string_unbounded", type_ids_keywords);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_keywords)
@@ -2080,15 +1625,12 @@ void register_MLModelMetadataImpl_type_identifier(
                                 "anonymous_string_unbounded", type_ids_keywords))
                         {
                             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                    "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                         }
                     }
                 }
                 bool element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new
-                                                                                                            TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                                        type_ids_keywords,
-                                                                                                                        element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
+                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_keywords, element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
                 if (!element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
@@ -2100,63 +1642,47 @@ void register_MLModelMetadataImpl_type_identifier(
                     equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_BOTH;
                 }
                 CollectionElementFlag element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(
-                    equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded,
-                    element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
+                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded, element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_keywords))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_keywords))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_keywords = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_keywords = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_keywords = 0x00000000;
             bool common_keywords_ec {false};
-            CommonStructMember common_keywords {TypeObjectUtils::build_common_struct_member(member_id_keywords,
-                                                        member_flags_keywords, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                            type_ids_keywords,
-                                                            common_keywords_ec))};
+            CommonStructMember common_keywords {TypeObjectUtils::build_common_struct_member(member_id_keywords, member_flags_keywords, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_keywords, common_keywords_ec))};
             if (!common_keywords_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure keywords member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure keywords member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_keywords = "keywords";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_keywords;
             ann_custom_MLModelMetadataImpl.reset();
-            CompleteMemberDetail detail_keywords = TypeObjectUtils::build_complete_member_detail(name_keywords,
-                            member_ann_builtin_keywords,
-                            ann_custom_MLModelMetadataImpl);
-            CompleteStructMember member_keywords = TypeObjectUtils::build_complete_struct_member(common_keywords,
-                            detail_keywords);
+            CompleteMemberDetail detail_keywords = TypeObjectUtils::build_complete_member_detail(name_keywords, member_ann_builtin_keywords, ann_custom_MLModelMetadataImpl);
+            CompleteStructMember member_keywords = TypeObjectUtils::build_complete_struct_member(common_keywords, detail_keywords);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelMetadataImpl, member_keywords);
         }
         {
             TypeIdentifierPair type_ids_ml_model_metadata;
             ReturnCode_t return_code_ml_model_metadata {eprosima::fastdds::dds::RETCODE_OK};
             return_code_ml_model_metadata =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_ml_model_metadata);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_ml_model_metadata)
             {
                 return_code_ml_model_metadata =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "anonymous_string_unbounded", type_ids_ml_model_metadata);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_ml_model_metadata)
@@ -2169,15 +1695,12 @@ void register_MLModelMetadataImpl_type_identifier(
                                 "anonymous_string_unbounded", type_ids_ml_model_metadata))
                         {
                             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                    "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                         }
                     }
                 }
                 bool element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new
-                                                                                                            TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                                        type_ids_ml_model_metadata,
-                                                                                                                        element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
+                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_ml_model_metadata, element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
                 if (!element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
@@ -2189,63 +1712,47 @@ void register_MLModelMetadataImpl_type_identifier(
                     equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_BOTH;
                 }
                 CollectionElementFlag element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(
-                    equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded,
-                    element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
+                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded, element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_ml_model_metadata))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_ml_model_metadata))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_ml_model_metadata = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_ml_model_metadata = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_ml_model_metadata = 0x00000001;
             bool common_ml_model_metadata_ec {false};
-            CommonStructMember common_ml_model_metadata {TypeObjectUtils::build_common_struct_member(
-                                                             member_id_ml_model_metadata,
-                                                             member_flags_ml_model_metadata, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                 type_ids_ml_model_metadata,
-                                                                 common_ml_model_metadata_ec))};
+            CommonStructMember common_ml_model_metadata {TypeObjectUtils::build_common_struct_member(member_id_ml_model_metadata, member_flags_ml_model_metadata, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_ml_model_metadata, common_ml_model_metadata_ec))};
             if (!common_ml_model_metadata_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure ml_model_metadata member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure ml_model_metadata member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_ml_model_metadata = "ml_model_metadata";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_ml_model_metadata;
             ann_custom_MLModelMetadataImpl.reset();
-            CompleteMemberDetail detail_ml_model_metadata = TypeObjectUtils::build_complete_member_detail(
-                name_ml_model_metadata, member_ann_builtin_ml_model_metadata, ann_custom_MLModelMetadataImpl);
-            CompleteStructMember member_ml_model_metadata = TypeObjectUtils::build_complete_struct_member(
-                common_ml_model_metadata, detail_ml_model_metadata);
+            CompleteMemberDetail detail_ml_model_metadata = TypeObjectUtils::build_complete_member_detail(name_ml_model_metadata, member_ann_builtin_ml_model_metadata, ann_custom_MLModelMetadataImpl);
+            CompleteStructMember member_ml_model_metadata = TypeObjectUtils::build_complete_struct_member(common_ml_model_metadata, detail_ml_model_metadata);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelMetadataImpl, member_ml_model_metadata);
         }
         {
             TypeIdentifierPair type_ids_extra_data;
             ReturnCode_t return_code_extra_data {eprosima::fastdds::dds::RETCODE_OK};
             return_code_extra_data =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
                 return_code_extra_data =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "_byte", type_ids_extra_data);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
@@ -2254,85 +1761,65 @@ void register_MLModelMetadataImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded, element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_byte_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_extra_data = 0x00000002;
             bool common_extra_data_ec {false};
-            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data,
-                                                          member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_extra_data,
-                                                              common_extra_data_ec))};
+            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data, member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, common_extra_data_ec))};
             if (!common_extra_data_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure extra_data member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure extra_data member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_extra_data = "extra_data";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_extra_data;
             ann_custom_MLModelMetadataImpl.reset();
-            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data,
-                            member_ann_builtin_extra_data,
-                            ann_custom_MLModelMetadataImpl);
-            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data,
-                            detail_extra_data);
+            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data, member_ann_builtin_extra_data, ann_custom_MLModelMetadataImpl);
+            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data, detail_extra_data);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelMetadataImpl, member_extra_data);
         }
         {
             TypeIdentifierPair type_ids_task_id;
             ReturnCode_t return_code_task_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskIdImpl", type_ids_task_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_id)
             {
-                ::register_TaskIdImpl_type_identifier(type_ids_task_id);
+            ::register_TaskIdImpl_type_identifier(type_ids_task_id);
             }
-            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_task_id = 0x00000003;
             bool common_task_id_ec {false};
-            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
-                                                       member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_task_id,
-                                                           common_task_id_ec))};
+            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id, member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_id, common_task_id_ec))};
             if (!common_task_id_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_id member TypeIdentifier inconsistent.");
@@ -2346,37 +1833,27 @@ void register_MLModelMetadataImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_task_id;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_task_id;
             eprosima::fastcdr::optional<std::string> hash_id_task_id;
-            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() ||
-                    hash_id_task_id.has_value())
+            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() || hash_id_task_id.has_value())
             {
-                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id,
-                                min_task_id,
-                                max_task_id,
-                                hash_id_task_id);
+                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id, min_task_id, max_task_id, hash_id_task_id);
             }
             if (!tmp_ann_custom_task_id.empty())
             {
                 ann_custom_MLModelMetadataImpl = tmp_ann_custom_task_id;
             }
-            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id,
-                            member_ann_builtin_task_id,
-                            ann_custom_MLModelMetadataImpl);
-            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id,
-                            detail_task_id);
+            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id, member_ann_builtin_task_id, ann_custom_MLModelMetadataImpl);
+            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id, detail_task_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelMetadataImpl, member_task_id);
         }
-        CompleteStructType struct_type_MLModelMetadataImpl = TypeObjectUtils::build_complete_struct_type(
-            struct_flags_MLModelMetadataImpl, header_MLModelMetadataImpl, member_seq_MLModelMetadataImpl);
+        CompleteStructType struct_type_MLModelMetadataImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_MLModelMetadataImpl, header_MLModelMetadataImpl, member_seq_MLModelMetadataImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_MLModelMetadataImpl,
-                type_name_MLModelMetadataImpl.to_string(), type_ids_MLModelMetadataImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_MLModelMetadataImpl, type_name_MLModelMetadataImpl.to_string(), type_ids_MLModelMetadataImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "MLModelMetadataImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
-
 // TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
 void register_AppRequirementsImpl_type_identifier(
         TypeIdentifierPair& type_ids_AppRequirementsImpl)
@@ -2384,37 +1861,30 @@ void register_AppRequirementsImpl_type_identifier(
 
     ReturnCode_t return_code_AppRequirementsImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_AppRequirementsImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "AppRequirementsImpl", type_ids_AppRequirementsImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_AppRequirementsImpl)
     {
-        StructTypeFlag struct_flags_AppRequirementsImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_AppRequirementsImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_AppRequirementsImpl = "AppRequirementsImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_AppRequirementsImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_AppRequirementsImpl;
-        CompleteTypeDetail detail_AppRequirementsImpl = TypeObjectUtils::build_complete_type_detail(
-            type_ann_builtin_AppRequirementsImpl, ann_custom_AppRequirementsImpl,
-            type_name_AppRequirementsImpl.to_string());
+        CompleteTypeDetail detail_AppRequirementsImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_AppRequirementsImpl, ann_custom_AppRequirementsImpl, type_name_AppRequirementsImpl.to_string());
         CompleteStructHeader header_AppRequirementsImpl;
-        header_AppRequirementsImpl = TypeObjectUtils::build_complete_struct_header(
-            TypeIdentifier(), detail_AppRequirementsImpl);
+        header_AppRequirementsImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_AppRequirementsImpl);
         CompleteStructMemberSeq member_seq_AppRequirementsImpl;
         {
             TypeIdentifierPair type_ids_app_requirements;
             ReturnCode_t return_code_app_requirements {eprosima::fastdds::dds::RETCODE_OK};
             return_code_app_requirements =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_app_requirements);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_app_requirements)
             {
                 return_code_app_requirements =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "anonymous_string_unbounded", type_ids_app_requirements);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_app_requirements)
@@ -2427,15 +1897,12 @@ void register_AppRequirementsImpl_type_identifier(
                                 "anonymous_string_unbounded", type_ids_app_requirements))
                         {
                             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                    "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                         }
                     }
                 }
                 bool element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new
-                                                                                                            TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                                        type_ids_app_requirements,
-                                                                                                                        element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
+                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_app_requirements, element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
                 if (!element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
@@ -2447,62 +1914,47 @@ void register_AppRequirementsImpl_type_identifier(
                     equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_BOTH;
                 }
                 CollectionElementFlag element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(
-                    equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded,
-                    element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
+                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded, element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_app_requirements))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_app_requirements))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_app_requirements = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_app_requirements = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_app_requirements = 0x00000000;
             bool common_app_requirements_ec {false};
-            CommonStructMember common_app_requirements {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_app_requirements, member_flags_app_requirements, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                type_ids_app_requirements,
-                                                                common_app_requirements_ec))};
+            CommonStructMember common_app_requirements {TypeObjectUtils::build_common_struct_member(member_id_app_requirements, member_flags_app_requirements, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_app_requirements, common_app_requirements_ec))};
             if (!common_app_requirements_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure app_requirements member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure app_requirements member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_app_requirements = "app_requirements";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_app_requirements;
             ann_custom_AppRequirementsImpl.reset();
-            CompleteMemberDetail detail_app_requirements = TypeObjectUtils::build_complete_member_detail(
-                name_app_requirements, member_ann_builtin_app_requirements, ann_custom_AppRequirementsImpl);
-            CompleteStructMember member_app_requirements = TypeObjectUtils::build_complete_struct_member(
-                common_app_requirements, detail_app_requirements);
+            CompleteMemberDetail detail_app_requirements = TypeObjectUtils::build_complete_member_detail(name_app_requirements, member_ann_builtin_app_requirements, ann_custom_AppRequirementsImpl);
+            CompleteStructMember member_app_requirements = TypeObjectUtils::build_complete_struct_member(common_app_requirements, detail_app_requirements);
             TypeObjectUtils::add_complete_struct_member(member_seq_AppRequirementsImpl, member_app_requirements);
         }
         {
             TypeIdentifierPair type_ids_extra_data;
             ReturnCode_t return_code_extra_data {eprosima::fastdds::dds::RETCODE_OK};
             return_code_extra_data =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
                 return_code_extra_data =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "_byte", type_ids_extra_data);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
@@ -2511,85 +1963,65 @@ void register_AppRequirementsImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded, element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_byte_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_extra_data = 0x00000001;
             bool common_extra_data_ec {false};
-            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data,
-                                                          member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_extra_data,
-                                                              common_extra_data_ec))};
+            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data, member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, common_extra_data_ec))};
             if (!common_extra_data_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure extra_data member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure extra_data member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_extra_data = "extra_data";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_extra_data;
             ann_custom_AppRequirementsImpl.reset();
-            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data,
-                            member_ann_builtin_extra_data,
-                            ann_custom_AppRequirementsImpl);
-            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data,
-                            detail_extra_data);
+            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data, member_ann_builtin_extra_data, ann_custom_AppRequirementsImpl);
+            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data, detail_extra_data);
             TypeObjectUtils::add_complete_struct_member(member_seq_AppRequirementsImpl, member_extra_data);
         }
         {
             TypeIdentifierPair type_ids_task_id;
             ReturnCode_t return_code_task_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskIdImpl", type_ids_task_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_id)
             {
-                ::register_TaskIdImpl_type_identifier(type_ids_task_id);
+            ::register_TaskIdImpl_type_identifier(type_ids_task_id);
             }
-            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_task_id = 0x00000002;
             bool common_task_id_ec {false};
-            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
-                                                       member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_task_id,
-                                                           common_task_id_ec))};
+            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id, member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_id, common_task_id_ec))};
             if (!common_task_id_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_id member TypeIdentifier inconsistent.");
@@ -2603,37 +2035,27 @@ void register_AppRequirementsImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_task_id;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_task_id;
             eprosima::fastcdr::optional<std::string> hash_id_task_id;
-            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() ||
-                    hash_id_task_id.has_value())
+            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() || hash_id_task_id.has_value())
             {
-                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id,
-                                min_task_id,
-                                max_task_id,
-                                hash_id_task_id);
+                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id, min_task_id, max_task_id, hash_id_task_id);
             }
             if (!tmp_ann_custom_task_id.empty())
             {
                 ann_custom_AppRequirementsImpl = tmp_ann_custom_task_id;
             }
-            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id,
-                            member_ann_builtin_task_id,
-                            ann_custom_AppRequirementsImpl);
-            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id,
-                            detail_task_id);
+            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id, member_ann_builtin_task_id, ann_custom_AppRequirementsImpl);
+            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id, detail_task_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_AppRequirementsImpl, member_task_id);
         }
-        CompleteStructType struct_type_AppRequirementsImpl = TypeObjectUtils::build_complete_struct_type(
-            struct_flags_AppRequirementsImpl, header_AppRequirementsImpl, member_seq_AppRequirementsImpl);
+        CompleteStructType struct_type_AppRequirementsImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_AppRequirementsImpl, header_AppRequirementsImpl, member_seq_AppRequirementsImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_AppRequirementsImpl,
-                type_name_AppRequirementsImpl.to_string(), type_ids_AppRequirementsImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_AppRequirementsImpl, type_name_AppRequirementsImpl.to_string(), type_ids_AppRequirementsImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "AppRequirementsImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
-
 // TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
 void register_HWConstraintsImpl_type_identifier(
         TypeIdentifierPair& type_ids_HWConstraintsImpl)
@@ -2641,30 +2063,24 @@ void register_HWConstraintsImpl_type_identifier(
 
     ReturnCode_t return_code_HWConstraintsImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_HWConstraintsImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "HWConstraintsImpl", type_ids_HWConstraintsImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_HWConstraintsImpl)
     {
-        StructTypeFlag struct_flags_HWConstraintsImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_HWConstraintsImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_HWConstraintsImpl = "HWConstraintsImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_HWConstraintsImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_HWConstraintsImpl;
-        CompleteTypeDetail detail_HWConstraintsImpl = TypeObjectUtils::build_complete_type_detail(
-            type_ann_builtin_HWConstraintsImpl, ann_custom_HWConstraintsImpl,
-            type_name_HWConstraintsImpl.to_string());
+        CompleteTypeDetail detail_HWConstraintsImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_HWConstraintsImpl, ann_custom_HWConstraintsImpl, type_name_HWConstraintsImpl.to_string());
         CompleteStructHeader header_HWConstraintsImpl;
-        header_HWConstraintsImpl = TypeObjectUtils::build_complete_struct_header(
-            TypeIdentifier(), detail_HWConstraintsImpl);
+        header_HWConstraintsImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_HWConstraintsImpl);
         CompleteStructMemberSeq member_seq_HWConstraintsImpl;
         {
             TypeIdentifierPair type_ids_max_memory_footprint;
             ReturnCode_t return_code_max_memory_footprint {eprosima::fastdds::dds::RETCODE_OK};
             return_code_max_memory_footprint =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_uint32_t", type_ids_max_memory_footprint);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_max_memory_footprint)
@@ -2673,44 +2089,104 @@ void register_HWConstraintsImpl_type_identifier(
                         "max_memory_footprint Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_max_memory_footprint = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_max_memory_footprint = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_max_memory_footprint = 0x00000000;
             bool common_max_memory_footprint_ec {false};
-            CommonStructMember common_max_memory_footprint {TypeObjectUtils::build_common_struct_member(
-                                                                member_id_max_memory_footprint,
-                                                                member_flags_max_memory_footprint, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                    type_ids_max_memory_footprint,
-                                                                    common_max_memory_footprint_ec))};
+            CommonStructMember common_max_memory_footprint {TypeObjectUtils::build_common_struct_member(member_id_max_memory_footprint, member_flags_max_memory_footprint, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_max_memory_footprint, common_max_memory_footprint_ec))};
             if (!common_max_memory_footprint_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure max_memory_footprint member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure max_memory_footprint member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_max_memory_footprint = "max_memory_footprint";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_max_memory_footprint;
             ann_custom_HWConstraintsImpl.reset();
-            CompleteMemberDetail detail_max_memory_footprint = TypeObjectUtils::build_complete_member_detail(
-                name_max_memory_footprint, member_ann_builtin_max_memory_footprint, ann_custom_HWConstraintsImpl);
-            CompleteStructMember member_max_memory_footprint = TypeObjectUtils::build_complete_struct_member(
-                common_max_memory_footprint, detail_max_memory_footprint);
+            CompleteMemberDetail detail_max_memory_footprint = TypeObjectUtils::build_complete_member_detail(name_max_memory_footprint, member_ann_builtin_max_memory_footprint, ann_custom_HWConstraintsImpl);
+            CompleteStructMember member_max_memory_footprint = TypeObjectUtils::build_complete_struct_member(common_max_memory_footprint, detail_max_memory_footprint);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWConstraintsImpl, member_max_memory_footprint);
+        }
+        {
+            TypeIdentifierPair type_ids_hardware_required;
+            ReturnCode_t return_code_hardware_required {eprosima::fastdds::dds::RETCODE_OK};
+            return_code_hardware_required =
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_hardware_required);
+
+            if (eprosima::fastdds::dds::RETCODE_OK != return_code_hardware_required)
+            {
+                return_code_hardware_required =
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                    "anonymous_string_unbounded", type_ids_hardware_required);
+
+                if (eprosima::fastdds::dds::RETCODE_OK != return_code_hardware_required)
+                {
+                    {
+                        SBound bound = 0;
+                        StringSTypeDefn string_sdefn = TypeObjectUtils::build_string_s_type_defn(bound);
+                        if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
+                                TypeObjectUtils::build_and_register_s_string_type_identifier(string_sdefn,
+                                "anonymous_string_unbounded", type_ids_hardware_required))
+                        {
+                            EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
+                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                        }
+                    }
+                }
+                bool element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_hardware_required, element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec)
+                {
+                    EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
+                    return;
+                }
+                EquivalenceKind equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_COMPLETE;
+                if (TK_NONE == type_ids_hardware_required.type_identifier2()._d())
+                {
+                    equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_BOTH;
+                }
+                CollectionElementFlag element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded, element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
+                {
+                    SBound bound = 0;
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
+                    if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_hardware_required))
+                    {
+                        EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
+                            "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
+                    }
+                }
+            }
+            StructMemberFlag member_flags_hardware_required = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
+            MemberId member_id_hardware_required = 0x00000001;
+            bool common_hardware_required_ec {false};
+            CommonStructMember common_hardware_required {TypeObjectUtils::build_common_struct_member(member_id_hardware_required, member_flags_hardware_required, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_hardware_required, common_hardware_required_ec))};
+            if (!common_hardware_required_ec)
+            {
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure hardware_required member TypeIdentifier inconsistent.");
+                return;
+            }
+            MemberName name_hardware_required = "hardware_required";
+            eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_hardware_required;
+            ann_custom_HWConstraintsImpl.reset();
+            CompleteMemberDetail detail_hardware_required = TypeObjectUtils::build_complete_member_detail(name_hardware_required, member_ann_builtin_hardware_required, ann_custom_HWConstraintsImpl);
+            CompleteStructMember member_hardware_required = TypeObjectUtils::build_complete_struct_member(common_hardware_required, detail_hardware_required);
+            TypeObjectUtils::add_complete_struct_member(member_seq_HWConstraintsImpl, member_hardware_required);
         }
         {
             TypeIdentifierPair type_ids_extra_data;
             ReturnCode_t return_code_extra_data {eprosima::fastdds::dds::RETCODE_OK};
             return_code_extra_data =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
                 return_code_extra_data =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "_byte", type_ids_extra_data);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
@@ -2719,85 +2195,65 @@ void register_HWConstraintsImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded, element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_byte_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
-            MemberId member_id_extra_data = 0x00000001;
+            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
+            MemberId member_id_extra_data = 0x00000002;
             bool common_extra_data_ec {false};
-            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data,
-                                                          member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_extra_data,
-                                                              common_extra_data_ec))};
+            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data, member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, common_extra_data_ec))};
             if (!common_extra_data_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure extra_data member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure extra_data member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_extra_data = "extra_data";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_extra_data;
             ann_custom_HWConstraintsImpl.reset();
-            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data,
-                            member_ann_builtin_extra_data,
-                            ann_custom_HWConstraintsImpl);
-            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data,
-                            detail_extra_data);
+            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data, member_ann_builtin_extra_data, ann_custom_HWConstraintsImpl);
+            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data, detail_extra_data);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWConstraintsImpl, member_extra_data);
         }
         {
             TypeIdentifierPair type_ids_task_id;
             ReturnCode_t return_code_task_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskIdImpl", type_ids_task_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_id)
             {
-                ::register_TaskIdImpl_type_identifier(type_ids_task_id);
+            ::register_TaskIdImpl_type_identifier(type_ids_task_id);
             }
-            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
-            MemberId member_id_task_id = 0x00000002;
+            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
+            MemberId member_id_task_id = 0x00000003;
             bool common_task_id_ec {false};
-            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
-                                                       member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_task_id,
-                                                           common_task_id_ec))};
+            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id, member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_id, common_task_id_ec))};
             if (!common_task_id_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_id member TypeIdentifier inconsistent.");
@@ -2811,37 +2267,27 @@ void register_HWConstraintsImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_task_id;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_task_id;
             eprosima::fastcdr::optional<std::string> hash_id_task_id;
-            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() ||
-                    hash_id_task_id.has_value())
+            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() || hash_id_task_id.has_value())
             {
-                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id,
-                                min_task_id,
-                                max_task_id,
-                                hash_id_task_id);
+                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id, min_task_id, max_task_id, hash_id_task_id);
             }
             if (!tmp_ann_custom_task_id.empty())
             {
                 ann_custom_HWConstraintsImpl = tmp_ann_custom_task_id;
             }
-            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id,
-                            member_ann_builtin_task_id,
-                            ann_custom_HWConstraintsImpl);
-            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id,
-                            detail_task_id);
+            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id, member_ann_builtin_task_id, ann_custom_HWConstraintsImpl);
+            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id, detail_task_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWConstraintsImpl, member_task_id);
         }
-        CompleteStructType struct_type_HWConstraintsImpl = TypeObjectUtils::build_complete_struct_type(
-            struct_flags_HWConstraintsImpl, header_HWConstraintsImpl, member_seq_HWConstraintsImpl);
+        CompleteStructType struct_type_HWConstraintsImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_HWConstraintsImpl, header_HWConstraintsImpl, member_seq_HWConstraintsImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_HWConstraintsImpl,
-                type_name_HWConstraintsImpl.to_string(), type_ids_HWConstraintsImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_HWConstraintsImpl, type_name_HWConstraintsImpl.to_string(), type_ids_HWConstraintsImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "HWConstraintsImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
-
 // TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
 void register_MLModelImpl_type_identifier(
         TypeIdentifierPair& type_ids_MLModelImpl)
@@ -2849,19 +2295,16 @@ void register_MLModelImpl_type_identifier(
 
     ReturnCode_t return_code_MLModelImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_MLModelImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "MLModelImpl", type_ids_MLModelImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_MLModelImpl)
     {
-        StructTypeFlag struct_flags_MLModelImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_MLModelImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_MLModelImpl = "MLModelImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_MLModelImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_MLModelImpl;
-        CompleteTypeDetail detail_MLModelImpl = TypeObjectUtils::build_complete_type_detail(
-            type_ann_builtin_MLModelImpl, ann_custom_MLModelImpl, type_name_MLModelImpl.to_string());
+        CompleteTypeDetail detail_MLModelImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_MLModelImpl, ann_custom_MLModelImpl, type_name_MLModelImpl.to_string());
         CompleteStructHeader header_MLModelImpl;
         header_MLModelImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_MLModelImpl);
         CompleteStructMemberSeq member_seq_MLModelImpl;
@@ -2869,8 +2312,7 @@ void register_MLModelImpl_type_identifier(
             TypeIdentifierPair type_ids_model_path;
             ReturnCode_t return_code_model_path {eprosima::fastdds::dds::RETCODE_OK};
             return_code_model_path =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_model_path);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_model_path)
@@ -2883,41 +2325,32 @@ void register_MLModelImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_model_path))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_model_path = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_model_path = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_model_path = 0x00000000;
             bool common_model_path_ec {false};
-            CommonStructMember common_model_path {TypeObjectUtils::build_common_struct_member(member_id_model_path,
-                                                          member_flags_model_path, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_model_path,
-                                                              common_model_path_ec))};
+            CommonStructMember common_model_path {TypeObjectUtils::build_common_struct_member(member_id_model_path, member_flags_model_path, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_model_path, common_model_path_ec))};
             if (!common_model_path_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure model_path member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure model_path member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_model_path = "model_path";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_model_path;
             ann_custom_MLModelImpl.reset();
-            CompleteMemberDetail detail_model_path = TypeObjectUtils::build_complete_member_detail(name_model_path,
-                            member_ann_builtin_model_path,
-                            ann_custom_MLModelImpl);
-            CompleteStructMember member_model_path = TypeObjectUtils::build_complete_struct_member(common_model_path,
-                            detail_model_path);
+            CompleteMemberDetail detail_model_path = TypeObjectUtils::build_complete_member_detail(name_model_path, member_ann_builtin_model_path, ann_custom_MLModelImpl);
+            CompleteStructMember member_model_path = TypeObjectUtils::build_complete_struct_member(common_model_path, detail_model_path);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelImpl, member_model_path);
         }
         {
             TypeIdentifierPair type_ids_model;
             ReturnCode_t return_code_model {eprosima::fastdds::dds::RETCODE_OK};
             return_code_model =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_model);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_model)
@@ -2930,19 +2363,15 @@ void register_MLModelImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_model))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_model = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_model = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_model = 0x00000001;
             bool common_model_ec {false};
-            CommonStructMember common_model {TypeObjectUtils::build_common_struct_member(member_id_model,
-                                                     member_flags_model, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                         type_ids_model,
-                                                         common_model_ec))};
+            CommonStructMember common_model {TypeObjectUtils::build_common_struct_member(member_id_model, member_flags_model, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_model, common_model_ec))};
             if (!common_model_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure model member TypeIdentifier inconsistent.");
@@ -2951,26 +2380,21 @@ void register_MLModelImpl_type_identifier(
             MemberName name_model = "model";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_model;
             ann_custom_MLModelImpl.reset();
-            CompleteMemberDetail detail_model = TypeObjectUtils::build_complete_member_detail(name_model,
-                            member_ann_builtin_model,
-                            ann_custom_MLModelImpl);
-            CompleteStructMember member_model =
-                    TypeObjectUtils::build_complete_struct_member(common_model, detail_model);
+            CompleteMemberDetail detail_model = TypeObjectUtils::build_complete_member_detail(name_model, member_ann_builtin_model, ann_custom_MLModelImpl);
+            CompleteStructMember member_model = TypeObjectUtils::build_complete_struct_member(common_model, detail_model);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelImpl, member_model);
         }
         {
             TypeIdentifierPair type_ids_raw_model;
             ReturnCode_t return_code_raw_model {eprosima::fastdds::dds::RETCODE_OK};
             return_code_raw_model =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_raw_model);
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                "anonymous_sequence_byte_unbounded", type_ids_raw_model);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_raw_model)
             {
                 return_code_raw_model =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "_byte", type_ids_raw_model);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_raw_model)
@@ -2979,70 +2403,54 @@ void register_MLModelImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_raw_model,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_raw_model, element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_raw_model.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded, element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_byte_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_raw_model))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_byte_unbounded", type_ids_raw_model))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_raw_model = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_raw_model = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_raw_model = 0x00000002;
             bool common_raw_model_ec {false};
-            CommonStructMember common_raw_model {TypeObjectUtils::build_common_struct_member(member_id_raw_model,
-                                                         member_flags_raw_model, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                             type_ids_raw_model,
-                                                             common_raw_model_ec))};
+            CommonStructMember common_raw_model {TypeObjectUtils::build_common_struct_member(member_id_raw_model, member_flags_raw_model, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_raw_model, common_raw_model_ec))};
             if (!common_raw_model_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure raw_model member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure raw_model member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_raw_model = "raw_model";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_raw_model;
             ann_custom_MLModelImpl.reset();
-            CompleteMemberDetail detail_raw_model = TypeObjectUtils::build_complete_member_detail(name_raw_model,
-                            member_ann_builtin_raw_model,
-                            ann_custom_MLModelImpl);
-            CompleteStructMember member_raw_model = TypeObjectUtils::build_complete_struct_member(common_raw_model,
-                            detail_raw_model);
+            CompleteMemberDetail detail_raw_model = TypeObjectUtils::build_complete_member_detail(name_raw_model, member_ann_builtin_raw_model, ann_custom_MLModelImpl);
+            CompleteStructMember member_raw_model = TypeObjectUtils::build_complete_struct_member(common_raw_model, detail_raw_model);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelImpl, member_raw_model);
         }
         {
             TypeIdentifierPair type_ids_model_properties_path;
             ReturnCode_t return_code_model_properties_path {eprosima::fastdds::dds::RETCODE_OK};
             return_code_model_properties_path =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_model_properties_path);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_model_properties_path)
@@ -3055,41 +2463,32 @@ void register_MLModelImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_model_properties_path))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_model_properties_path = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_model_properties_path = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_model_properties_path = 0x00000003;
             bool common_model_properties_path_ec {false};
-            CommonStructMember common_model_properties_path {TypeObjectUtils::build_common_struct_member(
-                                                                 member_id_model_properties_path,
-                                                                 member_flags_model_properties_path, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                     type_ids_model_properties_path,
-                                                                     common_model_properties_path_ec))};
+            CommonStructMember common_model_properties_path {TypeObjectUtils::build_common_struct_member(member_id_model_properties_path, member_flags_model_properties_path, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_model_properties_path, common_model_properties_path_ec))};
             if (!common_model_properties_path_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure model_properties_path member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure model_properties_path member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_model_properties_path = "model_properties_path";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_model_properties_path;
             ann_custom_MLModelImpl.reset();
-            CompleteMemberDetail detail_model_properties_path = TypeObjectUtils::build_complete_member_detail(
-                name_model_properties_path, member_ann_builtin_model_properties_path, ann_custom_MLModelImpl);
-            CompleteStructMember member_model_properties_path = TypeObjectUtils::build_complete_struct_member(
-                common_model_properties_path, detail_model_properties_path);
+            CompleteMemberDetail detail_model_properties_path = TypeObjectUtils::build_complete_member_detail(name_model_properties_path, member_ann_builtin_model_properties_path, ann_custom_MLModelImpl);
+            CompleteStructMember member_model_properties_path = TypeObjectUtils::build_complete_struct_member(common_model_properties_path, detail_model_properties_path);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelImpl, member_model_properties_path);
         }
         {
             TypeIdentifierPair type_ids_model_properties;
             ReturnCode_t return_code_model_properties {eprosima::fastdds::dds::RETCODE_OK};
             return_code_model_properties =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_model_properties);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_model_properties)
@@ -3102,47 +2501,38 @@ void register_MLModelImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_model_properties))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_model_properties = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_model_properties = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_model_properties = 0x00000004;
             bool common_model_properties_ec {false};
-            CommonStructMember common_model_properties {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_model_properties, member_flags_model_properties, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                type_ids_model_properties,
-                                                                common_model_properties_ec))};
+            CommonStructMember common_model_properties {TypeObjectUtils::build_common_struct_member(member_id_model_properties, member_flags_model_properties, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_model_properties, common_model_properties_ec))};
             if (!common_model_properties_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure model_properties member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure model_properties member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_model_properties = "model_properties";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_model_properties;
             ann_custom_MLModelImpl.reset();
-            CompleteMemberDetail detail_model_properties = TypeObjectUtils::build_complete_member_detail(
-                name_model_properties, member_ann_builtin_model_properties, ann_custom_MLModelImpl);
-            CompleteStructMember member_model_properties = TypeObjectUtils::build_complete_struct_member(
-                common_model_properties, detail_model_properties);
+            CompleteMemberDetail detail_model_properties = TypeObjectUtils::build_complete_member_detail(name_model_properties, member_ann_builtin_model_properties, ann_custom_MLModelImpl);
+            CompleteStructMember member_model_properties = TypeObjectUtils::build_complete_struct_member(common_model_properties, detail_model_properties);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelImpl, member_model_properties);
         }
         {
             TypeIdentifierPair type_ids_input_batch;
             ReturnCode_t return_code_input_batch {eprosima::fastdds::dds::RETCODE_OK};
             return_code_input_batch =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_input_batch);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_input_batch)
             {
                 return_code_input_batch =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "anonymous_string_unbounded", type_ids_input_batch);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_input_batch)
@@ -3155,15 +2545,12 @@ void register_MLModelImpl_type_identifier(
                                 "anonymous_string_unbounded", type_ids_input_batch))
                         {
                             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                    "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                         }
                     }
                 }
                 bool element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new
-                                                                                                            TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                                        type_ids_input_batch,
-                                                                                                                        element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
+                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_input_batch, element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
                 if (!element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
@@ -3175,56 +2562,41 @@ void register_MLModelImpl_type_identifier(
                     equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_BOTH;
                 }
                 CollectionElementFlag element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(
-                    equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded,
-                    element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
+                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded, element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_input_batch))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_input_batch))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_input_batch = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_input_batch = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_input_batch = 0x00000005;
             bool common_input_batch_ec {false};
-            CommonStructMember common_input_batch {TypeObjectUtils::build_common_struct_member(member_id_input_batch,
-                                                           member_flags_input_batch, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                               type_ids_input_batch,
-                                                               common_input_batch_ec))};
+            CommonStructMember common_input_batch {TypeObjectUtils::build_common_struct_member(member_id_input_batch, member_flags_input_batch, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_input_batch, common_input_batch_ec))};
             if (!common_input_batch_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure input_batch member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure input_batch member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_input_batch = "input_batch";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_input_batch;
             ann_custom_MLModelImpl.reset();
-            CompleteMemberDetail detail_input_batch = TypeObjectUtils::build_complete_member_detail(name_input_batch,
-                            member_ann_builtin_input_batch,
-                            ann_custom_MLModelImpl);
-            CompleteStructMember member_input_batch = TypeObjectUtils::build_complete_struct_member(common_input_batch,
-                            detail_input_batch);
+            CompleteMemberDetail detail_input_batch = TypeObjectUtils::build_complete_member_detail(name_input_batch, member_ann_builtin_input_batch, ann_custom_MLModelImpl);
+            CompleteStructMember member_input_batch = TypeObjectUtils::build_complete_struct_member(common_input_batch, detail_input_batch);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelImpl, member_input_batch);
         }
         {
             TypeIdentifierPair type_ids_target_latency;
             ReturnCode_t return_code_target_latency {eprosima::fastdds::dds::RETCODE_OK};
             return_code_target_latency =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_double", type_ids_target_latency);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_target_latency)
@@ -3233,43 +2605,34 @@ void register_MLModelImpl_type_identifier(
                         "target_latency Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_target_latency = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_target_latency = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_target_latency = 0x00000006;
             bool common_target_latency_ec {false};
-            CommonStructMember common_target_latency {TypeObjectUtils::build_common_struct_member(
-                                                          member_id_target_latency, member_flags_target_latency, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_target_latency,
-                                                              common_target_latency_ec))};
+            CommonStructMember common_target_latency {TypeObjectUtils::build_common_struct_member(member_id_target_latency, member_flags_target_latency, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_target_latency, common_target_latency_ec))};
             if (!common_target_latency_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure target_latency member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure target_latency member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_target_latency = "target_latency";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_target_latency;
             ann_custom_MLModelImpl.reset();
-            CompleteMemberDetail detail_target_latency = TypeObjectUtils::build_complete_member_detail(
-                name_target_latency, member_ann_builtin_target_latency, ann_custom_MLModelImpl);
-            CompleteStructMember member_target_latency = TypeObjectUtils::build_complete_struct_member(
-                common_target_latency, detail_target_latency);
+            CompleteMemberDetail detail_target_latency = TypeObjectUtils::build_complete_member_detail(name_target_latency, member_ann_builtin_target_latency, ann_custom_MLModelImpl);
+            CompleteStructMember member_target_latency = TypeObjectUtils::build_complete_struct_member(common_target_latency, detail_target_latency);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelImpl, member_target_latency);
         }
         {
             TypeIdentifierPair type_ids_extra_data;
             ReturnCode_t return_code_extra_data {eprosima::fastdds::dds::RETCODE_OK};
             return_code_extra_data =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
                 return_code_extra_data =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "_byte", type_ids_extra_data);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
@@ -3278,85 +2641,65 @@ void register_MLModelImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded, element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_byte_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_extra_data = 0x00000007;
             bool common_extra_data_ec {false};
-            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data,
-                                                          member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_extra_data,
-                                                              common_extra_data_ec))};
+            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data, member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, common_extra_data_ec))};
             if (!common_extra_data_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure extra_data member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure extra_data member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_extra_data = "extra_data";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_extra_data;
             ann_custom_MLModelImpl.reset();
-            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data,
-                            member_ann_builtin_extra_data,
-                            ann_custom_MLModelImpl);
-            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data,
-                            detail_extra_data);
+            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data, member_ann_builtin_extra_data, ann_custom_MLModelImpl);
+            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data, detail_extra_data);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelImpl, member_extra_data);
         }
         {
             TypeIdentifierPair type_ids_task_id;
             ReturnCode_t return_code_task_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskIdImpl", type_ids_task_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_id)
             {
-                ::register_TaskIdImpl_type_identifier(type_ids_task_id);
+            ::register_TaskIdImpl_type_identifier(type_ids_task_id);
             }
-            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_task_id = 0x00000008;
             bool common_task_id_ec {false};
-            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
-                                                       member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_task_id,
-                                                           common_task_id_ec))};
+            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id, member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_id, common_task_id_ec))};
             if (!common_task_id_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_id member TypeIdentifier inconsistent.");
@@ -3370,37 +2713,27 @@ void register_MLModelImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_task_id;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_task_id;
             eprosima::fastcdr::optional<std::string> hash_id_task_id;
-            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() ||
-                    hash_id_task_id.has_value())
+            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() || hash_id_task_id.has_value())
             {
-                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id,
-                                min_task_id,
-                                max_task_id,
-                                hash_id_task_id);
+                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id, min_task_id, max_task_id, hash_id_task_id);
             }
             if (!tmp_ann_custom_task_id.empty())
             {
                 ann_custom_MLModelImpl = tmp_ann_custom_task_id;
             }
-            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id,
-                            member_ann_builtin_task_id,
-                            ann_custom_MLModelImpl);
-            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id,
-                            detail_task_id);
+            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id, member_ann_builtin_task_id, ann_custom_MLModelImpl);
+            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id, detail_task_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_MLModelImpl, member_task_id);
         }
-        CompleteStructType struct_type_MLModelImpl = TypeObjectUtils::build_complete_struct_type(
-            struct_flags_MLModelImpl, header_MLModelImpl, member_seq_MLModelImpl);
+        CompleteStructType struct_type_MLModelImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_MLModelImpl, header_MLModelImpl, member_seq_MLModelImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_MLModelImpl,
-                type_name_MLModelImpl.to_string(), type_ids_MLModelImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_MLModelImpl, type_name_MLModelImpl.to_string(), type_ids_MLModelImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "MLModelImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
-
 // TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
 void register_HWResourceImpl_type_identifier(
         TypeIdentifierPair& type_ids_HWResourceImpl)
@@ -3408,19 +2741,16 @@ void register_HWResourceImpl_type_identifier(
 
     ReturnCode_t return_code_HWResourceImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_HWResourceImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "HWResourceImpl", type_ids_HWResourceImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_HWResourceImpl)
     {
-        StructTypeFlag struct_flags_HWResourceImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_HWResourceImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_HWResourceImpl = "HWResourceImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_HWResourceImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_HWResourceImpl;
-        CompleteTypeDetail detail_HWResourceImpl = TypeObjectUtils::build_complete_type_detail(
-            type_ann_builtin_HWResourceImpl, ann_custom_HWResourceImpl, type_name_HWResourceImpl.to_string());
+        CompleteTypeDetail detail_HWResourceImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_HWResourceImpl, ann_custom_HWResourceImpl, type_name_HWResourceImpl.to_string());
         CompleteStructHeader header_HWResourceImpl;
         header_HWResourceImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_HWResourceImpl);
         CompleteStructMemberSeq member_seq_HWResourceImpl;
@@ -3428,8 +2758,7 @@ void register_HWResourceImpl_type_identifier(
             TypeIdentifierPair type_ids_hw_description;
             ReturnCode_t return_code_hw_description {eprosima::fastdds::dds::RETCODE_OK};
             return_code_hw_description =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "anonymous_string_unbounded", type_ids_hw_description);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_hw_description)
@@ -3442,40 +2771,32 @@ void register_HWResourceImpl_type_identifier(
                             "anonymous_string_unbounded", type_ids_hw_description))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_hw_description = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_hw_description = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_hw_description = 0x00000000;
             bool common_hw_description_ec {false};
-            CommonStructMember common_hw_description {TypeObjectUtils::build_common_struct_member(
-                                                          member_id_hw_description, member_flags_hw_description, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_hw_description,
-                                                              common_hw_description_ec))};
+            CommonStructMember common_hw_description {TypeObjectUtils::build_common_struct_member(member_id_hw_description, member_flags_hw_description, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_hw_description, common_hw_description_ec))};
             if (!common_hw_description_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure hw_description member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure hw_description member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_hw_description = "hw_description";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_hw_description;
             ann_custom_HWResourceImpl.reset();
-            CompleteMemberDetail detail_hw_description = TypeObjectUtils::build_complete_member_detail(
-                name_hw_description, member_ann_builtin_hw_description, ann_custom_HWResourceImpl);
-            CompleteStructMember member_hw_description = TypeObjectUtils::build_complete_struct_member(
-                common_hw_description, detail_hw_description);
+            CompleteMemberDetail detail_hw_description = TypeObjectUtils::build_complete_member_detail(name_hw_description, member_ann_builtin_hw_description, ann_custom_HWResourceImpl);
+            CompleteStructMember member_hw_description = TypeObjectUtils::build_complete_struct_member(common_hw_description, detail_hw_description);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWResourceImpl, member_hw_description);
         }
         {
             TypeIdentifierPair type_ids_power_consumption;
             ReturnCode_t return_code_power_consumption {eprosima::fastdds::dds::RETCODE_OK};
             return_code_power_consumption =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_double", type_ids_power_consumption);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_power_consumption)
@@ -3484,37 +2805,28 @@ void register_HWResourceImpl_type_identifier(
                         "power_consumption Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_power_consumption = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_power_consumption = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_power_consumption = 0x00000001;
             bool common_power_consumption_ec {false};
-            CommonStructMember common_power_consumption {TypeObjectUtils::build_common_struct_member(
-                                                             member_id_power_consumption,
-                                                             member_flags_power_consumption, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                 type_ids_power_consumption,
-                                                                 common_power_consumption_ec))};
+            CommonStructMember common_power_consumption {TypeObjectUtils::build_common_struct_member(member_id_power_consumption, member_flags_power_consumption, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_power_consumption, common_power_consumption_ec))};
             if (!common_power_consumption_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure power_consumption member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure power_consumption member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_power_consumption = "power_consumption";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_power_consumption;
             ann_custom_HWResourceImpl.reset();
-            CompleteMemberDetail detail_power_consumption = TypeObjectUtils::build_complete_member_detail(
-                name_power_consumption, member_ann_builtin_power_consumption, ann_custom_HWResourceImpl);
-            CompleteStructMember member_power_consumption = TypeObjectUtils::build_complete_struct_member(
-                common_power_consumption, detail_power_consumption);
+            CompleteMemberDetail detail_power_consumption = TypeObjectUtils::build_complete_member_detail(name_power_consumption, member_ann_builtin_power_consumption, ann_custom_HWResourceImpl);
+            CompleteStructMember member_power_consumption = TypeObjectUtils::build_complete_struct_member(common_power_consumption, detail_power_consumption);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWResourceImpl, member_power_consumption);
         }
         {
             TypeIdentifierPair type_ids_latency;
             ReturnCode_t return_code_latency {eprosima::fastdds::dds::RETCODE_OK};
             return_code_latency =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_double", type_ids_latency);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_latency)
@@ -3523,15 +2835,11 @@ void register_HWResourceImpl_type_identifier(
                         "latency Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_latency = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_latency = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_latency = 0x00000002;
             bool common_latency_ec {false};
-            CommonStructMember common_latency {TypeObjectUtils::build_common_struct_member(member_id_latency,
-                                                       member_flags_latency, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_latency,
-                                                           common_latency_ec))};
+            CommonStructMember common_latency {TypeObjectUtils::build_common_struct_member(member_id_latency, member_flags_latency, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_latency, common_latency_ec))};
             if (!common_latency_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure latency member TypeIdentifier inconsistent.");
@@ -3540,19 +2848,15 @@ void register_HWResourceImpl_type_identifier(
             MemberName name_latency = "latency";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_latency;
             ann_custom_HWResourceImpl.reset();
-            CompleteMemberDetail detail_latency = TypeObjectUtils::build_complete_member_detail(name_latency,
-                            member_ann_builtin_latency,
-                            ann_custom_HWResourceImpl);
-            CompleteStructMember member_latency = TypeObjectUtils::build_complete_struct_member(common_latency,
-                            detail_latency);
+            CompleteMemberDetail detail_latency = TypeObjectUtils::build_complete_member_detail(name_latency, member_ann_builtin_latency, ann_custom_HWResourceImpl);
+            CompleteStructMember member_latency = TypeObjectUtils::build_complete_struct_member(common_latency, detail_latency);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWResourceImpl, member_latency);
         }
         {
             TypeIdentifierPair type_ids_memory_footprint_of_ml_model;
             ReturnCode_t return_code_memory_footprint_of_ml_model {eprosima::fastdds::dds::RETCODE_OK};
             return_code_memory_footprint_of_ml_model =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_double", type_ids_memory_footprint_of_ml_model);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_memory_footprint_of_ml_model)
@@ -3561,38 +2865,28 @@ void register_HWResourceImpl_type_identifier(
                         "memory_footprint_of_ml_model Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_memory_footprint_of_ml_model = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_memory_footprint_of_ml_model = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_memory_footprint_of_ml_model = 0x00000003;
             bool common_memory_footprint_of_ml_model_ec {false};
-            CommonStructMember common_memory_footprint_of_ml_model {TypeObjectUtils::build_common_struct_member(
-                                                                        member_id_memory_footprint_of_ml_model,
-                                                                        member_flags_memory_footprint_of_ml_model, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                            type_ids_memory_footprint_of_ml_model,
-                                                                            common_memory_footprint_of_ml_model_ec))};
+            CommonStructMember common_memory_footprint_of_ml_model {TypeObjectUtils::build_common_struct_member(member_id_memory_footprint_of_ml_model, member_flags_memory_footprint_of_ml_model, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_memory_footprint_of_ml_model, common_memory_footprint_of_ml_model_ec))};
             if (!common_memory_footprint_of_ml_model_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure memory_footprint_of_ml_model member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure memory_footprint_of_ml_model member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_memory_footprint_of_ml_model = "memory_footprint_of_ml_model";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_memory_footprint_of_ml_model;
             ann_custom_HWResourceImpl.reset();
-            CompleteMemberDetail detail_memory_footprint_of_ml_model = TypeObjectUtils::build_complete_member_detail(
-                name_memory_footprint_of_ml_model, member_ann_builtin_memory_footprint_of_ml_model,
-                ann_custom_HWResourceImpl);
-            CompleteStructMember member_memory_footprint_of_ml_model = TypeObjectUtils::build_complete_struct_member(
-                common_memory_footprint_of_ml_model, detail_memory_footprint_of_ml_model);
+            CompleteMemberDetail detail_memory_footprint_of_ml_model = TypeObjectUtils::build_complete_member_detail(name_memory_footprint_of_ml_model, member_ann_builtin_memory_footprint_of_ml_model, ann_custom_HWResourceImpl);
+            CompleteStructMember member_memory_footprint_of_ml_model = TypeObjectUtils::build_complete_struct_member(common_memory_footprint_of_ml_model, detail_memory_footprint_of_ml_model);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWResourceImpl, member_memory_footprint_of_ml_model);
         }
         {
             TypeIdentifierPair type_ids_max_hw_memory_footprint;
             ReturnCode_t return_code_max_hw_memory_footprint {eprosima::fastdds::dds::RETCODE_OK};
             return_code_max_hw_memory_footprint =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_double", type_ids_max_hw_memory_footprint);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_max_hw_memory_footprint)
@@ -3601,45 +2895,34 @@ void register_HWResourceImpl_type_identifier(
                         "max_hw_memory_footprint Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_max_hw_memory_footprint = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_max_hw_memory_footprint = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_max_hw_memory_footprint = 0x00000004;
             bool common_max_hw_memory_footprint_ec {false};
-            CommonStructMember common_max_hw_memory_footprint {TypeObjectUtils::build_common_struct_member(
-                                                                   member_id_max_hw_memory_footprint,
-                                                                   member_flags_max_hw_memory_footprint, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                       type_ids_max_hw_memory_footprint,
-                                                                       common_max_hw_memory_footprint_ec))};
+            CommonStructMember common_max_hw_memory_footprint {TypeObjectUtils::build_common_struct_member(member_id_max_hw_memory_footprint, member_flags_max_hw_memory_footprint, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_max_hw_memory_footprint, common_max_hw_memory_footprint_ec))};
             if (!common_max_hw_memory_footprint_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure max_hw_memory_footprint member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure max_hw_memory_footprint member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_max_hw_memory_footprint = "max_hw_memory_footprint";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_max_hw_memory_footprint;
             ann_custom_HWResourceImpl.reset();
-            CompleteMemberDetail detail_max_hw_memory_footprint = TypeObjectUtils::build_complete_member_detail(
-                name_max_hw_memory_footprint, member_ann_builtin_max_hw_memory_footprint,
-                ann_custom_HWResourceImpl);
-            CompleteStructMember member_max_hw_memory_footprint = TypeObjectUtils::build_complete_struct_member(
-                common_max_hw_memory_footprint, detail_max_hw_memory_footprint);
+            CompleteMemberDetail detail_max_hw_memory_footprint = TypeObjectUtils::build_complete_member_detail(name_max_hw_memory_footprint, member_ann_builtin_max_hw_memory_footprint, ann_custom_HWResourceImpl);
+            CompleteStructMember member_max_hw_memory_footprint = TypeObjectUtils::build_complete_struct_member(common_max_hw_memory_footprint, detail_max_hw_memory_footprint);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWResourceImpl, member_max_hw_memory_footprint);
         }
         {
             TypeIdentifierPair type_ids_extra_data;
             ReturnCode_t return_code_extra_data {eprosima::fastdds::dds::RETCODE_OK};
             return_code_extra_data =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
                 return_code_extra_data =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "_byte", type_ids_extra_data);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
@@ -3648,85 +2931,65 @@ void register_HWResourceImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded, element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_byte_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_extra_data = 0x00000005;
             bool common_extra_data_ec {false};
-            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data,
-                                                          member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_extra_data,
-                                                              common_extra_data_ec))};
+            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data, member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, common_extra_data_ec))};
             if (!common_extra_data_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure extra_data member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure extra_data member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_extra_data = "extra_data";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_extra_data;
             ann_custom_HWResourceImpl.reset();
-            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data,
-                            member_ann_builtin_extra_data,
-                            ann_custom_HWResourceImpl);
-            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data,
-                            detail_extra_data);
+            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data, member_ann_builtin_extra_data, ann_custom_HWResourceImpl);
+            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data, detail_extra_data);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWResourceImpl, member_extra_data);
         }
         {
             TypeIdentifierPair type_ids_task_id;
             ReturnCode_t return_code_task_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskIdImpl", type_ids_task_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_id)
             {
-                ::register_TaskIdImpl_type_identifier(type_ids_task_id);
+            ::register_TaskIdImpl_type_identifier(type_ids_task_id);
             }
-            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_task_id = 0x00000006;
             bool common_task_id_ec {false};
-            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
-                                                       member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_task_id,
-                                                           common_task_id_ec))};
+            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id, member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_id, common_task_id_ec))};
             if (!common_task_id_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_id member TypeIdentifier inconsistent.");
@@ -3740,37 +3003,27 @@ void register_HWResourceImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_task_id;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_task_id;
             eprosima::fastcdr::optional<std::string> hash_id_task_id;
-            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() ||
-                    hash_id_task_id.has_value())
+            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() || hash_id_task_id.has_value())
             {
-                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id,
-                                min_task_id,
-                                max_task_id,
-                                hash_id_task_id);
+                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id, min_task_id, max_task_id, hash_id_task_id);
             }
             if (!tmp_ann_custom_task_id.empty())
             {
                 ann_custom_HWResourceImpl = tmp_ann_custom_task_id;
             }
-            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id,
-                            member_ann_builtin_task_id,
-                            ann_custom_HWResourceImpl);
-            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id,
-                            detail_task_id);
+            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id, member_ann_builtin_task_id, ann_custom_HWResourceImpl);
+            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id, detail_task_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_HWResourceImpl, member_task_id);
         }
-        CompleteStructType struct_type_HWResourceImpl = TypeObjectUtils::build_complete_struct_type(
-            struct_flags_HWResourceImpl, header_HWResourceImpl, member_seq_HWResourceImpl);
+        CompleteStructType struct_type_HWResourceImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_HWResourceImpl, header_HWResourceImpl, member_seq_HWResourceImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_HWResourceImpl,
-                type_name_HWResourceImpl.to_string(), type_ids_HWResourceImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_HWResourceImpl, type_name_HWResourceImpl.to_string(), type_ids_HWResourceImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "HWResourceImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
-
 // TypeIdentifier is returned by reference: dependent structures/unions are registered in this same method
 void register_CO2FootprintImpl_type_identifier(
         TypeIdentifierPair& type_ids_CO2FootprintImpl)
@@ -3778,29 +3031,24 @@ void register_CO2FootprintImpl_type_identifier(
 
     ReturnCode_t return_code_CO2FootprintImpl {eprosima::fastdds::dds::RETCODE_OK};
     return_code_CO2FootprintImpl =
-            eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                    get_type_identifiers(
+        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
         "CO2FootprintImpl", type_ids_CO2FootprintImpl);
     if (eprosima::fastdds::dds::RETCODE_OK != return_code_CO2FootprintImpl)
     {
-        StructTypeFlag struct_flags_CO2FootprintImpl = TypeObjectUtils::build_struct_type_flag(
-            eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
-            false, false);
+        StructTypeFlag struct_flags_CO2FootprintImpl = TypeObjectUtils::build_struct_type_flag(eprosima::fastdds::dds::xtypes::ExtensibilityKind::APPENDABLE,
+                false, false);
         QualifiedTypeName type_name_CO2FootprintImpl = "CO2FootprintImpl";
         eprosima::fastcdr::optional<AppliedBuiltinTypeAnnotations> type_ann_builtin_CO2FootprintImpl;
         eprosima::fastcdr::optional<AppliedAnnotationSeq> ann_custom_CO2FootprintImpl;
-        CompleteTypeDetail detail_CO2FootprintImpl = TypeObjectUtils::build_complete_type_detail(
-            type_ann_builtin_CO2FootprintImpl, ann_custom_CO2FootprintImpl, type_name_CO2FootprintImpl.to_string());
+        CompleteTypeDetail detail_CO2FootprintImpl = TypeObjectUtils::build_complete_type_detail(type_ann_builtin_CO2FootprintImpl, ann_custom_CO2FootprintImpl, type_name_CO2FootprintImpl.to_string());
         CompleteStructHeader header_CO2FootprintImpl;
-        header_CO2FootprintImpl = TypeObjectUtils::build_complete_struct_header(
-            TypeIdentifier(), detail_CO2FootprintImpl);
+        header_CO2FootprintImpl = TypeObjectUtils::build_complete_struct_header(TypeIdentifier(), detail_CO2FootprintImpl);
         CompleteStructMemberSeq member_seq_CO2FootprintImpl;
         {
             TypeIdentifierPair type_ids_carbon_footprint;
             ReturnCode_t return_code_carbon_footprint {eprosima::fastdds::dds::RETCODE_OK};
             return_code_carbon_footprint =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_double", type_ids_carbon_footprint);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_carbon_footprint)
@@ -3809,36 +3057,28 @@ void register_CO2FootprintImpl_type_identifier(
                         "carbon_footprint Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_carbon_footprint = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_carbon_footprint = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_carbon_footprint = 0x00000000;
             bool common_carbon_footprint_ec {false};
-            CommonStructMember common_carbon_footprint {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_carbon_footprint, member_flags_carbon_footprint, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                type_ids_carbon_footprint,
-                                                                common_carbon_footprint_ec))};
+            CommonStructMember common_carbon_footprint {TypeObjectUtils::build_common_struct_member(member_id_carbon_footprint, member_flags_carbon_footprint, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_carbon_footprint, common_carbon_footprint_ec))};
             if (!common_carbon_footprint_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure carbon_footprint member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure carbon_footprint member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_carbon_footprint = "carbon_footprint";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_carbon_footprint;
             ann_custom_CO2FootprintImpl.reset();
-            CompleteMemberDetail detail_carbon_footprint = TypeObjectUtils::build_complete_member_detail(
-                name_carbon_footprint, member_ann_builtin_carbon_footprint, ann_custom_CO2FootprintImpl);
-            CompleteStructMember member_carbon_footprint = TypeObjectUtils::build_complete_struct_member(
-                common_carbon_footprint, detail_carbon_footprint);
+            CompleteMemberDetail detail_carbon_footprint = TypeObjectUtils::build_complete_member_detail(name_carbon_footprint, member_ann_builtin_carbon_footprint, ann_custom_CO2FootprintImpl);
+            CompleteStructMember member_carbon_footprint = TypeObjectUtils::build_complete_struct_member(common_carbon_footprint, detail_carbon_footprint);
             TypeObjectUtils::add_complete_struct_member(member_seq_CO2FootprintImpl, member_carbon_footprint);
         }
         {
             TypeIdentifierPair type_ids_energy_consumption;
             ReturnCode_t return_code_energy_consumption {eprosima::fastdds::dds::RETCODE_OK};
             return_code_energy_consumption =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_double", type_ids_energy_consumption);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_energy_consumption)
@@ -3847,37 +3087,28 @@ void register_CO2FootprintImpl_type_identifier(
                         "energy_consumption Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_energy_consumption = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_energy_consumption = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_energy_consumption = 0x00000001;
             bool common_energy_consumption_ec {false};
-            CommonStructMember common_energy_consumption {TypeObjectUtils::build_common_struct_member(
-                                                              member_id_energy_consumption,
-                                                              member_flags_energy_consumption, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                  type_ids_energy_consumption,
-                                                                  common_energy_consumption_ec))};
+            CommonStructMember common_energy_consumption {TypeObjectUtils::build_common_struct_member(member_id_energy_consumption, member_flags_energy_consumption, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_energy_consumption, common_energy_consumption_ec))};
             if (!common_energy_consumption_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure energy_consumption member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure energy_consumption member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_energy_consumption = "energy_consumption";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_energy_consumption;
             ann_custom_CO2FootprintImpl.reset();
-            CompleteMemberDetail detail_energy_consumption = TypeObjectUtils::build_complete_member_detail(
-                name_energy_consumption, member_ann_builtin_energy_consumption, ann_custom_CO2FootprintImpl);
-            CompleteStructMember member_energy_consumption = TypeObjectUtils::build_complete_struct_member(
-                common_energy_consumption, detail_energy_consumption);
+            CompleteMemberDetail detail_energy_consumption = TypeObjectUtils::build_complete_member_detail(name_energy_consumption, member_ann_builtin_energy_consumption, ann_custom_CO2FootprintImpl);
+            CompleteStructMember member_energy_consumption = TypeObjectUtils::build_complete_struct_member(common_energy_consumption, detail_energy_consumption);
             TypeObjectUtils::add_complete_struct_member(member_seq_CO2FootprintImpl, member_energy_consumption);
         }
         {
             TypeIdentifierPair type_ids_carbon_intensity;
             ReturnCode_t return_code_carbon_intensity {eprosima::fastdds::dds::RETCODE_OK};
             return_code_carbon_intensity =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "_double", type_ids_carbon_intensity);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_carbon_intensity)
@@ -3886,43 +3117,34 @@ void register_CO2FootprintImpl_type_identifier(
                         "carbon_intensity Structure member TypeIdentifier unknown to TypeObjectRegistry.");
                 return;
             }
-            StructMemberFlag member_flags_carbon_intensity = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_carbon_intensity = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_carbon_intensity = 0x00000002;
             bool common_carbon_intensity_ec {false};
-            CommonStructMember common_carbon_intensity {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_carbon_intensity, member_flags_carbon_intensity, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                type_ids_carbon_intensity,
-                                                                common_carbon_intensity_ec))};
+            CommonStructMember common_carbon_intensity {TypeObjectUtils::build_common_struct_member(member_id_carbon_intensity, member_flags_carbon_intensity, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_carbon_intensity, common_carbon_intensity_ec))};
             if (!common_carbon_intensity_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure carbon_intensity member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure carbon_intensity member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_carbon_intensity = "carbon_intensity";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_carbon_intensity;
             ann_custom_CO2FootprintImpl.reset();
-            CompleteMemberDetail detail_carbon_intensity = TypeObjectUtils::build_complete_member_detail(
-                name_carbon_intensity, member_ann_builtin_carbon_intensity, ann_custom_CO2FootprintImpl);
-            CompleteStructMember member_carbon_intensity = TypeObjectUtils::build_complete_struct_member(
-                common_carbon_intensity, detail_carbon_intensity);
+            CompleteMemberDetail detail_carbon_intensity = TypeObjectUtils::build_complete_member_detail(name_carbon_intensity, member_ann_builtin_carbon_intensity, ann_custom_CO2FootprintImpl);
+            CompleteStructMember member_carbon_intensity = TypeObjectUtils::build_complete_struct_member(common_carbon_intensity, detail_carbon_intensity);
             TypeObjectUtils::add_complete_struct_member(member_seq_CO2FootprintImpl, member_carbon_intensity);
         }
         {
             TypeIdentifierPair type_ids_extra_data;
             ReturnCode_t return_code_extra_data {eprosima::fastdds::dds::RETCODE_OK};
             return_code_extra_data =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
                 return_code_extra_data =
-                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                                get_type_identifiers(
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                     "_byte", type_ids_extra_data);
 
                 if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
@@ -3931,85 +3153,65 @@ void register_CO2FootprintImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded = TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded, element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
-                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
-                        eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(header_anonymous_sequence_byte_unbounded, bound,
+                                eprosima::fastcdr::external<TypeIdentifier>(element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn, "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                            "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
-            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, false, false);
+            StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, false, false);
             MemberId member_id_extra_data = 0x00000003;
             bool common_extra_data_ec {false};
-            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data,
-                                                          member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                              type_ids_extra_data,
-                                                              common_extra_data_ec))};
+            CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data, member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_extra_data, common_extra_data_ec))};
             if (!common_extra_data_ec)
             {
-                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                        "Structure extra_data member TypeIdentifier inconsistent.");
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure extra_data member TypeIdentifier inconsistent.");
                 return;
             }
             MemberName name_extra_data = "extra_data";
             eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_extra_data;
             ann_custom_CO2FootprintImpl.reset();
-            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data,
-                            member_ann_builtin_extra_data,
-                            ann_custom_CO2FootprintImpl);
-            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data,
-                            detail_extra_data);
+            CompleteMemberDetail detail_extra_data = TypeObjectUtils::build_complete_member_detail(name_extra_data, member_ann_builtin_extra_data, ann_custom_CO2FootprintImpl);
+            CompleteStructMember member_extra_data = TypeObjectUtils::build_complete_struct_member(common_extra_data, detail_extra_data);
             TypeObjectUtils::add_complete_struct_member(member_seq_CO2FootprintImpl, member_extra_data);
         }
         {
             TypeIdentifierPair type_ids_task_id;
             ReturnCode_t return_code_task_id {eprosima::fastdds::dds::RETCODE_OK};
             return_code_task_id =
-                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
-                            get_type_identifiers(
+                eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().get_type_identifiers(
                 "TaskIdImpl", type_ids_task_id);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_task_id)
             {
-                ::register_TaskIdImpl_type_identifier(type_ids_task_id);
+            ::register_TaskIdImpl_type_identifier(type_ids_task_id);
             }
-            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
-                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
-                false, false, true, false);
+            StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                    false, false, true, false);
             MemberId member_id_task_id = 0x00000004;
             bool common_task_id_ec {false};
-            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
-                                                       member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
-                                                           type_ids_task_id,
-                                                           common_task_id_ec))};
+            CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id, member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(type_ids_task_id, common_task_id_ec))};
             if (!common_task_id_ec)
             {
                 EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Structure task_id member TypeIdentifier inconsistent.");
@@ -4023,33 +3225,25 @@ void register_CO2FootprintImpl_type_identifier(
             eprosima::fastcdr::optional<AnnotationParameterValue> min_task_id;
             eprosima::fastcdr::optional<AnnotationParameterValue> max_task_id;
             eprosima::fastcdr::optional<std::string> hash_id_task_id;
-            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() ||
-                    hash_id_task_id.has_value())
+            if (unit_task_id.has_value() || min_task_id.has_value() || max_task_id.has_value() || hash_id_task_id.has_value())
             {
-                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id,
-                                min_task_id,
-                                max_task_id,
-                                hash_id_task_id);
+                member_ann_builtin_task_id = TypeObjectUtils::build_applied_builtin_member_annotations(unit_task_id, min_task_id, max_task_id, hash_id_task_id);
             }
             if (!tmp_ann_custom_task_id.empty())
             {
                 ann_custom_CO2FootprintImpl = tmp_ann_custom_task_id;
             }
-            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id,
-                            member_ann_builtin_task_id,
-                            ann_custom_CO2FootprintImpl);
-            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id,
-                            detail_task_id);
+            CompleteMemberDetail detail_task_id = TypeObjectUtils::build_complete_member_detail(name_task_id, member_ann_builtin_task_id, ann_custom_CO2FootprintImpl);
+            CompleteStructMember member_task_id = TypeObjectUtils::build_complete_struct_member(common_task_id, detail_task_id);
             TypeObjectUtils::add_complete_struct_member(member_seq_CO2FootprintImpl, member_task_id);
         }
-        CompleteStructType struct_type_CO2FootprintImpl = TypeObjectUtils::build_complete_struct_type(
-            struct_flags_CO2FootprintImpl, header_CO2FootprintImpl, member_seq_CO2FootprintImpl);
+        CompleteStructType struct_type_CO2FootprintImpl = TypeObjectUtils::build_complete_struct_type(struct_flags_CO2FootprintImpl, header_CO2FootprintImpl, member_seq_CO2FootprintImpl);
         if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
-                TypeObjectUtils::build_and_register_struct_type_object(struct_type_CO2FootprintImpl,
-                type_name_CO2FootprintImpl.to_string(), type_ids_CO2FootprintImpl))
+                TypeObjectUtils::build_and_register_struct_type_object(struct_type_CO2FootprintImpl, type_name_CO2FootprintImpl.to_string(), type_ids_CO2FootprintImpl))
         {
             EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
                     "CO2FootprintImpl already registered in TypeObjectRegistry for a different type.");
         }
     }
 }
+

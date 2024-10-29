@@ -115,9 +115,9 @@ public:
     eProsima_user_DllExport TaskIdImpl(
             const TaskIdImpl& x)
     {
-        m_problem_id = x.m_problem_id;
+                    m_problem_id = x.m_problem_id;
 
-        m_iteration_id = x.m_iteration_id;
+                    m_iteration_id = x.m_iteration_id;
 
     }
 
@@ -140,9 +140,9 @@ public:
             const TaskIdImpl& x)
     {
 
-        m_problem_id = x.m_problem_id;
+                    m_problem_id = x.m_problem_id;
 
-        m_iteration_id = x.m_iteration_id;
+                    m_iteration_id = x.m_iteration_id;
 
         return *this;
     }
@@ -168,7 +168,7 @@ public:
             const TaskIdImpl& x) const
     {
         return (m_problem_id == x.m_problem_id &&
-               m_iteration_id == x.m_iteration_id);
+           m_iteration_id == x.m_iteration_id);
     }
 
     /*!
@@ -209,6 +209,7 @@ public:
         return m_problem_id;
     }
 
+
     /*!
      * @brief This function sets a value in member iteration_id
      * @param _iteration_id New value for member iteration_id
@@ -236,6 +237,8 @@ public:
     {
         return m_iteration_id;
     }
+
+
 
 private:
 
@@ -272,17 +275,17 @@ public:
     eProsima_user_DllExport NodeStatusImpl(
             const NodeStatusImpl& x)
     {
-        m_node_status = x.m_node_status;
+                    m_node_status = x.m_node_status;
 
-        m_task_status = x.m_task_status;
+                    m_task_status = x.m_task_status;
 
-        m_error_code = x.m_error_code;
+                    m_error_code = x.m_error_code;
 
-        m_error_description = x.m_error_description;
+                    m_error_description = x.m_error_description;
 
-        m_node_name = x.m_node_name;
+                    m_node_name = x.m_node_name;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
     }
 
@@ -309,17 +312,17 @@ public:
             const NodeStatusImpl& x)
     {
 
-        m_node_status = x.m_node_status;
+                    m_node_status = x.m_node_status;
 
-        m_task_status = x.m_task_status;
+                    m_task_status = x.m_task_status;
 
-        m_error_code = x.m_error_code;
+                    m_error_code = x.m_error_code;
 
-        m_error_description = x.m_error_description;
+                    m_error_description = x.m_error_description;
 
-        m_node_name = x.m_node_name;
+                    m_node_name = x.m_node_name;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
         return *this;
     }
@@ -349,11 +352,11 @@ public:
             const NodeStatusImpl& x) const
     {
         return (m_node_status == x.m_node_status &&
-               m_task_status == x.m_task_status &&
-               m_error_code == x.m_error_code &&
-               m_error_description == x.m_error_description &&
-               m_node_name == x.m_node_name &&
-               m_task_id == x.m_task_id);
+           m_task_status == x.m_task_status &&
+           m_error_code == x.m_error_code &&
+           m_error_description == x.m_error_description &&
+           m_node_name == x.m_node_name &&
+           m_task_id == x.m_task_id);
     }
 
     /*!
@@ -394,6 +397,7 @@ public:
         return m_node_status;
     }
 
+
     /*!
      * @brief This function sets a value in member task_status
      * @param _task_status New value for member task_status
@@ -422,6 +426,7 @@ public:
         return m_task_status;
     }
 
+
     /*!
      * @brief This function sets a value in member error_code
      * @param _error_code New value for member error_code
@@ -449,6 +454,7 @@ public:
     {
         return m_error_code;
     }
+
 
     /*!
      * @brief This function copies the value in member error_description
@@ -488,6 +494,7 @@ public:
         return m_error_description;
     }
 
+
     /*!
      * @brief This function copies the value in member node_name
      * @param _node_name New value to be copied in member node_name
@@ -526,6 +533,7 @@ public:
         return m_node_name;
     }
 
+
     /*!
      * @brief This function copies the value in member task_id
      * @param _task_id New value to be copied in member task_id
@@ -563,6 +571,8 @@ public:
     {
         return m_task_id;
     }
+
+
 
 private:
 
@@ -627,15 +637,15 @@ public:
     eProsima_user_DllExport NodeControlImpl(
             const NodeControlImpl& x)
     {
-        m_cmd_node = x.m_cmd_node;
+                    m_cmd_node = x.m_cmd_node;
 
-        m_cmd_task = x.m_cmd_task;
+                    m_cmd_task = x.m_cmd_task;
 
-        m_target_node = x.m_target_node;
+                    m_target_node = x.m_target_node;
 
-        m_source_node = x.m_source_node;
+                    m_source_node = x.m_source_node;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
     }
 
@@ -661,15 +671,15 @@ public:
             const NodeControlImpl& x)
     {
 
-        m_cmd_node = x.m_cmd_node;
+                    m_cmd_node = x.m_cmd_node;
 
-        m_cmd_task = x.m_cmd_task;
+                    m_cmd_task = x.m_cmd_task;
 
-        m_target_node = x.m_target_node;
+                    m_target_node = x.m_target_node;
 
-        m_source_node = x.m_source_node;
+                    m_source_node = x.m_source_node;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
         return *this;
     }
@@ -698,10 +708,10 @@ public:
             const NodeControlImpl& x) const
     {
         return (m_cmd_node == x.m_cmd_node &&
-               m_cmd_task == x.m_cmd_task &&
-               m_target_node == x.m_target_node &&
-               m_source_node == x.m_source_node &&
-               m_task_id == x.m_task_id);
+           m_cmd_task == x.m_cmd_task &&
+           m_target_node == x.m_target_node &&
+           m_source_node == x.m_source_node &&
+           m_task_id == x.m_task_id);
     }
 
     /*!
@@ -742,6 +752,7 @@ public:
         return m_cmd_node;
     }
 
+
     /*!
      * @brief This function sets a value in member cmd_task
      * @param _cmd_task New value for member cmd_task
@@ -769,6 +780,7 @@ public:
     {
         return m_cmd_task;
     }
+
 
     /*!
      * @brief This function copies the value in member target_node
@@ -808,6 +820,7 @@ public:
         return m_target_node;
     }
 
+
     /*!
      * @brief This function copies the value in member source_node
      * @param _source_node New value to be copied in member source_node
@@ -845,6 +858,7 @@ public:
     {
         return m_source_node;
     }
+
 
     /*!
      * @brief This function copies the value in member task_id
@@ -884,6 +898,8 @@ public:
         return m_task_id;
     }
 
+
+
 private:
 
     CmdNode m_cmd_node{CmdNode::NO_CMD_NODE};
@@ -922,35 +938,35 @@ public:
     eProsima_user_DllExport UserInputImpl(
             const UserInputImpl& x)
     {
-        m_modality = x.m_modality;
+                    m_modality = x.m_modality;
 
-        m_problem_short_description = x.m_problem_short_description;
+                    m_problem_short_description = x.m_problem_short_description;
 
-        m_problem_definition = x.m_problem_definition;
+                    m_problem_definition = x.m_problem_definition;
 
-        m_inputs = x.m_inputs;
+                    m_inputs = x.m_inputs;
 
-        m_outputs = x.m_outputs;
+                    m_outputs = x.m_outputs;
 
-        m_minimum_samples = x.m_minimum_samples;
+                    m_minimum_samples = x.m_minimum_samples;
 
-        m_maximum_samples = x.m_maximum_samples;
+                    m_maximum_samples = x.m_maximum_samples;
 
-        m_optimize_carbon_footprint_manual = x.m_optimize_carbon_footprint_manual;
+                    m_optimize_carbon_footprint_manual = x.m_optimize_carbon_footprint_manual;
 
-        m_previous_iteration = x.m_previous_iteration;
+                    m_previous_iteration = x.m_previous_iteration;
 
-        m_optimize_carbon_footprint_auto = x.m_optimize_carbon_footprint_auto;
+                    m_optimize_carbon_footprint_auto = x.m_optimize_carbon_footprint_auto;
 
-        m_desired_carbon_footprint = x.m_desired_carbon_footprint;
+                    m_desired_carbon_footprint = x.m_desired_carbon_footprint;
 
-        m_geo_location_continent = x.m_geo_location_continent;
+                    m_geo_location_continent = x.m_geo_location_continent;
 
-        m_geo_location_region = x.m_geo_location_region;
+                    m_geo_location_region = x.m_geo_location_region;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
     }
 
@@ -986,35 +1002,35 @@ public:
             const UserInputImpl& x)
     {
 
-        m_modality = x.m_modality;
+                    m_modality = x.m_modality;
 
-        m_problem_short_description = x.m_problem_short_description;
+                    m_problem_short_description = x.m_problem_short_description;
 
-        m_problem_definition = x.m_problem_definition;
+                    m_problem_definition = x.m_problem_definition;
 
-        m_inputs = x.m_inputs;
+                    m_inputs = x.m_inputs;
 
-        m_outputs = x.m_outputs;
+                    m_outputs = x.m_outputs;
 
-        m_minimum_samples = x.m_minimum_samples;
+                    m_minimum_samples = x.m_minimum_samples;
 
-        m_maximum_samples = x.m_maximum_samples;
+                    m_maximum_samples = x.m_maximum_samples;
 
-        m_optimize_carbon_footprint_manual = x.m_optimize_carbon_footprint_manual;
+                    m_optimize_carbon_footprint_manual = x.m_optimize_carbon_footprint_manual;
 
-        m_previous_iteration = x.m_previous_iteration;
+                    m_previous_iteration = x.m_previous_iteration;
 
-        m_optimize_carbon_footprint_auto = x.m_optimize_carbon_footprint_auto;
+                    m_optimize_carbon_footprint_auto = x.m_optimize_carbon_footprint_auto;
 
-        m_desired_carbon_footprint = x.m_desired_carbon_footprint;
+                    m_desired_carbon_footprint = x.m_desired_carbon_footprint;
 
-        m_geo_location_continent = x.m_geo_location_continent;
+                    m_geo_location_continent = x.m_geo_location_continent;
 
-        m_geo_location_region = x.m_geo_location_region;
+                    m_geo_location_region = x.m_geo_location_region;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
         return *this;
     }
@@ -1053,20 +1069,20 @@ public:
             const UserInputImpl& x) const
     {
         return (m_modality == x.m_modality &&
-               m_problem_short_description == x.m_problem_short_description &&
-               m_problem_definition == x.m_problem_definition &&
-               m_inputs == x.m_inputs &&
-               m_outputs == x.m_outputs &&
-               m_minimum_samples == x.m_minimum_samples &&
-               m_maximum_samples == x.m_maximum_samples &&
-               m_optimize_carbon_footprint_manual == x.m_optimize_carbon_footprint_manual &&
-               m_previous_iteration == x.m_previous_iteration &&
-               m_optimize_carbon_footprint_auto == x.m_optimize_carbon_footprint_auto &&
-               m_desired_carbon_footprint == x.m_desired_carbon_footprint &&
-               m_geo_location_continent == x.m_geo_location_continent &&
-               m_geo_location_region == x.m_geo_location_region &&
-               m_extra_data == x.m_extra_data &&
-               m_task_id == x.m_task_id);
+           m_problem_short_description == x.m_problem_short_description &&
+           m_problem_definition == x.m_problem_definition &&
+           m_inputs == x.m_inputs &&
+           m_outputs == x.m_outputs &&
+           m_minimum_samples == x.m_minimum_samples &&
+           m_maximum_samples == x.m_maximum_samples &&
+           m_optimize_carbon_footprint_manual == x.m_optimize_carbon_footprint_manual &&
+           m_previous_iteration == x.m_previous_iteration &&
+           m_optimize_carbon_footprint_auto == x.m_optimize_carbon_footprint_auto &&
+           m_desired_carbon_footprint == x.m_desired_carbon_footprint &&
+           m_geo_location_continent == x.m_geo_location_continent &&
+           m_geo_location_region == x.m_geo_location_region &&
+           m_extra_data == x.m_extra_data &&
+           m_task_id == x.m_task_id);
     }
 
     /*!
@@ -1117,6 +1133,7 @@ public:
         return m_modality;
     }
 
+
     /*!
      * @brief This function copies the value in member problem_short_description
      * @param _problem_short_description New value to be copied in member problem_short_description
@@ -1154,6 +1171,7 @@ public:
     {
         return m_problem_short_description;
     }
+
 
     /*!
      * @brief This function copies the value in member problem_definition
@@ -1193,6 +1211,7 @@ public:
         return m_problem_definition;
     }
 
+
     /*!
      * @brief This function copies the value in member inputs
      * @param _inputs New value to be copied in member inputs
@@ -1230,6 +1249,7 @@ public:
     {
         return m_inputs;
     }
+
 
     /*!
      * @brief This function copies the value in member outputs
@@ -1269,6 +1289,7 @@ public:
         return m_outputs;
     }
 
+
     /*!
      * @brief This function sets a value in member minimum_samples
      * @param _minimum_samples New value for member minimum_samples
@@ -1296,6 +1317,7 @@ public:
     {
         return m_minimum_samples;
     }
+
 
     /*!
      * @brief This function sets a value in member maximum_samples
@@ -1325,6 +1347,7 @@ public:
         return m_maximum_samples;
     }
 
+
     /*!
      * @brief This function sets a value in member optimize_carbon_footprint_manual
      * @param _optimize_carbon_footprint_manual New value for member optimize_carbon_footprint_manual
@@ -1352,6 +1375,7 @@ public:
     {
         return m_optimize_carbon_footprint_manual;
     }
+
 
     /*!
      * @brief This function sets a value in member previous_iteration
@@ -1381,6 +1405,7 @@ public:
         return m_previous_iteration;
     }
 
+
     /*!
      * @brief This function sets a value in member optimize_carbon_footprint_auto
      * @param _optimize_carbon_footprint_auto New value for member optimize_carbon_footprint_auto
@@ -1409,6 +1434,7 @@ public:
         return m_optimize_carbon_footprint_auto;
     }
 
+
     /*!
      * @brief This function sets a value in member desired_carbon_footprint
      * @param _desired_carbon_footprint New value for member desired_carbon_footprint
@@ -1436,6 +1462,7 @@ public:
     {
         return m_desired_carbon_footprint;
     }
+
 
     /*!
      * @brief This function copies the value in member geo_location_continent
@@ -1475,6 +1502,7 @@ public:
         return m_geo_location_continent;
     }
 
+
     /*!
      * @brief This function copies the value in member geo_location_region
      * @param _geo_location_region New value to be copied in member geo_location_region
@@ -1512,6 +1540,7 @@ public:
     {
         return m_geo_location_region;
     }
+
 
     /*!
      * @brief This function copies the value in member extra_data
@@ -1551,6 +1580,7 @@ public:
         return m_extra_data;
     }
 
+
     /*!
      * @brief This function copies the value in member task_id
      * @param _task_id New value to be copied in member task_id
@@ -1588,6 +1618,8 @@ public:
     {
         return m_task_id;
     }
+
+
 
 private:
 
@@ -1637,13 +1669,13 @@ public:
     eProsima_user_DllExport MLModelMetadataImpl(
             const MLModelMetadataImpl& x)
     {
-        m_keywords = x.m_keywords;
+                    m_keywords = x.m_keywords;
 
-        m_ml_model_metadata = x.m_ml_model_metadata;
+                    m_ml_model_metadata = x.m_ml_model_metadata;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
     }
 
@@ -1668,13 +1700,13 @@ public:
             const MLModelMetadataImpl& x)
     {
 
-        m_keywords = x.m_keywords;
+                    m_keywords = x.m_keywords;
 
-        m_ml_model_metadata = x.m_ml_model_metadata;
+                    m_ml_model_metadata = x.m_ml_model_metadata;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
         return *this;
     }
@@ -1702,9 +1734,9 @@ public:
             const MLModelMetadataImpl& x) const
     {
         return (m_keywords == x.m_keywords &&
-               m_ml_model_metadata == x.m_ml_model_metadata &&
-               m_extra_data == x.m_extra_data &&
-               m_task_id == x.m_task_id);
+           m_ml_model_metadata == x.m_ml_model_metadata &&
+           m_extra_data == x.m_extra_data &&
+           m_task_id == x.m_task_id);
     }
 
     /*!
@@ -1755,6 +1787,7 @@ public:
         return m_keywords;
     }
 
+
     /*!
      * @brief This function copies the value in member ml_model_metadata
      * @param _ml_model_metadata New value to be copied in member ml_model_metadata
@@ -1792,6 +1825,7 @@ public:
     {
         return m_ml_model_metadata;
     }
+
 
     /*!
      * @brief This function copies the value in member extra_data
@@ -1831,6 +1865,7 @@ public:
         return m_extra_data;
     }
 
+
     /*!
      * @brief This function copies the value in member task_id
      * @param _task_id New value to be copied in member task_id
@@ -1869,6 +1904,8 @@ public:
         return m_task_id;
     }
 
+
+
 private:
 
     std::vector<std::string> m_keywords;
@@ -1906,11 +1943,11 @@ public:
     eProsima_user_DllExport AppRequirementsImpl(
             const AppRequirementsImpl& x)
     {
-        m_app_requirements = x.m_app_requirements;
+                    m_app_requirements = x.m_app_requirements;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
     }
 
@@ -1934,11 +1971,11 @@ public:
             const AppRequirementsImpl& x)
     {
 
-        m_app_requirements = x.m_app_requirements;
+                    m_app_requirements = x.m_app_requirements;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
         return *this;
     }
@@ -1965,8 +2002,8 @@ public:
             const AppRequirementsImpl& x) const
     {
         return (m_app_requirements == x.m_app_requirements &&
-               m_extra_data == x.m_extra_data &&
-               m_task_id == x.m_task_id);
+           m_extra_data == x.m_extra_data &&
+           m_task_id == x.m_task_id);
     }
 
     /*!
@@ -2017,6 +2054,7 @@ public:
         return m_app_requirements;
     }
 
+
     /*!
      * @brief This function copies the value in member extra_data
      * @param _extra_data New value to be copied in member extra_data
@@ -2054,6 +2092,7 @@ public:
     {
         return m_extra_data;
     }
+
 
     /*!
      * @brief This function copies the value in member task_id
@@ -2093,6 +2132,8 @@ public:
         return m_task_id;
     }
 
+
+
 private:
 
     std::vector<std::string> m_app_requirements;
@@ -2129,11 +2170,11 @@ public:
     eProsima_user_DllExport HWConstraintsImpl(
             const HWConstraintsImpl& x)
     {
-        m_max_memory_footprint = x.m_max_memory_footprint;
+                    m_max_memory_footprint = x.m_max_memory_footprint;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
     }
 
@@ -2157,11 +2198,11 @@ public:
             const HWConstraintsImpl& x)
     {
 
-        m_max_memory_footprint = x.m_max_memory_footprint;
+                    m_max_memory_footprint = x.m_max_memory_footprint;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
         return *this;
     }
@@ -2188,8 +2229,8 @@ public:
             const HWConstraintsImpl& x) const
     {
         return (m_max_memory_footprint == x.m_max_memory_footprint &&
-               m_extra_data == x.m_extra_data &&
-               m_task_id == x.m_task_id);
+           m_extra_data == x.m_extra_data &&
+           m_task_id == x.m_task_id);
     }
 
     /*!
@@ -2230,6 +2271,7 @@ public:
         return m_max_memory_footprint;
     }
 
+
     /*!
      * @brief This function copies the value in member extra_data
      * @param _extra_data New value to be copied in member extra_data
@@ -2267,6 +2309,7 @@ public:
     {
         return m_extra_data;
     }
+
 
     /*!
      * @brief This function copies the value in member task_id
@@ -2306,6 +2349,8 @@ public:
         return m_task_id;
     }
 
+
+
 private:
 
     uint32_t m_max_memory_footprint{0};
@@ -2342,23 +2387,23 @@ public:
     eProsima_user_DllExport MLModelImpl(
             const MLModelImpl& x)
     {
-        m_model_path = x.m_model_path;
+                    m_model_path = x.m_model_path;
 
-        m_model = x.m_model;
+                    m_model = x.m_model;
 
-        m_raw_model = x.m_raw_model;
+                    m_raw_model = x.m_raw_model;
 
-        m_model_properties_path = x.m_model_properties_path;
+                    m_model_properties_path = x.m_model_properties_path;
 
-        m_model_properties = x.m_model_properties;
+                    m_model_properties = x.m_model_properties;
 
-        m_input_batch = x.m_input_batch;
+                    m_input_batch = x.m_input_batch;
 
-        m_target_latency = x.m_target_latency;
+                    m_target_latency = x.m_target_latency;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
     }
 
@@ -2388,23 +2433,23 @@ public:
             const MLModelImpl& x)
     {
 
-        m_model_path = x.m_model_path;
+                    m_model_path = x.m_model_path;
 
-        m_model = x.m_model;
+                    m_model = x.m_model;
 
-        m_raw_model = x.m_raw_model;
+                    m_raw_model = x.m_raw_model;
 
-        m_model_properties_path = x.m_model_properties_path;
+                    m_model_properties_path = x.m_model_properties_path;
 
-        m_model_properties = x.m_model_properties;
+                    m_model_properties = x.m_model_properties;
 
-        m_input_batch = x.m_input_batch;
+                    m_input_batch = x.m_input_batch;
 
-        m_target_latency = x.m_target_latency;
+                    m_target_latency = x.m_target_latency;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
         return *this;
     }
@@ -2437,14 +2482,14 @@ public:
             const MLModelImpl& x) const
     {
         return (m_model_path == x.m_model_path &&
-               m_model == x.m_model &&
-               m_raw_model == x.m_raw_model &&
-               m_model_properties_path == x.m_model_properties_path &&
-               m_model_properties == x.m_model_properties &&
-               m_input_batch == x.m_input_batch &&
-               m_target_latency == x.m_target_latency &&
-               m_extra_data == x.m_extra_data &&
-               m_task_id == x.m_task_id);
+           m_model == x.m_model &&
+           m_raw_model == x.m_raw_model &&
+           m_model_properties_path == x.m_model_properties_path &&
+           m_model_properties == x.m_model_properties &&
+           m_input_batch == x.m_input_batch &&
+           m_target_latency == x.m_target_latency &&
+           m_extra_data == x.m_extra_data &&
+           m_task_id == x.m_task_id);
     }
 
     /*!
@@ -2495,6 +2540,7 @@ public:
         return m_model_path;
     }
 
+
     /*!
      * @brief This function copies the value in member model
      * @param _model New value to be copied in member model
@@ -2532,6 +2578,7 @@ public:
     {
         return m_model;
     }
+
 
     /*!
      * @brief This function copies the value in member raw_model
@@ -2571,6 +2618,7 @@ public:
         return m_raw_model;
     }
 
+
     /*!
      * @brief This function copies the value in member model_properties_path
      * @param _model_properties_path New value to be copied in member model_properties_path
@@ -2608,6 +2656,7 @@ public:
     {
         return m_model_properties_path;
     }
+
 
     /*!
      * @brief This function copies the value in member model_properties
@@ -2647,6 +2696,7 @@ public:
         return m_model_properties;
     }
 
+
     /*!
      * @brief This function copies the value in member input_batch
      * @param _input_batch New value to be copied in member input_batch
@@ -2685,6 +2735,7 @@ public:
         return m_input_batch;
     }
 
+
     /*!
      * @brief This function sets a value in member target_latency
      * @param _target_latency New value for member target_latency
@@ -2712,6 +2763,7 @@ public:
     {
         return m_target_latency;
     }
+
 
     /*!
      * @brief This function copies the value in member extra_data
@@ -2751,6 +2803,7 @@ public:
         return m_extra_data;
     }
 
+
     /*!
      * @brief This function copies the value in member task_id
      * @param _task_id New value to be copied in member task_id
@@ -2788,6 +2841,8 @@ public:
     {
         return m_task_id;
     }
+
+
 
 private:
 
@@ -2831,19 +2886,19 @@ public:
     eProsima_user_DllExport HWResourceImpl(
             const HWResourceImpl& x)
     {
-        m_hw_description = x.m_hw_description;
+                    m_hw_description = x.m_hw_description;
 
-        m_power_consumption = x.m_power_consumption;
+                    m_power_consumption = x.m_power_consumption;
 
-        m_latency = x.m_latency;
+                    m_latency = x.m_latency;
 
-        m_memory_footprint_of_ml_model = x.m_memory_footprint_of_ml_model;
+                    m_memory_footprint_of_ml_model = x.m_memory_footprint_of_ml_model;
 
-        m_max_hw_memory_footprint = x.m_max_hw_memory_footprint;
+                    m_max_hw_memory_footprint = x.m_max_hw_memory_footprint;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
     }
 
@@ -2871,19 +2926,19 @@ public:
             const HWResourceImpl& x)
     {
 
-        m_hw_description = x.m_hw_description;
+                    m_hw_description = x.m_hw_description;
 
-        m_power_consumption = x.m_power_consumption;
+                    m_power_consumption = x.m_power_consumption;
 
-        m_latency = x.m_latency;
+                    m_latency = x.m_latency;
 
-        m_memory_footprint_of_ml_model = x.m_memory_footprint_of_ml_model;
+                    m_memory_footprint_of_ml_model = x.m_memory_footprint_of_ml_model;
 
-        m_max_hw_memory_footprint = x.m_max_hw_memory_footprint;
+                    m_max_hw_memory_footprint = x.m_max_hw_memory_footprint;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
         return *this;
     }
@@ -2914,12 +2969,12 @@ public:
             const HWResourceImpl& x) const
     {
         return (m_hw_description == x.m_hw_description &&
-               m_power_consumption == x.m_power_consumption &&
-               m_latency == x.m_latency &&
-               m_memory_footprint_of_ml_model == x.m_memory_footprint_of_ml_model &&
-               m_max_hw_memory_footprint == x.m_max_hw_memory_footprint &&
-               m_extra_data == x.m_extra_data &&
-               m_task_id == x.m_task_id);
+           m_power_consumption == x.m_power_consumption &&
+           m_latency == x.m_latency &&
+           m_memory_footprint_of_ml_model == x.m_memory_footprint_of_ml_model &&
+           m_max_hw_memory_footprint == x.m_max_hw_memory_footprint &&
+           m_extra_data == x.m_extra_data &&
+           m_task_id == x.m_task_id);
     }
 
     /*!
@@ -2970,6 +3025,7 @@ public:
         return m_hw_description;
     }
 
+
     /*!
      * @brief This function sets a value in member power_consumption
      * @param _power_consumption New value for member power_consumption
@@ -2997,6 +3053,7 @@ public:
     {
         return m_power_consumption;
     }
+
 
     /*!
      * @brief This function sets a value in member latency
@@ -3026,6 +3083,7 @@ public:
         return m_latency;
     }
 
+
     /*!
      * @brief This function sets a value in member memory_footprint_of_ml_model
      * @param _memory_footprint_of_ml_model New value for member memory_footprint_of_ml_model
@@ -3054,6 +3112,7 @@ public:
         return m_memory_footprint_of_ml_model;
     }
 
+
     /*!
      * @brief This function sets a value in member max_hw_memory_footprint
      * @param _max_hw_memory_footprint New value for member max_hw_memory_footprint
@@ -3081,6 +3140,7 @@ public:
     {
         return m_max_hw_memory_footprint;
     }
+
 
     /*!
      * @brief This function copies the value in member extra_data
@@ -3120,6 +3180,7 @@ public:
         return m_extra_data;
     }
 
+
     /*!
      * @brief This function copies the value in member task_id
      * @param _task_id New value to be copied in member task_id
@@ -3157,6 +3218,8 @@ public:
     {
         return m_task_id;
     }
+
+
 
 private:
 
@@ -3198,15 +3261,15 @@ public:
     eProsima_user_DllExport CO2FootprintImpl(
             const CO2FootprintImpl& x)
     {
-        m_carbon_footprint = x.m_carbon_footprint;
+                    m_carbon_footprint = x.m_carbon_footprint;
 
-        m_energy_consumption = x.m_energy_consumption;
+                    m_energy_consumption = x.m_energy_consumption;
 
-        m_carbon_intensity = x.m_carbon_intensity;
+                    m_carbon_intensity = x.m_carbon_intensity;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
     }
 
@@ -3232,15 +3295,15 @@ public:
             const CO2FootprintImpl& x)
     {
 
-        m_carbon_footprint = x.m_carbon_footprint;
+                    m_carbon_footprint = x.m_carbon_footprint;
 
-        m_energy_consumption = x.m_energy_consumption;
+                    m_energy_consumption = x.m_energy_consumption;
 
-        m_carbon_intensity = x.m_carbon_intensity;
+                    m_carbon_intensity = x.m_carbon_intensity;
 
-        m_extra_data = x.m_extra_data;
+                    m_extra_data = x.m_extra_data;
 
-        m_task_id = x.m_task_id;
+                    m_task_id = x.m_task_id;
 
         return *this;
     }
@@ -3269,10 +3332,10 @@ public:
             const CO2FootprintImpl& x) const
     {
         return (m_carbon_footprint == x.m_carbon_footprint &&
-               m_energy_consumption == x.m_energy_consumption &&
-               m_carbon_intensity == x.m_carbon_intensity &&
-               m_extra_data == x.m_extra_data &&
-               m_task_id == x.m_task_id);
+           m_energy_consumption == x.m_energy_consumption &&
+           m_carbon_intensity == x.m_carbon_intensity &&
+           m_extra_data == x.m_extra_data &&
+           m_task_id == x.m_task_id);
     }
 
     /*!
@@ -3313,6 +3376,7 @@ public:
         return m_carbon_footprint;
     }
 
+
     /*!
      * @brief This function sets a value in member energy_consumption
      * @param _energy_consumption New value for member energy_consumption
@@ -3341,6 +3405,7 @@ public:
         return m_energy_consumption;
     }
 
+
     /*!
      * @brief This function sets a value in member carbon_intensity
      * @param _carbon_intensity New value for member carbon_intensity
@@ -3368,6 +3433,7 @@ public:
     {
         return m_carbon_intensity;
     }
+
 
     /*!
      * @brief This function copies the value in member extra_data
@@ -3407,6 +3473,7 @@ public:
         return m_extra_data;
     }
 
+
     /*!
      * @brief This function copies the value in member task_id
      * @param _task_id New value to be copied in member task_id
@@ -3444,6 +3511,8 @@ public:
     {
         return m_task_id;
     }
+
+
 
 private:
 
