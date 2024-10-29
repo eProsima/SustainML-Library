@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include <types/types.h>
+#include <types/types.hpp>
 
 namespace sustainml {
 namespace interfaces {

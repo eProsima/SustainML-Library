@@ -36,7 +36,7 @@
 #include "../api/ManagedNode.hpp"
 #include "../api/TaskInjector.hpp"
 
-#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/types/types.hpp>
 #include <types/typesImplPubSubTypes.hpp>
 
 #include <algorithm>

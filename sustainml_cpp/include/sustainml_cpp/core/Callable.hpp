@@ -25,7 +25,7 @@
 #include <tuple>
 
 #include <sustainml_cpp/config/Macros.hpp>
-#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/types/types.hpp>
 
 #include <fastdds/dds/log/Log.hpp>
 
