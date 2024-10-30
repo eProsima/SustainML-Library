@@ -1358,7 +1358,6 @@ std::vector<std::string>& HWConstraints::hardware_required()
     return impl_->hardware_required();
 }
 
-
 void HWConstraints::extra_data(
         const std::vector<uint8_t>& _extra_data)
 {
