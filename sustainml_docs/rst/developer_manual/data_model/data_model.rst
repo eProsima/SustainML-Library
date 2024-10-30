@@ -193,6 +193,7 @@ Hardware Constraints Type
 The ``HWConstraints`` represents the group of constraints defined (or not) by the user when describing the problem. It is the output from the ``Hardware Constraints Node``.
 
 * ``max_memory_footprint``: The maximum memory footprint allowed for the ML model.
+* ``hardware_required``: A sequence of hardware selected by the user to be taken into account by the framework.
 * ``extra_data``: A sequence of raw extra data for out-of-scope use cases.
 * ``task_id``: The identifier of the ML problem to solve.
 
@@ -203,6 +204,7 @@ The ``HWConstraints`` represents the group of constraints defined (or not) by th
     struct HWConstraints
     {
         unsigned long max_memory_footprint;
+        sequence<string> hardware_required;
         sequence<octet> extra_data;
         @key long task_id;
     };

@@ -405,6 +405,7 @@ class CustomHardwareConstraintsListener : public sustainml::hardware_module::Har
 
         // Populate output
         output.max_memory_footprint(user_input.task_id().problem_id());
+        output.hardware_required(std::vector<std::string>{"PIM_AI_1chip"});
 
         // Wait the time it takes the node to generate the output
         sleep(1);

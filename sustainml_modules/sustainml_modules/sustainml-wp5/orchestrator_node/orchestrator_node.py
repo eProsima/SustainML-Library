@@ -121,7 +121,9 @@ class Orchestrator:
 
         # Parse data into json
         max_value = node_data.max_memory_footprint()
-        json_output = {'max_memory_footprint': f'{max_value}<br>'}
+        required_hardware = node_data.hardware_required()
+        json_output = {'max_memory_footprint': f'{max_value}<br>',
+                       'hardware_required': f'{utils.string_std_vector(required_hardware)}<br>'}
         return json_output
 
     def get_ml_model_provider(self, task_id):

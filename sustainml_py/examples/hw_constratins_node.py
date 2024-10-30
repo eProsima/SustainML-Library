@@ -36,6 +36,7 @@ def signal_handler(sig, frame):
 def task_callback(user_input, node_status, hw_constraints):
     print (user_input.problem_definition())
     hw_constraints.max_memory_footprint(100)
+    hw_constraints.hardware_required(['PIM_AI_1chip'])
 
 # Main workflow routine
 def run():

@@ -83,6 +83,7 @@ std::list<HWConstraintsImpl> default_hwconstraints_task_generator(
                 hw_cons.task_id().problem_id(index);
                 hw_cons.task_id().iteration_id(1);
                 hw_cons.max_memory_footprint(index);
+                hw_cons.hardware_required(std::vector<std::string>{"PIM_AI_1chip"});
                 ++index;
                 return hw_cons;
             });

@@ -121,7 +121,8 @@ User is meant to implement the funcionality of the node within the ``test:callba
             print(requirement)
 
         # HWConstraints
-        hw_constraint = hw_constraints.max_memory_footprint()
+        max_mem_footprint = hw_constraints.max_memory_footprint()
+        hw_required = hw_constraints.hardware_required()
 
         # MLModel
         # Only in case of optimization (task_id.iteration_id() > 1)
