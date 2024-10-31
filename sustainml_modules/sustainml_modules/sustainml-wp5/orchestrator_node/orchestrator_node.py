@@ -14,6 +14,7 @@
 """SustainML Orchestrator Node API specification."""
 
 from . import utils
+import numpy as np
 
 from sustainml_swig import OrchestratorNodeHandle as cpp_OrchestratorNodeHandle
 from sustainml_swig import OrchestratorNode as cpp_OrchestratorNode
@@ -203,9 +204,24 @@ class Orchestrator:
         user_input.task_id(task_id)
         if (json_data.get('modality') is not None):
             user_input.modality(json_data.get('modality'))
-        if (json_data.get('problem_type') is not None):
-            user_input.problem_definition(json_data.get('problem_type'))
+        if (json_data.get('problem_short_description') is not None):
+            user_input.problem_short_description(json_data.get('problem_short_description'))
         #user_input.evaluation_metrics(evaluation_metrics)
         #user_input.model(model)
+
+        # Prepare extra data
+        hw_req = utils.default_hw_requirement
+        mem_footprint = utils.default_mem_footprint
+        if (json_data.get('hardware_required') is not None):
+            hw_req = json_data.get('hardware_required')
+        if (json_data.get('max_memory_footprint') is not None):
+            mem_footprint = json_data.get('max_memory_footprint')
+
+        # Add extra data to user user_input
+        extra_data = {'hardware_required': hw_req,
+                      'max_memory_footprint': mem_footprint}
+        json_obj = utils.json_dict(extra_data)
+        data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
+        user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
 
         return self.node_.start_task(task_id, user_input)

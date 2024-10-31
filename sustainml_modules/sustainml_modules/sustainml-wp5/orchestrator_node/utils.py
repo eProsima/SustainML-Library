@@ -14,8 +14,10 @@
 """SustainML Orchestrator Node utility methods."""
 
 from enum import Enum
-from sustainml_swig import AppRequirements, CO2Footprint, HWConstraints, HWResource, MLModelMetadata, MLModel
-import sustainml_swig
+import json
+
+default_hw_requirement = "PIM_AI_1chip"
+default_mem_footprint = 100
 
 class node_id(Enum):
     APP_REQUIREMENTS = 0
@@ -87,3 +89,8 @@ def string_std_vector(vector):
 def string_task(task):
     return "{" + str(task.problem_id()) + ", " + str(task.iteration_id()) + "}"
 
+def json_dict(dict):
+    return json.dumps(dict, indent=4)
+
+def dict_from_json(json_obj):
+    return json.loads(json_obj)
