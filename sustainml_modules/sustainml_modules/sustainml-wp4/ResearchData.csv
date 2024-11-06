@@ -1,0 +1,98 @@
+Data modality,Problem type,Evaluation metrics,Model
+Image/video,Image Classification,Accuracy,CNN
+Image/video,Image Classification,Precision,Transfer Learning Models
+Image/video,Image Classification,Sensitivity,ViT
+Image/video,Image Classification,F1 Score,CNN
+Image/video,Image Classification,Confusion Matrix,Transfer Learning Models
+Image/video,Image Classification,ROC,CNN
+Image/video,Image Classification,AUC-ROC,ViT
+Image/video,Object Detection,IoU,R-CNN
+Image/video,Object Detection,mAP,YOLO
+Image/video,Object Detection,Precision-Recall Curve,SSD
+Image/video,Object Detection,AP,Detectron2
+Image/video,Image Segmentation,Pixel Accuracy, R-CNN
+Image/video,Image Segmentation,Mean IoU,SegNetMask
+Image/video,Image Segmentation,F1 Score,U-Net
+Image/video,Image Segmentation,Boundary F1 Score,FCNs
+Image/video,Video Analysis,Frame-Level Metrics,C3D
+Image/video,Video Analysis,Video-Level Metrics,RNNs
+Image/video,Video Analysis,mAP,Two-Stream Networks
+Image/video,Video Analysis,IoU,Transformers
+Text,Text Classification,Accuracy,RNNs
+Text,Text Classification,Precision,CNNs
+Text,Text Classification,Sensitivity,Transformers
+Text,Text Classification,F1 Score,Traditional Models
+Text,Text Classification,Confusion Matrix,Traditional Models
+Text,Text Classification,ROC Curve,Transformers
+Text,Text Classification,AUC-ROC,RNNs
+Text,Text Classification,Precision-Recall Curve,RNNs
+Text,Text Classification,AP,Transformers
+Text,Text Generation,BLEU ,Traditional Models
+Text,Text Generation,ROUGE,Seq2Seq Models
+Text,Text Generation,METEOR,Seq2Seq Models
+Text,Text Generation,CIDEr,Traditional Models
+Text,Text Generation,Perplexity,Seq2Seq Models
+Text,Sentiment Analysis,Accuracy,Traditional Models
+Text,Sentiment Analysis,Precision,RNNs
+Text,Sentiment Analysis,Sensitivity,Traditional Models
+Text,Sentiment Analysis,F1 Score,Seq2Seq Models
+Text,Sentiment Analysis,Confusion Matrix,Traditional Models
+Text,NER,Precision,CRF
+Text,NER,Sensitivity,RNNs
+Text,NER,F1 Score,CRF
+Text,NER,Entity-Level Metrics,RNNs
+Text,Machine Translation,BLEU,Transformers
+Text,Machine Translation,ROUGE,RNNs
+Text,Machine Translation,METEOR,Transformers
+Text,Machine Translation,TER,RNNs
+Sensor,Anomaly Detection,Sensitivity,Statistical Models
+Sensor,Anomaly Detection,False Positive Rate,Deep Learning Models
+Sensor,Anomaly Detection,Precision,Statistical Models
+Sensor,Anomaly Detection,F1 Score,Deep Learning Models
+Sensor,Anomaly Detection,ROC,Deep Learning Models
+Sensor,Anomaly Detection,AUC-ROC,Statistical Models
+Sensor,Anomaly Detection,Precision-Recall Curve,Deep Learning Models
+Sensor,Anomaly Detection,AUC-PR,Statistical Models
+Sensor,Time Series Forecasting,MAE,Deep Learning Models
+Sensor,Time Series Forecasting,MSE,Statistical Models
+Sensor,Time Series Forecasting,RMSE,Deep Learning Models
+Sensor,Time Series Forecasting,MAPE,Statistical Models
+Sensor,Time Series Forecasting,sMAPE,Deep Learning Models
+Sensor,Time Series Forecasting,R²,Statistical Models
+Sensor,Classification,Accuracy,Traditional Models
+Sensor,Classification,Precision,Deep Learning Models
+Sensor,Classification,Sensitivity,Traditional Models
+Sensor,Classification,F1 Score,Deep Learning Models
+Sensor,Classification,Confusion Matrix,Traditional Models
+Sensor,Classification,AUC-ROC,Deep Learning Models
+Sensor,Classification,ROC Curve,Traditional Models
+Sensor,Classification,Precision-Recall Curve,Deep Learning Models
+Sensor,Classification,AUC-PR,Traditional Models
+Sensor,Regression,MAE,Deep Learning Models
+Sensor,Regression,MSE,Traditional Models
+Sensor,Regression,RMSE,Deep Learning Models
+Sensor,Regression,MAPE,Traditional Models
+audio,Speech Recognition,WER,RNNs
+audio,Speech Recognition,CER,End-to-End Models
+audio,Speech Recognition,SER,HMM
+audio,Speaker Identification and Verification,Accuracy,"GMM-UBM,i-vectors"
+audio,Speaker Identification and Verification,EER,i-vectors
+audio,Speaker Identification and Verification,DET,GMM-UBM
+audio,Emotion Recognition,Accuracy,Traditional Models
+audio,Emotion Recognition,Precision,Deep Learning Models
+audio,Emotion Recognition,Sensitivity,Traditional Models
+audio,Emotion Recognition,F1 Score,Deep Learning Models
+audio,Emotion Recognition,Confusion Matrix,Traditional Models
+audio,Audio Classification,Accuracy,RNNs
+audio,Audio Classification,Precision,CNNs
+audio,Audio Classification,Sensitivity,Transformers
+audio,Audio Classification,F1 Score,RNNs
+audio,Audio Classification,Confusion Matrix,Transformers
+audio,Audio Classification,ROC,CNNs
+audio,Audio Classification,AUC-ROC,RNNs
+audio,Audio Classification,Precision-Recall Curve,Transformers
+audio,Sound Event Detection,Event-Based F1 Score,CNNs
+audio,Sound Event Detection,Segment-Based F1 Score,RNNs
+audio,Sound Event Detection,mAP,Hybrid Models
+audio,Sound Event Detection,IoU,RNNs
+audio,Sound Event Detection,DER,CNNs

@@ -78,7 +78,7 @@ class Orchestrator:
     def get_all_status(self):
         output = ""
         for key, value in self.handler_.node_status_.items():
-            output += utils.string_node(key) + " node status " + utils.string_status(value) + "\n"
+            output += utils.string_node(key) + " node status " + utils.string_status(value) + "<br>"
         if output == "":
             output = "No nodes have reported their status yet.\n"
         return output
@@ -93,42 +93,42 @@ class Orchestrator:
         # retrieve node data
         node_data = sustainml_swig.get_app_requirements(self.node_, task_id)
         if node_data is None:
-            return {'Error': f"Failed to get {utils.string_node(utils.node_id.APP_REQUIREMENTS.value)} data for task {utils.string_task(task_id)}"}
+            return {'Error': f"Failed to get {utils.string_node(utils.node_id.APP_REQUIREMENTS.value)} data for task {utils.string_task(task_id)}<br>"}
 
         # Parse data into json
         app_requirements_str_list = node_data.app_requirements()
-        json_output = {'app_requirements': f'{utils.string_std_vector(app_requirements_str_list)}'}
+        json_output = {'app_requirements': f'{utils.string_std_vector(app_requirements_str_list)}<br>'}
         return json_output
 
     def get_model_metadata(self, task_id):
         # retrieve node data
         node_data = sustainml_swig.get_model_metadata(self.node_, task_id)
         if node_data is None:
-            return {'Error': f"Failed to get {utils.string_node(utils.node_id.ML_MODEL_METADATA.value)} data for task {utils.string_task(task_id)}"}
+            return {'Error': f"Failed to get {utils.string_node(utils.node_id.ML_MODEL_METADATA.value)} data for task {utils.string_task(task_id)}<br>"}
 
         # Parse data into json
         keywords_str_list = node_data.keywords()
         metadata_str_list = node_data.ml_model_metadata()
-        json_output = {'keywords': f'{utils.string_std_vector(keywords_str_list)}',
-                       'metadata': f'{utils.string_std_vector(metadata_str_list)}'}
+        json_output = {'keywords': f'{utils.string_std_vector(keywords_str_list)}<br>',
+                       'metadata': f'{utils.string_std_vector(metadata_str_list)}<br>'}
         return json_output
 
     def get_hw_constraints(self, task_id):
         # retrieve node data
         node_data = sustainml_swig.get_hw_constraints(self.node_, task_id)
         if node_data is None:
-            return {'Error': f"Failed to get {utils.string_node(utils.node_id.HW_CONSTRAINTS.value)} data for task {utils.string_task(task_id)}"}
+            return {'Error': f"Failed to get {utils.string_node(utils.node_id.HW_CONSTRAINTS.value)} data for task {utils.string_task(task_id)}<br>"}
 
         # Parse data into json
         max_value = node_data.max_memory_footprint()
-        json_output = {'max_memory_footprint': f'{max_value}'}
+        json_output = {'max_memory_footprint': f'{max_value}<br>'}
         return json_output
 
     def get_ml_model_provider(self, task_id):
         # retrieve node data
         node_data = sustainml_swig.get_model_provider(self.node_, task_id)
         if node_data is None:
-            return {'Error': f"Failed to get {utils.string_node(utils.node_id.ML_MODEL_PROVIDER.value)} data for task {utils.string_task(task_id)}"}
+            return {'Error': f"Failed to get {utils.string_node(utils.node_id.ML_MODEL_PROVIDER.value)} data for task {utils.string_task(task_id)}<br>"}
 
         # Parse data into json
         model = node_data.model()
@@ -137,44 +137,44 @@ class Orchestrator:
         model_properties_path = node_data.model_properties_path()
         input_batch = node_data.input_batch()
         target_latency = node_data.target_latency()
-        json_output = {'model': f'{model}',
-                       'model_path': f'{model_path}',
-                       'model_properties': f'{model_properties}',
-                       'model_properties_path': f'{model_properties_path}',
-                       'input_batch': f'{utils.string_std_vector(input_batch)}',
-                       'target_latency': f'{target_latency}'}
+        json_output = {'model': f'{model}<br>',
+                       'model_path': f'{model_path}<br>',
+                       'model_properties': f'{model_properties}<br>',
+                       'model_properties_path': f'{model_properties_path}<br>',
+                       'input_batch': f'{utils.string_std_vector(input_batch)}<br>',
+                       'target_latency': f'{target_latency}<br>'}
         return json_output
 
     def get_hw_provider(self, task_id):
         # retrieve node data
         node_data = sustainml_swig.get_hw_provider(self.node_, task_id)
         if node_data is None:
-            return {'Error': f"Failed to get {utils.string_node(utils.node_id.HW_PROVIDER.value)} data for task {utils.string_task(task_id)}"}
+            return {'Error': f"Failed to get {utils.string_node(utils.node_id.HW_PROVIDER.value)} data for task {utils.string_task(task_id)}<br>"}
 
         # Parse data into json
         hw_description = node_data.hw_description()
         power_consumption = node_data.power_consumption()
         latency = node_data.latency()
         memory_footprint_of_ml_model = node_data.memory_footprint_of_ml_model()
-        json_output = {'hw_description': f'{hw_description}',
-                       'power_consumption': f'{power_consumption}',
-                       'latency': f'{latency}',
-                       'memory_footprint_of_ml_model': f'{memory_footprint_of_ml_model}'}
+        json_output = {'hw_description': f'{hw_description}<br>',
+                       'power_consumption': f'{power_consumption}<br>',
+                       'latency': f'{latency}<br>',
+                       'memory_footprint_of_ml_model': f'{memory_footprint_of_ml_model}<br>'}
         return json_output
 
     def get_carbontracker(self, task_id):
         # retrieve node data
         node_data = sustainml_swig.get_carbontracker(self.node_, task_id)
         if node_data is None:
-            return {'Error': f"Failed to get {utils.string_node(utils.node_id.CARBONTRACKER.value)} data for task {utils.string_task(task_id)}"}
+            return {'Error': f"Failed to get {utils.string_node(utils.node_id.CARBONTRACKER.value)} data for task {utils.string_task(task_id)}<br>"}
 
         # Parse data into json
         carbon_footprint = node_data.carbon_footprint()
         energy_consumption = node_data.energy_consumption()
         carbon_intensity = node_data.carbon_intensity()
-        json_output = {'carbon_footprint': f'{carbon_footprint}',
-                       'energy_consumption': f'{energy_consumption}',
-                       'carbon_intensity': f'{carbon_intensity}'}
+        json_output = {'carbon_footprint': f'{carbon_footprint}<br>',
+                       'energy_consumption': f'{energy_consumption}<br>',
+                       'carbon_intensity': f'{carbon_intensity}<br>'}
         return json_output
 
     def get_results(self, node_id, task_id):
@@ -191,4 +191,19 @@ class Orchestrator:
         elif node_id == utils.node_id.CARBONTRACKER.value:
             return self.get_carbontracker(task_id)
         else:
-            return utils.string_node(node_id) + " node does not have any results to show."
+            return utils.string_node(node_id) + " node does not have any results to show.<br>"
+
+    def send_user_input(self, json_data):
+        pair = self.node_.prepare_new_task()
+        task_id = pair[0]
+        user_input = pair[1]
+
+        user_input.task_id(task_id)
+        if (json_data.get('modality') is not None):
+            user_input.modality(json_data.get('modality'))
+        if (json_data.get('problem_type') is not None):
+            user_input.problem_definition(json_data.get('problem_type'))
+        #user_input.evaluation_metrics(evaluation_metrics)
+        #user_input.model(model)
+
+        return self.node_.start_task(task_id, user_input)

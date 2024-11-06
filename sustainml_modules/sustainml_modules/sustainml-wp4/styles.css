@@ -1,0 +1,284 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar {
+    width: 300px;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: #f1f1f1;
+    overflow: auto;
+    transition: width 0.3s;
+    z-index: 1000;
+}
+
+.sidebar.collapsed {
+    width: 50px;
+}
+
+.sidebar .toggle-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.sidebar-content {
+    padding: 10px;
+}
+
+.sidebar.collapsed .sidebar-content {
+    display: none;
+}
+
+.sidebar-section {
+    margin-bottom: 20px;
+}
+
+.content {
+    margin-left: 320px;
+    padding: 10px;
+    transition: margin-left 0.3s;
+}
+
+.sidebar.collapsed + .content {
+    margin-left: 70px;
+}
+
+.top-left {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.message-box {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 250px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    z-index: 100;
+}
+
+.split-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.split-item {
+    width: 48%;
+}
+
+.hidden {
+    display: none;
+}
+
+.input-section {
+    margin-top: 20px;
+}
+
+textarea, #modality-select, #domain-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+#modality-select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+}
+
+.sidebar {
+    width: 250px;
+    padding: 10px;
+    border-right: 1px solid #ccc;
+}
+
+.sidebar-section {
+    margin-bottom: 20px;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.overview-steps {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.step-box {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.split-container {
+    display: flex;
+}
+
+.split-item {
+    flex: 1;
+    padding: 10px;
+}
+
+.vertical-line {
+    width: 1px;
+    background-color: #ccc;
+    margin: 0 20px;
+}
+
+.data-circle {
+    background-color: #4caf50;
+}
+
+.pd-circle {
+    background-color: #2196f3;
+}
+
+.env-circle {
+    background-color: #ff9800;
+}
+
+.hidden {
+    display: none;
+}
+
+#pd-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#navigation-overview {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.circle-container.small .circle {
+    width: 70px;
+    height: 70px;
+    font-size: 12px;
+}
+
+.circle-container.small .large-circle {
+    width: 100px;
+    height: 100px;
+    font-size: 18px;
+}
+
+.response-button {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.response-button:hover {
+    background-color: #1976d2;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#dataset-preview-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#dataset-preview-table th, #dataset-preview-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.vertical-divider {
+    width: 1px;
+    background-color: #ddd;
+    height: auto;
+}
+
+#dataset-preview-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+#confirmation-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 1000;
+    display: none; /* Initially hidden */
+}
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#file-details {
+    margin-top: 20px;
+}
+
+#data-size {
+    margin-top: 20px;
+    font-weight: bold;
+}
