@@ -40,7 +40,7 @@ Install them using the package manager of the appropriate Linux distribution.
         .. code-block:: bash
 
             apt install --yes --no-install-recommends \
-                curl wget git cmake g++ build-essential python3 python3-pip python3.10-venv libpython3-dev swig \
+                curl wget git cmake g++ build-essential python3 python3-pip python3-venv libpython3-dev swig \
                 libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2 \
                 qtdeclarative5-dev libqt5charts5-dev qtquickcontrols2-5-dev libqt5svg5 qml-module-qtquick-controls \
                 qml-module-qtquick-controls2
@@ -77,6 +77,7 @@ The following command also builds and installs the SustainML framework and all i
             curl -fsSL https://ollama.com/install.sh | sh && ollama pull llama3 && cd ~/SustainML/SustainML_ws && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/sustainml.repos && \
             vcs import src < sustainml.repos && \
+            git submodule update --init --recursive && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             colcon build && \
             source ~/SustainML/SustainML_ws/install/setup.bash
@@ -91,6 +92,7 @@ The following command also builds and installs the SustainML framework and all i
             curl -fsSL https://ollama.com/install.sh | sh && ollama pull llama3 && cd ~/SustainML/SustainML_ws && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/macos-compilation/sustainml.repos && \
             vcs import src < sustainml.repos && \
+            git submodule update --init --recursive && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             colcon build --packages-up-to sustainml --cmake-args -DCMAKE_CXX_STANDARD=17 \
                     -DQt5_DIR=/usr/local/opt/qt5/lib/cmake/Qt5 && \
@@ -112,7 +114,7 @@ The following script runs all of them:
         .. code-block:: bash
 
             bash -c " \
-                cd ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules && \
+                cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules && \
                 python3 sustainml-wp1/app_requirements_node.py & \
                 python3 sustainml-wp1/ml_model_metadata_node.py & \
                 python3 sustainml-wp1/ml_model_provider_node.py & \
@@ -126,12 +128,13 @@ The following script runs all of them:
         .. code-block:: bash
 
             bash -c " \
-                python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/app_requirements_node.py & \
-                python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/ml_model_metadata_node.py & \
-                python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/ml_model_provider_node.py & \
-                python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp2/hw_constraints_node.py & \
-                python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp2/hw_resources_provider_node.py & \
-                python3 ~/SustainML/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp3/carbon_footprint_node.py & \
+                cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules
+                python3 sustainml-wp1/app_requirements_node.py & \
+                python3 sustainml-wp1/ml_model_metadata_node.py & \
+                python3 sustainml-wp1/ml_model_provider_node.py & \
+                python3 sustainml-wp2/hw_constraints_node.py & \
+                python3 sustainml-wp2/hw_resources_provider_node.py & \
+                python3 sustainml-wp3/carbon_footprint_node.py & \
                 sustainml"
 
 .. note::
