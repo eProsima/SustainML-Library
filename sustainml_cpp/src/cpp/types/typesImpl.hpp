@@ -2131,6 +2131,8 @@ public:
     {
         m_max_memory_footprint = x.m_max_memory_footprint;
 
+        m_hardware_required = x.m_hardware_required;
+
         m_extra_data = x.m_extra_data;
 
         m_task_id = x.m_task_id;
@@ -2145,6 +2147,7 @@ public:
             HWConstraintsImpl&& x) noexcept
     {
         m_max_memory_footprint = x.m_max_memory_footprint;
+        m_hardware_required = std::move(x.m_hardware_required);
         m_extra_data = std::move(x.m_extra_data);
         m_task_id = std::move(x.m_task_id);
     }
@@ -2158,6 +2161,8 @@ public:
     {
 
         m_max_memory_footprint = x.m_max_memory_footprint;
+
+        m_hardware_required = x.m_hardware_required;
 
         m_extra_data = x.m_extra_data;
 
@@ -2175,6 +2180,7 @@ public:
     {
 
         m_max_memory_footprint = x.m_max_memory_footprint;
+        m_hardware_required = std::move(x.m_hardware_required);
         m_extra_data = std::move(x.m_extra_data);
         m_task_id = std::move(x.m_task_id);
         return *this;
@@ -2188,6 +2194,7 @@ public:
             const HWConstraintsImpl& x) const
     {
         return (m_max_memory_footprint == x.m_max_memory_footprint &&
+               m_hardware_required == x.m_hardware_required &&
                m_extra_data == x.m_extra_data &&
                m_task_id == x.m_task_id);
     }
@@ -2228,6 +2235,44 @@ public:
     eProsima_user_DllExport uint32_t& max_memory_footprint()
     {
         return m_max_memory_footprint;
+    }
+
+    /*!
+     * @brief This function copies the value in member hardware_required
+     * @param _hardware_required New value to be copied in member hardware_required
+     */
+    eProsima_user_DllExport void hardware_required(
+            const std::vector<std::string>& _hardware_required)
+    {
+        m_hardware_required = _hardware_required;
+    }
+
+    /*!
+     * @brief This function moves the value in member hardware_required
+     * @param _hardware_required New value to be moved in member hardware_required
+     */
+    eProsima_user_DllExport void hardware_required(
+            std::vector<std::string>&& _hardware_required)
+    {
+        m_hardware_required = std::move(_hardware_required);
+    }
+
+    /*!
+     * @brief This function returns a constant reference to member hardware_required
+     * @return Constant reference to member hardware_required
+     */
+    eProsima_user_DllExport const std::vector<std::string>& hardware_required() const
+    {
+        return m_hardware_required;
+    }
+
+    /*!
+     * @brief This function returns a reference to member hardware_required
+     * @return Reference to member hardware_required
+     */
+    eProsima_user_DllExport std::vector<std::string>& hardware_required()
+    {
+        return m_hardware_required;
     }
 
     /*!
@@ -2309,6 +2354,7 @@ public:
 private:
 
     uint32_t m_max_memory_footprint{0};
+    std::vector<std::string> m_hardware_required;
     std::vector<uint8_t> m_extra_data;
     TaskIdImpl m_task_id;
 

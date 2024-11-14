@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /*!
- * @file types.h
+ * @file types.hpp
  *
  */
 
@@ -675,6 +675,31 @@ public:
      */
     eProsima_user_DllExport uint32_t& max_memory_footprint();
 
+    /*!
+     * @brief This function copies the value in member hardware_required
+     * @param _hardware_required New value to be copied in member hardware_required
+     */
+    eProsima_user_DllExport void hardware_required(
+            const std::vector<std::string>& _hardware_required);
+
+    /*!
+     * @brief This function moves the value in member hardware_required
+     * @param _hardware_required New value to be moved in member hardware_required
+     */
+    eProsima_user_DllExport void hardware_required(
+            std::vector<std::string>&& _hardware_required);
+
+    /*!
+     * @brief This function returns a constant reference to member hardware_required
+     * @return Constant reference to member hardware_required
+     */
+    eProsima_user_DllExport const std::vector<std::string>& hardware_required() const;
+
+    /*!
+     * @brief This function returns a reference to member hardware_required
+     * @return Reference to member hardware_required
+     */
+    eProsima_user_DllExport std::vector<std::string>& hardware_required();
 
     /*!
      * @brief This function copies the value in member extra_data

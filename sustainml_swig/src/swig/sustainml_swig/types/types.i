@@ -28,8 +28,8 @@
 %ignore operator<<;
 
 %{
-#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/types/types.hpp>
 %}
 
 // Include the class interfaces
-%include <sustainml_cpp/types/types.h>
+%include <sustainml_cpp/types/types.hpp>

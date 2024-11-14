@@ -17,7 +17,7 @@
  *
  */
 
-#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/types/types.hpp>
 
 #include <common/Common.hpp>
 #include <types/typesImpl.hpp>
@@ -1273,6 +1273,7 @@ HWConstraints::HWConstraints(
     impl_ = new HWConstraintsImpl;
 
     this->impl_->max_memory_footprint() = x.impl_->max_memory_footprint();
+    this->impl_->hardware_required() = x.impl_->hardware_required();
     this->impl_->extra_data() = x.impl_->extra_data();
     this->impl_->task_id() = x.impl_->task_id();
 }
@@ -1288,6 +1289,7 @@ HWConstraints& HWConstraints::operator =(
         const HWConstraints& x)
 {
     this->impl_->max_memory_footprint() = x.impl_->max_memory_footprint();
+    this->impl_->hardware_required() = x.impl_->hardware_required();
     this->impl_->extra_data() = x.impl_->extra_data();
     this->impl_->task_id() = x.impl_->task_id();
     return *this;
@@ -1332,6 +1334,28 @@ uint32_t HWConstraints::max_memory_footprint() const
 uint32_t& HWConstraints::max_memory_footprint()
 {
     return impl_->max_memory_footprint();
+}
+
+void HWConstraints::hardware_required(
+        const std::vector<std::string>& _hardware_required)
+{
+    impl_->hardware_required(_hardware_required);
+}
+
+void HWConstraints::hardware_required(
+        std::vector<std::string>&& _hardware_required)
+{
+    impl_->hardware_required(std::forward<std::vector<std::string>>(_hardware_required));
+}
+
+const std::vector<std::string>& HWConstraints::hardware_required() const
+{
+    return impl_->hardware_required();
+}
+
+std::vector<std::string>& HWConstraints::hardware_required()
+{
+    return impl_->hardware_required();
 }
 
 void HWConstraints::extra_data(

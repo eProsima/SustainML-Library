@@ -20,7 +20,7 @@
 #define SUSTAINMLCPP_COMMON_COMMON_HPP
 
 #include <sustainml_cpp/core/Constants.hpp>
-#include <types/types.h>
+#include <types/types.hpp>
 
 #include <fastdds/dds/log/Log.hpp>
 

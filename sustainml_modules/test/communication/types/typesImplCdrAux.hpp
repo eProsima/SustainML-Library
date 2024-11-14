@@ -36,7 +36,7 @@ constexpr uint32_t MLModelImpl_max_key_cdr_typesize {12UL};
 constexpr uint32_t MLModelMetadataImpl_max_cdr_typesize {36UL};
 constexpr uint32_t MLModelMetadataImpl_max_key_cdr_typesize {12UL};
 
-constexpr uint32_t HWConstraintsImpl_max_cdr_typesize {24UL};
+constexpr uint32_t HWConstraintsImpl_max_cdr_typesize {32UL};
 constexpr uint32_t HWConstraintsImpl_max_key_cdr_typesize {12UL};
 
 constexpr uint32_t CO2FootprintImpl_max_cdr_typesize {48UL};

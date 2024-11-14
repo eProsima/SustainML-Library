@@ -30,7 +30,7 @@
 %{
 #include <sustainml_cpp/core/Constants.hpp>
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
-#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/types/types.hpp>
 %}
 
 %feature("director") types::AppRequirements;
@@ -173,5 +173,5 @@
 %}
 
 // Include the class interfaces
-%include <sustainml_cpp/types/types.h>
+%include <sustainml_cpp/types/types.hpp>
 %include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>

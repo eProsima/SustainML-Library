@@ -23,7 +23,7 @@
 #include <memory>
 
 #include <sustainml_cpp/core/Constants.hpp>
-#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/types/types.hpp>
 
 #include <types/typesImpl.hpp>
 

@@ -98,6 +98,7 @@ struct AppRequirementsImpl
 struct HWConstraintsImpl
 {
     unsigned long max_memory_footprint;
+    sequence<string> hardware_required;
     sequence<octet> extra_data;
     @key TaskIdImpl task_id;
  };

@@ -118,6 +118,7 @@ User is meant to implement the funcionality of the node within the ``test:callba
         # There is no need to specify node_status for the moment
         # as it will automatically be set to IDLE when the callback returns.
         hw_constraints.max_memory_footprint(100)
+        hw_constraints.hardware_required(["PIM_AI_1chip"])
 
     # Main workflow routine
     def run():

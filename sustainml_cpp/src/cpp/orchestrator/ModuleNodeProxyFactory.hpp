@@ -25,7 +25,7 @@
 #include "Helper.hpp"
 #include "ModuleNodeProxy.hpp"
 
-#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/types/types.hpp>
 
 
 namespace sustainml {

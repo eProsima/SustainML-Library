@@ -25,7 +25,7 @@
 #include <tuple>
 
 #include <core/Constants.hpp>
-#include <types/types.h>
+#include <types/types.hpp>
 
 #include <fastdds/dds/log/Log.hpp>
 

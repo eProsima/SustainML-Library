@@ -1892,7 +1892,7 @@ void register_UserInputImpl_type_identifier(
             return_code_extra_data =
                     eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
                             get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
@@ -1907,36 +1907,36 @@ void register_UserInputImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                                                  type_ids_extra_data,
+                                                                                                  element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded =
+                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded,
+                                element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
                     PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
+                        header_anonymous_sequence_byte_unbounded, bound,
                         eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                            element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
                             TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
@@ -2239,7 +2239,7 @@ void register_MLModelMetadataImpl_type_identifier(
             return_code_extra_data =
                     eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
                             get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
@@ -2254,36 +2254,36 @@ void register_MLModelMetadataImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                                                  type_ids_extra_data,
+                                                                                                  element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded =
+                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded,
+                                element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
                     PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
+                        header_anonymous_sequence_byte_unbounded, bound,
                         eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                            element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
                             TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
@@ -2496,7 +2496,7 @@ void register_AppRequirementsImpl_type_identifier(
             return_code_extra_data =
                     eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
                             get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
@@ -2511,36 +2511,36 @@ void register_AppRequirementsImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                                                  type_ids_extra_data,
+                                                                                                  element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded =
+                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded,
+                                element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
                     PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
+                        header_anonymous_sequence_byte_unbounded, bound,
                         eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                            element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
                             TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
@@ -2699,12 +2699,101 @@ void register_HWConstraintsImpl_type_identifier(
             TypeObjectUtils::add_complete_struct_member(member_seq_HWConstraintsImpl, member_max_memory_footprint);
         }
         {
+            TypeIdentifierPair type_ids_hardware_required;
+            ReturnCode_t return_code_hardware_required {eprosima::fastdds::dds::RETCODE_OK};
+            return_code_hardware_required =
+                    eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
+                            get_type_identifiers(
+                "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_hardware_required);
+
+            if (eprosima::fastdds::dds::RETCODE_OK != return_code_hardware_required)
+            {
+                return_code_hardware_required =
+                        eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
+                                get_type_identifiers(
+                    "anonymous_string_unbounded", type_ids_hardware_required);
+
+                if (eprosima::fastdds::dds::RETCODE_OK != return_code_hardware_required)
+                {
+                    {
+                        SBound bound = 0;
+                        StringSTypeDefn string_sdefn = TypeObjectUtils::build_string_s_type_defn(bound);
+                        if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
+                                TypeObjectUtils::build_and_register_s_string_type_identifier(string_sdefn,
+                                "anonymous_string_unbounded", type_ids_hardware_required))
+                        {
+                            EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
+                                    "anonymous_string_unbounded already registered in TypeObjectRegistry for a different type.");
+                        }
+                    }
+                }
+                bool element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded {new
+                                                                                                            TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                                                                        type_ids_hardware_required,
+                                                                                                                        element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded_ec)
+                {
+                    EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
+                    return;
+                }
+                EquivalenceKind equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_COMPLETE;
+                if (TK_NONE == type_ids_hardware_required.type_identifier2()._d())
+                {
+                    equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded = EK_BOTH;
+                }
+                CollectionElementFlag element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_anonymous_string_unbounded_unbounded =
+                        TypeObjectUtils::build_plain_collection_header(
+                    equiv_kind_anonymous_sequence_anonymous_string_unbounded_unbounded,
+                    element_flags_anonymous_sequence_anonymous_string_unbounded_unbounded);
+                {
+                    SBound bound = 0;
+                    PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
+                        header_anonymous_sequence_anonymous_string_unbounded_unbounded, bound,
+                        eprosima::fastcdr::external<TypeIdentifier>(
+                            element_identifier_anonymous_sequence_anonymous_string_unbounded_unbounded));
+                    if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
+                            TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
+                            "anonymous_sequence_anonymous_string_unbounded_unbounded", type_ids_hardware_required))
+                    {
+                        EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
+                                "anonymous_sequence_anonymous_string_unbounded_unbounded already registered in TypeObjectRegistry for a different type.");
+                    }
+                }
+            }
+            StructMemberFlag member_flags_hardware_required = TypeObjectUtils::build_struct_member_flag(
+                eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
+                false, false, false, false);
+            MemberId member_id_hardware_required = 0x00000001;
+            bool common_hardware_required_ec {false};
+            CommonStructMember common_hardware_required {TypeObjectUtils::build_common_struct_member(
+                                                             member_id_hardware_required,
+                                                             member_flags_hardware_required, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                 type_ids_hardware_required,
+                                                                 common_hardware_required_ec))};
+            if (!common_hardware_required_ec)
+            {
+                EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
+                        "Structure hardware_required member TypeIdentifier inconsistent.");
+                return;
+            }
+            MemberName name_hardware_required = "hardware_required";
+            eprosima::fastcdr::optional<AppliedBuiltinMemberAnnotations> member_ann_builtin_hardware_required;
+            ann_custom_HWConstraintsImpl.reset();
+            CompleteMemberDetail detail_hardware_required = TypeObjectUtils::build_complete_member_detail(
+                name_hardware_required, member_ann_builtin_hardware_required, ann_custom_HWConstraintsImpl);
+            CompleteStructMember member_hardware_required = TypeObjectUtils::build_complete_struct_member(
+                common_hardware_required, detail_hardware_required);
+            TypeObjectUtils::add_complete_struct_member(member_seq_HWConstraintsImpl, member_hardware_required);
+        }
+        {
             TypeIdentifierPair type_ids_extra_data;
             ReturnCode_t return_code_extra_data {eprosima::fastdds::dds::RETCODE_OK};
             return_code_extra_data =
                     eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
                             get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
@@ -2719,43 +2808,43 @@ void register_HWConstraintsImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                                                  type_ids_extra_data,
+                                                                                                  element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded =
+                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded,
+                                element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
                     PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
+                        header_anonymous_sequence_byte_unbounded, bound,
                         eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                            element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
                             TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
             StructMemberFlag member_flags_extra_data = TypeObjectUtils::build_struct_member_flag(
                 eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
                 false, false, false, false);
-            MemberId member_id_extra_data = 0x00000001;
+            MemberId member_id_extra_data = 0x00000002;
             bool common_extra_data_ec {false};
             CommonStructMember common_extra_data {TypeObjectUtils::build_common_struct_member(member_id_extra_data,
                                                           member_flags_extra_data, TypeObjectUtils::retrieve_complete_type_identifier(
@@ -2792,7 +2881,7 @@ void register_HWConstraintsImpl_type_identifier(
             StructMemberFlag member_flags_task_id = TypeObjectUtils::build_struct_member_flag(
                 eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
                 false, false, true, false);
-            MemberId member_id_task_id = 0x00000002;
+            MemberId member_id_task_id = 0x00000003;
             bool common_task_id_ec {false};
             CommonStructMember common_task_id {TypeObjectUtils::build_common_struct_member(member_id_task_id,
                                                        member_flags_task_id, TypeObjectUtils::retrieve_complete_type_identifier(
@@ -2964,7 +3053,7 @@ void register_MLModelImpl_type_identifier(
             return_code_raw_model =
                     eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
                             get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_raw_model);
+                "anonymous_sequence_byte_unbounded", type_ids_raw_model);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_raw_model)
             {
@@ -2979,36 +3068,36 @@ void register_MLModelImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_raw_model,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                                                  type_ids_raw_model,
+                                                                                                  element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_raw_model.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded =
+                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded,
+                                element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
                     PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
+                        header_anonymous_sequence_byte_unbounded, bound,
                         eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                            element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
                             TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_raw_model))
+                            "anonymous_sequence_byte_unbounded", type_ids_raw_model))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
@@ -3263,7 +3352,7 @@ void register_MLModelImpl_type_identifier(
             return_code_extra_data =
                     eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
                             get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
@@ -3278,36 +3367,36 @@ void register_MLModelImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                                                  type_ids_extra_data,
+                                                                                                  element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded =
+                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded,
+                                element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
                     PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
+                        header_anonymous_sequence_byte_unbounded, bound,
                         eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                            element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
                             TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
@@ -3633,7 +3722,7 @@ void register_HWResourceImpl_type_identifier(
             return_code_extra_data =
                     eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
                             get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
@@ -3648,36 +3737,36 @@ void register_HWResourceImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                                                  type_ids_extra_data,
+                                                                                                  element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded =
+                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded,
+                                element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
                     PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
+                        header_anonymous_sequence_byte_unbounded, bound,
                         eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                            element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
                             TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }
@@ -3916,7 +4005,7 @@ void register_CO2FootprintImpl_type_identifier(
             return_code_extra_data =
                     eprosima::fastdds::dds::DomainParticipantFactory::get_instance()->type_object_registry().
                             get_type_identifiers(
-                "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data);
+                "anonymous_sequence_byte_unbounded", type_ids_extra_data);
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_extra_data)
             {
@@ -3931,36 +4020,36 @@ void register_CO2FootprintImpl_type_identifier(
                             "Sequence element TypeIdentifier unknown to TypeObjectRegistry.");
                     return;
                 }
-                bool element_identifier_anonymous_sequence_uint8_t_unbounded_ec {false};
-                TypeIdentifier* element_identifier_anonymous_sequence_uint8_t_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
-                                                                                                     type_ids_extra_data,
-                                                                                                     element_identifier_anonymous_sequence_uint8_t_unbounded_ec))};
-                if (!element_identifier_anonymous_sequence_uint8_t_unbounded_ec)
+                bool element_identifier_anonymous_sequence_byte_unbounded_ec {false};
+                TypeIdentifier* element_identifier_anonymous_sequence_byte_unbounded {new TypeIdentifier(TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                                                  type_ids_extra_data,
+                                                                                                  element_identifier_anonymous_sequence_byte_unbounded_ec))};
+                if (!element_identifier_anonymous_sequence_byte_unbounded_ec)
                 {
                     EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION, "Sequence element TypeIdentifier inconsistent.");
                     return;
                 }
-                EquivalenceKind equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_COMPLETE;
+                EquivalenceKind equiv_kind_anonymous_sequence_byte_unbounded = EK_COMPLETE;
                 if (TK_NONE == type_ids_extra_data.type_identifier2()._d())
                 {
-                    equiv_kind_anonymous_sequence_uint8_t_unbounded = EK_BOTH;
+                    equiv_kind_anonymous_sequence_byte_unbounded = EK_BOTH;
                 }
-                CollectionElementFlag element_flags_anonymous_sequence_uint8_t_unbounded = 0;
-                PlainCollectionHeader header_anonymous_sequence_uint8_t_unbounded =
-                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_uint8_t_unbounded,
-                                element_flags_anonymous_sequence_uint8_t_unbounded);
+                CollectionElementFlag element_flags_anonymous_sequence_byte_unbounded = 0;
+                PlainCollectionHeader header_anonymous_sequence_byte_unbounded =
+                        TypeObjectUtils::build_plain_collection_header(equiv_kind_anonymous_sequence_byte_unbounded,
+                                element_flags_anonymous_sequence_byte_unbounded);
                 {
                     SBound bound = 0;
                     PlainSequenceSElemDefn seq_sdefn = TypeObjectUtils::build_plain_sequence_s_elem_defn(
-                        header_anonymous_sequence_uint8_t_unbounded, bound,
+                        header_anonymous_sequence_byte_unbounded, bound,
                         eprosima::fastcdr::external<TypeIdentifier>(
-                            element_identifier_anonymous_sequence_uint8_t_unbounded));
+                            element_identifier_anonymous_sequence_byte_unbounded));
                     if (eprosima::fastdds::dds::RETCODE_BAD_PARAMETER ==
                             TypeObjectUtils::build_and_register_s_sequence_type_identifier(seq_sdefn,
-                            "anonymous_sequence_uint8_t_unbounded", type_ids_extra_data))
+                            "anonymous_sequence_byte_unbounded", type_ids_extra_data))
                     {
                         EPROSIMA_LOG_ERROR(XTYPES_TYPE_REPRESENTATION,
-                                "anonymous_sequence_uint8_t_unbounded already registered in TypeObjectRegistry for a different type.");
+                                "anonymous_sequence_byte_unbounded already registered in TypeObjectRegistry for a different type.");
                     }
                 }
             }

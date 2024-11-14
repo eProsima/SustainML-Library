@@ -47,7 +47,9 @@ def task_callback(
         print("Received metadata " + metadata)
     for requirement in app_requirements.app_requirements():
         print("Received app requirement " + requirement)
-    print ("Received HW constraints: Max memory footprint: " + str(hw_constraints.max_memory_footprint()) + " MB")
+    print ("Received HW constraints:\n  Max memory footprint: " + str(hw_constraints.max_memory_footprint()) + " MB")
+    for hw in hw_constraints.hardware_required():
+        print("  Hardware required: " + hw)
     print (node_status.node_status())
     ml_model.model("MODEL in ONXX format")
 

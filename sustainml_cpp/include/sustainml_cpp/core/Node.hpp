@@ -21,7 +21,7 @@
 #define SUSTAINMLCPP_CORE_NODE_HPP
 
 #include <sustainml_cpp/config/Macros.hpp>
-#include <sustainml_cpp/types/types.h>
+#include <sustainml_cpp/types/types.hpp>
 
 #include <utility>
 #include <vector>
