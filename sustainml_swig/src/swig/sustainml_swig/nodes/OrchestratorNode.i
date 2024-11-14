@@ -170,6 +170,13 @@
         }
         return task_id;
     }
+
+    types::TaskId* set_task_id(
+        const uint32_t& problem_id,
+        const uint32_t& iteration_id)
+    {
+        return new types::TaskId(problem_id, iteration_id);
+    }
 %}
 
 // Include the class interfaces

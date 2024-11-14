@@ -17,6 +17,7 @@ from flask import Flask, request, jsonify
 import threading
 import time
 import signal
+import sustainml_swig
 import sys
 from orchestrator_node import orchestrator_node, utils
 from werkzeug.serving import make_server
@@ -30,27 +31,28 @@ server_port = 5001
 # Flask server default route
 @server.route('/')
 def hello_world():
-    return jsonify({'mesage': 'Hello world! Use "/terminate" route to stop Back-end node.<br>'}), 200
+    return jsonify({'mesage': 'Hello world! Use "/terminate" route to stop Back-end node.'}), 200
 
 # Send user input data to orchestrator
 @server.route('/user_input', methods=['POST'])
 def user_input():
     data = request.json
-    ret = orchestrator.send_user_input(data)
-    if not ret:
+    task_id = orchestrator.send_user_input(data)
+    if task_id is None:
         return jsonify({'error': 'Invalid input data'}), 400
-    return jsonify({'message': 'User input data sent successfully.<br>'}), 200
+    return jsonify({'message': 'User input data sent successfully.',
+                    'task_id': utils.task_json(task_id)}), 200
 
 # Retrieve Node status methods
 @server.route('/status', methods=['GET'])
 def status():
-    return jsonify({'status': f'{orchestrator.get_all_status()}'}), 200
+    return jsonify({'status': orchestrator.get_all_status()}), 200
 
 @server.route('/status', methods=['POST'])
 def status_args():
     data = request.json
     node_id = data.get('node_id')
-    return jsonify({'status': f'{orchestrator.get_status(node_id)}'}), 200
+    return jsonify({'status': orchestrator.get_status(node_id)}), 200
 
 # Retrieve Node results methods
 @server.route('/results', methods=['GET'])
@@ -64,20 +66,26 @@ def results():
     model = orchestrator.get_results(utils.node_id.ML_MODEL_PROVIDER.value, last_task_id)
     hardware = orchestrator.get_results(utils.node_id.HW_PROVIDER.value, last_task_id)
     carbontracker = orchestrator.get_results(utils.node_id.CARBONTRACKER.value, last_task_id)
-    json = {f'{utils.string_node(utils.node_id.APP_REQUIREMENTS.value)}': f'{app_req}',
-            f'{utils.string_node(utils.node_id.ML_MODEL_METADATA.value)}': f'{metadata}',
-            f'{utils.string_node(utils.node_id.HW_CONSTRAINTS.value)}': f'{constraints}',
-            f'{utils.string_node(utils.node_id.ML_MODEL_PROVIDER.value)}': f'{model}',
-            f'{utils.string_node(utils.node_id.HW_PROVIDER.value)}': f'{hardware}',
-            f'{utils.string_node(utils.node_id.CARBONTRACKER.value)}': f'{carbontracker}'}
+    task_json = {'problem_id': last_task_id.problem_id(), 'iteration_id': last_task_id.iteration_id()}
+    json = {utils.string_node(utils.node_id.APP_REQUIREMENTS.value): app_req,
+            utils.string_node(utils.node_id.ML_MODEL_METADATA.value): metadata,
+            utils.string_node(utils.node_id.HW_CONSTRAINTS.value): constraints,
+            utils.string_node(utils.node_id.ML_MODEL_PROVIDER.value): model,
+            utils.string_node(utils.node_id.HW_PROVIDER.value): hardware,
+            utils.string_node(utils.node_id.CARBONTRACKER.value): carbontracker,
+            'task_id': task_json}
     return jsonify(json), 200
 
 @server.route('/results', methods=['POST'])
 def results_args():
     data = request.json
     node_id = data.get('node_id')
-    task_id = data.get('task_id')
-    return jsonify({f'{utils.string_node(node_id)}': f'{orchestrator.get_results(node_id, task_id)}'}), 200
+    json_task = data.get('task_id')
+    if json_task is not None:
+        task_id = sustainml_swig.set_task_id(json_task.get('problem_id', 0), json_task.get('iteration_id', 0))
+    else:
+        task_id = None
+    return jsonify({utils.string_node(node_id): orchestrator.get_results(node_id, task_id)}), 200
 
 # Flask server shutdown route
 @server.route('/shutdown', methods=['GET'])
