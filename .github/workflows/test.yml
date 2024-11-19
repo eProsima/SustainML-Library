@@ -75,7 +75,7 @@ jobs:
           upgrade: false
 
       - name: Install ollama
-        run: curl -fsSL https://ollama.com/install.sh | sh
+        run: curl -fsSL https://ollama.com/install.sh | TERM=xterm sh
 
       - name: Fetch SustainML repositories
         uses: eProsima/eProsima-CI/multiplatform/vcs_import@v0
@@ -140,7 +140,7 @@ jobs:
           upgrade: false
 
       - name: Install ollama
-        run: curl -fsSL https://ollama.com/install.sh | sh
+        run: curl -fsSL https://ollama.com/install.sh | TERM=xterm sh
 
       - name: Fetch SustainML repositories
         uses: eProsima/eProsima-CI/multiplatform/vcs_import@v0
