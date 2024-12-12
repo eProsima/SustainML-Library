@@ -14,6 +14,8 @@ file_packages = [
     package_name + '/sustainml-wp1',
     package_name + '/sustainml-wp2',
     package_name + '/sustainml-wp3',
+    package_name + '/sustainml-wp5',
+    package_name + '/sustainml-wp4',
 ]
 
 setup(
