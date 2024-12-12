@@ -23,13 +23,23 @@
 %include std_string.i
 
 // Ignore overloaded methods that have no application on Python
-// Warnings regarding equiality operators and stuff
+// Warnings regarding equality operators and stuff
 %ignore *::operator=;
 %ignore operator<<;
 
 %{
 #include <sustainml_cpp/types/types.hpp>
 %}
+
+%extend std::vector<uint8_t>
+{
+    const uint8_t* get_buffer() const
+    {
+        return self->data();
+    }
+}
+
+%template(uint8_t_vector) std::vector<uint8_t>;
 
 // Include the class interfaces
 %include <sustainml_cpp/types/types.hpp>
