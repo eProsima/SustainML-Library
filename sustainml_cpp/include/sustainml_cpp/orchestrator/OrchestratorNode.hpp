@@ -174,6 +174,15 @@ public:
     void send_control_command(
             const types::NodeControl& cmd);
 
+     /**
+     * @brief This method sends a request to node via service for changing its configuration.
+     * @param [in] req configuration request, contain which node and configuration file
+     * @param [out] res response from the node with its new configuration
+     */
+    bool configuration_request(
+            const types::RequestType req,
+            const types::ResponseType& res);
+
     /**
      * @brief Public method to get the mutex in order to correctly synchronise user
      * handle calls.

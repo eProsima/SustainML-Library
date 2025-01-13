@@ -481,6 +481,14 @@ void OrchestratorNode::send_control_command(
     control_writer_->write(cmd.get_impl());
 }
 
+bool OrchestratorNode::configuration_request(
+        const types::RequestType req,
+        const types::ResponseType& res)
+{
+    //TODO: Implement this method
+    return true;
+}
+
 void OrchestratorNode::spin()
 {
     EPROSIMA_LOG_INFO(ORCHESTRATOR, "Spinning Orchestrator... ");

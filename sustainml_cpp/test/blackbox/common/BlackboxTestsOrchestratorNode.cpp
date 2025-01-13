@@ -88,6 +88,19 @@ static TestOrchestratorNodeHandle::DataCollection nodes_ready_expected_data =
     {NodeID::ID_HW_CONSTRAINTS, {Status::NODE_IDLE, 0}}
 };
 
+TEST(OrchestratorNode, OrchestratorConfigurationService)
+{
+    std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
+
+    orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
+
+    types::RequestType req;
+    types::ResponseType res;
+
+    ASSERT_TRUE(orchestrator.configuration_request(req, res));
+    orchestrator.destroy();
+}
+
 TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
 {
     std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();

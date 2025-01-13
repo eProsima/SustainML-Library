@@ -76,6 +76,7 @@ bool TaskIdImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -128,8 +129,8 @@ uint32_t TaskIdImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const TaskIdImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const TaskIdImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -184,8 +185,7 @@ bool TaskIdImplPubSubType::compute_key(
             TaskIdImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || TaskIdImpl_max_key_cdr_typesize > 16)
@@ -258,6 +258,7 @@ bool NodeStatusImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -310,8 +311,8 @@ uint32_t NodeStatusImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const NodeStatusImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const NodeStatusImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -366,8 +367,7 @@ bool NodeStatusImplPubSubType::compute_key(
             NodeStatusImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || NodeStatusImpl_max_key_cdr_typesize > 16)
@@ -440,6 +440,7 @@ bool NodeControlImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -492,8 +493,8 @@ uint32_t NodeControlImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const NodeControlImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const NodeControlImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -548,8 +549,7 @@ bool NodeControlImplPubSubType::compute_key(
             NodeControlImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || NodeControlImpl_max_key_cdr_typesize > 16)
@@ -622,6 +622,7 @@ bool UserInputImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -674,8 +675,8 @@ uint32_t UserInputImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const UserInputImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const UserInputImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -730,8 +731,7 @@ bool UserInputImplPubSubType::compute_key(
             UserInputImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || UserInputImpl_max_key_cdr_typesize > 16)
@@ -804,6 +804,7 @@ bool MLModelMetadataImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -856,8 +857,8 @@ uint32_t MLModelMetadataImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const MLModelMetadataImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const MLModelMetadataImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -912,8 +913,7 @@ bool MLModelMetadataImplPubSubType::compute_key(
             MLModelMetadataImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || MLModelMetadataImpl_max_key_cdr_typesize > 16)
@@ -986,6 +986,7 @@ bool AppRequirementsImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1038,8 +1039,8 @@ uint32_t AppRequirementsImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const AppRequirementsImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const AppRequirementsImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1094,8 +1095,7 @@ bool AppRequirementsImplPubSubType::compute_key(
             AppRequirementsImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || AppRequirementsImpl_max_key_cdr_typesize > 16)
@@ -1168,6 +1168,7 @@ bool HWConstraintsImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1220,8 +1221,8 @@ uint32_t HWConstraintsImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const HWConstraintsImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const HWConstraintsImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1276,8 +1277,7 @@ bool HWConstraintsImplPubSubType::compute_key(
             HWConstraintsImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || HWConstraintsImpl_max_key_cdr_typesize > 16)
@@ -1350,6 +1350,7 @@ bool MLModelImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1402,8 +1403,8 @@ uint32_t MLModelImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const MLModelImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const MLModelImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1458,8 +1459,7 @@ bool MLModelImplPubSubType::compute_key(
             MLModelImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || MLModelImpl_max_key_cdr_typesize > 16)
@@ -1532,6 +1532,7 @@ bool HWResourceImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1584,8 +1585,8 @@ uint32_t HWResourceImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const HWResourceImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const HWResourceImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1640,8 +1641,7 @@ bool HWResourceImplPubSubType::compute_key(
             HWResourceImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || HWResourceImpl_max_key_cdr_typesize > 16)
@@ -1714,6 +1714,7 @@ bool CO2FootprintImplPubSubType::serialize(
         ser.serialize_encapsulation();
         // Serialize the object.
         ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1766,8 +1767,8 @@ uint32_t CO2FootprintImplPubSubType::calculate_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
         size_t current_alignment {0};
         return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                   *static_cast<const CO2FootprintImpl*>(data), current_alignment)) +
-               4u /*encapsulation*/;
+                    *static_cast<const CO2FootprintImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
     }
     catch (eprosima::fastcdr::exception::Exception& /*exception*/)
     {
@@ -1822,8 +1823,7 @@ bool CO2FootprintImplPubSubType::compute_key(
             CO2FootprintImpl_max_key_cdr_typesize);
 
     // Object that serializes the data.
-    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS,
-            eprosima::fastcdr::CdrVersion::XCDRv2);
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
     ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
     eprosima::fastcdr::serialize_key(ser, *p_type);
     if (force_md5 || CO2FootprintImpl_max_key_cdr_typesize > 16)
@@ -1850,6 +1850,371 @@ void CO2FootprintImplPubSubType::register_type_object_representation()
 {
     register_CO2FootprintImpl_type_identifier(type_identifiers_);
 }
+
+RequestTypeImplPubSubType::RequestTypeImplPubSubType()
+{
+    set_name("RequestTypeImpl");
+    uint32_t type_size = RequestTypeImpl_max_cdr_typesize;
+    type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
+    max_serialized_type_size = type_size + 4; /*encapsulation*/
+    is_compute_key_provided = true;
+    uint32_t key_length = RequestTypeImpl_max_key_cdr_typesize > 16 ? RequestTypeImpl_max_key_cdr_typesize : 16;
+    key_buffer_ = reinterpret_cast<unsigned char*>(malloc(key_length));
+    memset(key_buffer_, 0, key_length);
+}
+
+RequestTypeImplPubSubType::~RequestTypeImplPubSubType()
+{
+    if (key_buffer_ != nullptr)
+    {
+        free(key_buffer_);
+    }
+}
+
+bool RequestTypeImplPubSubType::serialize(
+        const void* const data,
+        SerializedPayload_t& payload,
+        DataRepresentationId_t data_representation)
+{
+    const RequestTypeImpl* p_type = static_cast<const RequestTypeImpl*>(data);
+
+    // Object that manages the raw buffer.
+    eprosima::fastcdr::FastBuffer fastbuffer(reinterpret_cast<char*>(payload.data), payload.max_size);
+    // Object that serializes the data.
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
+            data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ?
+            eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
+    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+    ser.set_encoding_flag(
+        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ?
+        eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR  :
+        eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2);
+
+    try
+    {
+        // Serialize encapsulation
+        ser.serialize_encapsulation();
+        // Serialize the object.
+        ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
+    }
+    catch (eprosima::fastcdr::exception::Exception& /*exception*/)
+    {
+        return false;
+    }
+
+    // Get the serialized length
+    payload.length = static_cast<uint32_t>(ser.get_serialized_data_length());
+    return true;
+}
+
+bool RequestTypeImplPubSubType::deserialize(
+        SerializedPayload_t& payload,
+        void* data)
+{
+    try
+    {
+        // Convert DATA to pointer of your type
+        RequestTypeImpl* p_type = static_cast<RequestTypeImpl*>(data);
+
+        // Object that manages the raw buffer.
+        eprosima::fastcdr::FastBuffer fastbuffer(reinterpret_cast<char*>(payload.data), payload.length);
+
+        // Object that deserializes the data.
+        eprosima::fastcdr::Cdr deser(fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN);
+
+        // Deserialize encapsulation.
+        deser.read_encapsulation();
+        payload.encapsulation = deser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+
+        // Deserialize the object.
+        deser >> *p_type;
+    }
+    catch (eprosima::fastcdr::exception::Exception& /*exception*/)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+uint32_t RequestTypeImplPubSubType::calculate_serialized_size(
+        const void* const data,
+        DataRepresentationId_t data_representation)
+{
+    try
+    {
+        eprosima::fastcdr::CdrSizeCalculator calculator(
+            data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ?
+            eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+        size_t current_alignment {0};
+        return static_cast<uint32_t>(calculator.calculate_serialized_size(
+                    *static_cast<const RequestTypeImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
+    }
+    catch (eprosima::fastcdr::exception::Exception& /*exception*/)
+    {
+        return 0;
+    }
+}
+
+void* RequestTypeImplPubSubType::create_data()
+{
+    return reinterpret_cast<void*>(new RequestTypeImpl());
+}
+
+void RequestTypeImplPubSubType::delete_data(
+        void* data)
+{
+    delete(reinterpret_cast<RequestTypeImpl*>(data));
+}
+
+bool RequestTypeImplPubSubType::compute_key(
+        SerializedPayload_t& payload,
+        InstanceHandle_t& handle,
+        bool force_md5)
+{
+    if (!is_compute_key_provided)
+    {
+        return false;
+    }
+
+    RequestTypeImpl data;
+    if (deserialize(payload, static_cast<void*>(&data)))
+    {
+        return compute_key(static_cast<void*>(&data), handle, force_md5);
+    }
+
+    return false;
+}
+
+bool RequestTypeImplPubSubType::compute_key(
+        const void* const data,
+        InstanceHandle_t& handle,
+        bool force_md5)
+{
+    if (!is_compute_key_provided)
+    {
+        return false;
+    }
+
+    const RequestTypeImpl* p_type = static_cast<const RequestTypeImpl*>(data);
+
+    // Object that manages the raw buffer.
+    eprosima::fastcdr::FastBuffer fastbuffer(reinterpret_cast<char*>(key_buffer_),
+            RequestTypeImpl_max_key_cdr_typesize);
+
+    // Object that serializes the data.
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
+    ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
+    eprosima::fastcdr::serialize_key(ser, *p_type);
+    if (force_md5 || RequestTypeImpl_max_key_cdr_typesize > 16)
+    {
+        md5_.init();
+        md5_.update(key_buffer_, static_cast<unsigned int>(ser.get_serialized_data_length()));
+        md5_.finalize();
+        for (uint8_t i = 0; i < 16; ++i)
+        {
+            handle.value[i] = md5_.digest[i];
+        }
+    }
+    else
+    {
+        for (uint8_t i = 0; i < 16; ++i)
+        {
+            handle.value[i] = key_buffer_[i];
+        }
+    }
+    return true;
+}
+
+void RequestTypeImplPubSubType::register_type_object_representation()
+{
+    register_RequestTypeImpl_type_identifier(type_identifiers_);
+}
+
+ResponseTypeImplPubSubType::ResponseTypeImplPubSubType()
+{
+    set_name("ResponseTypeImpl");
+    uint32_t type_size = ResponseTypeImpl_max_cdr_typesize;
+    type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
+    max_serialized_type_size = type_size + 4; /*encapsulation*/
+    is_compute_key_provided = true;
+    uint32_t key_length = ResponseTypeImpl_max_key_cdr_typesize > 16 ? ResponseTypeImpl_max_key_cdr_typesize : 16;
+    key_buffer_ = reinterpret_cast<unsigned char*>(malloc(key_length));
+    memset(key_buffer_, 0, key_length);
+}
+
+ResponseTypeImplPubSubType::~ResponseTypeImplPubSubType()
+{
+    if (key_buffer_ != nullptr)
+    {
+        free(key_buffer_);
+    }
+}
+
+bool ResponseTypeImplPubSubType::serialize(
+        const void* const data,
+        SerializedPayload_t& payload,
+        DataRepresentationId_t data_representation)
+{
+    const ResponseTypeImpl* p_type = static_cast<const ResponseTypeImpl*>(data);
+
+    // Object that manages the raw buffer.
+    eprosima::fastcdr::FastBuffer fastbuffer(reinterpret_cast<char*>(payload.data), payload.max_size);
+    // Object that serializes the data.
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN,
+            data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ?
+            eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
+    payload.encapsulation = ser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+    ser.set_encoding_flag(
+        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ?
+        eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR  :
+        eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2);
+
+    try
+    {
+        // Serialize encapsulation
+        ser.serialize_encapsulation();
+        // Serialize the object.
+        ser << *p_type;
+        ser.set_dds_cdr_options({0,0});
+    }
+    catch (eprosima::fastcdr::exception::Exception& /*exception*/)
+    {
+        return false;
+    }
+
+    // Get the serialized length
+    payload.length = static_cast<uint32_t>(ser.get_serialized_data_length());
+    return true;
+}
+
+bool ResponseTypeImplPubSubType::deserialize(
+        SerializedPayload_t& payload,
+        void* data)
+{
+    try
+    {
+        // Convert DATA to pointer of your type
+        ResponseTypeImpl* p_type = static_cast<ResponseTypeImpl*>(data);
+
+        // Object that manages the raw buffer.
+        eprosima::fastcdr::FastBuffer fastbuffer(reinterpret_cast<char*>(payload.data), payload.length);
+
+        // Object that deserializes the data.
+        eprosima::fastcdr::Cdr deser(fastbuffer, eprosima::fastcdr::Cdr::DEFAULT_ENDIAN);
+
+        // Deserialize encapsulation.
+        deser.read_encapsulation();
+        payload.encapsulation = deser.endianness() == eprosima::fastcdr::Cdr::BIG_ENDIANNESS ? CDR_BE : CDR_LE;
+
+        // Deserialize the object.
+        deser >> *p_type;
+    }
+    catch (eprosima::fastcdr::exception::Exception& /*exception*/)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+uint32_t ResponseTypeImplPubSubType::calculate_serialized_size(
+        const void* const data,
+        DataRepresentationId_t data_representation)
+{
+    try
+    {
+        eprosima::fastcdr::CdrSizeCalculator calculator(
+            data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ?
+            eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+        size_t current_alignment {0};
+        return static_cast<uint32_t>(calculator.calculate_serialized_size(
+                    *static_cast<const ResponseTypeImpl*>(data), current_alignment)) +
+                4u /*encapsulation*/;
+    }
+    catch (eprosima::fastcdr::exception::Exception& /*exception*/)
+    {
+        return 0;
+    }
+}
+
+void* ResponseTypeImplPubSubType::create_data()
+{
+    return reinterpret_cast<void*>(new ResponseTypeImpl());
+}
+
+void ResponseTypeImplPubSubType::delete_data(
+        void* data)
+{
+    delete(reinterpret_cast<ResponseTypeImpl*>(data));
+}
+
+bool ResponseTypeImplPubSubType::compute_key(
+        SerializedPayload_t& payload,
+        InstanceHandle_t& handle,
+        bool force_md5)
+{
+    if (!is_compute_key_provided)
+    {
+        return false;
+    }
+
+    ResponseTypeImpl data;
+    if (deserialize(payload, static_cast<void*>(&data)))
+    {
+        return compute_key(static_cast<void*>(&data), handle, force_md5);
+    }
+
+    return false;
+}
+
+bool ResponseTypeImplPubSubType::compute_key(
+        const void* const data,
+        InstanceHandle_t& handle,
+        bool force_md5)
+{
+    if (!is_compute_key_provided)
+    {
+        return false;
+    }
+
+    const ResponseTypeImpl* p_type = static_cast<const ResponseTypeImpl*>(data);
+
+    // Object that manages the raw buffer.
+    eprosima::fastcdr::FastBuffer fastbuffer(reinterpret_cast<char*>(key_buffer_),
+            ResponseTypeImpl_max_key_cdr_typesize);
+
+    // Object that serializes the data.
+    eprosima::fastcdr::Cdr ser(fastbuffer, eprosima::fastcdr::Cdr::BIG_ENDIANNESS, eprosima::fastcdr::CdrVersion::XCDRv2);
+    ser.set_encoding_flag(eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR2);
+    eprosima::fastcdr::serialize_key(ser, *p_type);
+    if (force_md5 || ResponseTypeImpl_max_key_cdr_typesize > 16)
+    {
+        md5_.init();
+        md5_.update(key_buffer_, static_cast<unsigned int>(ser.get_serialized_data_length()));
+        md5_.finalize();
+        for (uint8_t i = 0; i < 16; ++i)
+        {
+            handle.value[i] = md5_.digest[i];
+        }
+    }
+    else
+    {
+        for (uint8_t i = 0; i < 16; ++i)
+        {
+            handle.value[i] = key_buffer_[i];
+        }
+    }
+    return true;
+}
+
+void ResponseTypeImplPubSubType::register_type_object_representation()
+{
+    register_ResponseTypeImpl_type_identifier(type_identifiers_);
+}
+
 
 // Include auxiliary functions like for serializing/deserializing.
 #include "typesImplCdrAux.ipp"

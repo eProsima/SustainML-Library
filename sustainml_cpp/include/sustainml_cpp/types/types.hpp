@@ -75,6 +75,8 @@ class NodeControlImpl;
 class NodeStatusImpl;
 class TaskIdImpl;
 class UserInputImpl;
+class RequestTypeImpl;
+class ResponseTypeImpl;
 
 enum class Status : int32_t;
 enum class TaskStatus : int32_t;
@@ -2382,6 +2384,340 @@ protected:
 
     UserInputImpl* impl_;
     friend class UserInputImpl;
+
+};
+
+/*!
+ * @brief This class represents the structure RequestType defined by the user in the IDL file.
+ * @ingroup types
+ */
+class RequestType
+{
+public:
+
+    using impl_type = RequestTypeImpl;
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport RequestType();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~RequestType();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object RequestType that will be copied.
+     */
+    eProsima_user_DllExport RequestType(
+            const RequestType& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object RequestType that will be copied.
+     */
+    eProsima_user_DllExport RequestType(
+            RequestType&& x) noexcept;
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object RequestType that will be copied.
+     */
+    eProsima_user_DllExport RequestType& operator =(
+            const RequestType& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object RequestType that will be copied.
+     */
+    eProsima_user_DllExport RequestType& operator =(
+            RequestType&& x) noexcept;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x RequestType object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const RequestType& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x RequestType object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const RequestType& x) const;
+
+    /*!
+     * @brief This function sets a value in member node_id
+     * @param _node_id New value for member node_id
+     */
+    eProsima_user_DllExport void node_id(
+            int32_t _node_id);
+
+    /*!
+     * @brief This function returns the value of member node_id
+     * @return Value of member node_id
+     */
+    eProsima_user_DllExport int32_t node_id() const;
+
+    /*!
+     * @brief This function returns a reference to member node_id
+     * @return Reference to member node_id
+     */
+    eProsima_user_DllExport int32_t& node_id();
+
+
+    /*!
+     * @brief This function sets a value in member transaction_id
+     * @param _transaction_id New value for member transaction_id
+     */
+    eProsima_user_DllExport void transaction_id(
+            int32_t _transaction_id);
+
+    /*!
+     * @brief This function returns the value of member transaction_id
+     * @return Value of member transaction_id
+     */
+    eProsima_user_DllExport int32_t transaction_id() const;
+
+    /*!
+     * @brief This function returns a reference to member transaction_id
+     * @return Reference to member transaction_id
+     */
+    eProsima_user_DllExport int32_t& transaction_id();
+
+
+    /*!
+     * @brief This function copies the value in member configuration
+     * @param _configuration New value to be copied in member configuration
+     */
+    eProsima_user_DllExport void configuration(
+            const std::string& _configuration);
+
+    /*!
+     * @brief This function moves the value in member configuration
+     * @param _configuration New value to be moved in member configuration
+     */
+    eProsima_user_DllExport void configuration(
+            std::string&& _configuration);
+
+    /*!
+     * @brief This function returns a constant reference to member configuration
+     * @return Constant reference to member configuration
+     */
+    eProsima_user_DllExport const std::string& configuration() const;
+
+    /*!
+     * @brief This function returns a reference to member configuration
+     * @return Reference to member configuration
+     */
+    eProsima_user_DllExport std::string& configuration();
+
+    /*!
+     * @brief This function returns the implementation
+     * @return Pointer to implementation
+     */
+    RequestTypeImpl* get_impl();
+
+    /*!
+     * @brief This function retrives the implementation type info
+     * @return Reference to the typeid
+     */
+    static const std::type_info& impl_typeinfo();
+
+protected:
+
+    RequestTypeImpl* impl_;
+    friend class RequestTypeImpl;
+
+};
+
+/*!
+ * @brief This class represents the structure ResponseType defined by the user in the IDL file.
+ * @ingroup types
+ */
+class ResponseType
+{
+public:
+
+    using impl_type = ResponseTypeImpl;
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport ResponseType();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~ResponseType();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object ResponseType that will be copied.
+     */
+    eProsima_user_DllExport ResponseType(
+            const ResponseType& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object ResponseType that will be copied.
+     */
+    eProsima_user_DllExport ResponseType(
+            ResponseType&& x) noexcept;
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object ResponseType that will be copied.
+     */
+    eProsima_user_DllExport ResponseType& operator =(
+            const ResponseType& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object ResponseType that will be copied.
+     */
+    eProsima_user_DllExport ResponseType& operator =(
+            ResponseType&& x) noexcept;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x ResponseType object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const ResponseType& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x ResponseType object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const ResponseType& x) const;
+
+    /*!
+     * @brief This function sets a value in member node_id
+     * @param _node_id New value for member node_id
+     */
+    eProsima_user_DllExport void node_id(
+            int32_t _node_id);
+
+    /*!
+     * @brief This function returns the value of member node_id
+     * @return Value of member node_id
+     */
+    eProsima_user_DllExport int32_t node_id() const;
+
+    /*!
+     * @brief This function returns a reference to member node_id
+     * @return Reference to member node_id
+     */
+    eProsima_user_DllExport int32_t& node_id();
+
+
+    /*!
+     * @brief This function sets a value in member transaction_id
+     * @param _transaction_id New value for member transaction_id
+     */
+    eProsima_user_DllExport void transaction_id(
+            int32_t _transaction_id);
+
+    /*!
+     * @brief This function returns the value of member transaction_id
+     * @return Value of member transaction_id
+     */
+    eProsima_user_DllExport int32_t transaction_id() const;
+
+    /*!
+     * @brief This function returns a reference to member transaction_id
+     * @return Reference to member transaction_id
+     */
+    eProsima_user_DllExport int32_t& transaction_id();
+
+
+    /*!
+     * @brief This function sets a value in member success
+     * @param _success New value for member success
+     */
+    eProsima_user_DllExport void success(
+            bool _success);
+
+    /*!
+     * @brief This function returns the value of member success
+     * @return Value of member success
+     */
+    eProsima_user_DllExport bool success() const;
+
+    /*!
+     * @brief This function returns a reference to member success
+     * @return Reference to member success
+     */
+    eProsima_user_DllExport bool& success();
+
+
+    /*!
+     * @brief This function sets a value in member err_code
+     * @param _err_code New value for member err_code
+     */
+    eProsima_user_DllExport void err_code(
+            ErrorCode _err_code);
+
+    /*!
+     * @brief This function returns the value of member err_code
+     * @return Value of member err_code
+     */
+    eProsima_user_DllExport ErrorCode err_code() const;
+
+    /*!
+     * @brief This function returns a reference to member err_code
+     * @return Reference to member err_code
+     */
+    eProsima_user_DllExport ErrorCode& err_code();
+
+
+    /*!
+     * @brief This function copies the value in member configuration
+     * @param _configuration New value to be copied in member configuration
+     */
+    eProsima_user_DllExport void configuration(
+            const std::string& _configuration);
+
+    /*!
+     * @brief This function moves the value in member configuration
+     * @param _configuration New value to be moved in member configuration
+     */
+    eProsima_user_DllExport void configuration(
+            std::string&& _configuration);
+
+    /*!
+     * @brief This function returns a constant reference to member configuration
+     * @return Constant reference to member configuration
+     */
+    eProsima_user_DllExport const std::string& configuration() const;
+
+    /*!
+     * @brief This function returns a reference to member configuration
+     * @return Reference to member configuration
+     */
+    eProsima_user_DllExport std::string& configuration();
+
+    /*!
+     * @brief This function returns the implementation
+     * @return Pointer to implementation
+     */
+    ResponseTypeImpl* get_impl();
+
+    /*!
+     * @brief This function retrives the implementation type info
+     * @return Reference to the typeid
+     */
+    static const std::type_info& impl_typeinfo();
+
+protected:
+
+    ResponseTypeImpl* impl_;
+    friend class ResponseTypeImpl;
 
 };
 

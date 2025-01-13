@@ -33,6 +33,9 @@ constexpr uint32_t AppRequirementsImpl_max_key_cdr_typesize {12UL};
 constexpr uint32_t MLModelImpl_max_cdr_typesize {1080UL};
 constexpr uint32_t MLModelImpl_max_key_cdr_typesize {12UL};
 
+constexpr uint32_t RequestTypeImpl_max_cdr_typesize {272UL};
+constexpr uint32_t RequestTypeImpl_max_key_cdr_typesize {8UL};
+
 constexpr uint32_t MLModelMetadataImpl_max_cdr_typesize {36UL};
 constexpr uint32_t MLModelMetadataImpl_max_key_cdr_typesize {12UL};
 
@@ -47,6 +50,9 @@ constexpr uint32_t NodeControlImpl_max_key_cdr_typesize {272UL};
 
 
 
+
+constexpr uint32_t ResponseTypeImpl_max_cdr_typesize {280UL};
+constexpr uint32_t ResponseTypeImpl_max_key_cdr_typesize {8UL};
 
 constexpr uint32_t UserInputImpl_max_cdr_typesize {1368UL};
 constexpr uint32_t UserInputImpl_max_key_cdr_typesize {12UL};
@@ -72,8 +78,6 @@ eProsima_user_DllExport void serialize_key(
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
         const NodeStatusImpl& data);
-
-
 
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
@@ -106,6 +110,14 @@ eProsima_user_DllExport void serialize_key(
 eProsima_user_DllExport void serialize_key(
         eprosima::fastcdr::Cdr& scdr,
         const CO2FootprintImpl& data);
+
+eProsima_user_DllExport void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const RequestTypeImpl& data);
+
+eProsima_user_DllExport void serialize_key(
+        eprosima::fastcdr::Cdr& scdr,
+        const ResponseTypeImpl& data);
 
 
 } // namespace fastcdr

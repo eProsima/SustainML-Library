@@ -135,3 +135,19 @@ struct CO2FootprintImpl
     sequence<octet> extra_data;
     @key TaskIdImpl task_id;
 };
+
+struct RequestTypeImpl
+{
+    @key long node_id;
+    @key long transaction_id;
+    string configuration;
+};
+
+struct ResponseTypeImpl
+{
+    @key long node_id;
+    @key long transaction_id;
+    boolean success;
+    ErrorCode err_code;
+    string configuration;
+};
