@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file TaskInjector.hpp
+ * @file TaskReceiver.hpp
  *
  */
 
-#ifndef _TEST_BLACKBOX_TASKINJECTOR_HPP_
-#define _TEST_BLACKBOX_TASKINJECTOR_HPP_
+#ifndef _TEST_BLACKBOX_TASKRECEIVER_HPP_
+#define _TEST_BLACKBOX_TASKRECEIVER_HPP_
 
 #include <condition_variable>
 #include <thread>
@@ -27,61 +27,72 @@
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
 #include <fastdds/dds/domain/DomainParticipantListener.hpp>
 #include <fastdds/dds/domain/qos/DomainParticipantQos.hpp>
-#include <fastdds/dds/publisher/DataWriter.hpp>
-#include <fastdds/dds/publisher/DataWriterListener.hpp>
-#include <fastdds/dds/publisher/Publisher.hpp>
-#include <fastdds/dds/publisher/qos/DataWriterQos.hpp>
+#include <fastdds/dds/subscriber/DataReader.hpp>
+#include <fastdds/dds/subscriber/DataReaderListener.hpp>
+#include <fastdds/dds/subscriber/Subscriber.hpp>
+#include <fastdds/dds/subscriber/qos/DataReaderQos.hpp>
 #include <fastdds/dds/topic/Topic.hpp>
 
 template <typename T>
-class TaskInjector
+class TaskReceiver
 {
 
-    struct TaskInjectorListener : public eprosima::fastdds::dds::DataWriterListener
+    struct TaskReceiverListener : public eprosima::fastdds::dds::DataReaderListener
     {
-        TaskInjectorListener(
-                TaskInjector* task_injector)
-            : task_inj_(task_injector)
+        TaskReceiverListener(
+                TaskReceiver* task_receiver)
+            : task_inj_(task_receiver)
         {
 
         }
 
-        virtual void on_publication_matched(
-                eprosima::fastdds::dds::DataWriter* writer,
-                const eprosima::fastdds::dds::PublicationMatchedStatus& info)
+        virtual void on_data_available(
+                eprosima::fastdds::dds::DataReader* reader)
         {
-            if (info.current_count_change == 1)
+            typename T::type data;
+            eprosima::fastdds::dds::SampleInfo info;
+
+            if (eprosima::fastdds::dds::RETCODE_OK ==
+                    reader->take_next_sample((void*)&data, &info))
+            {
+                std::cout << "TaskReceiver receive data for service from node id " << data.node_id() <<
+                    " ,with transaction " << data.transaction_id() << "." << std::endl;
+            }
+        }
+
+        void on_subscription_matched(
+                eprosima::fastdds::dds::DataReader* reader,
+                const eprosima::fastdds::dds::SubscriptionMatchedStatus& status)
+        {
+            if (status.current_count_change == 1)
             {
                 task_inj_->matched_.fetch_add(1);
-                std::cout << "TaskInjector matched" << std::endl;
+                std::cout << "TaskReceiver matched" << std::endl;
             }
-            else if (info.current_count_change == -1)
+            else if (status.current_count_change == -1)
             {
                 task_inj_->matched_.fetch_sub(1);
-                std::cout << "TaskInjector unmatched" << std::endl;
             }
-
-            task_inj_->cv_.notify_all();
         }
 
-        TaskInjector* task_inj_;
+        TaskReceiver* task_inj_;
     };
 
 public:
 
-    TaskInjector(
+    TaskReceiver(
             const std::string& topic_name
             )
         : participant_(nullptr)
-        , publisher_(nullptr)
+        , subscriber_(nullptr)
         , topic_(nullptr)
-        , datawriter_(nullptr)
+        , datareader_(nullptr)
         , type_(new T())
         , listener_(this)
         , matched_(0)
     {
         eprosima::fastdds::dds::DomainParticipantQos pqos = eprosima::fastdds::dds::PARTICIPANT_QOS_DEFAULT;
-        pqos.name("TaskInjector_Participant");
+        pqos.name("TaskReceiver_Participant");
         auto factory =
                 eprosima::fastdds::dds::DomainParticipantFactory::get_instance();
 
@@ -95,15 +106,15 @@ public:
         //REGISTER THE TYPE
         type_.register_type(participant_);
 
-        //CREATE THE PUBLISHER
-        eprosima::fastdds::dds::PublisherQos pubqos =
-                eprosima::fastdds::dds::PUBLISHER_QOS_DEFAULT;
+        //CREATE THE SUBSCRIBER
+        eprosima::fastdds::dds::SubscriberQos pubqos =
+                eprosima::fastdds::dds::SUBSCRIBER_QOS_DEFAULT;
 
-        publisher_ = participant_->create_publisher(
+        subscriber_ = participant_->create_subscriber(
             pubqos,
             nullptr);
 
-        if (publisher_ == nullptr)
+        if (subscriber_ == nullptr)
         {
             return;
         }
@@ -122,33 +133,33 @@ public:
             return;
         }
 
-        // CREATE THE WRITER
-        eprosima::fastdds::dds::DataWriterQos wqos =
-                eprosima::fastdds::dds::DATAWRITER_QOS_DEFAULT;
+        // CREATE THE READER
+        eprosima::fastdds::dds::DataReaderQos wqos =
+                eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT;
 
         wqos.resource_limits().max_instances = 500;
         wqos.resource_limits().max_samples_per_instance = 1;
 
-        datawriter_ = publisher_->create_datawriter(
+        datareader_ = subscriber_->create_datareader(
             topic_,
             wqos,
             &listener_);
 
-        if (datawriter_ == nullptr)
+        if (datareader_ == nullptr)
         {
             return;
         }
     }
 
-    ~TaskInjector()
+    ~TaskReceiver()
     {
-        if (datawriter_ != nullptr)
+        if (datareader_ != nullptr)
         {
-            publisher_->delete_datawriter(datawriter_);
+            subscriber_->delete_datareader(datareader_);
         }
-        if (publisher_ != nullptr)
+        if (subscriber_ != nullptr)
         {
-            participant_->delete_publisher(publisher_);
+            participant_->delete_subscriber(subscriber_);
         }
         if (topic_ != nullptr)
         {
@@ -164,7 +175,7 @@ public:
     {
         std::unique_lock<std::mutex> lock(mtx_);
 
-        std::cout << "TaskInjector is waiting discovery..." << std::endl;
+        std::cout << "TaskReceiver is waiting discovery..." << std::endl;
 
         if (timeout == std::chrono::seconds::zero())
         {
@@ -181,58 +192,45 @@ public:
                     });
         }
 
-        std::cout << "Writer discovery finished..." << std::endl;
+        std::cout << "Reader discovery finished..." << std::endl;
 
         return matched_ == expected_matches;
     }
 
-    void inject(
-            std::list<typename T::type>& msgs,
-            const int& ms_period = 50)
+    bool get_data(
+            typename T::type& data,
+            std::chrono::milliseconds timeout)
     {
-        auto it = msgs.begin();
+        eprosima::fastdds::dds::SampleInfo info;
+        auto start = std::chrono::steady_clock::now();
 
-        while (it != msgs.end())
+        while (std::chrono::steady_clock::now() - start < timeout)
         {
             if (eprosima::fastdds::dds::RETCODE_OK ==
-                    datawriter_->write((void*)&(*it)))
+                    datareader_->take_next_sample((void*)&data, &info))
             {
-                std::cout << "Injecting data with task id {" << it->task_id().problem_id() << "," <<
-                    it->task_id().iteration_id() << "}" << std::endl;
-                it = msgs.erase(it);
-                std::this_thread::sleep_for(std::chrono::milliseconds(ms_period));
+                return true;
             }
-            else
-            {
-                break;
-            }
-        }
-    }
 
-    void inject_request(
-            typename T::type& req)
-    {
-        if (eprosima::fastdds::dds::RETCODE_OK ==
-                datawriter_->write((void*)&(req)))
-        {
-            std::cout << "Injecting data for service with node id " << req.node_id() <<
-                " ,with transaction " << req.transaction_id() << "." << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
+
+        return false;
     }
 
 private:
 
     eprosima::fastdds::dds::DomainParticipant* participant_;
 
-    eprosima::fastdds::dds::Publisher* publisher_;
+    eprosima::fastdds::dds::Subscriber* subscriber_;
 
     eprosima::fastdds::dds::Topic* topic_;
 
-    eprosima::fastdds::dds::DataWriter* datawriter_;
+    eprosima::fastdds::dds::DataReader* datareader_;
 
     eprosima::fastdds::dds::TypeSupport type_;
 
-    TaskInjectorListener listener_;
+    TaskReceiverListener listener_;
 
     std::atomic<size_t> matched_;
 
@@ -242,4 +240,4 @@ private:
 
 };
 
-#endif // _TEST_BLACKBOX_TASKINJECTOR_HPP_
+#endif // _TEST_BLACKBOX_TASKRECEIVER_HPP_

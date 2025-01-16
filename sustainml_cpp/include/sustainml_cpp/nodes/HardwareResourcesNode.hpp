@@ -88,10 +88,19 @@ public:
     SUSTAINML_CPP_DLL_API HardwareResourcesNode(
             HardwareResourcesTaskListener& user_listener);
 
+    SUSTAINML_CPP_DLL_API HardwareResourcesNode(
+            HardwareResourcesTaskListener& user_listener,
+            sustainml::core::RequestReplyListener& req_res_listener);
+
 #ifndef SWIG_WRAPPER
     SUSTAINML_CPP_DLL_API HardwareResourcesNode(
             HardwareResourcesTaskListener& user_listener,
             sustainml::core::Options opts);
+
+    SUSTAINML_CPP_DLL_API HardwareResourcesNode(
+            HardwareResourcesTaskListener& user_listener,
+            sustainml::core::Options opts,
+            sustainml::core::RequestReplyListener& req_res_listener);
 #endif // SWIG_WRAPPER
 
     SUSTAINML_CPP_DLL_API virtual ~HardwareResourcesNode();

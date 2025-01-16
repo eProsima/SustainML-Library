@@ -34,7 +34,9 @@
 #include "common/Common.hpp"
 
 #include "../api/ManagedNode.hpp"
+#include "../api/ManagedNodeService.hpp"
 #include "../api/TaskInjector.hpp"
+#include "../api/TaskReceiver.hpp"
 
 #include <sustainml_cpp/types/types.hpp>
 #include <types/typesImplPubSubTypes.hpp>
@@ -97,6 +99,36 @@ using MLModelMetadataManagedNode = ManagedNode<ml_model_module::MLModelMetadataN
                 types::UserInput, types::NodeStatus, types::MLModelMetadata>;
 
 using MLModelManagedNode = ManagedNode<ml_model_module::MLModelNode,
+                ml_model_module::MLModelTaskListener,
+                types::MLModelMetadata, types::AppRequirements, types::HWConstraints,
+                types::MLModel, types::HWResource, types::CO2Footprint,
+                types::NodeStatus, types::MLModel>;
+
+/******* Auxiliary Managed Nodes with Service aliases *****/
+
+using AppRequirementsManagedNodeService = ManagedNodeService<app_requirements_module::AppRequirementsNode,
+                app_requirements_module::AppRequirementsTaskListener,
+                types::UserInput, types::NodeStatus, types::AppRequirements>;
+
+using CarbonFootprintManagedNodeService = ManagedNodeService<carbon_tracker_module::CarbonFootprintNode,
+                carbon_tracker_module::CarbonFootprintTaskListener,
+                types::MLModel, types::UserInput, types::HWResource,
+                types::NodeStatus, types::CO2Footprint>;
+
+using HWConstraintsManagedNodeService = ManagedNodeService<hardware_module::HardwareConstraintsNode,
+                hardware_module::HardwareConstraintsTaskListener,
+                types::UserInput, types::NodeStatus, types::HWConstraints>;
+
+using HWResourcesManagedNodeService = ManagedNodeService<hardware_module::HardwareResourcesNode,
+                hardware_module::HardwareResourcesTaskListener,
+                types::MLModel, types::AppRequirements, types::HWConstraints,
+                types::NodeStatus, types::HWResource>;
+
+using MLModelMetadataManagedNodeService = ManagedNodeService<ml_model_module::MLModelMetadataNode,
+                ml_model_module::MLModelMetadataTaskListener,
+                types::UserInput, types::NodeStatus, types::MLModelMetadata>;
+
+using MLModelManagedNodeService = ManagedNodeService<ml_model_module::MLModelNode,
                 ml_model_module::MLModelTaskListener,
                 types::MLModelMetadata, types::AppRequirements, types::HWConstraints,
                 types::MLModel, types::HWResource, types::CO2Footprint,

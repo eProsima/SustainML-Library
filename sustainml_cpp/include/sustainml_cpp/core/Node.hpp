@@ -50,6 +50,7 @@ namespace core {
 class NodeImpl;
 class NodeControlListener;
 class Dispatcher;
+class RequestReplyListener;
 struct Options;
 
 /**
@@ -75,6 +76,15 @@ public:
     SUSTAINML_CPP_DLL_API Node(
             const std::string& name,
             const Options& opts);
+
+    SUSTAINML_CPP_DLL_API Node(
+            const std::string& name,
+            RequestReplyListener& req_res_listener);
+
+    SUSTAINML_CPP_DLL_API Node(
+            const std::string& name,
+            const Options& opts,
+            RequestReplyListener& req_res_listener);
 
     SUSTAINML_CPP_DLL_API virtual ~Node();
 
