@@ -28,6 +28,7 @@
 #include <sustainml_cpp/nodes/HardwareResourcesNode.hpp>
 #include <sustainml_cpp/nodes/MLModelNode.hpp>
 #include <sustainml_cpp/nodes/MLModelMetadataNode.hpp>
+#include <sustainml_cpp/core/RequestReplyListener.hpp>
 
 template <size_t n_inputs, typename ... PACK>
 struct GenericTaskListener : public sustainml::core::Callable<PACK...>
@@ -58,6 +59,7 @@ class ManagedNode
 {
     using functor_t = std::function<void (Args&...)>;
     friend class ManagedNodeListener;
+    friend class ManagedRequestReplyListener;
 
     struct ManagedNodeListener : public _LISTENER_TYPE
     {
@@ -88,12 +90,40 @@ class ManagedNode
         ManagedNode* managed_node_;
     };
 
+    struct ManagedRequestReplyListener : public sustainml::core::RequestReplyListener
+    {
+        ManagedRequestReplyListener(
+                ManagedNode* parent)
+            : managed_node_(parent)
+        {
+
+        }
+
+        virtual void on_configuration_request(
+                types::RequestType& req,
+                types::ResponseType& res) override
+        {
+            std::cout << "New request available in " << req.node_id() << std::endl;
+
+            res.node_id(req.node_id());
+            res.transaction_id(req.transaction_id());
+            res.success(true);
+            res.configuration(req.configuration());
+
+            managed_node_->cv_.notify_all();
+            std::cout << "Sending back response from " << req.node_id() << std::endl;
+        }
+
+        ManagedNode* managed_node_;
+    };
+
 public:
 
     ManagedNode(
             const functor_t& callback = nullptr)
         : listener_(this, callback)
-        , node_(listener_)
+        , req_listener_(this)
+        , node_(listener_, req_listener_)
         , received_samples_(0)
         , expected_samples_(0)
     {
@@ -156,6 +186,7 @@ public:
 private:
 
     ManagedNodeListener listener_;
+    ManagedRequestReplyListener req_listener_;
     _NODE_TYPE node_;
 
     std::mutex mtx_;

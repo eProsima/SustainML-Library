@@ -485,7 +485,8 @@ types::ResponseType OrchestratorNode::configuration_request(
         const types::RequestType& req)
 {
     //TODO: Implement this method
-    return true;
+    types::ResponseType res;
+    return res;
 }
 
 void OrchestratorNode::spin()

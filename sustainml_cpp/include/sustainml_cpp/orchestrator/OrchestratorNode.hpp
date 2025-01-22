@@ -174,10 +174,9 @@ public:
     void send_control_command(
             const types::NodeControl& cmd);
 
-     /**
-     * @brief This method sends a request to node via service for changing its configuration.
+    /**
+     * @brief This method sends a request to node via service for changing its configuration and returns the response.
      * @param [in] req configuration request, contain which node and configuration file
-     * @param [out] res response from the node with its new configuration
      */
     types::ResponseType configuration_request(
             const types::RequestType& req);

@@ -96,7 +96,7 @@ TEST(OrchestratorNode, OrchestratorConfigurationService)
 
     orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
 
-    MLModelMetadataManagedNodeService node;
+    MLModelMetadataManagedNode node;
     node.start();
 
     types::RequestType req;

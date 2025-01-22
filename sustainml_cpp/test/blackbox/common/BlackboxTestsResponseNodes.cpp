@@ -1,4 +1,4 @@
-// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2025 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 TEST(BlackboxTestsResponseNodes, MLModelMetadataNode)
 {
-    MLModelMetadataManagedNodeService node;
+    MLModelMetadataManagedNode node;
 
     TaskInjector<RequestTypeImplPubSubType> request("sustainml/request");
     TaskReceiver<ResponseTypeImplPubSubType> response("sustainml/response");
@@ -33,8 +33,6 @@ TEST(BlackboxTestsResponseNodes, MLModelMetadataNode)
 
     ResponseTypeImpl res = response.wait_for_data(std::chrono::milliseconds(1000));
 
-    std::cout << "Request configuration: " << req.configuration() << std::endl;
-    std::cout << "Response configuration: " << res.configuration() << std::endl;
     ASSERT_TRUE(res.configuration() == req.configuration());
 
     req.node_id(static_cast<long>(NodeID::ID_CARBON_FOOTPRINT));
@@ -49,7 +47,7 @@ TEST(BlackboxTestsResponseNodes, MLModelMetadataNode)
 
 TEST(BlackboxTestsResponseNodes, AppRequirementsNode)
 {
-    AppRequirementsManagedNodeService node;
+    AppRequirementsManagedNode node;
 
     TaskInjector<RequestTypeImplPubSubType> request("sustainml/request");
     TaskReceiver<ResponseTypeImplPubSubType> response("sustainml/response");
@@ -84,7 +82,7 @@ TEST(BlackboxTestsResponseNodes, AppRequirementsNode)
 
 TEST(BlackboxTestsResponseNodes, CarbonFootprintNode)
 {
-    CarbonFootprintManagedNodeService node;
+    CarbonFootprintManagedNode node;
 
     TaskInjector<RequestTypeImplPubSubType> request("sustainml/request");
     TaskReceiver<ResponseTypeImplPubSubType> response("sustainml/response");
@@ -119,7 +117,7 @@ TEST(BlackboxTestsResponseNodes, CarbonFootprintNode)
 
 TEST(BlackboxTestsResponseNodes, HWConstraintsNode)
 {
-    HWConstraintsManagedNodeService node;
+    HWConstraintsManagedNode node;
 
     TaskInjector<RequestTypeImplPubSubType> request("sustainml/request");
     TaskReceiver<ResponseTypeImplPubSubType> response("sustainml/response");
@@ -154,7 +152,7 @@ TEST(BlackboxTestsResponseNodes, HWConstraintsNode)
 
 TEST(BlackboxTestsResponseNodes, HWResourcesNode)
 {
-    HWResourcesManagedNodeService node;
+    HWResourcesManagedNode node;
 
     TaskInjector<RequestTypeImplPubSubType> request("sustainml/request");
     TaskReceiver<ResponseTypeImplPubSubType> response("sustainml/response");
@@ -189,7 +187,7 @@ TEST(BlackboxTestsResponseNodes, HWResourcesNode)
 
 TEST(BlackboxTestsResponseNodes, MLModelNodeService)
 {
-    MLModelManagedNodeService node;
+    MLModelManagedNode node;
 
     TaskInjector<RequestTypeImplPubSubType> request("sustainml/request");
     TaskReceiver<ResponseTypeImplPubSubType> response("sustainml/response");

@@ -2183,7 +2183,8 @@ bool RequestType::operator !=(
 }
 
 void RequestType::node_id(
-        int32_t _node_id){
+        int32_t _node_id)
+{
     impl_->node_id(_node_id);
 }
 
@@ -2198,7 +2199,8 @@ int32_t& RequestType::node_id()
 }
 
 void RequestType::transaction_id(
-        int32_t _transaction_id){
+        int32_t _transaction_id)
+{
     impl_->transaction_id(_transaction_id);
 }
 
@@ -2270,14 +2272,14 @@ ResponseType::ResponseType(
 }
 
 ResponseType::ResponseType(
-    ResponseType&& x) noexcept
+        ResponseType&& x) noexcept
 {
     this->impl_ = x.impl_;
     x.impl_ = nullptr;
 }
 
 ResponseType& ResponseType::operator =(
-    const ResponseType& x)
+        const ResponseType& x)
 {
     this->impl_->node_id() = x.impl_->node_id();
     this->impl_->transaction_id() = x.impl_->transaction_id();
@@ -2288,32 +2290,32 @@ ResponseType& ResponseType::operator =(
 }
 
 ResponseType& ResponseType::operator =(
-    ResponseType&& x) noexcept
+        ResponseType&& x) noexcept
 {
     if (x.impl_ != this->impl_)
     {
-    delete this->impl_;
-    this->impl_ = x.impl_;
-    x.impl_ = nullptr;
+        delete this->impl_;
+        this->impl_ = x.impl_;
+        x.impl_ = nullptr;
     }
 
     return *this;
 }
 
 bool ResponseType::operator ==(
-    const ResponseType& x) const
+        const ResponseType& x) const
 {
     return (this->impl_ == x.impl_);
 }
 
 bool ResponseType::operator !=(
-    const ResponseType& x) const
+        const ResponseType& x) const
 {
     return !(*this == x);
 }
 
 void ResponseType::node_id(
-    int32_t _node_id)
+        int32_t _node_id)
 {
     impl_->node_id(_node_id);
 }
@@ -2329,7 +2331,7 @@ int32_t& ResponseType::node_id()
 }
 
 void ResponseType::transaction_id(
-    int32_t _transaction_id)
+        int32_t _transaction_id)
 {
     impl_->transaction_id(_transaction_id);
 }
@@ -2345,7 +2347,7 @@ int32_t& ResponseType::transaction_id()
 }
 
 void ResponseType::success(
-    bool _success)
+        bool _success)
 {
     impl_->success(_success);
 }
@@ -2361,7 +2363,7 @@ bool& ResponseType::success()
 }
 
 void ResponseType::err_code(
-    ErrorCode _err_code)
+        ErrorCode _err_code)
 {
     impl_->err_code(_err_code);
 }
@@ -2377,13 +2379,13 @@ ErrorCode& ResponseType::err_code()
 }
 
 void ResponseType::configuration(
-    const std::string& _configuration)
+        const std::string& _configuration)
 {
     impl_->configuration(_configuration);
 }
 
 void ResponseType::configuration(
-    std::string&& _configuration)
+        std::string&& _configuration)
 {
     impl_->configuration(std::forward<std::string>(_configuration));
 }

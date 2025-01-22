@@ -46,7 +46,6 @@ HardwareResourcesNode::HardwareResourcesNode(
     opts.wqos.resource_limits().max_instances = 500;
     opts.wqos.resource_limits().max_samples_per_instance = 1;
     opts.wqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
-
     init(opts);
 }
 
@@ -82,8 +81,8 @@ HardwareResourcesNode::HardwareResourcesNode(
 
 HardwareResourcesNode::HardwareResourcesNode(
         HardwareResourcesTaskListener& user_listener,
-        sustainml::core::Options opts,
-        sustainml::core::RequestReplyListener& req_res_listener)
+        sustainml::core::RequestReplyListener& req_res_listener,
+        sustainml::core::Options opts)
     : Node(common::HW_RESOURCES_NODE, opts, req_res_listener)
     , user_listener_(user_listener)
 {

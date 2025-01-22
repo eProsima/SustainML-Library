@@ -82,8 +82,8 @@ MLModelNode::MLModelNode(
 
 MLModelNode::MLModelNode(
         MLModelTaskListener& user_listener,
-        sustainml::core::Options opts,
-        sustainml::core::RequestReplyListener& req_res_listener)
+        sustainml::core::RequestReplyListener& req_res_listener,
+        sustainml::core::Options opts)
     : Node(common::ML_MODEL_NODE, opts, req_res_listener)
     , user_listener_(user_listener)
 {

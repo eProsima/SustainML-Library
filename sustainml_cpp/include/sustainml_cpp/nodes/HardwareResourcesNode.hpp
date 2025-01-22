@@ -99,8 +99,8 @@ public:
 
     SUSTAINML_CPP_DLL_API HardwareResourcesNode(
             HardwareResourcesTaskListener& user_listener,
-            sustainml::core::Options opts,
-            sustainml::core::RequestReplyListener& req_res_listener);
+            sustainml::core::RequestReplyListener& req_res_listener,
+            sustainml::core::Options opts);
 #endif // SWIG_WRAPPER
 
     SUSTAINML_CPP_DLL_API virtual ~HardwareResourcesNode();

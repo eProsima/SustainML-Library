@@ -16,8 +16,8 @@
  * @file RequestReplyListener.hpp
  */
 
-#ifndef SUSTAINMLCPP_CORE_REQUESTREPLEIRLISTENER_HPP
-#define SUSTAINMLCPP_CORE_REQUESTREPLEIRLISTENER_HPP
+#ifndef SUSTAINMLCPP_CORE_REQUESTREPLYLISTENER_HPP
+#define SUSTAINMLCPP_CORE_REQUESTREPLYLISTENER_HPP
 
 #include <sustainml_cpp/types/types.hpp>
 
@@ -45,7 +45,7 @@ public:
     /**
      * @brief Destructor
      */
-    ~RequestReplyListener()
+    virtual ~RequestReplyListener()
     {
     }
 
@@ -66,4 +66,4 @@ public:
 } // namespace core
 } // namespace sustainml
 
-#endif // SUSTAINMLCPP_CORE_REQUESTREPLEIRLISTENER_HPP
+#endif // SUSTAINMLCPP_CORE_REQUESTREPLYLISTENER_HPP

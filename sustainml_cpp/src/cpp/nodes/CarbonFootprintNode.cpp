@@ -82,8 +82,8 @@ CarbonFootprintNode::CarbonFootprintNode(
 
 CarbonFootprintNode::CarbonFootprintNode(
         CarbonFootprintTaskListener& user_listener,
-        sustainml::core::Options opts,
-        sustainml::core::RequestReplyListener& req_res_listener)
+        sustainml::core::RequestReplyListener& req_res_listener,
+        sustainml::core::Options opts)
     : Node(common::CARBON_FOOTPRINT_NODE, opts, req_res_listener)
     , user_listener_(user_listener)
 {

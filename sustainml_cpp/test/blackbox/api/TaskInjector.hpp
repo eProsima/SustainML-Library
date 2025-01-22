@@ -215,8 +215,7 @@ public:
                   << " of type "
                   << type_.get_type_name()
                   << std::endl;
-        std::cout << "Configuration: " << req.configuration() << std::endl;
-        std::cout << "Size of request: " << sizeof(req) << " bytes" << std::endl;
+
         if (eprosima::fastdds::dds::RETCODE_OK ==
                 datawriter_->write((void*)&(req)))
         {
