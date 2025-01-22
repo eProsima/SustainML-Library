@@ -120,15 +120,13 @@ OrchestratorNode::OrchestratorNode(
                         ResponseTypeImpl* in = static_cast<ResponseTypeImpl*>(input);
                         types::ResponseType res;
                         res = in;
-                        std::cout << "Size of response received: " << sizeof(res) << " bytes" << std::endl;
-                        std::cout << "Configuration received: " << static_cast<ResponseTypeImpl*>(input)->configuration() << std::endl;
-                        std::cout << "Response receive response from node_id " << res.node_id() << std::endl;
+
                         {
                             std::lock_guard<std::mutex> lock(this->mtx_);
                             this->res_ = res;
                         }
                         this->cv_.notify_all();
-                    }, "sustainml/request", "sustainml/response");
+                    }, "sustainml/request", "sustainml/response", res_.get_impl());
 
     if (!init())
     {

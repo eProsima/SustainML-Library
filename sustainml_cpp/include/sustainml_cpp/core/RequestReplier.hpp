@@ -1,4 +1,4 @@
-// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2025 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,8 @@ public:
     RequestReplier(
             std::function<void(void*)> callback,
             const char* topicw,
-            const char* topicr);
+            const char* topicr,
+            void* data);
 
     ~RequestReplier();
 
@@ -79,6 +80,7 @@ protected:
     std::function<void(void*)> callback_;
     const char* topicr_;
     const char* topicw_;
+    void* data_;
 
     eprosima::fastdds::dds::DomainParticipant* participant_;
 
@@ -129,8 +131,6 @@ private:
 
         RequestReplier* node_;
         size_t matched_;
-        RequestTypeImpl req_;
-        ResponseTypeImpl res_;
 
     }
     listener_;
