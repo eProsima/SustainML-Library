@@ -2436,6 +2436,13 @@ public:
             RequestType&& x) noexcept;
 
     /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object RequestTypeImpl that will be copied.
+     */
+    eProsima_user_DllExport RequestType& operator =(
+            const RequestTypeImpl* x);
+
+    /*!
      * @brief Comparison operator.
      * @param x RequestType object to compare.
      */
@@ -2581,6 +2588,13 @@ public:
      */
     eProsima_user_DllExport ResponseType& operator =(
             ResponseType&& x) noexcept;
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object ResponseTypeImpl that will be copied.
+     */
+    eProsima_user_DllExport ResponseType& operator =(
+            const ResponseTypeImpl* x);
 
     /*!
      * @brief Comparison operator.

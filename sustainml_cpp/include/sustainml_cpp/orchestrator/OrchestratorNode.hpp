@@ -42,6 +42,9 @@ class DataWriter;
 } // namespace eprosima
 
 namespace sustainml {
+namespace core {
+class RequestReplier;
+} // namespace core
 namespace orchestrator {
 
 class ModuleNodeProxy;
@@ -270,6 +273,11 @@ protected:
     std::atomic_bool initialized_{false};
     std::atomic_bool terminated_{false};
     std::condition_variable initialization_cv_;
+
+    std::condition_variable cv_;
+
+    types::ResponseType res_;
+    sustainml::core::RequestReplier* req_res_;
 
     /**
      * @brief This class implements the callbacks for the DomainParticipant
