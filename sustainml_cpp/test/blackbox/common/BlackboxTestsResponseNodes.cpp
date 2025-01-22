@@ -20,11 +20,10 @@ TEST(BlackboxTestsResponseNodes, MLModelMetadataNode)
 
     TaskInjector<RequestTypeImplPubSubType> request("sustainml/request");
     TaskReceiver<ResponseTypeImplPubSubType> response("sustainml/response");
-
     node.start();
 
-    request.wait_discovery(1);
-    response.wait_discovery(1);
+    request.wait_discovery(1, std::chrono::seconds(1));
+    response.wait_discovery(1, std::chrono::seconds(1));
 
     RequestTypeImpl req;
     req.node_id(static_cast<long>(NodeID::ID_ML_MODEL_METADATA));
@@ -32,9 +31,10 @@ TEST(BlackboxTestsResponseNodes, MLModelMetadataNode)
     req.configuration("Test");
     request.inject_request(req);
 
-    ResponseTypeImpl res;
-    response.get_data(res, std::chrono::milliseconds(1000));
+    ResponseTypeImpl res = response.wait_for_data(std::chrono::milliseconds(1000));
 
+    std::cout << "Request configuration: " << req.configuration() << std::endl;
+    std::cout << "Response configuration: " << res.configuration() << std::endl;
     ASSERT_TRUE(res.configuration() == req.configuration());
 
     req.node_id(static_cast<long>(NodeID::ID_CARBON_FOOTPRINT));
@@ -42,7 +42,7 @@ TEST(BlackboxTestsResponseNodes, MLModelMetadataNode)
     req.configuration("Test2");
     request.inject_request(req);
 
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
 
     ASSERT_FALSE(res.configuration() == req.configuration());
 }
@@ -56,8 +56,9 @@ TEST(BlackboxTestsResponseNodes, AppRequirementsNode)
 
     node.start();
 
-    request.wait_discovery(1);
-    response.wait_discovery(1);
+    request.wait_discovery(1, std::chrono::seconds(1));
+    response.wait_discovery(1, std::chrono::seconds(1));
+
 
     RequestTypeImpl req;
     req.node_id(static_cast<long>(NodeID::ID_APP_REQUIREMENTS));
@@ -66,7 +67,8 @@ TEST(BlackboxTestsResponseNodes, AppRequirementsNode)
     request.inject_request(req);
 
     ResponseTypeImpl res;
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
+
 
     ASSERT_TRUE(res.configuration() == req.configuration());
 
@@ -75,7 +77,7 @@ TEST(BlackboxTestsResponseNodes, AppRequirementsNode)
     req.configuration("Test2");
     request.inject_request(req);
 
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
 
     ASSERT_FALSE(res.configuration() == req.configuration());
 }
@@ -89,8 +91,9 @@ TEST(BlackboxTestsResponseNodes, CarbonFootprintNode)
 
     node.start();
 
-    request.wait_discovery(1);
-    response.wait_discovery(1);
+    request.wait_discovery(1, std::chrono::seconds(1));
+    response.wait_discovery(1, std::chrono::seconds(1));
+
 
     RequestTypeImpl req;
     req.node_id(static_cast<long>(NodeID::ID_CARBON_FOOTPRINT));
@@ -99,7 +102,8 @@ TEST(BlackboxTestsResponseNodes, CarbonFootprintNode)
     request.inject_request(req);
 
     ResponseTypeImpl res;
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
+
 
     ASSERT_TRUE(res.configuration() == req.configuration());
 
@@ -108,7 +112,7 @@ TEST(BlackboxTestsResponseNodes, CarbonFootprintNode)
     req.configuration("Test2");
     request.inject_request(req);
 
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
 
     ASSERT_FALSE(res.configuration() == req.configuration());
 }
@@ -122,8 +126,9 @@ TEST(BlackboxTestsResponseNodes, HWConstraintsNode)
 
     node.start();
 
-    request.wait_discovery(1);
-    response.wait_discovery(1);
+    request.wait_discovery(1, std::chrono::seconds(1));
+    response.wait_discovery(1, std::chrono::seconds(1));
+
 
     RequestTypeImpl req;
     req.node_id(static_cast<long>(NodeID::ID_HW_CONSTRAINTS));
@@ -132,7 +137,8 @@ TEST(BlackboxTestsResponseNodes, HWConstraintsNode)
     request.inject_request(req);
 
     ResponseTypeImpl res;
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
+
 
     ASSERT_TRUE(res.configuration() == req.configuration());
 
@@ -141,7 +147,7 @@ TEST(BlackboxTestsResponseNodes, HWConstraintsNode)
     req.configuration("Test2");
     request.inject_request(req);
 
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
 
     ASSERT_FALSE(res.configuration() == req.configuration());
 }
@@ -155,8 +161,9 @@ TEST(BlackboxTestsResponseNodes, HWResourcesNode)
 
     node.start();
 
-    request.wait_discovery(1);
-    response.wait_discovery(1);
+    request.wait_discovery(1, std::chrono::seconds(1));
+    response.wait_discovery(1, std::chrono::seconds(1));
+
 
     RequestTypeImpl req;
     req.node_id(static_cast<long>(NodeID::ID_HW_RESOURCES));
@@ -165,7 +172,8 @@ TEST(BlackboxTestsResponseNodes, HWResourcesNode)
     request.inject_request(req);
 
     ResponseTypeImpl res;
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
+
 
     ASSERT_TRUE(res.configuration() == req.configuration());
 
@@ -174,7 +182,7 @@ TEST(BlackboxTestsResponseNodes, HWResourcesNode)
     req.configuration("Test2");
     request.inject_request(req);
 
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
 
     ASSERT_FALSE(res.configuration() == req.configuration());
 }
@@ -188,8 +196,9 @@ TEST(BlackboxTestsResponseNodes, MLModelNodeService)
 
     node.start();
 
-    request.wait_discovery(1);
-    response.wait_discovery(1);
+    request.wait_discovery(1, std::chrono::seconds(1));
+    response.wait_discovery(1, std::chrono::seconds(1));
+
 
     RequestTypeImpl req;
     req.node_id(static_cast<long>(NodeID::ID_ML_MODEL));
@@ -198,7 +207,8 @@ TEST(BlackboxTestsResponseNodes, MLModelNodeService)
     request.inject_request(req);
 
     ResponseTypeImpl res;
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
+
 
     ASSERT_TRUE(res.configuration() == req.configuration());
 
@@ -207,7 +217,7 @@ TEST(BlackboxTestsResponseNodes, MLModelNodeService)
     req.configuration("Test2");
     request.inject_request(req);
 
-    response.get_data(res, std::chrono::milliseconds(1000));
+    res = response.wait_for_data(std::chrono::milliseconds(1000));
 
     ASSERT_FALSE(res.configuration() == req.configuration());
 }

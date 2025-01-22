@@ -16,8 +16,8 @@
  * @file RequestReplyListener.hpp
  */
 
-#ifndef SUSTAINMLCPP_CORE_REQUESTREPLEIR_HPP
-#define SUSTAINMLCPP_CORE_REQUESTREPLEIR_HPP
+#ifndef SUSTAINMLCPP_CORE_REQUESTREPLEIRLISTENER_HPP
+#define SUSTAINMLCPP_CORE_REQUESTREPLEIRLISTENER_HPP
 
 #include <sustainml_cpp/types/types.hpp>
 
@@ -30,7 +30,8 @@ namespace core {
  * End user to implement specific callbacks to certain actions.
  *
  */
-class RequestReplyListener{
+class RequestReplyListener
+{
 
 public:
 
@@ -65,4 +66,4 @@ public:
 } // namespace core
 } // namespace sustainml
 
-#endif // SUSTAINMLCPP_CORE_REQUESTREPLEIR_HPP
+#endif // SUSTAINMLCPP_CORE_REQUESTREPLEIRLISTENER_HPP

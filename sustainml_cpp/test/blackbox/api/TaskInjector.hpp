@@ -164,8 +164,6 @@ public:
     {
         std::unique_lock<std::mutex> lock(mtx_);
 
-        std::cout << "TaskInjector is waiting discovery..." << std::endl;
-
         if (timeout == std::chrono::seconds::zero())
         {
             cv_.wait(lock, [&]()
@@ -212,11 +210,17 @@ public:
     void inject_request(
             typename T::type& req)
     {
+        std::cout << "Writing new data request for topic "
+                  << topic_->get_name()
+                  << " of type "
+                  << type_.get_type_name()
+                  << std::endl;
+        std::cout << "Configuration: " << req.configuration() << std::endl;
+        std::cout << "Size of request: " << sizeof(req) << " bytes" << std::endl;
         if (eprosima::fastdds::dds::RETCODE_OK ==
                 datawriter_->write((void*)&(req)))
         {
-            std::cout << "Injecting data for service with node id " << req.node_id() <<
-                " ,with transaction " << req.transaction_id() << "." << std::endl;
+            std::cout << "Data injected successfully" << std::endl;
         }
     }
 

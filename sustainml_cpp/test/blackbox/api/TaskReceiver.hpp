@@ -57,6 +57,12 @@ class TaskReceiver
             {
                 std::cout << "TaskReceiver receive data for service from node id " << data.node_id() <<
                     " ,with transaction " << data.transaction_id() << "." << std::endl;
+
+                {
+                    std::unique_lock<std::mutex> lock(task_inj_->mtx_);
+                    task_inj_->data_ = data;
+                }
+                task_inj_->cv_.notify_one();
             }
         }
 
@@ -134,15 +140,18 @@ public:
         }
 
         // CREATE THE READER
-        eprosima::fastdds::dds::DataReaderQos wqos =
-                eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT;
+        eprosima::fastdds::dds::DataReaderQos rqos = eprosima::fastdds::dds::DATAREADER_QOS_DEFAULT;
+        rqos.reliability().kind = eprosima::fastdds::dds::RELIABLE_RELIABILITY_QOS;
+        rqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
+        rqos.history().kind = eprosima::fastdds::dds::KEEP_LAST_HISTORY_QOS;
+        rqos.history().depth = 1;
 
-        wqos.resource_limits().max_instances = 500;
-        wqos.resource_limits().max_samples_per_instance = 1;
+        rqos.resource_limits().max_instances = 500;
+        rqos.resource_limits().max_samples_per_instance = 1;
 
         datareader_ = subscriber_->create_datareader(
             topic_,
-            wqos,
+            rqos,
             &listener_);
 
         if (datareader_ == nullptr)
@@ -175,8 +184,6 @@ public:
     {
         std::unique_lock<std::mutex> lock(mtx_);
 
-        std::cout << "TaskReceiver is waiting discovery..." << std::endl;
-
         if (timeout == std::chrono::seconds::zero())
         {
             cv_.wait(lock, [&]()
@@ -197,25 +204,24 @@ public:
         return matched_ == expected_matches;
     }
 
-    bool get_data(
-            typename T::type& data,
+    typename T::type wait_for_data(
             std::chrono::milliseconds timeout)
     {
-        eprosima::fastdds::dds::SampleInfo info;
         auto start = std::chrono::steady_clock::now();
 
-        while (std::chrono::steady_clock::now() - start < timeout)
+        std::unique_lock<std::mutex> lock(mtx_);
+        if (!cv_.wait_for(lock, timeout, [this]() -> bool
+                {
+                    return data_ != typename T::type();
+                }))
         {
-            if (eprosima::fastdds::dds::RETCODE_OK ==
-                    datareader_->take_next_sample((void*)&data, &info))
-            {
-                return true;
-            }
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::cerr << "Error: Timeout while waiting for data." << std::endl;
+            return typename T::type();
         }
 
-        return false;
+        typename T::type response = data_;
+        data_ = typename T::type();
+        return response;
     }
 
 private:
@@ -237,6 +243,8 @@ private:
     std::condition_variable cv_;
 
     std::mutex mtx_;
+
+    typename T::type data_;
 
 };
 

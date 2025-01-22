@@ -87,7 +87,7 @@ class ManagedNodeService
             res.configuration(req.configuration());
 
             managed_node_->cv_.notify_all();
-            std::cout << "Sending back response" << req.node_id() << std::endl;
+            std::cout << "Sending back response from " << req.node_id() << std::endl;
         }
 
         ManagedNodeService* managed_node_;

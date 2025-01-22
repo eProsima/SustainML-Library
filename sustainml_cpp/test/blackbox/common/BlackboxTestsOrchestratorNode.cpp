@@ -92,9 +92,17 @@ TEST(OrchestratorNode, OrchestratorConfigurationService)
 {
     std::shared_ptr<TestOrchestratorNodeHandle> tonh = std::make_shared<TestOrchestratorNodeHandle>();
 
+    tonh->prepare_expected_data(nodes_ready_expected_data);
+
     orchestrator::OrchestratorNode orchestrator(*(tonh.get()));
 
+    MLModelMetadataManagedNodeService node;
+    node.start();
+
     types::RequestType req;
+    req.node_id(static_cast<long>(NodeID::ID_ML_MODEL_METADATA));
+    req.transaction_id(1);
+    req.configuration("Test");
     types::ResponseType res;
 
     ASSERT_TRUE(orchestrator.configuration_request(req, res));
