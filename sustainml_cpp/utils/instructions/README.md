@@ -11,8 +11,9 @@ The next steps needs to be followed to do so while trying to regenerate SustainM
     `cd sustainml_cpp/utils/scripts && bash update_types.sh`
 
 1. Manually introduce the `sustainml_cpp/src/cpp/types/typesImpl.hpp` changes in `sustainml_cpp/include/sustainml_cpp/types/types.hpp`, and applying these changes:
-    1. Copy the complete class `ClassNameImpl` in the _types.h_ file
+    1. Copy the complete class `ClassNameImpl` in the _types.hpp_ file
     1. Rename it as `ClassName` (remove `Impl` suffix), as well as all its usage in its methods and comments.
+    1. Remove all code from the methods, leaving only their definitions.
     1. Introduce the following line right after the _public_ declaration:
 
         `using impl_type = ClassNameImpl;`
@@ -42,8 +43,9 @@ The next steps needs to be followed to do so while trying to regenerate SustainM
                 ClassNameImpl* impl_;
                 friend class ClassNameImpl;
         ```
+    1. Please review the existing classes in the library and ensure that the new one follows the same style.
 
-1. Manually introduce the `sustainml_cpp/src/cpp/types/typesImpl.cxx` changes in `sustainml_cpp/src/cpp/types/typesImpl.cpp`, and applying these changes:
+1. Manually introduce the `sustainml_cpp/src/cpp/types/typesImpl.hpp` changes in `sustainml_cpp/src/cpp/types/types.cpp`, and applying these changes:
     1. Copy the complete class `ClassNameImpl` in the _types.cpp_ file
     1. Rename it as `ClassName` (remove `Impl` suffix), as well as all its usage in its methods and comments.
     1. Make all methods to call the corresponding `ClassNameImpl` method. That applies also to operators, constructor and destructor. The following snippet is an example, but for any other case, please review the already implemented classes to mimic:
