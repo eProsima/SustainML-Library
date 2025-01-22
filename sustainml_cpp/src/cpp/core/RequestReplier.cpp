@@ -29,10 +29,12 @@ namespace core {
 RequestReplier::RequestReplier(
     std::function<void(void*)> callback,
     const char* topicw,
-    const char* topicr)
+    const char* topicr,
+    void* data)
     : callback_(callback)
     , topicw_(topicw)
     , topicr_(topicr)
+    , data_(data)
     , participant_(nullptr)
     , typeRes_(new ResponseTypeImplPubSubType())
     , typeReq_(new RequestTypeImplPubSubType())
@@ -58,13 +60,13 @@ RequestReplier::RequestReplier(
     // Create a Topics
     if(std::string(topicw_) == "sustainml/request")
     {
-    topicR_= participant_->create_topic(topicr_, typeRes_.get_type_name(), TOPIC_QOS_DEFAULT);
-    topicW_= participant_->create_topic(topicw_, typeReq_.get_type_name(), TOPIC_QOS_DEFAULT);
+        topicR_= participant_->create_topic(topicr_, typeRes_.get_type_name(), TOPIC_QOS_DEFAULT);
+        topicW_= participant_->create_topic(topicw_, typeReq_.get_type_name(), TOPIC_QOS_DEFAULT);
     }
     else
     {
-    topicR_= participant_->create_topic(topicr_, typeReq_.get_type_name(), TOPIC_QOS_DEFAULT);
-    topicW_= participant_->create_topic(topicw_, typeRes_.get_type_name(), TOPIC_QOS_DEFAULT);
+        topicR_= participant_->create_topic(topicr_, typeReq_.get_type_name(), TOPIC_QOS_DEFAULT);
+        topicW_= participant_->create_topic(topicw_, typeRes_.get_type_name(), TOPIC_QOS_DEFAULT);
     }
 
     // Configure DataReader QoS
@@ -122,39 +124,13 @@ void RequestReplier::RequestReplyControlListener::on_data_available(
 {
     // Create a data and SampleInfo instance
     SampleInfo info;
-    void* data;
-
-    if (reader->get_topicdescription()->get_type_name() == node_->typeReq_.get_type_name())
-    {
-        data = &req_;
-
-    }
-    else if (reader->get_topicdescription()->get_type_name() == node_->typeRes_.get_type_name())
-    {
-        data = &res_;
-    }
-    else
-    {
-        return;
-    }
 
     // Keep taking data until there is nothing to take
-    while (reader->take_next_sample(data, &info) == RETCODE_OK)
+    while (reader->take_next_sample(node_->data_, &info) == RETCODE_OK)
     {
         if (info.valid_data)
         {
-            std::cout << "Received new data value for topic "
-                << reader->get_topicdescription()->get_name()
-                << " with type "
-                << reader->get_topicdescription()->get_type_name()
-                << std::endl;
-            node_->callback_(data);
-        }
-        else
-        {
-            std::cout << "Remote writer for topic "
-                << reader->get_topicdescription()->get_name()
-                << " is dead" << std::endl;
+            node_->callback_(node_->data_);
         }
     }
 }

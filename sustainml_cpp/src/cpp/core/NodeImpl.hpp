@@ -170,6 +170,8 @@ protected:
 
     RequestReplyListener& req_res_listener_;
 
+    RequestTypeImpl req_data_;
+
 private:
 
     /**

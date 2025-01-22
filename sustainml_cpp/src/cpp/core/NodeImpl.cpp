@@ -89,19 +89,14 @@ NodeImpl::NodeImpl(
                         RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
                         types::RequestType req;
                         req = in;
-                        std::cout << "Size of request received: " << sizeof(req) << " bytes" << std::endl;
-                        std::cout << "Configuration received: " << static_cast<RequestTypeImpl*>(input)->configuration() << std::endl;
-                        std::cout << "Node ID " << static_cast<int32_t>(common::get_node_id_from_name(name))
-                                  << " receive request for node_id " << req.node_id() << std::endl;
+
                         if (req.node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
                         {
-                            std::cout << "Request successfully receive in " << name << std::endl;
-                            std::cout << "Configuring..." << std::endl;
                             types::ResponseType res;
                             req_res_listener_.on_configuration_request(req, res);
                             req_res_->write_res(res.get_impl());
                         }
-                    }, "sustainml/response", "sustainml/request");
+                    }, "sustainml/response", "sustainml/request", &req_data_);
 
     if (!init(name))
     {
@@ -127,19 +122,14 @@ NodeImpl::NodeImpl(
                         RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
                         types::RequestType req;
                         req = in;
-                        std::cout << "Size of request received: " << sizeof(req) << " bytes" << std::endl;
-                        std::cout << "Configuration received: " << static_cast<RequestTypeImpl*>(input)->configuration() << std::endl;
-                        std::cout << "Node ID " << static_cast<int32_t>(common::get_node_id_from_name(name))
-                                  << " receive request for node_id " << req.node_id() << std::endl;
+
                         if (req.node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
                         {
-                            std::cout << "Request successfully receive in " << name << std::endl;
-                            std::cout << "Configuring..." << std::endl;
                             types::ResponseType res;
                             req_res_listener_.on_configuration_request(req, res);
                             req_res_->write_res(res.get_impl());
                         }
-                    }, "sustainml/response", "sustainml/request");
+                    }, "sustainml/response", "sustainml/request", &req_data_);
 
     if (!init(name, opts))
     {
