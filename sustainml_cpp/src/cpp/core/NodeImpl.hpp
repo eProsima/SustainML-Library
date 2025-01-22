@@ -24,6 +24,7 @@
 
 #include <core/Options.hpp>
 #include <core/RequestReplyListener.hpp>
+#include <core/RequestReplier.hpp>
 #include <types/typesImplPubSubTypes.hpp>
 
 #include <utility>
@@ -53,7 +54,6 @@ namespace core {
 
 class Dispatcher;
 class Node;
-class RequestReplyListener;
 struct Options;
 
 /**
@@ -165,6 +165,8 @@ protected:
     static std::atomic<bool> terminate_;
 
     NodeStatusImpl node_status_;
+
+    RequestReplier* req_res_;
 
     RequestReplyListener& req_res_listener_;
 

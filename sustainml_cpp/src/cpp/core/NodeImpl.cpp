@@ -23,8 +23,9 @@
 #include <fastdds/dds/topic/TypeSupport.hpp>
 
 #include <common/Common.hpp>
-#include <core/NodeImpl.hpp>
 #include <core/Dispatcher.hpp>
+#include <core/NodeImpl.hpp>
+#include <core/Options.hpp>
 #include <types/typesImplPubSubTypes.hpp>
 #include <types/typesImplTypeObjectSupport.hpp>
 
@@ -83,9 +84,28 @@ NodeImpl::NodeImpl(
     , control_listener_(this)
     , req_res_listener_(req_res_listener)
 {
+    req_res_ = new RequestReplier([this, name](void* input)
+                    {
+                        RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
+                        types::RequestType req;
+                        req = in;
+                        std::cout << "Size of request received: " << sizeof(req) << " bytes" << std::endl;
+                        std::cout << "Configuration received: " << static_cast<RequestTypeImpl*>(input)->configuration() << std::endl;
+                        std::cout << "Node ID " << static_cast<int32_t>(common::get_node_id_from_name(name))
+                                  << " receive request for node_id " << req.node_id() << std::endl;
+                        if (req.node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
+                        {
+                            std::cout << "Request successfully receive in " << name << std::endl;
+                            std::cout << "Configuring..." << std::endl;
+                            types::ResponseType res;
+                            req_res_listener_.on_configuration_request(req, res);
+                            req_res_->write_res(res.get_impl());
+                        }
+                    }, "sustainml/response", "sustainml/request");
+
     if (!init(name))
     {
-        EPROSIMA_LOG_ERROR(NODE, "Initialization Failed with the provided Options");
+        EPROSIMA_LOG_ERROR(NODE, "Initialization Failed");
     }
 }
 
@@ -102,6 +122,25 @@ NodeImpl::NodeImpl(
     , control_listener_(this)
     , req_res_listener_(req_res_listener)
 {
+    req_res_ = new RequestReplier([this, name](void* input)
+                    {
+                        RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
+                        types::RequestType req;
+                        req = in;
+                        std::cout << "Size of request received: " << sizeof(req) << " bytes" << std::endl;
+                        std::cout << "Configuration received: " << static_cast<RequestTypeImpl*>(input)->configuration() << std::endl;
+                        std::cout << "Node ID " << static_cast<int32_t>(common::get_node_id_from_name(name))
+                                  << " receive request for node_id " << req.node_id() << std::endl;
+                        if (req.node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
+                        {
+                            std::cout << "Request successfully receive in " << name << std::endl;
+                            std::cout << "Configuring..." << std::endl;
+                            types::ResponseType res;
+                            req_res_listener_.on_configuration_request(req, res);
+                            req_res_->write_res(res.get_impl());
+                        }
+                    }, "sustainml/response", "sustainml/request");
+
     if (!init(name, opts))
     {
         EPROSIMA_LOG_ERROR(NODE, "Initialization Failed with the provided Options");

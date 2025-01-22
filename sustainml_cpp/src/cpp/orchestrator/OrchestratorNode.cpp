@@ -16,12 +16,14 @@
  * @file OrchestratorNode.cpp
  */
 
+#include <sustainml_cpp/core/RequestReplier.hpp>
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
 
 #include "ModuleNodeProxyFactory.hpp"
 #include "TaskDB.ipp"
 
 #include <common/Common.hpp>
+#include <core/RequestReplier.hpp>
 #include <orchestrator/TaskManager.hpp>
 #include <types/typesImplPubSubTypes.hpp>
 #include <types/typesImplTypeObjectSupport.hpp>
@@ -113,6 +115,21 @@ OrchestratorNode::OrchestratorNode(
     task_man_(new TaskManager()),
     participant_listener_(new OrchestratorParticipantListener(this))
 {
+    req_res_ = new core::RequestReplier([this](void* input)
+                    {
+                        ResponseTypeImpl* in = static_cast<ResponseTypeImpl*>(input);
+                        types::ResponseType res;
+                        res = in;
+                        std::cout << "Size of response received: " << sizeof(res) << " bytes" << std::endl;
+                        std::cout << "Configuration received: " << static_cast<ResponseTypeImpl*>(input)->configuration() << std::endl;
+                        std::cout << "Response receive response from node_id " << res.node_id() << std::endl;
+                        {
+                            std::lock_guard<std::mutex> lock(this->mtx_);
+                            this->res_ = res;
+                        }
+                        this->cv_.notify_all();
+                    }, "sustainml/request", "sustainml/response");
+
     if (!init())
     {
         EPROSIMA_LOG_ERROR(ORCHESTRATOR, "Orchestrator initialization Failed");
@@ -484,8 +501,14 @@ void OrchestratorNode::send_control_command(
 types::ResponseType OrchestratorNode::configuration_request(
         const types::RequestType& req)
 {
-    //TODO: Implement this method
-    types::ResponseType res;
+    req_res_->write_req(req.get_impl());
+    std::unique_lock<std::mutex> lck(mtx_);
+    cv_.wait(lck, [this, &req]
+            {
+                return res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id();
+            });
+    types::ResponseType res = res_;
+    res_ = types::ResponseType();
     return res;
 }
 
