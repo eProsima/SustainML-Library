@@ -103,9 +103,9 @@ TEST(OrchestratorNode, OrchestratorConfigurationService)
     req.node_id(static_cast<long>(NodeID::ID_ML_MODEL_METADATA));
     req.transaction_id(1);
     req.configuration("Test");
-    types::ResponseType res;
+    types::ResponseType res = orchestrator.configuration_request(req);
 
-    ASSERT_TRUE(orchestrator.configuration_request(req, res));
+    ASSERT_TRUE(res.success());
     orchestrator.destroy();
 }
 

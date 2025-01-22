@@ -179,9 +179,8 @@ public:
      * @param [in] req configuration request, contain which node and configuration file
      * @param [out] res response from the node with its new configuration
      */
-    bool configuration_request(
-            const types::RequestType req,
-            const types::ResponseType& res);
+    types::ResponseType configuration_request(
+            const types::RequestType& req);
 
     /**
      * @brief Public method to get the mutex in order to correctly synchronise user

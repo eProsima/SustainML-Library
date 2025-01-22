@@ -2519,7 +2519,7 @@ public:
      * @brief This function returns the implementation
      * @return Pointer to implementation
      */
-    RequestTypeImpl* get_impl();
+    RequestTypeImpl* get_impl() const;
 
     /*!
      * @brief This function retrives the implementation type info
@@ -2706,7 +2706,7 @@ public:
      * @brief This function returns the implementation
      * @return Pointer to implementation
      */
-    ResponseTypeImpl* get_impl();
+    ResponseTypeImpl* get_impl() const;
 
     /*!
      * @brief This function retrives the implementation type info

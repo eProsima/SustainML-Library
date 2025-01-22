@@ -2234,7 +2234,7 @@ std::string& RequestType::configuration()
     return impl_->configuration();
 }
 
-RequestTypeImpl* RequestType::get_impl()
+RequestTypeImpl* RequestType::get_impl() const
 {
     return impl_;
 }
@@ -2398,7 +2398,7 @@ std::string& ResponseType::configuration()
     return impl_->configuration();
 }
 
-ResponseTypeImpl* ResponseType::get_impl()
+ResponseTypeImpl* ResponseType::get_impl() const
 {
     return impl_;
 }
