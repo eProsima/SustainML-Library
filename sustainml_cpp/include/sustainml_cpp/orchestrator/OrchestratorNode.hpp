@@ -116,6 +116,7 @@ public:
      * @param [in] task_id id identifier of the task that has new data available
      * @param [in] node_id id identifier of the node that triggered the new status
      * @param [in,out]  data pointer that will be redirected to the data
+     * @return RetCode_t indicating the result of the operation
      */
     RetCode_t get_task_data(
             const types::TaskId& task_id,
@@ -126,7 +127,7 @@ public:
      * @brief Get the node status from DB given node identifier.
      * @param [in] node_id id identifier of the node that triggered the new status
      * @param [in,out]  status pointer that will be redirected to the status data
-     *
+     * @return RetCode_t indicating the result of the operation
      */
     RetCode_t get_node_status(
             const NodeID& node_id,
@@ -136,6 +137,7 @@ public:
      * @brief This method reserves a new Task cache in the DB and returns the place
      * where to fill the UserInput entry structure.
      * @note It must be called before start_task()
+     * @return A pair containing the TaskId and a pointer to the UserInput structure.
      */
     std::pair<types::TaskId, types::UserInput*> prepare_new_task();
 
@@ -144,6 +146,7 @@ public:
      * where to fill the UserInput entry structure.
      * @param [in] task_id identifier of the previous task from which to iterate
      * @note It must be called before start_task()
+     * @return A pair containing the TaskId and a pointer to the UserInput structure.
      */
     std::pair<types::TaskId, types::UserInput*> prepare_new_iteration(
             const types::TaskId& task_id);
@@ -177,6 +180,7 @@ public:
     /**
      * @brief This method sends a request to node via service for changing its configuration and returns the response.
      * @param [in] req configuration request, contain which node and configuration file
+     * @return The response type indicating the result of the configuration request.
      */
     types::ResponseType configuration_request(
             const types::RequestType& req);
@@ -184,6 +188,7 @@ public:
     /**
      * @brief Public method to get the mutex in order to correctly synchronise user
      * handle calls.
+     * @return A reference to the mutex.
      */
     inline std::mutex& get_mutex()
     {
@@ -192,6 +197,7 @@ public:
 
     /**
      * @brief Used to retrieve the associated OrchestratorNodeHandle.
+     * @return A pointer to the OrchestratorNodeHandle.
      */
     inline OrchestratorNodeHandle* get_handler() const
     {
