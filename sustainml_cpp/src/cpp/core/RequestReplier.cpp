@@ -1,4 +1,4 @@
-// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2025 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ namespace sustainml {
 namespace core {
 
 RequestReplier::RequestReplier(
-    std::function<void(void*)> callback,
-    const char* topicw,
-    const char* topicr,
-    void* data)
+        std::function<void(void*)> callback,
+        const char* topicw,
+        const char* topicr,
+        void* data)
     : callback_(callback)
     , topicw_(topicw)
     , topicr_(topicr)
@@ -58,15 +58,15 @@ RequestReplier::RequestReplier(
     typeReq_.register_type(participant_);
 
     // Create a Topics
-    if(std::string(topicw_) == "sustainml/request")
+    if (std::string(topicw_) == "sustainml/request")
     {
-        topicR_= participant_->create_topic(topicr_, typeRes_.get_type_name(), TOPIC_QOS_DEFAULT);
-        topicW_= participant_->create_topic(topicw_, typeReq_.get_type_name(), TOPIC_QOS_DEFAULT);
+        topicR_ = participant_->create_topic(topicr_, typeRes_.get_type_name(), TOPIC_QOS_DEFAULT);
+        topicW_ = participant_->create_topic(topicw_, typeReq_.get_type_name(), TOPIC_QOS_DEFAULT);
     }
     else
     {
-        topicR_= participant_->create_topic(topicr_, typeReq_.get_type_name(), TOPIC_QOS_DEFAULT);
-        topicW_= participant_->create_topic(topicw_, typeRes_.get_type_name(), TOPIC_QOS_DEFAULT);
+        topicR_ = participant_->create_topic(topicr_, typeReq_.get_type_name(), TOPIC_QOS_DEFAULT);
+        topicW_ = participant_->create_topic(topicw_, typeRes_.get_type_name(), TOPIC_QOS_DEFAULT);
     }
 
     // Configure DataReader QoS
@@ -96,19 +96,19 @@ RequestReplier::~RequestReplier()
 }
 
 void RequestReplier::write_res(
-    ResponseTypeImpl* res)
+        ResponseTypeImpl* res)
 {
     writer_->write(res);
 }
 
 void RequestReplier::write_req(
-    RequestTypeImpl* req)
+        RequestTypeImpl* req)
 {
     writer_->write(req);
 }
 
 RequestReplier::RequestReplyControlListener::RequestReplyControlListener(
-    RequestReplier* node)
+        RequestReplier* node)
     : node_(node)
 {
 
@@ -120,7 +120,7 @@ RequestReplier::RequestReplyControlListener::~RequestReplyControlListener()
 }
 
 void RequestReplier::RequestReplyControlListener::on_data_available(
-    eprosima::fastdds::dds::DataReader* reader)
+        eprosima::fastdds::dds::DataReader* reader)
 {
     // Create a data and SampleInfo instance
     SampleInfo info;
@@ -136,27 +136,27 @@ void RequestReplier::RequestReplyControlListener::on_data_available(
 }
 
 void RequestReplier::RequestReplyControlListener::on_subscription_matched(
-    eprosima::fastdds::dds::DataReader* reader,
-    const eprosima::fastdds::dds::SubscriptionMatchedStatus& status)
+        eprosima::fastdds::dds::DataReader* reader,
+        const eprosima::fastdds::dds::SubscriptionMatchedStatus& status)
 {
 
     // New remote DataWriter discovered
     if (status.current_count_change == 1)
     {
-    matched_ = status.current_count;
-    std::cout << "Subscriber matched." << std::endl;
+        matched_ = status.current_count;
+        std::cout << "Subscriber matched." << std::endl;
     }
     // New remote DataWriter undiscovered
     else if (status.current_count_change == -1)
     {
-    matched_ = status.current_count;
-    std::cout << "Subscriber unmatched." << std::endl;
+        matched_ = status.current_count;
+        std::cout << "Subscriber unmatched." << std::endl;
     }
     // Non-valid option
     else
     {
-    std::cout << status.current_count_change
-          << " is not a valid value for SubscriptionMatchedStatus current count change" << std::endl;
+        EPROSIMA_LOG_ERROR(RequestReplier, status.current_count_change
+                << " is not a valid value for SubscriptionMatchedStatus current count change");
     }
 }
 

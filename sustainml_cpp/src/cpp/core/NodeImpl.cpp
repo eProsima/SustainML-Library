@@ -87,12 +87,12 @@ NodeImpl::NodeImpl(
     req_res_ = new RequestReplier([this, name](void* input)
                     {
                         RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
-                        types::RequestType req;
-                        req = in;
 
-                        if (req.node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
+                        if (in->node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
                         {
                             types::ResponseType res;
+                            types::RequestType req;
+                            req = *in;
                             req_res_listener_.on_configuration_request(req, res);
                             req_res_->write_res(res.get_impl());
                         }
@@ -120,12 +120,12 @@ NodeImpl::NodeImpl(
     req_res_ = new RequestReplier([this, name](void* input)
                     {
                         RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
-                        types::RequestType req;
-                        req = in;
 
-                        if (req.node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
+                        if (in->node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
                         {
                             types::ResponseType res;
+                            types::RequestType req;
+                            req = *in;
                             req_res_listener_.on_configuration_request(req, res);
                             req_res_->write_res(res.get_impl());
                         }
