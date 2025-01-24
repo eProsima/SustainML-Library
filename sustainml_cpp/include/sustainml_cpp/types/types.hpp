@@ -2440,7 +2440,7 @@ public:
      * @param x Reference to the object RequestTypeImpl that will be copied.
      */
     eProsima_user_DllExport RequestType& operator =(
-            const RequestTypeImpl* x);
+            const RequestTypeImpl& x);
 
     /*!
      * @brief Comparison operator.
@@ -2594,7 +2594,7 @@ public:
      * @param x Reference to the object ResponseTypeImpl that will be copied.
      */
     eProsima_user_DllExport ResponseType& operator =(
-            const ResponseTypeImpl* x);
+            const ResponseTypeImpl& x);
 
     /*!
      * @brief Comparison operator.

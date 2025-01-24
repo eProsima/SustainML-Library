@@ -118,12 +118,10 @@ OrchestratorNode::OrchestratorNode(
     req_res_ = new core::RequestReplier([this](void* input)
                     {
                         ResponseTypeImpl* in = static_cast<ResponseTypeImpl*>(input);
-                        types::ResponseType res;
-                        res = in;
 
                         {
                             std::lock_guard<std::mutex> lock(this->mtx_);
-                            this->res_ = res;
+                            this->res_ = *in;
                         }
                         this->cv_.notify_all();
                     }, "sustainml/request", "sustainml/response", res_.get_impl());

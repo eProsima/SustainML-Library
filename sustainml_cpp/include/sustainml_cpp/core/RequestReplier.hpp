@@ -68,7 +68,7 @@ public:
             ResponseTypeImpl* res);
 
     /**
-    * @brief Method used to send the request of configuration in the OrchestratorNode.
+     * @brief Method used to send the request of configuration in the OrchestratorNode.
      *
      * @param req Request message
      */
