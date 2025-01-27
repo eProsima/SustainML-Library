@@ -14,6 +14,8 @@
 """SustainML Example Python Node API."""
 
 from sustainml_py.nodes.HardwareConstraintsNode import HardwareConstraintsNode
+from sustainml_swig import ErrorCode
+
 
 # Manage signaling
 import signal
@@ -38,9 +40,20 @@ def task_callback(user_input, node_status, hw_constraints):
     hw_constraints.max_memory_footprint(100)
     hw_constraints.hardware_required(['PIM_AI_1chip'])
 
+# User Configuration Callback implementation
+# Inputs: req
+# Outputs: res
+def configuration_callback(req, res):
+    print (req.configuration())
+    res.node_id(req.node_id())
+    res.transaction_id(req.transaction_id())
+    res.configuration(req.configuration())
+    res.success(True)
+    res.err_code(ErrorCode.NO_ERROR)
+
 # Main workflow routine
 def run():
-    node = HardwareConstraintsNode(callback=task_callback)
+    node = HardwareConstraintsNode(callback=task_callback, service_callback=configuration_callback)
     global running
     running = True
     node.spin()

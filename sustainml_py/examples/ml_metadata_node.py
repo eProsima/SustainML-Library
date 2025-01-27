@@ -14,6 +14,8 @@
 """SustainML Example Python Node API."""
 
 from sustainml_py.nodes.MLModelMetadataNode import MLModelMetadataNode
+from sustainml_swig import ErrorCode
+
 
 # Manage signaling
 import signal
@@ -40,9 +42,20 @@ def task_callback(user_input, node_status, ml_model_metadata):
     ml_model_metadata.ml_model_metadata().append("Metadata")
     ml_model_metadata.ml_model_metadata().append("Properties")
 
+# User Configuration Callback implementation
+# Inputs: req
+# Outputs: res
+def configuration_callback(req, res):
+    print (req.configuration())
+    res.node_id(req.node_id())
+    res.transaction_id(req.transaction_id())
+    res.configuration(req.configuration())
+    res.success(True)
+    res.err_code(ErrorCode.NO_ERROR)
+
 # Main workflow routine
 def run():
-    node = MLModelMetadataNode(callback=task_callback)
+    node = MLModelMetadataNode(callback=task_callback, service_callback=configuration_callback)
     global running
     running = True
     node.spin()

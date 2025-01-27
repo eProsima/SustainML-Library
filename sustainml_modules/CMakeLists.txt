@@ -64,12 +64,12 @@ configure_project_cpp()
 # C++ Project
 ###############################################################################
 # Update submodules
-message(STATUS "Updating submodules")
-execute_process(
-    COMMAND git submodule update --recursive --init
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    RESULT_VARIABLE EXECUTE_RESULT
-    )
+# message(STATUS "Updating submodules")
+# execute_process(
+#     COMMAND git submodule update --recursive --init
+#     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#     RESULT_VARIABLE EXECUTE_RESULT
+#     )
 
 ###############################################################################
 # Test

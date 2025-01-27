@@ -15,8 +15,9 @@
 
 from sustainml_swig import AppRequirementsTaskListener as cpp_AppRequirementsTaskListener
 from sustainml_swig import AppRequirementsNode as cpp_AppRequirementsNode
+from sustainml_swig import RequestReplyListener as cpp_RequestReplyListener
 
-from sustainml_swig import AppRequirements, NodeStatus, UserInput
+from sustainml_swig import AppRequirements, NodeStatus, UserInput, RequestType, ResponseType
 
 class AppRequirementsTaskListener(cpp_AppRequirementsTaskListener):
 
@@ -38,18 +39,43 @@ class AppRequirementsTaskListener(cpp_AppRequirementsTaskListener):
         """ Invoke user callback """
         self.callback_(user_input, node_status, app_requirements)
 
+class RequestReplyListener(cpp_RequestReplyListener):
+
+    def __init__(self,
+                 callback):
+
+        self.callback_ = callback
+
+        # Parent class constructor
+        super().__init__()
+
+    # Callback
+    def on_configuration_request(
+            self,
+            req : RequestType,
+            res : ResponseType):
+
+        """ Invoke user callback """
+        self.callback_(req, res)
+
 # Proxy class to instantiate by the user
 class AppRequirementsNode:
 
     def __init__(self,
-                 callback = None):
+                 callback = None,
+                 service_callback = None):
 
         if callback == None:
             raise ValueError(
                 'AppRequirementsNode constructor expects a callback.')
 
+        if service_callback == None:
+            raise ValueError(
+                'AppRequirementsNode constructor expects a service callback.')
+
         self.listener_ = AppRequirementsTaskListener(callback)
-        self.node_ = cpp_AppRequirementsNode(self.listener_)
+        self.listener_service_ = RequestReplyListener(service_callback)
+        self.node_ = cpp_AppRequirementsNode(self.listener_, self.listener_service_)
 
     # Proxy method to run the node
     def spin(self):
