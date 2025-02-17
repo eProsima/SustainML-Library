@@ -274,6 +274,8 @@ class Orchestrator:
             user_input.modality(json_data.get('modality'))
         if (json_data.get('problem_short_description') is not None):
             user_input.problem_short_description(json_data.get('problem_short_description'))
+        if (json_data.get('problem_definition') is not None):
+            user_input.problem_definition(json_data.get('problem_definition'))
         #user_input.evaluation_metrics(evaluation_metrics)
         #user_input.model(model)
         # TODO add missing fields
@@ -285,10 +287,13 @@ class Orchestrator:
             hw_req = json_data.get('hardware_required')
         if (json_data.get('max_memory_footprint') is not None):
             mem_footprint = json_data.get('max_memory_footprint')
+        if (json_data.get('goal') is not None):
+            goal = json_data.get('goal')
 
         # Add extra data to user user_input
         extra_data = {'hardware_required': hw_req,
-                      'max_memory_footprint': mem_footprint}
+                      'max_memory_footprint': mem_footprint,
+                      'goal': goal}
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
