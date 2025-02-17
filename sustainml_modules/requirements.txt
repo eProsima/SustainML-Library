@@ -1,6 +1,7 @@
 carbontracker
 flask
 flask-socketio==5.2.0
+geocoder
 jsonschema
 kaggle
 networkx>=3.0
@@ -12,6 +13,7 @@ opencv-python>=4.9.0.80
 optimum
 Pillow>=9.3.0
 PyQt5>=5.15.10
+pynvml
 rdflib>=7.0.0
 timm
 torch>=2.1.2+cu121
