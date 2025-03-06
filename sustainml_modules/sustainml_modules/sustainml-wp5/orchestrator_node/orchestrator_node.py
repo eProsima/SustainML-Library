@@ -21,6 +21,7 @@ from sustainml_swig import OrchestratorNode as cpp_OrchestratorNode
 from sustainml_swig import NodeStatus
 import sustainml_swig
 import threading
+import json
 
 class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
 
@@ -243,6 +244,50 @@ class Orchestrator:
                        'carbon_intensity': carbon_intensity}
         return json_output
 
+    def get_orchestrator(self, task_id):
+
+        # retrieve node data
+        node_data = sustainml_swig.get_orchestrator(self.node_, task_id)
+        if node_data is None:
+            return {'Error': f"Failed to get {utils.string_node(utils.node_id.ORCHESTRATOR.value)} data for task {utils.string_task(task_id)}"}
+
+        # Parse data into json
+        task_json = {'problem_id': task_id.problem_id(), 'iteration_id': task_id.iteration_id()}
+        modality = node_data.modality()
+        problem_short_description = node_data.problem_short_description()
+        problem_definition = node_data.problem_definition()
+        inputs = node_data.inputs()
+        outputs = node_data.outputs()
+        minimum_samples = node_data.minimum_samples()
+        maximum_samples = node_data.maximum_samples()
+        optimize_carbon_footprint_manual = node_data.optimize_carbon_footprint_manual()
+        previous_iteration = node_data.previous_iteration()
+        optimize_carbon_footprint_auto = node_data.optimize_carbon_footprint_auto()
+        desired_carbon_footprint = node_data.desired_carbon_footprint()
+        geo_location_continent = node_data.geo_location_continent()
+        geo_location_region = node_data.geo_location_region()
+        extra_data_vector = node_data.extra_data()
+        extra_data_list = [s for s in extra_data_vector]
+        extra_data_bytes = bytes(extra_data_list)
+        extra_data_str = extra_data_bytes.decode('utf-8')
+        extra_data = json.loads(extra_data_str)
+        json_output = {'task_id': task_json,
+                   'modality': modality,
+                   'problem_short_description': problem_short_description,
+                   'problem_definition': problem_definition,
+                   'inputs': " ".join(inputs),
+                   'outputs': " ".join(outputs),
+                   'minimum_samples': minimum_samples,
+                   'maximum_samples': maximum_samples,
+                   'optimize_carbon_footprint_manual': optimize_carbon_footprint_manual,
+                   'previous_iteration': previous_iteration,
+                   'optimize_carbon_footprint_auto': optimize_carbon_footprint_auto,
+                   'desired_carbon_footprint': desired_carbon_footprint,
+                   'geo_location_continent': geo_location_continent,
+                   'geo_location_region': geo_location_region,
+                   'extra_data': extra_data}
+        return json_output
+
     def get_results(self, node_id, task_id):
         if task_id is None:
             task_id = self.get_last_task_id()
@@ -259,13 +304,34 @@ class Orchestrator:
             return self.get_hw_provider(task_id)
         elif node_id == utils.node_id.CARBONTRACKER.value:
             return self.get_carbontracker(task_id)
+        elif node_id == utils.node_id.ORCHESTRATOR.value:
+            return self.get_orchestrator(task_id)
         else:
             message = utils.string_node(node_id) + " node does not have any results to show."
             return {'message': message, 'task_id': utils.task_json(task_id)}
 
     def send_user_input(self, json_data):
-        pair = self.node_.prepare_new_task()
+        if json_data.get('previous_iteration') == 0:
+            pair = self.node_.prepare_new_task()
+        else:
+            previous_task = sustainml_swig.TaskId()
+            previous_task.iteration_id(json_data.get('previous_iteration'))
+            extra = json_data.get('extra_data', {})
+            previous_task.problem_id(extra.get('previous_problem_id'))
+            # Verify the last doesn't exist yet
+            existing_task = self.get_last_task_id()
+            if existing_task is not None:
+                if (previous_task.problem_id() == existing_task.problem_id() and
+                        previous_task.iteration_id() + 1 == existing_task.iteration_id()):
+                    print("Task already taken. Using :", utils.string_task(existing_task))
+                    return None
+            pair = self.node_.prepare_new_iteration(previous_task)
         task_id = pair[0]
+
+        print("Task:", utils.string_task(task_id))
+        print("Problem ID:", task_id.problem_id())      # Debugging
+        print("Iteration ID:", task_id.iteration_id())
+
         user_input = pair[1]
         self.handler_.register_task(task_id)
 
