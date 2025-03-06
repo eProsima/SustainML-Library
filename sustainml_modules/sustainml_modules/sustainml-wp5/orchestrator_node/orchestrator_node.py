@@ -238,10 +238,17 @@ class Orchestrator:
         carbon_footprint = node_data.carbon_footprint()
         energy_consumption = node_data.energy_consumption()
         carbon_intensity = node_data.carbon_intensity()
+        extra_data_vector = node_data.extra_data()
+        extra_data_list = [s for s in extra_data_vector]
+        extra_data_bytes = bytes(extra_data_list)
+        extra_data_str = extra_data_bytes.decode('utf-8')
+        extra_data = json.loads(extra_data_str)
         json_output = {'task_id': task_json,
                        'carbon_footprint': carbon_footprint,
                        'energy_consumption': energy_consumption,
-                       'carbon_intensity': carbon_intensity}
+                       'carbon_intensity': carbon_intensity,
+                       'extra_data': extra_data}
+
         return json_output
 
     def get_orchestrator(self, task_id):
@@ -370,11 +377,15 @@ class Orchestrator:
         hw_req = extra.get('hardware_required', utils.default_hw_requirement)
         mem_footprint = extra.get('max_memory_footprint', utils.default_mem_footprint)
         goal = extra.get('goal')
+        num_outputs = extra.get('num_outputs')
+        model_restrains = extra.get('model_restrains', [])
 
         # Add extra data to user user_input
         extra_data = {'hardware_required': hw_req,
                       'max_memory_footprint': mem_footprint,
-                      'goal': goal}
+                      'goal': goal,
+                      'num_outputs': num_outputs,
+                      'model_restrains': model_restrains}
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
