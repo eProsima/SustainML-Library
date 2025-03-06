@@ -461,6 +461,7 @@ RetCode_t OrchestratorNode::get_task_data(
                     ret = RetCode_t::RETCODE_OK;
                 }
             }
+            break;
         }
         default:
         {

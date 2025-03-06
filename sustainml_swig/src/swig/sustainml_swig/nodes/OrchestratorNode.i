@@ -126,6 +126,20 @@
         return node;
     }
 
+    types::UserInput* get_orchestrator(
+        sustainml::orchestrator::OrchestratorNode* orchestrator,
+        const types::TaskId& task_id)
+    {
+        void* data = nullptr;
+        types::UserInput* node = nullptr;
+        if (sustainml::RetCode_t::RETCODE_OK == orchestrator->get_task_data(
+                task_id, sustainml::NodeID::ID_ORCHESTRATOR, data))
+        {
+            node = static_cast<types::UserInput*>(data);
+        }
+        return node;
+    }
+
     types::TaskId* get_task_id(
         const sustainml::NodeID node_id,
         void* data)
