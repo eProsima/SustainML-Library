@@ -115,23 +115,7 @@ def results_args():
         return jsonify(json), 200
 
 
-    results = orchestrator.get_results(node_id, task_id)
-
-    if node_id == utils.node_id.CARBONTRACKER.value and 'carbon_footprint' in results:
-        if task_id is not None:
-            print("problem_id:", task_id.problem_id(), "iteration_id:", task_id.iteration_id())
-        num_outputs = results.get('extra_data', {})['num_outputs']
-
-        if num_outputs > 1:
-            print("Reiterating CarbonTracker node for multiple outputs")    # Debugging
-            user_json = orchestrator.get_orchestrator(task_id)
-            user_json.get('extra_data', {})['num_outputs'] = num_outputs - 1
-            user_json['previous_iteration'] = task_id.iteration_id()
-            user_json.get('extra_data', {})['previous_problem_id'] = task_id.problem_id()
-            user_json.get('extra_data', {})['model_restrains'] = results.get('extra_data', {})['model_restrains']
-            orchestrator.send_user_input(user_json)
-
-    return jsonify({utils.string_node(node_id): results}), 200
+    return jsonify({utils.string_node(node_id): orchestrator.get_results(node_id, task_id)}), 200
 
 # Flask server shutdown route
 @server.route('/shutdown', methods=['GET'])

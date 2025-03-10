@@ -25,8 +25,9 @@ import json
 
 class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
 
-    def __init__(self):
-
+    def __init__(self, orchestrator):
+        super().__init__()
+        self.orchestrator = orchestrator
         self.condition = threading.Condition()
         self.last_task_id = None
         self.node_status_ = {}
@@ -49,13 +50,14 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
     # Callback
     def on_new_node_output(
             self,
-            id : int,
+            id: int,
             data):
         task_id = sustainml_swig.get_task_id(id, data)
         if task_id is None:
             print(utils.string_node(id), "node output received.")
         else:
             print(utils.string_node(id), "node output received from task", utils.string_task(task_id))
+
         self.register_result(task_id, id)
 
     def register_task(self, task_id):
@@ -79,6 +81,33 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
             self.result_status[utils.string_task(task_id)][node_id] = True
             self.condition.notify_all()
 
+            # If the node is CarbonTracker and its output extra_data is non-empty, print a message
+            if node_id == utils.node_id.CARBONTRACKER.value:
+                print("Data results of CARBON")   # Debugging
+                carbon_data = sustainml_swig.get_carbontracker(self.orchestrator.node_, task_id)
+                try:
+                    extra_data_vector = carbon_data.extra_data()  # Vector de uint8_t
+                    extra_data_list = [s for s in extra_data_vector]
+                    extra_data_bytes = bytes(extra_data_list)
+                    extra_data_str = extra_data_bytes.decode('utf-8')
+                    extra_data = json.loads(extra_data_str)
+                except AttributeError:
+                    extra_data = None
+
+                if extra_data is not None and len(extra_data) > 0:
+                    print("Resend is going to be made")   # Debugging
+                    num_outputs = extra_data['num_outputs']
+                    print("Number of outputs:", num_outputs)    # Debugging
+
+                    if num_outputs > 1:
+                        print("Reiterating CarbonTracker node for multiple outputs")    # Debugging
+                        user_json = self.orchestrator.get_orchestrator(task_id)
+                        user_json.get('extra_data', {})['num_outputs'] = num_outputs - 1
+                        user_json['previous_iteration'] = task_id.iteration_id()
+                        user_json.get('extra_data', {})['previous_problem_id'] = task_id.problem_id()
+                        user_json.get('extra_data', {})['model_restrains'] = extra_data['model_restrains']
+                        self.orchestrator.send_user_input(user_json)
+
     def results_available(self, task_id, node_id):
         with self.condition:
             return self.result_status[utils.string_task(task_id)].get(node_id, False)
@@ -87,7 +116,7 @@ class Orchestrator:
 
     def __init__(self):
 
-        self.handler_ = OrchestratorNodeHandle()
+        self.handler_ = OrchestratorNodeHandle(self)
         self.node_ = cpp_OrchestratorNode(self.handler_)
 
     # Proxy method to run the node
