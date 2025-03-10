@@ -23,6 +23,7 @@
 #include <sustainml_cpp/types/types.hpp>
 
 #include <core/Options.hpp>
+#include <core/RequestReplyListener.hpp>
 #include <types/typesImplPubSubTypes.hpp>
 
 #include <utility>
@@ -52,6 +53,7 @@ namespace core {
 
 class Dispatcher;
 class Node;
+class RequestReplyListener;
 struct Options;
 
 /**
@@ -80,6 +82,17 @@ public:
             Node* node,
             const std::string& name,
             const Options& opts);
+
+    NodeImpl(
+            Node* node,
+            const std::string& name,
+            RequestReplyListener& req_res_listener);
+
+    NodeImpl(
+            Node* node,
+            const std::string& name,
+            const Options& opts,
+            RequestReplyListener& req_res_listener);
 
     ~NodeImpl();
 
@@ -152,6 +165,8 @@ protected:
     static std::atomic<bool> terminate_;
 
     NodeStatusImpl node_status_;
+
+    RequestReplyListener& req_res_listener_;
 
 private:
 

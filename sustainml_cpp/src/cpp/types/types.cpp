@@ -2118,4 +2118,296 @@ const std::type_info& CO2Footprint::impl_typeinfo()
     return typeid(CO2FootprintImpl);
 }
 
+RequestType::RequestType()
+{
+    impl_ = new RequestTypeImpl;
+}
+
+RequestType::~RequestType()
+{
+    if (nullptr != impl_)
+    {
+        delete impl_;
+    }
+}
+
+RequestType::RequestType(
+        const RequestType& x)
+{
+    impl_ = new RequestTypeImpl;
+
+    this->impl_->node_id() = x.impl_->node_id();
+    this->impl_->transaction_id() = x.impl_->transaction_id();
+    this->impl_->configuration() = x.impl_->configuration();
+}
+
+RequestType::RequestType(
+        RequestType&& x) noexcept
+{
+    this->impl_ = x.impl_;
+    x.impl_ = nullptr;
+}
+
+RequestType& RequestType::operator =(
+        const RequestType& x)
+{
+    this->impl_->node_id() = x.impl_->node_id();
+    this->impl_->transaction_id() = x.impl_->transaction_id();
+    this->impl_->configuration() = x.impl_->configuration();
+    return *this;
+}
+
+RequestType& RequestType::operator =(
+        RequestType&& x) noexcept
+{
+    if (x.impl_ != this->impl_)
+    {
+        delete this->impl_;
+        this->impl_ = x.impl_;
+        x.impl_ = nullptr;
+    }
+
+    return *this;
+}
+
+bool RequestType::operator ==(
+        const RequestType& x) const
+{
+    return (this->impl_ == x.impl_);
+}
+
+bool RequestType::operator !=(
+        const RequestType& x) const
+{
+    return !(*this == x);
+}
+
+void RequestType::node_id(
+        int32_t _node_id)
+{
+    impl_->node_id(_node_id);
+}
+
+int32_t RequestType::node_id() const
+{
+    return impl_->node_id();
+}
+
+int32_t& RequestType::node_id()
+{
+    return impl_->node_id();
+}
+
+void RequestType::transaction_id(
+        int32_t _transaction_id)
+{
+    impl_->transaction_id(_transaction_id);
+}
+
+int32_t RequestType::transaction_id() const
+{
+    return impl_->transaction_id();
+}
+
+int32_t& RequestType::transaction_id()
+{
+    return impl_->transaction_id();
+}
+
+void RequestType::configuration(
+        const std::string& _configuration)
+{
+    impl_->configuration(_configuration);
+}
+
+void RequestType::configuration(
+        std::string&& _configuration)
+{
+    impl_->configuration(std::forward<std::string>(_configuration));
+}
+
+const std::string& RequestType::configuration() const
+{
+    return impl_->configuration();
+}
+
+std::string& RequestType::configuration()
+{
+    return impl_->configuration();
+}
+
+RequestTypeImpl* RequestType::get_impl() const
+{
+    return impl_;
+}
+
+const std::type_info& RequestType::impl_typeinfo()
+{
+    return typeid(RequestTypeImpl);
+}
+
+ResponseType::ResponseType()
+{
+    impl_ = new ResponseTypeImpl;
+}
+
+ResponseType::~ResponseType()
+{
+    if (nullptr != impl_)
+    {
+        delete impl_;
+    }
+}
+
+ResponseType::ResponseType(
+        const ResponseType& x)
+{
+    impl_ = new ResponseTypeImpl;
+
+    this->impl_->node_id() = x.impl_->node_id();
+    this->impl_->transaction_id() = x.impl_->transaction_id();
+    this->impl_->success() = x.impl_->success();
+    this->impl_->err_code() = x.impl_->err_code();
+    this->impl_->configuration() = x.impl_->configuration();
+}
+
+ResponseType::ResponseType(
+        ResponseType&& x) noexcept
+{
+    this->impl_ = x.impl_;
+    x.impl_ = nullptr;
+}
+
+ResponseType& ResponseType::operator =(
+        const ResponseType& x)
+{
+    this->impl_->node_id() = x.impl_->node_id();
+    this->impl_->transaction_id() = x.impl_->transaction_id();
+    this->impl_->success() = x.impl_->success();
+    this->impl_->err_code() = x.impl_->err_code();
+    this->impl_->configuration() = x.impl_->configuration();
+    return *this;
+}
+
+ResponseType& ResponseType::operator =(
+        ResponseType&& x) noexcept
+{
+    if (x.impl_ != this->impl_)
+    {
+        delete this->impl_;
+        this->impl_ = x.impl_;
+        x.impl_ = nullptr;
+    }
+
+    return *this;
+}
+
+bool ResponseType::operator ==(
+        const ResponseType& x) const
+{
+    return (this->impl_ == x.impl_);
+}
+
+bool ResponseType::operator !=(
+        const ResponseType& x) const
+{
+    return !(*this == x);
+}
+
+void ResponseType::node_id(
+        int32_t _node_id)
+{
+    impl_->node_id(_node_id);
+}
+
+int32_t ResponseType::node_id() const
+{
+    return impl_->node_id();
+}
+
+int32_t& ResponseType::node_id()
+{
+    return impl_->node_id();
+}
+
+void ResponseType::transaction_id(
+        int32_t _transaction_id)
+{
+    impl_->transaction_id(_transaction_id);
+}
+
+int32_t ResponseType::transaction_id() const
+{
+    return impl_->transaction_id();
+}
+
+int32_t& ResponseType::transaction_id()
+{
+    return impl_->transaction_id();
+}
+
+void ResponseType::success(
+        bool _success)
+{
+    impl_->success(_success);
+}
+
+bool ResponseType::success() const
+{
+    return impl_->success();
+}
+
+bool& ResponseType::success()
+{
+    return impl_->success();
+}
+
+void ResponseType::err_code(
+        ErrorCode _err_code)
+{
+    impl_->err_code(_err_code);
+}
+
+ErrorCode ResponseType::err_code() const
+{
+    return impl_->err_code();
+}
+
+ErrorCode& ResponseType::err_code()
+{
+    return impl_->err_code();
+}
+
+void ResponseType::configuration(
+        const std::string& _configuration)
+{
+    impl_->configuration(_configuration);
+}
+
+void ResponseType::configuration(
+        std::string&& _configuration)
+{
+    impl_->configuration(std::forward<std::string>(_configuration));
+}
+
+const std::string& ResponseType::configuration() const
+{
+    return impl_->configuration();
+}
+
+std::string& ResponseType::configuration()
+{
+    return impl_->configuration();
+}
+
+ResponseTypeImpl* ResponseType::get_impl() const
+{
+    return impl_;
+}
+
+const std::type_info& ResponseType::impl_typeinfo()
+{
+    return typeid(ResponseTypeImpl);
+}
+
 } // namespace types

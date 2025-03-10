@@ -46,6 +46,28 @@ MLModelMetadataNode::MLModelMetadataNode(
     opts.wqos.resource_limits().max_instances = 500;
     opts.wqos.resource_limits().max_samples_per_instance = 1;
     opts.wqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
+
+    init(opts);
+}
+
+MLModelMetadataNode::MLModelMetadataNode(
+        MLModelMetadataTaskListener& user_listener,
+        sustainml::core::RequestReplyListener& req_res_listener)
+    : Node(common::ML_MODEL_METADATA_NODE, req_res_listener)
+    , user_listener_(user_listener)
+{
+    sustainml::core::Options opts;
+    opts.rqos.resource_limits().max_instances = 500;
+    opts.rqos.resource_limits().max_samples_per_instance = 1;
+    opts.rqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
+    opts.rqos.reliability().kind = eprosima::fastdds::dds::RELIABLE_RELIABILITY_QOS;
+    opts.rqos.history().kind = eprosima::fastdds::dds::KEEP_LAST_HISTORY_QOS;
+    opts.rqos.history().depth = 1;
+
+    opts.wqos.resource_limits().max_instances = 500;
+    opts.wqos.resource_limits().max_samples_per_instance = 1;
+    opts.wqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
+
     init(opts);
 }
 
@@ -53,6 +75,16 @@ MLModelMetadataNode::MLModelMetadataNode(
         MLModelMetadataTaskListener& user_listener,
         sustainml::core::Options opts)
     : Node(common::ML_MODEL_METADATA_NODE, opts)
+    , user_listener_(user_listener)
+{
+    init(opts);
+}
+
+MLModelMetadataNode::MLModelMetadataNode(
+        MLModelMetadataTaskListener& user_listener,
+        sustainml::core::RequestReplyListener& req_res_listener,
+        sustainml::core::Options opts)
+    : Node(common::ML_MODEL_METADATA_NODE, opts, req_res_listener)
     , user_listener_(user_listener)
 {
     init(opts);

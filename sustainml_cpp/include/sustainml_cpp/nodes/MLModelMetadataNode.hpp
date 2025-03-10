@@ -84,9 +84,18 @@ public:
     SUSTAINML_CPP_DLL_API MLModelMetadataNode(
             MLModelMetadataTaskListener& user_listener);
 
+    SUSTAINML_CPP_DLL_API MLModelMetadataNode(
+            MLModelMetadataTaskListener& user_listener,
+            sustainml::core::RequestReplyListener& req_res_listener);
+
 #ifndef SWIG_WRAPPER
     SUSTAINML_CPP_DLL_API MLModelMetadataNode(
             MLModelMetadataTaskListener& user_listener,
+            sustainml::core::Options opts);
+
+    SUSTAINML_CPP_DLL_API MLModelMetadataNode(
+            MLModelMetadataTaskListener& user_listener,
+            sustainml::core::RequestReplyListener& req_res_listener,
             sustainml::core::Options opts);
 #endif // SWIG_WRAPPER
 

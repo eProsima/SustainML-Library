@@ -91,9 +91,18 @@ public:
     SUSTAINML_CPP_DLL_API CarbonFootprintNode(
             CarbonFootprintTaskListener& listener);
 
+    SUSTAINML_CPP_DLL_API CarbonFootprintNode(
+            CarbonFootprintTaskListener& listener,
+            sustainml::core::RequestReplyListener& req_res_listener);
+
 #ifndef SWIG_WRAPPER
     SUSTAINML_CPP_DLL_API CarbonFootprintNode(
             CarbonFootprintTaskListener& listener,
+            sustainml::core::Options opts);
+
+    SUSTAINML_CPP_DLL_API CarbonFootprintNode(
+            CarbonFootprintTaskListener& listener,
+            sustainml::core::RequestReplyListener& req_res_listener,
             sustainml::core::Options opts);
 #endif // SWIG_WRAPPER
     SUSTAINML_CPP_DLL_API virtual ~CarbonFootprintNode();

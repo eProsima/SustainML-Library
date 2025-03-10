@@ -200,8 +200,6 @@ private:
 
 };
 
-
-
 /*!
  * @brief This class represents the TopicDataType of the type NodeControlImpl defined by the user in the IDL file.
  * @ingroup typesImpl

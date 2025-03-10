@@ -45,6 +45,7 @@ NodeImpl::NodeImpl(
     , publisher_(nullptr)
     , subscriber_(nullptr)
     , control_listener_(this)
+    , req_res_listener_(*new RequestReplyListener())
 {
     if (!init(name))
     {
@@ -62,6 +63,44 @@ NodeImpl::NodeImpl(
     , publisher_(nullptr)
     , subscriber_(nullptr)
     , control_listener_(this)
+    , req_res_listener_(*new RequestReplyListener())
+{
+    if (!init(name, opts))
+    {
+        EPROSIMA_LOG_ERROR(NODE, "Initialization Failed with the provided Options");
+    }
+}
+
+NodeImpl::NodeImpl(
+        Node* node,
+        const std::string& name,
+        RequestReplyListener& req_res_listener)
+    : node_(node)
+    , dispatcher_(new Dispatcher(node_))
+    , participant_(nullptr)
+    , publisher_(nullptr)
+    , subscriber_(nullptr)
+    , control_listener_(this)
+    , req_res_listener_(req_res_listener)
+{
+    if (!init(name))
+    {
+        EPROSIMA_LOG_ERROR(NODE, "Initialization Failed with the provided Options");
+    }
+}
+
+NodeImpl::NodeImpl(
+        Node* node,
+        const std::string& name,
+        const Options& opts,
+        RequestReplyListener& req_res_listener)
+    : node_(node)
+    , dispatcher_(new Dispatcher(node_))
+    , participant_(nullptr)
+    , publisher_(nullptr)
+    , subscriber_(nullptr)
+    , control_listener_(this)
+    , req_res_listener_(req_res_listener)
 {
     if (!init(name, opts))
     {
