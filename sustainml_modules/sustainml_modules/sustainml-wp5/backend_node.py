@@ -21,6 +21,7 @@ import sustainml_swig
 import sys
 from orchestrator_node import orchestrator_node, utils
 from werkzeug.serving import make_server
+import json
 
 running = True
 orchestrator = orchestrator_node.Orchestrator()
@@ -95,6 +96,7 @@ def results_args():
         task_id = sustainml_swig.set_task_id(json_task.get('problem_id', 0), json_task.get('iteration_id', 0))
     else:
         task_id = None
+
     return jsonify({utils.string_node(node_id): orchestrator.get_results(node_id, task_id)}), 200
 
 # Flask server shutdown route
