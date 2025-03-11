@@ -2170,6 +2170,15 @@ RequestType& RequestType::operator =(
     return *this;
 }
 
+RequestType& RequestType::operator =(
+        const RequestTypeImpl& x)
+{
+    this->impl_->node_id() = x.node_id();
+    this->impl_->transaction_id() = x.transaction_id();
+    this->impl_->configuration() = x.configuration();
+    return *this;
+}
+
 bool RequestType::operator ==(
         const RequestType& x) const
 {
@@ -2299,6 +2308,17 @@ ResponseType& ResponseType::operator =(
         x.impl_ = nullptr;
     }
 
+    return *this;
+}
+
+ResponseType& ResponseType::operator =(
+        const ResponseTypeImpl& x)
+{
+    this->impl_->node_id() = x.node_id();
+    this->impl_->transaction_id() = x.transaction_id();
+    this->impl_->success() = x.success();
+    this->impl_->err_code() = x.err_code();
+    this->impl_->configuration() = x.configuration();
     return *this;
 }
 

@@ -23,8 +23,9 @@
 #include <fastdds/dds/topic/TypeSupport.hpp>
 
 #include <common/Common.hpp>
-#include <core/NodeImpl.hpp>
 #include <core/Dispatcher.hpp>
+#include <core/NodeImpl.hpp>
+#include <core/Options.hpp>
 #include <types/typesImplPubSubTypes.hpp>
 #include <types/typesImplTypeObjectSupport.hpp>
 
@@ -83,9 +84,23 @@ NodeImpl::NodeImpl(
     , control_listener_(this)
     , req_res_listener_(req_res_listener)
 {
+    req_res_ = new RequestReplier([this, name](void* input)
+                    {
+                        RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
+
+                        if (in->node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
+                        {
+                            types::ResponseType res;
+                            types::RequestType req;
+                            req = *in;
+                            req_res_listener_.on_configuration_request(req, res);
+                            req_res_->write_res(res.get_impl());
+                        }
+                    }, "sustainml/response", "sustainml/request", &req_data_);
+
     if (!init(name))
     {
-        EPROSIMA_LOG_ERROR(NODE, "Initialization Failed with the provided Options");
+        EPROSIMA_LOG_ERROR(NODE, "Initialization Failed");
     }
 }
 
@@ -102,6 +117,20 @@ NodeImpl::NodeImpl(
     , control_listener_(this)
     , req_res_listener_(req_res_listener)
 {
+    req_res_ = new RequestReplier([this, name](void* input)
+                    {
+                        RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
+
+                        if (in->node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
+                        {
+                            types::ResponseType res;
+                            types::RequestType req;
+                            req = *in;
+                            req_res_listener_.on_configuration_request(req, res);
+                            req_res_->write_res(res.get_impl());
+                        }
+                    }, "sustainml/response", "sustainml/request", &req_data_);
+
     if (!init(name, opts))
     {
         EPROSIMA_LOG_ERROR(NODE, "Initialization Failed with the provided Options");
