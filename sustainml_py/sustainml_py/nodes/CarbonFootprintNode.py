@@ -72,11 +72,11 @@ class CarbonFootprintNode:
 
         if callback == None:
             raise ValueError(
-                'AppRequirementsNode constructor expects a callback.')
+                'CarbonFootprintNode constructor expects a callback.')
 
         if service_callback == None:
             raise ValueError(
-                'AppRequirementsNode constructor expects a service callback.')
+                'CarbonFootprintNode constructor expects a service callback.')
 
         self.listener_ = CarbonFootprintTaskListener(callback)
         self.listener_service_ = RequestReplyListener(service_callback)

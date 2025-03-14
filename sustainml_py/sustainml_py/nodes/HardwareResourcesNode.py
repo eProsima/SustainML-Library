@@ -70,11 +70,11 @@ class HardwareResourcesNode:
 
         if callback == None:
             raise ValueError(
-                'AppRequirementsNode constructor expects a callback.')
+                'HardwareResourcesNode constructor expects a callback.')
 
         if service_callback == None:
             raise ValueError(
-                'AppRequirementsNode constructor expects a service callback.')
+                'HardwareResourcesNode constructor expects a service callback.')
 
         self.listener_ = HardwareResourcesTaskListener(callback)
         self.listener_service_ = RequestReplyListener(service_callback)

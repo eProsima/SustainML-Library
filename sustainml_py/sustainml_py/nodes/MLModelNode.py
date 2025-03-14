@@ -74,11 +74,11 @@ class MLModelNode:
 
         if callback == None:
             raise ValueError(
-                'AppRequirementsNode constructor expects a callback.')
+                'MLModelNode constructor expects a callback.')
 
         if service_callback == None:
             raise ValueError(
-                'AppRequirementsNode constructor expects a service callback.')
+                'MLModelNode constructor expects a service callback.')
 
         self.listener_ = MLModelTaskListener(callback)
         self.listener_service_ = RequestReplyListener(service_callback)
