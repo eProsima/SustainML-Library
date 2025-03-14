@@ -16,9 +16,10 @@
 # Import node
 from sustainml_swig import CarbonFootprintTaskListener as cpp_CarbonFootprintTaskListener
 from sustainml_swig import CarbonFootprintNode as cpp_CarbonFootprintNode
+from sustainml_swig import RequestReplyListener as cpp_RequestReplyListener
 
 # Import types
-from sustainml_swig import MLModel, UserInput, HWResource, NodeStatus, CO2Footprint
+from sustainml_swig import MLModel, UserInput, HWResource, NodeStatus, CO2Footprint, RequestType, ResponseType
 
 # Class implementing node listener
 class CarbonFootprintTaskListener(cpp_CarbonFootprintTaskListener):
@@ -43,18 +44,43 @@ class CarbonFootprintTaskListener(cpp_CarbonFootprintTaskListener):
         """ Invoke user callback """
         self.callback_(ml_model, user_input, hw, node_status, co2)
 
+class RequestReplyListener(cpp_RequestReplyListener):
+
+    def __init__(self,
+                 callback):
+
+        self.callback_ = callback
+
+        # Parent class constructor
+        super().__init__()
+
+    # Callback
+    def on_configuration_request(
+            self,
+            req : RequestType,
+            res : ResponseType):
+
+        """ Invoke user callback """
+        self.callback_(req, res)
+
 # Proxy class to instantiate by the user
 class CarbonFootprintNode:
 
     def __init__(self,
-                 callback = None):
+                 callback = None,
+                 service_callback = None):
 
         if callback == None:
             raise ValueError(
                 'CarbonFootprintNode constructor expects a callback.')
 
+        if service_callback == None:
+            raise ValueError(
+                'CarbonFootprintNode constructor expects a service callback.')
+
         self.listener_ = CarbonFootprintTaskListener(callback)
-        self.node_ = cpp_CarbonFootprintNode(self.listener_)
+        self.listener_service_ = RequestReplyListener(service_callback)
+        self.node_ = cpp_CarbonFootprintNode(self.listener_, self.listener_service_)
 
     # Proxy method to run the node
     def spin(self):

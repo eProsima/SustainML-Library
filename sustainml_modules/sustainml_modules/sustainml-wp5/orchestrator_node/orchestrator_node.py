@@ -297,3 +297,18 @@ class Orchestrator:
             return task_id
         else:
             return None
+
+    def send_request(self, json_data):
+        request_type = sustainml_swig.RequestType()
+        request_type.node_id(json_data.get('node_id'))
+        request_type.transaction_id(json_data.get('transaction_id'))
+        request_type.configuration(json_data.get('configuration'))
+
+        if request_type.node_id() is None or request_type.transaction_id() is None or request_type.configuration() is None:
+            return None
+
+        res = self.node_.configuration_request(request_type)
+        if res.success:
+            return res
+        else:
+            return None

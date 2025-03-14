@@ -43,6 +43,16 @@ def user_input():
     return jsonify({'message': 'User input data sent successfully.',
                     'task_id': utils.task_json(task_id)}), 200
 
+# Handle configuration request from the front-end
+@server.route('/config_request', methods=['POST'])
+def config_request():
+    data = request.json
+    res = orchestrator.send_request(data)
+    if res is None:
+        return jsonify({'error': 'Invalid input data'}), 400
+    return jsonify({'message': 'Configuration request sent successfully.',
+                    'response': utils.response_json(res)}), 200
+
 # Retrieve Node status methods
 @server.route('/status', methods=['GET'])
 def status():

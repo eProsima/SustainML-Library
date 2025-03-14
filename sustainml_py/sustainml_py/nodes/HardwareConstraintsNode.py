@@ -15,8 +15,9 @@
 
 from sustainml_swig import HardwareConstraintsTaskListener as cpp_HardwareConstraintsTaskListener
 from sustainml_swig import HardwareConstraintsNode as cpp_HardwareConstraintsNode
+from sustainml_swig import RequestReplyListener as cpp_RequestReplyListener
 
-from sustainml_swig import HWConstraints, NodeStatus, UserInput
+from sustainml_swig import HWConstraints, NodeStatus, UserInput, RequestType, ResponseType
 
 class HardwareConstraintsTaskListener(cpp_HardwareConstraintsTaskListener):
 
@@ -38,18 +39,44 @@ class HardwareConstraintsTaskListener(cpp_HardwareConstraintsTaskListener):
         """ Invoke user callback """
         self.callback_(user_input, node_status, hw_constraints)
 
+class RequestReplyListener(cpp_RequestReplyListener):
+
+    def __init__(self,
+                 callback):
+
+        self.callback_ = callback
+
+        # Parent class constructor
+        super().__init__()
+
+    # Callback
+    def on_configuration_request(
+            self,
+            req : RequestType,
+            res : ResponseType):
+
+        """ Invoke user callback """
+        self.callback_(req, res)
+
+
 # Proxy class to instantiate by the user
 class HardwareConstraintsNode:
 
     def __init__(self,
-                 callback = None):
+                 callback = None,
+                 service_callback = None):
 
         if callback == None:
             raise ValueError(
                 'HardwareConstraintsNode constructor expects a callback.')
 
+        if service_callback == None:
+            raise ValueError(
+                'HardwareConstraintsNode constructor expects a service callback.')
+
         self.listener_ = HardwareConstraintsTaskListener(callback)
-        self.node_ = cpp_HardwareConstraintsNode(self.listener_)
+        self.listener_service_ = RequestReplyListener(service_callback)
+        self.node_ = cpp_HardwareConstraintsNode(self.listener_, self.listener_service_)
 
     # Proxy method to run the node
     def spin(self):

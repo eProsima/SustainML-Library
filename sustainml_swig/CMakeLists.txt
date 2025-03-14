@@ -71,14 +71,6 @@ find_package (Python3 COMPONENTS Interpreter Development REQUIRED)
 add_subdirectory(src/swig)
 
 ###############################################################################
-# Test
-###############################################################################
-# Compile tests if CMake options requires it
-compile_test_library(
-    "${PROJECT_SOURCE_DIR}/test" # Test directory
-)
-
-###############################################################################
 # Packaging
 ###############################################################################
 # Install package

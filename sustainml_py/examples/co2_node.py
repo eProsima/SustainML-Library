@@ -14,6 +14,7 @@
 """SustainML Example Python Node API."""
 
 from sustainml_py.nodes.CarbonFootprintNode import CarbonFootprintNode
+from sustainml_swig import ErrorCode
 
 # Manage signaling
 import signal
@@ -40,11 +41,23 @@ def task_callback(ml_model, user_input, hw, node_status, co2):
     print (node_status.node_status())
     co2.carbon_intensity(4)
 
+# User Configuration Callback implementation
+# Inputs: req
+# Outputs: res
+def configuration_callback(req, res):
+    print (req.configuration())
+    res.node_id(req.node_id())
+    res.transaction_id(req.transaction_id())
+    res.configuration(req.configuration())
+    res.success(True)
+    res.err_code(ErrorCode.NO_ERROR)
+
+
 # Main workflow routine
 def run():
     global running
     running = True
-    node = CarbonFootprintNode(callback=task_callback)
+    node = CarbonFootprintNode(callback=task_callback, service_callback=configuration_callback)
     node.spin()
 
 # Call main in program execution
