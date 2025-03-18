@@ -99,3 +99,12 @@ def json_dict(dict):
 
 def dict_from_json(json_obj):
     return json.loads(json_obj)
+
+def response_json(response):
+    return {
+        "node_id": response.node_id(),
+        "transaction_id": response.transaction_id(),
+        "success": response.success(),
+        "err_code": response.err_code(),
+        "configuration": response.configuration()
+    }

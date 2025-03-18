@@ -1,5 +1,7 @@
+carbontracker
 flask
 flask-socketio==5.2.0
+jsonschema
 kaggle
 networkx>=3.0
 numpy>=1.24.1
@@ -14,4 +16,5 @@ rdflib>=7.0.0
 timm
 torch>=2.1.2+cu121
 transformers>=4.37.0
+typer
 ultralytics

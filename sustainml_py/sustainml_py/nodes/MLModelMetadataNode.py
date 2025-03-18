@@ -15,8 +15,9 @@
 
 from sustainml_swig import MLModelMetadataTaskListener as cpp_MLModelMetadataTaskListener
 from sustainml_swig import MLModelMetadataNode as cpp_MLModelMetadataNode
+from sustainml_swig import RequestReplyListener as cpp_RequestReplyListener
 
-from sustainml_swig import MLModelMetadata, NodeStatus, UserInput
+from sustainml_swig import MLModelMetadata, NodeStatus, UserInput, RequestType, ResponseType
 
 class MLModelMetadataTaskListener(cpp_MLModelMetadataTaskListener):
 
@@ -38,18 +39,44 @@ class MLModelMetadataTaskListener(cpp_MLModelMetadataTaskListener):
         """ Invoke user callback """
         self.callback_(user_input, node_status, ml_model_metadata)
 
+class RequestReplyListener(cpp_RequestReplyListener):
+
+    def __init__(self,
+                 callback):
+
+        self.callback_ = callback
+
+        # Parent class constructor
+        super().__init__()
+
+    # Callback
+    def on_configuration_request(
+            self,
+            req : RequestType,
+            res : ResponseType):
+
+        """ Invoke user callback """
+        self.callback_(req, res)
+
+
 # Proxy class to instantiate by the user
 class MLModelMetadataNode:
 
     def __init__(self,
-                 callback = None):
+                 callback = None,
+                 service_callback = None):
 
         if callback == None:
             raise ValueError(
-                'MLModelMetadataNode constructor expects a callback.')
+                'MLModelMetadata constructor expects a callback.')
+
+        if service_callback == None:
+            raise ValueError(
+                'MLModelMetadata constructor expects a service callback.')
 
         self.listener_ = MLModelMetadataTaskListener(callback)
-        self.node_ = cpp_MLModelMetadataNode(self.listener_)
+        self.listener_service_ = RequestReplyListener(service_callback)
+        self.node_ = cpp_MLModelMetadataNode(self.listener_, self.listener_service_)
 
     # Proxy method to run the node
     def spin(self):

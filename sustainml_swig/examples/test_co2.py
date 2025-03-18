@@ -43,9 +43,27 @@ class MyListener(sustainml_swig.CarbonFootprintTaskListener):
         arg5.carbon_intensity(4)
         arg5.task_id(arg1.task_id())
 
+class MyServiceListener(sustainml_swig.RequestReplyListener):
+    def __init__(
+            self):
+        """
+        """
+
+        # Parent class constructor
+        super().__init__()
+
+    def on_configuration_request(self, arg1, arg2):
+        print("Configuration request:", arg1.configuration())
+        arg2.node_id(arg1.node_id())
+        arg2.transaction_id(arg1.transaction_id())
+        arg2.configuration(arg1.configuration())
+        arg2.success(True)
+        arg2.err_code(sustainml_swig.ErrorCode.NO_ERROR)
+
 def run():
     listener = MyListener()
-    task_node = sustainml_swig.CarbonFootprintNode(listener)
+    listener_service = MyServiceListener()
+    task_node = sustainml_swig.CarbonFootprintNode(listener, listener_service)
     running = True
     task_node.spin()
 

@@ -88,6 +88,7 @@ typedef unsigned long uint64_t;
 %include "sustainml_swig/core/Callable.i"
 %include "sustainml_swig/core/Constants.i"
 %include "sustainml_swig/core/Node.i"
+%include "sustainml_swig/core/RequestReplyListener.i"
 
 %include "sustainml_swig/nodes/AppRequirementsNode.i"
 %include "sustainml_swig/nodes/CarbonFootprintNode.i"
