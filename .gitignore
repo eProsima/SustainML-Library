@@ -1,2 +1,3 @@
 # Ignore pycache Python dirs
 __pycache__/
+.vscode
