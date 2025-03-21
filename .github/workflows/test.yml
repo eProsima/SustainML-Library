@@ -92,6 +92,7 @@ jobs:
       - name: Compile and run tests
         uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@v0
         with:
+          ctest_args: '--timeout 300'
           packages_names: sustainml_cpp sustainml_py sustainml_modules
           cmake_args: -DCMAKE_BUILD_TYPE=${{ matrix.cmake_build_type }}
           colcon_meta_file: ${{ github.workspace }}/src/sustainml_lib/.github/workflows/configurations/${{ runner.os }}/colcon.meta
