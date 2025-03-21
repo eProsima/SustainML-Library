@@ -95,6 +95,25 @@ def results_args():
         task_id = sustainml_swig.set_task_id(json_task.get('problem_id', 0), json_task.get('iteration_id', 0))
     else:
         task_id = None
+
+    # Case of returning all nodes results. 9 = ALL
+    if node_id == 9:
+        app_req = orchestrator.get_results(utils.node_id.APP_REQUIREMENTS.value, task_id)
+        metadata = orchestrator.get_results(utils.node_id.ML_MODEL_METADATA.value, task_id)
+        constraints = orchestrator.get_results(utils.node_id.HW_CONSTRAINTS.value, task_id)
+        model = orchestrator.get_results(utils.node_id.ML_MODEL_PROVIDER.value, task_id)
+        hardware = orchestrator.get_results(utils.node_id.HW_PROVIDER.value, task_id)
+        carbontracker = orchestrator.get_results(utils.node_id.CARBONTRACKER.value, task_id)
+        task_json = {'problem_id': task_id.problem_id(), 'iteration_id': task_id.iteration_id()}
+        json = {utils.string_node(utils.node_id.APP_REQUIREMENTS.value): app_req,
+                utils.string_node(utils.node_id.ML_MODEL_METADATA.value): metadata,
+                utils.string_node(utils.node_id.HW_CONSTRAINTS.value): constraints,
+                utils.string_node(utils.node_id.ML_MODEL_PROVIDER.value): model,
+                utils.string_node(utils.node_id.HW_PROVIDER.value): hardware,
+                utils.string_node(utils.node_id.CARBONTRACKER.value): carbontracker,
+                'task_id': task_json}
+        return jsonify(json), 200
+
     return jsonify({utils.string_node(node_id): orchestrator.get_results(node_id, task_id)}), 200
 
 # Flask server shutdown route
