@@ -504,7 +504,6 @@ types::ResponseType OrchestratorNode::configuration_request(
                 return res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id();
             });
     types::ResponseType res = res_;
-    res_ = types::ResponseType();
     return res;
 }
 

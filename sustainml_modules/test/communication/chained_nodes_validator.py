@@ -326,7 +326,7 @@ def run(args):
         sleep(1)
 
     try:
-        outs, errs = listener_proc.communicate(timeout=200)
+        outs, errs = listener_proc.communicate(timeout=350)
     except subprocess.TimeoutExpired:
         print('Subscriber process timed out, terminating...')
         listener_proc.kill()
@@ -341,6 +341,16 @@ def run(args):
     [pub_proc.kill() for pub_proc in pub_procs]
     listener_proc.kill()
     [node_proc.kill() for node_proc in node_procs]
+
+    listener_returncode = listener_proc.returncode
+    pub_returncodes = [pub_proc.returncode for pub_proc in pub_procs]
+
+    if listener_returncode != 0:
+        sys.exit(1)
+    for idx, code in enumerate(pub_returncodes):
+        if code != 0:
+            sys.exit(1)
+
     try:
         sys.exit(os.EX_OK)
     except AttributeError:
