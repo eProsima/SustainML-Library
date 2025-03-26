@@ -274,21 +274,41 @@ class Orchestrator:
             user_input.modality(json_data.get('modality'))
         if (json_data.get('problem_short_description') is not None):
             user_input.problem_short_description(json_data.get('problem_short_description'))
+        if (json_data.get('problem_definition') is not None):
+            user_input.problem_definition(json_data.get('problem_definition'))
+        if (json_data.get('inputs') is not None):
+            user_input.inputs(json_data.get('inputs'))
+        if (json_data.get('outputs') is not None):
+            user_input.outputs(json_data.get('outputs'))
+        if (json_data.get('minimum_samples') is not None):
+            user_input.minimum_samples(json_data.get('minimum_samples'))
+        if (json_data.get('maximum_samples') is not None):
+            user_input.maximum_samples(json_data.get('maximum_samples'))
+        if (json_data.get('optimize_carbon_footprint_manual') is not None):
+            user_input.optimize_carbon_footprint_manual(json_data.get('optimize_carbon_footprint_manual'))
+        if (json_data.get('optimize_carbon_footprint_auto') is not None):
+            user_input.optimize_carbon_footprint_auto(json_data.get('optimize_carbon_footprint_auto'))
+        if (json_data.get('desired_carbon_footprint') is not None):
+            user_input.desired_carbon_footprint(json_data.get('desired_carbon_footprint'))
+        if (json_data.get('geo_location_continent') is not None):
+            user_input.geo_location_continent(json_data.get('geo_location_continent'))
+        if (json_data.get('geo_location_region') is not None):
+            user_input.geo_location_region(json_data.get('geo_location_region'))
+
         #user_input.evaluation_metrics(evaluation_metrics)
         #user_input.model(model)
         # TODO add missing fields
 
         # Prepare extra data
-        hw_req = utils.default_hw_requirement
-        mem_footprint = utils.default_mem_footprint
-        if (json_data.get('hardware_required') is not None):
-            hw_req = json_data.get('hardware_required')
-        if (json_data.get('max_memory_footprint') is not None):
-            mem_footprint = json_data.get('max_memory_footprint')
+        extra = json_data.get('extra_data', {})
+        hw_req = extra.get('hardware_required', utils.default_hw_requirement)
+        mem_footprint = extra.get('max_memory_footprint', utils.default_mem_footprint)
+        goal = extra.get('goal')
 
         # Add extra data to user user_input
         extra_data = {'hardware_required': hw_req,
-                      'max_memory_footprint': mem_footprint}
+                      'max_memory_footprint': mem_footprint,
+                      'goal': goal}
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
