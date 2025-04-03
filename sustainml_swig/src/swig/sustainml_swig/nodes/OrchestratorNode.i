@@ -42,7 +42,7 @@
 
 // Retrieve the pointer to the C++ object
 %inline %{
-    types::AppRequirements* get_app_requirements(
+    types::AppRequirements* get_app_requirements_task_data(
         sustainml::orchestrator::OrchestratorNode* orchestrator,
         const types::TaskId& task_id)
     {
@@ -56,7 +56,7 @@
         return node;
     }
 
-    types::CO2Footprint* get_carbontracker(
+    types::CO2Footprint* get_carbontracker_task_data(
         sustainml::orchestrator::OrchestratorNode* orchestrator,
         const types::TaskId& task_id)
     {
@@ -70,7 +70,7 @@
         return node;
     }
 
-    types::HWConstraints* get_hw_constraints(
+    types::HWConstraints* get_hw_constraints_task_data(
         sustainml::orchestrator::OrchestratorNode* orchestrator,
         const types::TaskId& task_id)
     {
@@ -84,7 +84,7 @@
         return node;
     }
 
-    types::HWResource* get_hw_provider(
+    types::HWResource* get_hw_provider_task_data(
         sustainml::orchestrator::OrchestratorNode* orchestrator,
         const types::TaskId& task_id)
     {
@@ -98,7 +98,7 @@
         return node;
     }
 
-    types::MLModelMetadata* get_model_metadata(
+    types::MLModelMetadata* get_model_metadata_task_data(
         sustainml::orchestrator::OrchestratorNode* orchestrator,
         const types::TaskId& task_id)
     {
@@ -112,7 +112,7 @@
         return node;
     }
 
-    types::MLModel* get_model_provider(
+    types::MLModel* get_model_provider_task_data(
         sustainml::orchestrator::OrchestratorNode* orchestrator,
         const types::TaskId& task_id)
     {
@@ -126,7 +126,7 @@
         return node;
     }
 
-    types::UserInput* get_orchestrator(
+    types::UserInput* get_user_input_data(
         sustainml::orchestrator::OrchestratorNode* orchestrator,
         const types::TaskId& task_id)
     {

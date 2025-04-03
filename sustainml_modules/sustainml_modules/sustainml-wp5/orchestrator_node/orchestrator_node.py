@@ -118,13 +118,13 @@ class Orchestrator:
             else:
                 return utils.string_status(utils.node_status.INACTIVE.value)
 
-    def get_app_requirements(self, task_id):
+    def get_app_requirements_task_data(self, task_id):
         with self.handler_.condition:
             while not self.handler_.results_available(task_id, utils.node_id.APP_REQUIREMENTS.value):
                 self.handler_.condition.wait()
 
         # retrieve node data
-        node_data = sustainml_swig.get_app_requirements(self.node_, task_id)
+        node_data = sustainml_swig.get_app_requirements_task_data(self.node_, task_id)
         if node_data is None:
             return {'Error': f"Failed to get {utils.string_node(utils.node_id.APP_REQUIREMENTS.value)} data for task {utils.string_task(task_id)}"}
 
@@ -135,13 +135,13 @@ class Orchestrator:
                        'app_requirements': utils.string_std_vector(app_requirements_str_list)}
         return json_output
 
-    def get_model_metadata(self, task_id):
+    def get_model_metadata_task_data(self, task_id):
         with self.handler_.condition:
             while not self.handler_.results_available(task_id, utils.node_id.ML_MODEL_METADATA.value):
                 self.handler_.condition.wait()
 
         # retrieve node data
-        node_data = sustainml_swig.get_model_metadata(self.node_, task_id)
+        node_data = sustainml_swig.get_model_metadata_task_data(self.node_, task_id)
         if node_data is None:
             return {'Error': f"Failed to get {utils.string_node(utils.node_id.ML_MODEL_METADATA.value)} data for task {utils.string_task(task_id)}"}
 
@@ -154,13 +154,13 @@ class Orchestrator:
                        'metadata': utils.string_std_vector(metadata_str_list)}
         return json_output
 
-    def get_hw_constraints(self, task_id):
+    def get_hw_constraints_task_data(self, task_id):
         with self.handler_.condition:
             while not self.handler_.results_available(task_id, utils.node_id.HW_CONSTRAINTS.value):
                 self.handler_.condition.wait()
 
         # retrieve node data
-        node_data = sustainml_swig.get_hw_constraints(self.node_, task_id)
+        node_data = sustainml_swig.get_hw_constraints_task_data(self.node_, task_id)
         if node_data is None:
             return {'Error': f"Failed to get {utils.string_node(utils.node_id.HW_CONSTRAINTS.value)} data for task {utils.string_task(task_id)}"}
 
@@ -173,13 +173,13 @@ class Orchestrator:
                        'hardware_required': utils.string_std_vector(required_hardware)}
         return json_output
 
-    def get_ml_model_provider(self, task_id):
+    def get_model_provider_task_data(self, task_id):
         with self.handler_.condition:
             while not self.handler_.results_available(task_id, utils.node_id.ML_MODEL_PROVIDER.value):
                 self.handler_.condition.wait()
 
         # retrieve node data
-        node_data = sustainml_swig.get_model_provider(self.node_, task_id)
+        node_data = sustainml_swig.get_model_provider_task_data(self.node_, task_id)
         if node_data is None:
             return {'Error': f"Failed to get {utils.string_node(utils.node_id.ML_MODEL_PROVIDER.value)} data for task {utils.string_task(task_id)}"}
 
@@ -200,13 +200,13 @@ class Orchestrator:
                        'target_latency': target_latency}
         return json_output
 
-    def get_hw_provider(self, task_id):
+    def get_hw_provider_task_data(self, task_id):
         with self.handler_.condition:
             while not self.handler_.results_available(task_id, utils.node_id.HW_PROVIDER.value):
                 self.handler_.condition.wait()
 
         # retrieve node data
-        node_data = sustainml_swig.get_hw_provider(self.node_, task_id)
+        node_data = sustainml_swig.get_hw_provider_task_data(self.node_, task_id)
         if node_data is None:
             return {'Error': f"Failed to get {utils.string_node(utils.node_id.HW_PROVIDER.value)} data for task {utils.string_task(task_id)}"}
 
@@ -223,13 +223,13 @@ class Orchestrator:
                        'memory_footprint_of_ml_model': memory_footprint_of_ml_model}
         return json_output
 
-    def get_carbontracker(self, task_id):
+    def get_carbontracker_task_data(self, task_id):
         with self.handler_.condition:
             while not self.handler_.results_available(task_id, utils.node_id.CARBONTRACKER.value):
                 self.handler_.condition.wait()
 
         # retrieve node data
-        node_data = sustainml_swig.get_carbontracker(self.node_, task_id)
+        node_data = sustainml_swig.get_carbontracker_task_data(self.node_, task_id)
         if node_data is None:
             return {'Error': f"Failed to get {utils.string_node(utils.node_id.CARBONTRACKER.value)} data for task {utils.string_task(task_id)}"}
 
@@ -244,10 +244,10 @@ class Orchestrator:
                        'carbon_intensity': carbon_intensity}
         return json_output
 
-    def get_orchestrator(self, task_id):
+    def get_user_input_data(self, task_id):
 
         # retrieve node data
-        node_data = sustainml_swig.get_orchestrator(self.node_, task_id)
+        node_data = sustainml_swig.get_user_input_data(self.node_, task_id)
         if node_data is None:
             return {'Error': f"Failed to get {utils.string_node(utils.node_id.ORCHESTRATOR.value)} data for task {utils.string_task(task_id)}"}
 
@@ -293,19 +293,19 @@ class Orchestrator:
             task_id = self.get_last_task_id()
 
         if node_id == utils.node_id.APP_REQUIREMENTS.value:
-            return self.get_app_requirements(task_id)
+            return self.get_app_requirements_task_data(task_id)
         elif node_id == utils.node_id.ML_MODEL_METADATA.value:
-            return self.get_model_metadata(task_id)
+            return self.get_model_metadata_task_data(task_id)
         elif node_id == utils.node_id.HW_CONSTRAINTS.value:
-            return self.get_hw_constraints(task_id)
+            return self.get_hw_constraints_task_data(task_id)
         elif node_id == utils.node_id.ML_MODEL_PROVIDER.value:
-            return self.get_ml_model_provider(task_id)
+            return self.get_model_provider_task_data(task_id)
         elif node_id == utils.node_id.HW_PROVIDER.value:
-            return self.get_hw_provider(task_id)
+            return self.get_hw_provider_task_data(task_id)
         elif node_id == utils.node_id.CARBONTRACKER.value:
-            return self.get_carbontracker(task_id)
+            return self.get_carbontracker_task_data(task_id)
         elif node_id == utils.node_id.ORCHESTRATOR.value:
-            return self.get_orchestrator(task_id)
+            return self.get_user_input_data(task_id)
         else:
             message = utils.string_node(node_id) + " node does not have any results to show."
             return {'message': message, 'task_id': utils.task_json(task_id)}
