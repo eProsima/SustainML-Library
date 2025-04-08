@@ -21,6 +21,7 @@ import sustainml_swig
 import sys
 from orchestrator_node import orchestrator_node, utils
 from werkzeug.serving import make_server
+import json
 
 running = True
 orchestrator = orchestrator_node.Orchestrator()
@@ -113,6 +114,7 @@ def results_args():
                 utils.string_node(utils.node_id.CARBONTRACKER.value): carbontracker,
                 'task_id': task_json}
         return jsonify(json), 200
+
 
     return jsonify({utils.string_node(node_id): orchestrator.get_results(node_id, task_id)}), 200
 
