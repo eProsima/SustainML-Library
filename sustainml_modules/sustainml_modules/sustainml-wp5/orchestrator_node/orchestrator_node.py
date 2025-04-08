@@ -84,7 +84,7 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
             # If the node is CarbonTracker and its output extra_data is non-empty, print a message
             if node_id == utils.node_id.CARBONTRACKER.value:
                 print("Data results of CARBON")   # Debugging
-                carbon_data = sustainml_swig.get_carbontracker(self.orchestrator.node_, task_id)
+                carbon_data = sustainml_swig.get_carbontracker_task_data(self.orchestrator.node_, task_id)
                 try:
                     extra_data_vector = carbon_data.extra_data()  # Vector de uint8_t
                     extra_data_list = [s for s in extra_data_vector]
@@ -101,7 +101,7 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
 
                     if num_outputs > 1:
                         print("Reiterating CarbonTracker node for multiple outputs")    # Debugging
-                        user_json = self.orchestrator.get_orchestrator(task_id)
+                        user_json = self.orchestrator.get_user_input_data(task_id)
                         user_json.get('extra_data', {})['num_outputs'] = num_outputs - 1
                         user_json['previous_iteration'] = task_id.iteration_id()
                         user_json.get('extra_data', {})['previous_problem_id'] = task_id.problem_id()
