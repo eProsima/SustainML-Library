@@ -370,11 +370,13 @@ class Orchestrator:
         hw_req = extra.get('hardware_required', utils.default_hw_requirement)
         mem_footprint = extra.get('max_memory_footprint', utils.default_mem_footprint)
         goal = extra.get('goal')
+        model_selected = extra.get('model_selected', None)
 
         # Add extra data to user user_input
         extra_data = {'hardware_required': hw_req,
                       'max_memory_footprint': mem_footprint,
-                      'goal': goal}
+                      'goal': goal,
+                      'model_selected': model_selected}
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
