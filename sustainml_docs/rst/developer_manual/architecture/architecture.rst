@@ -34,16 +34,15 @@ Within the *SustainML Architecture*, a ``Node`` refers to each one of the softwa
 a particular task, conforms a single executable unit and can be locally or remotely deployed.
 This decoupling and modularity can be achieved thanks to the underlying `eProsima Fast DDS middleware <https://www.eprosima.com/index.php/products-all/eprosima-fast-dds>`_.
 
-* :ref:`frontend`
-
 In the architecture, the ``Front-End`` acts as the interface between the user and the *SustainML Framework*.
 The Front-End is responsible for collecting the user requirements and constraints, sending them to the Back-End and give feedback of the intermediate and final results when available:
 
-The ``Back-End`` is composed of two main entities.
+* :ref:`frontend`
 
-* :ref:`orchestrator`
+The ``Back-End`` is composed of two main entities:
 
-The ``Orchestrator Node`` that controls the execution of the task and nourishes data to the Front-End.
+* The :ref:`orchestrator` that controls the execution of the task and nourishes data to the Front-End.
+* The :ref:`module_nodes` that specialize in particular tasks of the solution.
 
 .. _module_nodes:
 
@@ -52,12 +51,12 @@ Module Nodes
 
 And the different ``Module Nodes`` that specializes in a particular task of the solution:
 
+* :ref:`appreqs_node`
+* :ref:`carbontracker_node`
+* :ref:`hwconstraints_node`
 * :ref:`mlmodelmetadata_node`
 * :ref:`mlmodelprovider_node`
-* :ref:`appreqs_node`
-* :ref:`hwconstraints_node`
 * :ref:`hwprovider_node`
-* :ref:`carbontracker_node`
 
 
 .. toctree::
