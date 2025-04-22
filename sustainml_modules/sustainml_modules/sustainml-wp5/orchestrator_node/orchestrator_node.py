@@ -409,6 +409,7 @@ class Orchestrator:
         model_selected = extra.get('model_selected', None)
         num_outputs = extra.get('num_outputs')
         model_restrains = extra.get('model_restrains', [])
+        hf_token = extra.get('hf_token')
 
         # Add extra data to user user_input
         extra_data = {'hardware_required': hw_req,
@@ -416,7 +417,8 @@ class Orchestrator:
                       'goal': goal,
                       'model_selected': model_selected,
                       'num_outputs': num_outputs,
-                      'model_restrains': model_restrains}
+                      'model_restrains': model_restrains,
+                      'hf_token': hf_token}
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
