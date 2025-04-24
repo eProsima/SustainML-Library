@@ -1,4 +1,4 @@
-// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2025 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -142,6 +142,25 @@ inline Topics get_topic_from_name(
         }
     }
     return output;
+}
+
+inline uint32_t parse_sustainml_env(
+        const uint32_t& option)
+{
+    uint32_t domain_to_use = option;
+    if (const char* env = std::getenv("SUSTAINML_DOMAIN_ID"))
+    {
+        try
+        {
+            domain_to_use = static_cast<uint32_t>(std::stoul(env));
+        }
+        catch (...)
+        {
+            EPROSIMA_LOG_ERROR(NODE, "Error parsing SUSTAINML_DOMAIN_ID, using default instead");
+            domain_to_use = option;
+        }
+    }
+    return domain_to_use;
 }
 
 /*!

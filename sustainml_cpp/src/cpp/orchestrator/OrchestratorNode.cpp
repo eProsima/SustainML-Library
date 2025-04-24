@@ -193,7 +193,8 @@ bool OrchestratorNode::init()
     dpqos.properties().properties().emplace_back("fastdds.application.metadata", "", true);
 
     //! Initialize entities
-    participant_ = dpf->create_participant(domain_,
+    uint32_t domain = common::parse_sustainml_env(domain_);
+    participant_ = dpf->create_participant(domain,
                     dpqos,
                     participant_listener_.get(),
                     StatusMask::all() >> StatusMask::data_on_readers());

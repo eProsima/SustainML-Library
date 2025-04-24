@@ -167,7 +167,8 @@ bool NodeImpl::init(
     pqos.properties().properties().emplace_back("fastdds.application.id", "SUSTAINML", true);
     pqos.properties().properties().emplace_back("fastdds.application.metadata", "", true);
 
-    participant_ = dpf->create_participant(opts.domain, pqos);
+    uint32_t domain = common::parse_sustainml_env(opts.domain);
+    participant_ = dpf->create_participant(domain, pqos);
 
     if (participant_ == nullptr)
     {
