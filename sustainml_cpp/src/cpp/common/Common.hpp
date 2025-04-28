@@ -1,4 +1,4 @@
-// Copyright 2025 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 
 #include <fastdds/dds/log/Log.hpp>
 
+#include <cstdlib>
 #include <iostream>
 #include <map>
 #include <utility>
@@ -40,6 +41,9 @@ constexpr const char* HW_CONSTRAINTS_NODE = "HW_CONSTRAINTS_NODE";
 constexpr const char* HW_RESOURCES_NODE = "HW_RESOURCES_NODE";
 constexpr const char* ML_MODEL_METADATA_NODE = "ML_MODEL_METADATA_NODE";
 constexpr const char* ML_MODEL_NODE = "ML_MODEL_NODE";
+
+//!Env variables
+static constexpr const char* SUSTAINML_DOMAIN_URI = "SUSTAINML_DOMAIN_ID";
 
 inline NodeID get_node_id_from_name(
         const eprosima::fastcdr::string_255& name)
@@ -148,7 +152,7 @@ inline uint32_t parse_sustainml_env(
         const uint32_t& option)
 {
     uint32_t domain_to_use = option;
-    if (const char* env = std::getenv("SUSTAINML_DOMAIN_ID"))
+    if (const char* env = std::getenv(SUSTAINML_DOMAIN_URI))
     {
         try
         {
