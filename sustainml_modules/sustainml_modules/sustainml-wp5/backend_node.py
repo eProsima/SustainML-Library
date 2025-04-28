@@ -14,6 +14,7 @@
 """SustainML Backend Node Implementation."""
 
 from flask import Flask, request, jsonify
+import os
 import threading
 import time
 import signal
@@ -36,7 +37,19 @@ def hello_world():
 # Send user input data to orchestrator
 @server.route('/user_input', methods=['POST'])
 def user_input():
+    global hf_token
+
     data = request.json
+    if 'extra_data' in data:
+        try:
+            if isinstance(data['extra_data'], str):
+                data['extra_data'] = json.loads(data['extra_data'])
+        except Exception as e:
+            print("Error decoding extra_data, initializing as empty dict:", e)
+            data['extra_data'] = {}
+    else:
+        data['extra_data'] = {}
+    data['extra_data']['hf_token'] = hf_token
     task_id = orchestrator.send_user_input(data)
     if task_id is None:
         return jsonify({'error': 'Invalid input data'}), 400
@@ -114,6 +127,7 @@ def results_args():
                 'task_id': task_json}
         return jsonify(json), 200
 
+
     return jsonify({utils.string_node(node_id): orchestrator.get_results(node_id, task_id)}), 200
 
 # Flask server shutdown route
@@ -165,6 +179,10 @@ def signal_handler(sig, frame):
 # Main program execution
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
+    hf_token = os.getenv("HF_TOKEN")
+    if hf_token is None:
+        print("Error: The HF_TOKEN environment variable is missing. Please set it before starting the node.")
+        # sys.exit(0)
     print("Back-end Node running, use Ctrl+C to terminate. Server listening at http://" + server_ip_address + ":" + str(server_port) + "/")
     flask_server_thread = ServerThread()
     flask_server_thread.start()  # Start the Flask server with the orchestrator
