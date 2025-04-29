@@ -24,6 +24,7 @@
 
 #include <fastdds/dds/log/Log.hpp>
 
+#include <cstdlib>
 #include <iostream>
 #include <map>
 #include <utility>
@@ -40,6 +41,9 @@ constexpr const char* HW_CONSTRAINTS_NODE = "HW_CONSTRAINTS_NODE";
 constexpr const char* HW_RESOURCES_NODE = "HW_RESOURCES_NODE";
 constexpr const char* ML_MODEL_METADATA_NODE = "ML_MODEL_METADATA_NODE";
 constexpr const char* ML_MODEL_NODE = "ML_MODEL_NODE";
+
+//!Env variables
+static constexpr const char* SUSTAINML_DOMAIN_URI = "SUSTAINML_DOMAIN_ID";
 
 inline NodeID get_node_id_from_name(
         const eprosima::fastcdr::string_255& name)
@@ -142,6 +146,25 @@ inline Topics get_topic_from_name(
         }
     }
     return output;
+}
+
+inline uint32_t parse_sustainml_env(
+        const uint32_t& option)
+{
+    uint32_t domain_to_use = option;
+    if (const char* env = std::getenv(SUSTAINML_DOMAIN_URI))
+    {
+        try
+        {
+            domain_to_use = static_cast<uint32_t>(std::stoul(env));
+        }
+        catch (...)
+        {
+            EPROSIMA_LOG_ERROR(NODE, "Error parsing SUSTAINML_DOMAIN_ID, using default instead");
+            domain_to_use = option;
+        }
+    }
+    return domain_to_use;
 }
 
 /*!

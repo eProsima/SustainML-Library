@@ -18,6 +18,8 @@
 
 #include <core/RequestReplier.hpp>
 
+#include <common/Common.hpp>
+
 #include <fastdds/dds/topic/Topic.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
 
@@ -47,7 +49,8 @@ RequestReplier::RequestReplier(
     DomainParticipantQos pqos;
 
     // Create a DomainParticipant
-    participant_ = dpf->create_participant(0, pqos);
+    uint32_t domain = common::parse_sustainml_env(0);
+    participant_ = dpf->create_participant(domain, pqos);
 
     subscriber_ = participant_->create_subscriber(SUBSCRIBER_QOS_DEFAULT);
 
