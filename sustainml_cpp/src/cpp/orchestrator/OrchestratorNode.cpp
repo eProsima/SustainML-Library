@@ -117,12 +117,6 @@ OrchestratorNode::OrchestratorNode(
 {
     req_res_ = new core::RequestReplier([this](void* input)
                     {
-                        ResponseTypeImpl* in = static_cast<ResponseTypeImpl*>(input);
-
-                        {
-                            std::lock_guard<std::mutex> lock(this->mtx_);
-                            this->res_ = *in;
-                        }
                         this->cv_.notify_all();
                     }, "sustainml/request", "sustainml/response", res_.get_impl());
 
@@ -505,8 +499,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             {
                 return res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id();
             });
-    types::ResponseType res = res_;
-    return res;
+    return res_;
 }
 
 void OrchestratorNode::spin()
