@@ -355,10 +355,12 @@ class Orchestrator:
             existing_task = self.get_last_task_id()
             if existing_task is not None:
                 if (previous_task.problem_id() == existing_task.problem_id() and
-                        previous_task.iteration_id() + 1 == existing_task.iteration_id()):
-                    print("Task already taken. Using :", utils.string_task(existing_task))
-                    return None
-            pair = self.node_.prepare_new_iteration(previous_task)
+                        previous_task.iteration_id() + 1 <= existing_task.iteration_id()):
+                    pair = self.node_.prepare_new_iteration(previous_task, existing_task)
+                else:
+                    pair = self.node_.prepare_new_iteration(previous_task, previous_task)
+            else:
+                pair = self.node_.prepare_new_iteration(previous_task, previous_task)
         task_id = pair[0]
 
         user_input = pair[1]

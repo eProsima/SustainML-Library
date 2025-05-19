@@ -426,7 +426,7 @@ TEST(OrchestratorNode, OrchestratorTaskIteration)
     tonh->prepare_expected_data(test_iteration_data);
 
     //! Prepare a new iteration based on task {1,1}
-    auto iteration_data = orchestrator.prepare_new_iteration({1, 1});
+    auto iteration_data = orchestrator.prepare_new_iteration({1, 1}, {1, 1});
 
     ASSERT_EQ(1, iteration_data.first.problem_id());
     ASSERT_EQ(2, iteration_data.first.iteration_id());
