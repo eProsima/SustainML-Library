@@ -302,7 +302,7 @@ protected:
     };
 
     std::condition_variable spin_cv_;
-    std::atomic_bool terminate_;
+    std::atomic_bool terminate_{false};
 
     std::unique_ptr<OrchestratorParticipantListener> participant_listener_;
 

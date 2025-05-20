@@ -78,7 +78,6 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
         if (reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DISCOVERED_PARTICIPANT &&
                 orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] == nullptr)
         {
-            EPROSIMA_LOG_INFO(ORCHESTRATOR, "Creating node proxy for " << participant_name << " node");
             ModuleNodeProxyFactory::make_node_proxy(
                 node_id,
                 orchestrator_,
@@ -166,6 +165,7 @@ void OrchestratorNode::destroy()
         DomainParticipantFactory::get_instance()->delete_participant(participant_);
 
         delete task_man_;
+        delete req_res_;
 
         handler_ = nullptr;
         terminated_.store(true);
@@ -534,6 +534,8 @@ void OrchestratorNode::spin()
 void OrchestratorNode::terminate()
 {
     terminate_.store(true);
+    // skip the wait in the replier if any request is pending
+    req_res_->resume_taking_data();
     destroy();
     spin_cv_.notify_all();
 }
