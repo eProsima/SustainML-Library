@@ -494,12 +494,25 @@ types::ResponseType OrchestratorNode::configuration_request (
         const types::RequestType& req)
 {
     req_res_->write_req(req.get_impl());
-    std::unique_lock<std::mutex> lck(mtx_);
+    std::cout << "Transaction ID: " << req.transaction_id() << std::endl;   //debug
+    std::unique_lock<std::mutex> lck(req_res_->get_mutex());
     cv_.wait(lck, [this, &req]
             {
-                return res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id();
+                std::cout << "Esperando respuesta" << std::endl;   //debug
+                bool is_expected_response = (res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id());
+                if (!is_expected_response)
+                {
+                    req_res_->resume_taking_data();
+                    req_res_->get_cv().notify_one();
+                }
+                return is_expected_response;
             });
-    return res_;
+    std::cout << "Respuesta recibida " << std::endl;   //debug
+    types::ResponseType user_res = res_;
+    req_res_->resume_taking_data();
+    req_res_->get_cv().notify_one();
+    std::cout << "Todo fue bien" << std::endl;   //debug
+    return user_res;
 }
 
 void OrchestratorNode::spin()

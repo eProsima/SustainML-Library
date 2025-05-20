@@ -22,6 +22,7 @@
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>
 #include <sustainml_cpp/types/types.hpp>
 #include <types/typesImplPubSubTypes.hpp>
+#include <condition_variable>
 
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
@@ -75,12 +76,30 @@ public:
     void write_req(
             RequestTypeImpl* req);
 
+    /**
+     * @brief Method used to get the mutex on this class.
+     */
+    std::mutex& get_mutex();
+
+    /**
+     * @brief Method used to set resume_taking_data_ to true.
+     */
+    void resume_taking_data();
+
+    /**
+     * @brief Method used to get the cv on this class.
+     */
+    std::condition_variable& get_cv();
+
 protected:
 
     std::function<void(void*)> callback_;
     const char* topicr_;
     const char* topicw_;
     void* data_;
+    std::mutex mtx_;
+    std::atomic<bool> resume_taking_data_{false};
+    std::condition_variable cv_;
 
     eprosima::fastdds::dds::DomainParticipant* participant_;
 
@@ -131,7 +150,6 @@ private:
 
         RequestReplier* node_;
         size_t matched_;
-
     }
     listener_;
 };

@@ -96,6 +96,8 @@ NodeImpl::NodeImpl(
                             req_res_listener_.on_configuration_request(req, res);
                             req_res_->write_res(res.get_impl());
                         }
+                        req_res_->resume_taking_data();
+                        std::cout << "Request Replier finished" << std::endl;    //debug
                     }, "sustainml/response", "sustainml/request", &req_data_);
 
     if (!init(name))

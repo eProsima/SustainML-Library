@@ -110,6 +110,21 @@ void RequestReplier::write_req(
     writer_->write(req);
 }
 
+std::mutex& RequestReplier::get_mutex()
+{
+    return mtx_;
+}
+
+void RequestReplier::resume_taking_data()
+{
+    resume_taking_data_.store(true);
+}
+
+std::condition_variable& RequestReplier::get_cv()
+{
+    return cv_;
+}
+
 RequestReplier::RequestReplyControlListener::RequestReplyControlListener(
         RequestReplier* node)
     : node_(node)
@@ -128,12 +143,20 @@ void RequestReplier::RequestReplyControlListener::on_data_available(
     // Create a data and SampleInfo instance
     SampleInfo info;
 
+    // Ensure middleware can write on data_
+    std::unique_lock<std::mutex> lock(node_->get_mutex());
+
     // Keep taking data until there is nothing to take
     while (reader->take_next_sample(node_->data_, &info) == RETCODE_OK)
     {
         if (info.valid_data)
         {
+            node_->resume_taking_data_.store(false);
+            lock.unlock();
             node_->callback_(node_->data_);
+            std::cout << "Data send to callback" << std::endl; //debug
+            node_->cv_.wait_for(lock, std::chrono::milliseconds(100), [this]{ return node_->resume_taking_data_.load();});
+            std::cout << "Data wait ended" << std::endl; //debug
         }
     }
 }
