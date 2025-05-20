@@ -87,9 +87,11 @@ public:
     void resume_taking_data();
 
     /**
-     * @brief Method used to get the cv on this class.
+     * @brief Method to wait until a condition is met.
+     * The condition is a lambda function that returns when
+     * it is true.
      */
-    std::condition_variable& get_cv();
+    void wait_until(const std::function<bool()> &condition);
 
 protected:
 

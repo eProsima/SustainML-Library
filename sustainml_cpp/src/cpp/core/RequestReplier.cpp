@@ -118,11 +118,14 @@ std::mutex& RequestReplier::get_mutex()
 void RequestReplier::resume_taking_data()
 {
     resume_taking_data_.store(true);
+    cv_.notify_all();
 }
 
-std::condition_variable& RequestReplier::get_cv()
+void RequestReplier::wait_until(
+        const std::function<bool()>& condition)
 {
-    return cv_;
+    std::unique_lock<std::mutex> lock(mtx_);
+    cv_.wait(lock, condition);
 }
 
 RequestReplier::RequestReplyControlListener::RequestReplyControlListener(
@@ -143,22 +146,26 @@ void RequestReplier::RequestReplyControlListener::on_data_available(
     // Create a data and SampleInfo instance
     SampleInfo info;
 
-    // Ensure middleware can write on data_
-    std::unique_lock<std::mutex> lock(node_->get_mutex());
-
-    // Keep taking data until there is nothing to take
-    while (reader->take_next_sample(node_->data_, &info) == RETCODE_OK)
+    ReturnCode_t ret = RETCODE_ERROR;
+    do
     {
-        if (info.valid_data)
+        // Ensure middleware can write on data_
+        std::unique_lock<std::mutex> lock(node_->get_mutex());
+
+        auto ret = reader->take_next_sample(node_->data_, &info);
+
+        if (ret == RETCODE_OK && info.valid_data)
         {
             node_->resume_taking_data_.store(false);
-            lock.unlock();
             node_->callback_(node_->data_);
-            std::cout << "Data send to callback" << std::endl; //debug
-            node_->cv_.wait_for(lock, std::chrono::milliseconds(100), [this]{ return node_->resume_taking_data_.load();});
-            std::cout << "Data wait ended" << std::endl; //debug
+            node_->cv_.wait_for(lock, std::chrono::milliseconds(100), [this]
+                    {
+                        return node_->resume_taking_data_.load();
+                    });
         }
+
     }
+    while (ret == RETCODE_OK);
 }
 
 void RequestReplier::RequestReplyControlListener::on_subscription_matched(

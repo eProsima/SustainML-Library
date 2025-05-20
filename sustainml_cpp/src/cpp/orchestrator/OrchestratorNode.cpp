@@ -117,7 +117,7 @@ OrchestratorNode::OrchestratorNode(
 {
     req_res_ = new core::RequestReplier([this](void* input)
                     {
-                        this->cv_.notify_all();
+                        this->req_res_->resume_taking_data();
                     }, "sustainml/request", "sustainml/response", res_.get_impl());
 
     if (!init())
@@ -494,24 +494,28 @@ types::ResponseType OrchestratorNode::configuration_request (
         const types::RequestType& req)
 {
     req_res_->write_req(req.get_impl());
-    std::cout << "Transaction ID: " << req.transaction_id() << std::endl;   //debug
-    std::unique_lock<std::mutex> lck(req_res_->get_mutex());
-    cv_.wait(lck, [this, &req]
+    types::ResponseType user_res;
+    req_res_->wait_until([this, &req]
             {
-                std::cout << "Esperando respuesta" << std::endl;   //debug
-                bool is_expected_response = (res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id());
+                bool is_expected_response =
+                (res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id()) || terminate_.load();
                 if (!is_expected_response)
                 {
                     req_res_->resume_taking_data();
-                    req_res_->get_cv().notify_one();
                 }
                 return is_expected_response;
             });
-    std::cout << "Respuesta recibida " << std::endl;   //debug
-    types::ResponseType user_res = res_;
-    req_res_->resume_taking_data();
-    req_res_->get_cv().notify_one();
-    std::cout << "Todo fue bien" << std::endl;   //debug
+
+    if (!terminate_.load())
+    {
+        user_res = res_;
+        req_res_->resume_taking_data();
+    }
+    else
+    {
+        EPROSIMA_LOG_WARNING(ORCHESTRATOR, "Orchestrator is terminating, no response will be sent");
+    }
+
     return user_res;
 }
 
