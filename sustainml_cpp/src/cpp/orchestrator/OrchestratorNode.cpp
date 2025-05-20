@@ -135,14 +135,16 @@ void OrchestratorNode::destroy()
 {
     if (!terminated_.load())
     {
-        std::lock_guard<std::mutex> lock_proxies(proxies_mtx_);
-        std::lock_guard<std::mutex> lock(mtx_);
-        for (size_t i = 0; i < (size_t)NodeID::MAX; i++)
         {
-            if (node_proxies_[i] != nullptr)
+            std::lock_guard<std::mutex> lock_proxies(proxies_mtx_);
+            std::lock_guard<std::mutex> lock(mtx_);
+            for (size_t i = 0; i < (size_t)NodeID::MAX; i++)
             {
-                delete node_proxies_[i];
-                node_proxies_[i] = nullptr;
+                if (node_proxies_[i] != nullptr)
+                {
+                    delete node_proxies_[i];
+                    node_proxies_[i] = nullptr;
+                }
             }
         }
 
