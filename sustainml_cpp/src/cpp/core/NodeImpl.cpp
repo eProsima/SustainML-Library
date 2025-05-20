@@ -45,8 +45,8 @@ NodeImpl::NodeImpl(
     , participant_(nullptr)
     , publisher_(nullptr)
     , subscriber_(nullptr)
-    , control_listener_(this)
     , req_res_listener_(*new RequestReplyListener())
+    , control_listener_(this)
 {
     if (!init(name))
     {
@@ -63,8 +63,8 @@ NodeImpl::NodeImpl(
     , participant_(nullptr)
     , publisher_(nullptr)
     , subscriber_(nullptr)
-    , control_listener_(this)
     , req_res_listener_(*new RequestReplyListener())
+    , control_listener_(this)
 {
     if (!init(name, opts))
     {
@@ -81,8 +81,8 @@ NodeImpl::NodeImpl(
     , participant_(nullptr)
     , publisher_(nullptr)
     , subscriber_(nullptr)
-    , control_listener_(this)
     , req_res_listener_(req_res_listener)
+    , control_listener_(this)
 {
     req_res_ = new RequestReplier([this, name](void* input)
                     {
@@ -97,7 +97,6 @@ NodeImpl::NodeImpl(
                             req_res_->write_res(res.get_impl());
                         }
                         req_res_->resume_taking_data();
-                        std::cout << "Request Replier finished" << std::endl;    //debug
                     }, "sustainml/response", "sustainml/request", &req_data_);
 
     if (!init(name))
@@ -116,8 +115,8 @@ NodeImpl::NodeImpl(
     , participant_(nullptr)
     , publisher_(nullptr)
     , subscriber_(nullptr)
-    , control_listener_(this)
     , req_res_listener_(req_res_listener)
+    , control_listener_(this)
 {
     req_res_ = new RequestReplier([this, name](void* input)
                     {

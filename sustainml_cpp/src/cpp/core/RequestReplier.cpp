@@ -34,14 +34,14 @@ RequestReplier::RequestReplier(
         const char* topicr,
         void* data)
     : callback_(callback)
-    , topicw_(topicw)
     , topicr_(topicr)
+    , topicw_(topicw)
     , data_(data)
     , participant_(nullptr)
-    , typeRes_(new ResponseTypeImplPubSubType())
-    , typeReq_(new RequestTypeImplPubSubType())
     , publisher_(nullptr)
     , subscriber_(nullptr)
+    , typeRes_(new ResponseTypeImplPubSubType())
+    , typeReq_(new RequestTypeImplPubSubType())
     , listener_(this)
 {
     auto dpf = DomainParticipantFactory::get_instance();
