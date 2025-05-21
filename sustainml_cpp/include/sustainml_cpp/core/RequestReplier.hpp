@@ -91,7 +91,8 @@ public:
      * The condition is a lambda function that returns when
      * it is true.
      */
-    void wait_until(const std::function<bool()> &condition);
+    void wait_until(
+            const std::function<bool()>& condition);
 
 protected:
 
