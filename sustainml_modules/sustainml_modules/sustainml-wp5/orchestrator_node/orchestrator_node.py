@@ -83,7 +83,6 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
 
             # If the node is CarbonTracker and its output extra_data is non-empty, print a message
             if node_id == utils.node_id.CARBONTRACKER.value:
-                print("Data results of CARBON")   # Debugging
                 carbon_data = sustainml_swig.get_carbontracker_task_data(self.orchestrator.node_, task_id)
                 try:
                     extra_data_vector = carbon_data.extra_data()  # Vector de uint8_t
@@ -95,12 +94,10 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
                     extra_data = None
 
                 if extra_data is not None and len(extra_data) > 0:
-                    print("Resend is going to be made")   # Debugging
                     num_outputs = extra_data['num_outputs']
-                    print("Number of outputs:", num_outputs)    # Debugging
 
                     if num_outputs > 1:
-                        print("Reiterating CarbonTracker node for multiple outputs")    # Debugging
+                        print(f"Reiterating for multiple outputs")
                         user_json = self.orchestrator.get_user_input_data(task_id)
                         user_json.get('extra_data', {})['num_outputs'] = num_outputs - 1
                         user_json['previous_iteration'] = task_id.iteration_id()
@@ -364,10 +361,6 @@ class Orchestrator:
             pair = self.node_.prepare_new_iteration(previous_task)
         task_id = pair[0]
 
-        print("Task:", utils.string_task(task_id))
-        print("Problem ID:", task_id.problem_id())      # Debugging
-        print("Iteration ID:", task_id.iteration_id())
-
         user_input = pair[1]
         self.handler_.register_task(task_id)
 
@@ -410,6 +403,7 @@ class Orchestrator:
         num_outputs = extra.get('num_outputs')
         model_restrains = extra.get('model_restrains', [])
         hf_token = extra.get('hf_token')
+        type = extra.get('type')
 
         # Add extra data to user user_input
         extra_data = {'hardware_required': hw_req,
@@ -418,7 +412,8 @@ class Orchestrator:
                       'model_selected': model_selected,
                       'num_outputs': num_outputs,
                       'model_restrains': model_restrains,
-                      'hf_token': hf_token}
+                      'hf_token': hf_token,
+                      'type': type}
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
