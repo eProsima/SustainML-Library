@@ -32,8 +32,6 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
         self.last_task_id = None
         self.node_status_ = {}
         self.result_status = {}
-        # Parent class constructor
-        super().__init__()
 
     # Callback
     def on_node_status_change(
@@ -115,6 +113,8 @@ class Orchestrator:
 
         self.handler_ = OrchestratorNodeHandle(self)
         self.node_ = cpp_OrchestratorNode(self.handler_)
+        self._txn_lock = threading.Lock()
+        self._txn_counter = 0
 
     # Proxy method to run the node
     def run(self):
@@ -426,10 +426,20 @@ class Orchestrator:
             return None
 
     def send_request(self, json_data):
+        with self._txn_lock:
+            self._txn_counter += 1
+            txn_id = self._txn_counter
+
         request_type = sustainml_swig.RequestType()
-        request_type.node_id(json_data.get('node_id'))
-        request_type.transaction_id(json_data.get('transaction_id'))
+        request_type.transaction_id(txn_id)
         request_type.configuration(json_data.get('configuration'))
+
+        if "hardwares" in request_type.configuration():
+            request_type.node_id(utils.node_id.HW_PROVIDER.value)
+        elif any(key in request_type.configuration() for key in ["modality", "in_out_modalities", "metrics", "model_info", "problem_from_modality"]):
+            request_type.node_id(utils.node_id.ML_MODEL_METADATA.value)
+        elif any(key in request_type.configuration() for key in ["goal", "model_from_goal"]):
+            request_type.node_id(utils.node_id.ML_MODEL_PROVIDER.value)
 
         if request_type.node_id() is None or request_type.transaction_id() is None or request_type.configuration() is None:
             return None

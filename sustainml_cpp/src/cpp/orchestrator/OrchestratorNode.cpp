@@ -115,17 +115,6 @@ OrchestratorNode::OrchestratorNode(
     task_man_(new TaskManager()),
     participant_listener_(new OrchestratorParticipantListener(this))
 {
-    req_res_ = new core::RequestReplier([this](void* input)
-                    {
-                        ResponseTypeImpl* in = static_cast<ResponseTypeImpl*>(input);
-
-                        {
-                            std::lock_guard<std::mutex> lock(this->mtx_);
-                            this->res_ = *in;
-                        }
-                        this->cv_.notify_all();
-                    }, "sustainml/request", "sustainml/response", res_.get_impl());
-
     if (!init())
     {
         EPROSIMA_LOG_ERROR(ORCHESTRATOR, "Orchestrator initialization Failed");
@@ -141,14 +130,16 @@ void OrchestratorNode::destroy()
 {
     if (!terminated_.load())
     {
-        std::lock_guard<std::mutex> lock_proxies(proxies_mtx_);
-        std::lock_guard<std::mutex> lock(mtx_);
-        for (size_t i = 0; i < (size_t)NodeID::MAX; i++)
         {
-            if (node_proxies_[i] != nullptr)
+            std::lock_guard<std::mutex> lock_proxies(proxies_mtx_);
+            std::lock_guard<std::mutex> lock(mtx_);
+            for (size_t i = 0; i < (size_t)NodeID::MAX; i++)
             {
-                delete node_proxies_[i];
-                node_proxies_[i] = nullptr;
+                if (node_proxies_[i] != nullptr)
+                {
+                    delete node_proxies_[i];
+                    node_proxies_[i] = nullptr;
+                }
             }
         }
 
@@ -170,6 +161,7 @@ void OrchestratorNode::destroy()
         DomainParticipantFactory::get_instance()->delete_participant(participant_);
 
         delete task_man_;
+        delete req_res_;
 
         handler_ = nullptr;
         terminated_.store(true);
@@ -277,6 +269,11 @@ bool OrchestratorNode::init()
         EPROSIMA_LOG_ERROR(ORCHESTRATOR, "Error creating the subscriber");
         return false;
     }
+
+    req_res_ = new core::RequestReplier([this](void* input)
+                    {
+                        this->req_res_->resume_taking_data();
+                    }, "sustainml/request", "sustainml/response", participant_, pub_, sub_, res_.get_impl());
 
     initialized_.store(true);
     initialization_cv_.notify_one();
@@ -500,13 +497,29 @@ types::ResponseType OrchestratorNode::configuration_request (
         const types::RequestType& req)
 {
     req_res_->write_req(req.get_impl());
-    std::unique_lock<std::mutex> lck(mtx_);
-    cv_.wait(lck, [this, &req]
+    types::ResponseType user_res;
+    req_res_->wait_until([this, &req]
             {
-                return res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id();
+                bool is_expected_response =
+                (res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id()) || terminate_.load();
+                if (!is_expected_response)
+                {
+                    req_res_->resume_taking_data();
+                }
+                return is_expected_response;
             });
-    types::ResponseType res = res_;
-    return res;
+
+    if (!terminate_.load())
+    {
+        user_res = res_;
+        req_res_->resume_taking_data();
+    }
+    else
+    {
+        EPROSIMA_LOG_WARNING(ORCHESTRATOR, "Orchestrator is terminating, no response will be sent");
+    }
+
+    return user_res;
 }
 
 void OrchestratorNode::spin()
@@ -522,6 +535,8 @@ void OrchestratorNode::spin()
 void OrchestratorNode::terminate()
 {
     terminate_.store(true);
+    // skip the wait in the replier if any request is pending
+    req_res_->resume_taking_data();
     destroy();
     spin_cv_.notify_all();
 }

@@ -276,8 +276,6 @@ protected:
     std::atomic_bool terminated_{false};
     std::condition_variable initialization_cv_;
 
-    std::condition_variable cv_;
-
     types::ResponseType res_;
     sustainml::core::RequestReplier* req_res_;
 
@@ -304,7 +302,7 @@ protected:
     };
 
     std::condition_variable spin_cv_;
-    std::atomic_bool terminate_;
+    std::atomic_bool terminate_{false};
 
     std::unique_ptr<OrchestratorParticipantListener> participant_listener_;
 
