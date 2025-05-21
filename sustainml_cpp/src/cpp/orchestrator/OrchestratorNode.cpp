@@ -297,12 +297,12 @@ std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_task()
 }
 
 std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_iteration(
-        const types::TaskId& old_task_id)
-
+        const types::TaskId& old_task_id,
+        const types::TaskId& last_task_id)
 {
     std::pair<types::TaskId, types::UserInput*> output;
     types::TaskId new_task_id(old_task_id);
-    new_task_id.iteration_id(new_task_id.iteration_id() + 1);
+    new_task_id.iteration_id(last_task_id.iteration_id() + 1);
     {
         std::lock_guard<std::mutex> lock(task_db_->get_mutex());
         task_db_->prepare_new_entry_nts(new_task_id, true);
@@ -474,7 +474,7 @@ RetCode_t OrchestratorNode::get_task_data(
     return ret;
 }
 
-RetCode_t OrchestratorNode::get_node_status(
+RetCode_t OrchestratorNode::get_node_status (
         const NodeID& node_id,
         const types::NodeStatus*& status)
 {
@@ -496,7 +496,7 @@ void OrchestratorNode::send_control_command(
     control_writer_->write(cmd.get_impl());
 }
 
-types::ResponseType OrchestratorNode::configuration_request(
+types::ResponseType OrchestratorNode::configuration_request (
         const types::RequestType& req)
 {
     req_res_->write_req(req.get_impl());

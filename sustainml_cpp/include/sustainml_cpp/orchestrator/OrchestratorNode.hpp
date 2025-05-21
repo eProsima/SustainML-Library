@@ -148,11 +148,13 @@ public:
      * @brief This method reserves a new Task cache in the DB and returns the place
      * where to fill the UserInput entry structure.
      * @param [in] task_id identifier of the previous task from which to iterate
+     * @param [in] last_task_id identifier of the last task from the problem
      * @note It must be called before start_task()
      * @return A pair containing the TaskId and a pointer to the UserInput structure.
      */
     std::pair<types::TaskId, types::UserInput*> prepare_new_iteration(
-            const types::TaskId& task_id);
+            const types::TaskId& task_id,
+            const types::TaskId& last_task_id);
 
     /**
      * @brief This method triggers a new task with a previously prepared task_id and

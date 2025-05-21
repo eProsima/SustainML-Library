@@ -115,10 +115,7 @@ class OrchestratorNode:
         if request_type.node_id() is None or request_type.transaction_id() is None or request_type.configuration() is None:
             return None
         res = self.node_.configuration_request(request_type)
-        if res.success:
-            return res
-        else:
-            return None
+        return res
 
 # Call main in program execution
 if __name__ == '__main__':
@@ -130,7 +127,6 @@ if __name__ == '__main__':
         "transaction_id": 1,
         "configuration": "dummy1"
     })
-    print(f"Response: {res.success()}")
     res = node.send_request({
         "node_id": 1,
         "transaction_id": 1,
