@@ -36,6 +36,8 @@
 #include <fastdds/dds/subscriber/qos/SubscriberQos.hpp>
 #include <fastdds/dds/subscriber/Subscriber.hpp>
 
+using namespace eprosima::fastdds::dds;
+
 namespace sustainml {
 namespace core {
 
@@ -56,6 +58,9 @@ public:
             std::function<void(void*)> callback,
             const char* topicw,
             const char* topicr,
+            DomainParticipant* participant,
+            Publisher* publisher,
+            Subscriber* subscriber,
             void* data);
 
     ~RequestReplier();

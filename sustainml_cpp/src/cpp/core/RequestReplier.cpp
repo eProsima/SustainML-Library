@@ -23,8 +23,6 @@
 #include <fastdds/dds/topic/Topic.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
 
-using namespace eprosima::fastdds::dds;
-
 namespace sustainml {
 namespace core {
 
@@ -32,30 +30,21 @@ RequestReplier::RequestReplier(
         std::function<void(void*)> callback,
         const char* topicw,
         const char* topicr,
+        DomainParticipant* participant,
+        Publisher* publisher,
+        Subscriber* subscriber,
         void* data)
     : callback_(callback)
     , topicr_(topicr)
     , topicw_(topicw)
     , data_(data)
-    , participant_(nullptr)
-    , publisher_(nullptr)
-    , subscriber_(nullptr)
+    , participant_(participant)
+    , publisher_(publisher)
+    , subscriber_(subscriber)
     , typeRes_(new ResponseTypeImplPubSubType())
     , typeReq_(new RequestTypeImplPubSubType())
     , listener_(this)
 {
-    auto dpf = DomainParticipantFactory::get_instance();
-
-    DomainParticipantQos pqos;
-
-    // Create a DomainParticipant
-    uint32_t domain = common::parse_sustainml_env(0);
-    participant_ = dpf->create_participant(domain, pqos);
-
-    subscriber_ = participant_->create_subscriber(SUBSCRIBER_QOS_DEFAULT);
-
-    publisher_ = participant_->create_publisher(PUBLISHER_QOS_DEFAULT);
-
     // Register the type
     typeRes_.register_type(participant_);
     typeReq_.register_type(participant_);
@@ -95,7 +84,15 @@ RequestReplier::RequestReplier(
 
 RequestReplier::~RequestReplier()
 {
+    if (publisher_)
+    {
+        publisher_->delete_datawriter(writer_);
+    }
 
+    if (subscriber_)
+    {
+        subscriber_->delete_datareader(reader_);
+    }
 }
 
 void RequestReplier::write_res(

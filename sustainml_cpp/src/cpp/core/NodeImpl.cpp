@@ -84,21 +84,6 @@ NodeImpl::NodeImpl(
     , req_res_listener_(req_res_listener)
     , control_listener_(this)
 {
-    req_res_ = new RequestReplier([this, name](void* input)
-                    {
-                        RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
-
-                        if (in->node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
-                        {
-                            types::ResponseType res;
-                            types::RequestType req;
-                            req = *in;
-                            req_res_listener_.on_configuration_request(req, res);
-                            req_res_->write_res(res.get_impl());
-                        }
-                        req_res_->resume_taking_data();
-                    }, "sustainml/response", "sustainml/request", &req_data_);
-
     if (!init(name))
     {
         EPROSIMA_LOG_ERROR(NODE, "Initialization Failed");
@@ -118,20 +103,6 @@ NodeImpl::NodeImpl(
     , req_res_listener_(req_res_listener)
     , control_listener_(this)
 {
-    req_res_ = new RequestReplier([this, name](void* input)
-                    {
-                        RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
-
-                        if (in->node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
-                        {
-                            types::ResponseType res;
-                            types::RequestType req;
-                            req = *in;
-                            req_res_listener_.on_configuration_request(req, res);
-                            req_res_->write_res(res.get_impl());
-                        }
-                    }, "sustainml/response", "sustainml/request", &req_data_);
-
     if (!init(name, opts))
     {
         EPROSIMA_LOG_ERROR(NODE, "Initialization Failed with the provided Options");
@@ -148,6 +119,8 @@ NodeImpl::~NodeImpl()
         auto dpf = DomainParticipantFactory::get_instance();
         dpf->delete_participant(participant_);
     }
+
+    delete req_res_;
 
     dispatcher_->stop();
 }
@@ -189,6 +162,20 @@ bool NodeImpl::init(
     {
         return false;
     }
+
+    req_res_ = new RequestReplier([this, name](void* input)
+                    {
+                        RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
+
+                        if (in->node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
+                        {
+                            types::ResponseType res;
+                            types::RequestType req;
+                            req = *in;
+                            req_res_listener_.on_configuration_request(req, res);
+                            req_res_->write_res(res.get_impl());
+                        }
+                    }, "sustainml/response", "sustainml/request", participant_, publisher_, subscriber_, &req_data_);
 
     //! Register Common Types
 

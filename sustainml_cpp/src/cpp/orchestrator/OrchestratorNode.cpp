@@ -78,6 +78,7 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
         if (reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DISCOVERED_PARTICIPANT &&
                 orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] == nullptr)
         {
+            EPROSIMA_LOG_INFO(ORCHESTRATOR, "Creating node proxy for " << participant_name << " node");
             ModuleNodeProxyFactory::make_node_proxy(
                 node_id,
                 orchestrator_,
@@ -114,11 +115,6 @@ OrchestratorNode::OrchestratorNode(
     task_man_(new TaskManager()),
     participant_listener_(new OrchestratorParticipantListener(this))
 {
-    req_res_ = new core::RequestReplier([this](void* input)
-                    {
-                        this->req_res_->resume_taking_data();
-                    }, "sustainml/request", "sustainml/response", res_.get_impl());
-
     if (!init())
     {
         EPROSIMA_LOG_ERROR(ORCHESTRATOR, "Orchestrator initialization Failed");
@@ -273,6 +269,11 @@ bool OrchestratorNode::init()
         EPROSIMA_LOG_ERROR(ORCHESTRATOR, "Error creating the subscriber");
         return false;
     }
+
+    req_res_ = new core::RequestReplier([this](void* input)
+                    {
+                        this->req_res_->resume_taking_data();
+                    }, "sustainml/request", "sustainml/response", participant_, pub_, sub_, res_.get_impl());
 
     initialized_.store(true);
     initialization_cv_.notify_one();
