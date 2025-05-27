@@ -103,6 +103,12 @@ The following command builds the Docker image using the downloaded Dockerfile, s
 SustainML Framework Docker deployment
 -------------------------------------
 
+.. note::
+    Before running the framework, make sure you have set the ``HF_TOKEN`` environment variable on your host to your personal Hugging Face access token.
+
+.. note::
+    You can also override the default DDS domain ID for all nodes by setting the environment variable ``SUSTAINML_DOMAIN_ID`` on the host before launching the containers.
+
 To run the *SustainML Framework* using Dockers, execute the following command:
 
 .. tabs::

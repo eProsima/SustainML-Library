@@ -52,10 +52,11 @@ Node Template
 
 Following is the Python API provided for the :ref:`appreqs_node`.
 User is meant to implement the funcionality of the node within the ``test:callback()``.
+And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
 
 .. code-block:: python
 
-    # Copyright 2024 SustainML Consortium
+    # Copyright 2023 SustainML Consortium
     #
     # Licensed under the Apache License, Version 2.0 (the "License");
     # you may not use this file except in compliance with the License.
@@ -68,7 +69,7 @@ User is meant to implement the funcionality of the node within the ``test:callba
     # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     # See the License for the specific language governing permissions and
     # limitations under the License.
-    """SustainML App Requirements Node Implementation."""
+    """SustainML Task Encoder Node Implementation."""
 
     from sustainml_py.nodes.AppRequirementsNode import AppRequirementsNode
 
@@ -76,6 +77,7 @@ User is meant to implement the funcionality of the node within the ``test:callba
     import signal
     import threading
     import time
+    import json
 
     # Whether to go on spinning or interrupt
     running = False
@@ -94,33 +96,33 @@ User is meant to implement the funcionality of the node within the ``test:callba
 
         # Callback implementation here
 
-        # Read the inputs
-        # UserInput
-        # (some of the fields are for internal use only and will not be shown here)
-        modality = user_input.modality()
-        task_name = user_input.problem_short_description()
-        problem_definition = user_input.problem_definition()
-        for input in user_input.inputs():
-            print(input)
-        for output in user_input.outputs():
-            print(output)
-        min_samples = user_input.minimum_samples()
-        max_samples = user_input.maximum_samples()
-        continent = user_input.continent()
-        region = user_input.region()
-        for byte in user_input.extra_data():
-            print(byte)
+        app_requirements.app_requirements().append("Im")
+        app_requirements.app_requirements().append("A")
+        app_requirements.app_requirements().append("New")
+        app_requirements.app_requirements().append("Requirement")
 
-        # Do processing...
+    # User Configuration Callback implementation
+    # Inputs: req
+    # Outputs: res
+    def configuration_callback(req, res):
 
-        # Populate app requirements output.
-        # There is no need to specify node_status for the moment
-        # as it will automatically be set to IDLE when the callback returns.
-        app_requirements.app_requirements(["This", "is", "a", "new", "requirement"])
+        # Callback for configuration implementation here
+
+        # Dummy JSON configuration and implementation
+        dummy_config = {
+            "param1": "value1",
+            "param2": "value2",
+            "param3": "value3"
+        }
+        res.configuration(json.dumps(dummy_config))
+        res.node_id(req.node_id())
+        res.transaction_id(req.transaction_id())
+        res.success(True)
+        res.err_code(0) # 0: No error || 1: Error
 
     # Main workflow routine
     def run():
-        node = AppRequirementsNode(callback=task_callback)
+        node = AppRequirementsNode(callback=task_callback, service_callback=configuration_callback)
         global running
         running = True
         node.spin()
@@ -139,3 +141,4 @@ User is meant to implement the funcionality of the node within the ``test:callba
             time.sleep(1)
 
         runner.join()
+

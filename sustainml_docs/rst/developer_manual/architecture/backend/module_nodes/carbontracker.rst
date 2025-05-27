@@ -54,10 +54,11 @@ Node Template
 
 Following is the Python API provided for the :ref:`carbontracker_node`.
 User is meant to implement the funcionality of the node within the ``test:callback()``.
+And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
 
 .. code-block:: python
 
-    # Copyright 2024 SustainML Consortium
+    # Copyright 2023 SustainML Consortium
     #
     # Licensed under the Apache License, Version 2.0 (the "License");
     # you may not use this file except in compliance with the License.
@@ -70,17 +71,59 @@ User is meant to implement the funcionality of the node within the ``test:callba
     # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     # See the License for the specific language governing permissions and
     # limitations under the License.
-    """SustainML Carbon Tracker Node Implementation."""
+    """SustainML Carbon Footprint Node Implementation."""
 
     from sustainml_py.nodes.CarbonFootprintNode import CarbonFootprintNode
+
+    from carbontracker.tracker import CarbonTracker
+    from carbontracker import parser
 
     # Manage signaling
     import signal
     import threading
     import time
+    import json
+    import multiprocessing
 
     # Whether to go on spinning or interrupt
     running = False
+
+    # Create tracker on different proccess
+    def create_tracker(log_dir, epochs, queue):
+        try:
+            # Define CarbonTracker
+            tracker = CarbonTracker(log_dir=log_dir, epochs=epochs)
+            for epoch in range(epochs):
+                # Start measuring
+                tracker.epoch_start()
+                # Execute the training task
+                # ...
+                time.sleep(5)   # 5 seconds sleep as training (temporal approach) TODO
+                # Stop measuring
+                tracker.epoch_end()
+            tracker.stop()
+
+            # Retrieve carbon information
+            try:
+                logs = parser.parse_all_logs(log_dir=log_dir)
+            except Exception as e:
+                print("Error: ", e)
+                logs = None
+            if logs:
+                for entry in reversed(logs):
+                    pred = entry.get("pred")
+                    if pred and pred.get("co2eq (g)", 0) > 0:
+                        carbon = pred.get("co2eq (g)", 0)
+                        break
+                else:
+                    carbon = 0.0
+                    raise RuntimeError("No non-zero CarbonTracker entry found")
+            else:
+                carbon = 0.0
+
+            queue.put(carbon)
+        except Exception as e:
+            queue.put(e)
 
     # Signal handler
     def signal_handler(sig, frame):
@@ -93,57 +136,95 @@ User is meant to implement the funcionality of the node within the ``test:callba
     # Inputs: ml_model, user_input, hw
     # Outputs: node_status, co2
     def task_callback(ml_model, user_input, hw, node_status, co2):
+        # Time to estimate Wh based on W (in hours)
+        try:
+            default_time = hw.latency() / (3600 * 1000)             # ms to h && W to kW
+            energy_consump = hw.power_consumption()*default_time    # kW * h = kWh
+        except Exception as e:
+            print("Error: ", e)
+            energy_consump = 0.0
 
-        # Callback implementation here
+        log_directory = "/tmp/logs/carbontracker"               # temp log dir for reading carbon data results
 
-        # Read the inputs
-        # MLModel
-        model_path = ml_model.model_path()
-        model = ml_model.model()
-        model_properties_path = ml_model.model_properties_path()
-        model_properties = ml_model.model_properties()
-        for input_batch in ml_model.input_batch():
-            print(input_batch)
-        target_latency = ml_model.target_latency()
+        # Define CarbonTracker with fallback for no available components
+        try:
+            queue = multiprocessing.Queue()
+            proc = multiprocessing.Process(target=create_tracker, args=(log_directory, 1, queue))
+            proc.start()
+            proc.join(timeout=10)
+            if proc.is_alive():
+                print("Child process did not finish within the timeout period. Terminating...")
+                proc.terminate()
+                proc.join()
+                raise Exception("tracker child process did not finish within the timeout period. Terminating...")
 
-        # UserInput
-        # (some of the fields are for internal use only and will not be shown here)
-        modality = user_input.modality()
-        task_name = user_input.problem_short_description()
-        problem_definition = user_input.problem_definition()
-        for input in user_input.inputs():
-            print(input)
-        for output in user_input.outputs():
-            print(output)
-        min_samples = user_input.minimum_samples()
-        max_samples = user_input.maximum_samples()
-        continent = user_input.continent()
-        region = user_input.region()
-        for byte in user_input.extra_data():
-            print(byte)
+            if proc.exitcode == 70:
+                raise Exception("No hardware components available; failed to obtain carbon footprint value.")
+            else:
+                if not queue.empty():
+                    result = queue.get()
+                    if isinstance(result, Exception):
+                        raise Exception("Error creating tracker: " + str(result))
+                    else:
+                        print("Tracker created successfully.")
+                        carbon = result
+                else:
+                    raise Exception("No result obtained from the tracker process; failed to obtain carbon footprint value.")
 
-        # HWResource
-        hw_description = hw.hw_description()
-        power_consumption = hw.power_consumption()
-        latency = hw.latency()
-        memory_footprint_of_ml_model = hw.memory_footprint_of_ml_model()
-        max_hw_memory_footprint = hw.max_hw_memory_footprint()
+            intensity = 0.0
+            if energy_consump > 0:
+                intensity = carbon/energy_consump
 
-        # Do processing...
+            # populate carbon footprint information
+            co2.carbon_footprint(carbon)
+            co2.energy_consumption(energy_consump)
+            co2.carbon_intensity(intensity)
 
-        # Populate carbon footprint output.
-        # There is no need to specify node_status for the moment
-        # as it will automatically be set to IDLE when the callback returns.
-        co2.carbon_footprint(4)
-        co2.energy_consumption(1000)
-        co2.carbon_intesity(2)
+            # adding number of output request to extra data
+            extra_data_bytes = user_input.extra_data()
+            extra_data_str = ''.join(chr(b) for b in extra_data_bytes)
+            extra_data_dict = json.loads(extra_data_str)
 
+            if "num_outputs" in extra_data_dict and extra_data_dict["num_outputs"] != "":
+                num_outputs = extra_data_dict["num_outputs"]
+                model_restrains_list = [ml_model.model()]
+                if "model_restrains" in extra_data_dict:
+                    model_restrains_list.extend(extra_data_dict["model_restrains"])
+
+                encoded_data = json.dumps({"num_outputs": num_outputs, "model_restrains": model_restrains_list}).encode("utf-8")
+                co2.extra_data(encoded_data)
+
+        except Exception as e:
+            print(f"Error getting carbon footprint information: {e}")
+            co2.carbon_footprint(0.0)
+            co2.energy_consumption(0.0)
+            co2.carbon_intensity(0.0)
+            error_message = "Failed to obtain carbon footprint information: " + str(e)
+            error_info = {"error": error_message}
+            encoded_error = json.dumps(error_info).encode("utf-8")
+            co2.extra_data(encoded_error)
+
+    # User Configuration Callback implementation
+    # Inputs: req
+    # Outputs: res
+    def configuration_callback(req, res):
+
+        # Callback for configuration implementation here
+
+        # Case not supported
+        res.node_id(req.node_id())
+        res.transaction_id(req.transaction_id())
+        error_msg = f"Unsupported configuration request: {req.configuration()}"
+        res.configuration(json.dumps({"error": error_msg}))
+        res.success(False)
+        res.err_code(1) # 0: No error || 1: Error
+        print(error_msg)
 
     # Main workflow routine
     def run():
         global running
         running = True
-        node = CarbonFootprintNode(callback=task_callback)
+        node = CarbonFootprintNode(callback=task_callback, service_callback=configuration_callback)
         node.spin()
 
     # Call main in program execution
