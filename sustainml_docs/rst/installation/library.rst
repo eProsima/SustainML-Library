@@ -87,3 +87,40 @@ The following command builds and installs the *SustainML library* and its depend
             git submodule update --init --recursive && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build --cmake-args -DCMAKE_CXX_STANDARD=17
+
+.. _installation_library_run:
+
+Run SustainML Modules and Backend
+---------------------------------
+
+After building the SustainML library, you can start the backend as follows:
+
+.. tabs::
+
+    .. group-tab:: Ubuntu
+
+        .. code-block:: bash
+
+            bash -c " \
+                cd ~/SustainML/SustainML_ws/build/sustainml_modules/lib/sustainml_modules; \
+                python3 sustainml-wp1/app_requirements_node.py & \
+                python3 sustainml-wp1/ml_model_metadata_node.py & \
+                python3 sustainml-wp1/ml_model_provider_node.py & \
+                python3 sustainml-wp2/hw_constraints_node.py & \
+                python3 sustainml-wp2/hw_resources_provider_node.py & \
+                python3 sustainml-wp3/carbon_footprint_node.py & \
+                python3 sustainml-wp5/backend_node.py”
+
+    .. group-tab:: MacOS
+
+        .. code-block:: bash
+
+            bash -c " \
+                cd ~/SustainML/SustainML_ws/build/sustainml_modules/lib/sustainml_modules; \
+                python3 sustainml-wp1/app_requirements_node.py & \
+                python3 sustainml-wp1/ml_model_metadata_node.py & \
+                python3 sustainml-wp1/ml_model_provider_node.py & \
+                python3 sustainml-wp2/hw_constraints_node.py & \
+                python3 sustainml-wp2/hw_resources_provider_node.py & \
+                python3 sustainml-wp3/carbon_footprint_node.py & \
+                python3 sustainml-wp5/backend_node.py”

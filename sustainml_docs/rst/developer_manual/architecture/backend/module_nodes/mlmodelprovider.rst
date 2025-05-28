@@ -60,10 +60,11 @@ Node Template
 
 Following is the Python API provided for the :ref:`mlmodelprovider_node`.
 User is meant to implement the funcionality of the node within the ``test:callback()``.
+And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
 
 .. code-block:: python
 
-    # Copyright 2024 SustainML Consortium
+    # Copyright 2023 SustainML Consortium
     #
     # Licensed under the Apache License, Version 2.0 (the "License");
     # you may not use this file except in compliance with the License.
@@ -81,12 +82,20 @@ User is meant to implement the funcionality of the node within the ``test:callba
     from sustainml_py.nodes.MLModelNode import MLModelNode
 
     # Manage signaling
+    import os
     import signal
     import threading
     import time
+    import json
+
+    from rdftool.ModelONNXCodebase import model
+    from rdftool.rdfCode import load_graph, get_models_for_problem, get_models_for_problem_and_tag, get_problems, get_model_details, print_models
 
     # Whether to go on spinning or interrupt
     running = False
+
+    # Global variable of the graph
+    graph = None
 
     # Signal handler
     def signal_handler(sig, frame):
@@ -109,60 +118,96 @@ User is meant to implement the funcionality of the node within the ``test:callba
 
         # Callback implementation here
 
-        # Read the inputs
-        # MLModelMetadata
-        for metadata_prop in ml_model_metadata.ml_model_metadata():
-            print(metadata_prop)
-        for keyword in ml_model_metadata.keywords():
-            print(keyword)
+        print (f"Received Task: {ml_model_metadata.task_id().problem_id()},{ml_model_metadata.task_id().iteration_id()}")
 
-        # Apprequirements
-        for requirement in app_requirements.app_requirements():
-            print(requirement)
+        try:
+            chosen_model = None
+            # Model restriction after various outputs
+            restrained_models = []
+            type = None
+            extra_data_bytes = ml_model_metadata.extra_data()
+            if extra_data_bytes:
+                extra_data_str = ''.join(chr(b) for b in extra_data_bytes)
+                extra_data_dict = json.loads(extra_data_str)
+                if "type" in extra_data_dict:
+                    type = extra_data_dict["type"]
 
-        # HWConstraints
-        max_mem_footprint = hw_constraints.max_memory_footprint()
-        hw_required = hw_constraints.hardware_required()
+                if "model_restrains" in extra_data_dict:
+                    restrained_models = extra_data_dict["model_restrains"]
 
-        # MLModel
-        # Only in case of optimization (task_id.iteration_id() > 1)
-        model_path = ml_model_baseline.model_path()
-        model = ml_model_baseline.model()
-        model_properties_path = ml_model_baseline.model_properties_path()
-        model_properties = ml_model_baseline.model_properties()
-        for input_batch in ml_model_baseline.input_batch():
-            print(input_batch)
-        target_latency = ml_model_baseline.target_latency()
+                if "model_selected" in extra_data_dict:
+                    chosen_model = extra_data_dict["model_selected"]
+                    print("Model already selected: ", chosen_model)
 
-        # HWResource
-        # Only in case of optimization (task_id.iteration_id() > 1)
-        hw_description = hw_baseline.hw_description()
-        power_consumption = hw_baseline.power_consumption()
-        latency = hw_baseline.latency()
-        memory_footprint_of_ml_model = hw_baseline.memory_footprint_of_ml_model()
-        max_hw_memory_footprint = hw_baseline.max_hw_memory_footprint()
+            if chosen_model is None:
+                metadata = ml_model_metadata.ml_model_metadata()[0]
 
-        # CarbonFootprint
-        # Only in case of optimization (task_id.iteration_id() > 1)
-        carbon_footprint = carbonfootprint_baseline.carbon_footprint()
-        energy_consumption = carbonfootprint_baseline.energy_consumption()
-        carbon_intesity = carbonfootprint_baseline.carbon_intesity()
+                # Model selection and information retrieval
+                global graph
+                if type is not None:
+                    print(f"Limiting search to models with tag: {type}")
+                    suggested_models = get_models_for_problem_and_tag(graph, metadata, type)
+                else:
+                    suggested_models = get_models_for_problem(graph, metadata)
 
-        # Do processing...
+                # model_info = get_model_details(graph, suggested_models)
+                # model_names = [info['name'] for info in model_info]
+                model_names = [model[0] for model in suggested_models]
 
-        # Populate ml model porvider output.
-        # There is no need to specify node_status for the moment
-        # as it will automatically be set to IDLE when the callback returns.
-        ml_model.model_path("")
-        ml_model.model("")
-        ml_model.model_properties_path("")
-        ml_model.model_properties("")
-        ml_model.input_batch().append("batch"):
-        ml_model.target_latency(800)
+                # Random Model is selected here. In the Final code there should be some sort of selection to choose between Possible Models
+                for model_use in model_names:
+                    # Some models can't be downloaded from HF, TODO: Works for all models
+                    if "llama" in str(model_use).lower():
+                        continue
+                    if str(model_use) not in restrained_models:
+                        chosen_model = model_use
+                        break
+                    else:
+                        print(f"Chosen model: {model_use} is restrained. The restrained models are {restrained_models}. Choosing the next model.")
+                else:
+                    raise Exception("No valid model could be selected.")
+
+            print(f"ML Model chosen: {chosen_model}")
+
+            # Generate model code and keywords
+            onnx_path = model(chosen_model)     # TODO - Further development needed
+            ml_model.model(chosen_model)
+            ml_model.model_path(onnx_path)
+
+        except Exception as e:
+            print(f"Failed to determine ML model for task {ml_model_metadata.task_id()}: {e}.")
+            ml_model.model("Error")
+            ml_model.model_path("Error")
+            error_message = "Failed to obtain ML model for task: " + str(e)
+            error_info = {"error": error_message}
+            encoded_error = json.dumps(error_info).encode("utf-8")
+            ml_model.extra_data(encoded_error)
+
+    # User Configuration Callback implementation
+    # Inputs: req
+    # Outputs: res
+    def configuration_callback(req, res):
+
+        # Callback for configuration implementation here
+
+        # Dummy JSON configuration and implementation
+        dummy_config = {
+            "param1": "value1",
+            "param2": "value2",
+            "param3": "value3"
+        }
+        res.configuration(json.dumps(dummy_config))
+        res.node_id(req.node_id())
+        res.transaction_id(req.transaction_id())
+        res.success(True)
+        res.err_code(0) # 0: No error || 1: Error
+
 
     # Main workflow routine
     def run():
-        node = MLModelNode(callback=task_callback)
+        global graph
+        graph = load_graph(os.path.dirname(__file__)+'/graph_v2.ttl')
+        node = MLModelNode(callback=task_callback, service_callback=configuration_callback)
         global running
         running = True
         node.spin()

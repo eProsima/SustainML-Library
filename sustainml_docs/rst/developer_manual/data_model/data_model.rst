@@ -305,3 +305,49 @@ Finally, in order to model the output from the ``CO2 Footprint Provider``, the `
         sequence<octet> extra_data;
         @key long task_id;
     };
+
+
+.. _service_types:
+
+Service Types
+-------------
+
+``RequestType`` and ``ResponseType`` are the data structures used to communicate with the ``Node Configuration Service``.
+
+The ``RequestType`` structure includes the following fields:
+
+* ``node_id``: An integer key based on the enum NodeID.
+* ``transaction_id``: An integer key representing a unique counter internal to the orchestrator.
+* ``configuration``: A string or sequence of octets representing the configuration to apply.
+
+The ``ResponseType`` structure includes the following fields:
+
+* ``node_id``: An integer key based on the enum NodeID.
+* ``transaction_id``: An integer key representing a unique counter internal to the orchestrator.
+* ``success``: A boolean indicating whether the request was successful.
+* ``err_code``: An integer representing the error code if the request was not successful.
+* ``configuration``: A string or sequence of octets representing the configuration after the request.
+
+.. code-block:: bash
+
+    #Servicetypes.idl
+
+    enum ErrorCode {
+            NO_ERROR,
+            INTERNAL_ERROR};
+
+    struct RequestType
+    {
+        @key long node_id;
+        @key int transaction_id;
+        string configuration;
+    };
+
+    struct ResponseType
+    {
+        @key long node_id;
+        @key int transaction_id;
+        bool success;
+        ErrorCode err_code;
+        string configuration;
+    };

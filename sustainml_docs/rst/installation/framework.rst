@@ -42,8 +42,8 @@ Install them using the package manager of the appropriate Linux distribution.
             apt install --yes --no-install-recommends \
                 curl wget git cmake g++ build-essential python3 python3-pip python3-venv libpython3-dev swig \
                 libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2 \
-                qtdeclarative5-dev libqt5charts5-dev qtquickcontrols2-5-dev libqt5svg5 qml-module-qtquick-controls \
-                qml-module-qtquick-controls2
+                qtdeclarative5-dev libqt5charts5-dev qml-module-qtcharts qtquickcontrols2-5-dev libqt5svg5 \
+                qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qt-labs-qmlmodels
 
     .. group-tab:: MacOS
 
@@ -103,9 +103,15 @@ The following command also builds and installs the SustainML framework and all i
 SustainML Framework deployment
 ------------------------------
 
+.. important::
+    Before running the framework, make sure you have set the ``HF_TOKEN`` environment variable on your host to your personal Hugging Face access token.
+
+.. note::
+    You can also override the default DDS domain ID for all nodes by setting the environment variable ``SUSTAINML_DOMAIN_ID`` on the host before launching the containers.
+
 The *SustainML Framework* application retrieves the user inputs and deliver the information to the remain nodes that conform the framework.
 To run the complete framework, both GUI application and framework nodes need to be executed.
-The following script runs all of them:
+The following bash script run each module, the backend orchestrator and the frontend application.
 
 .. tabs::
 
@@ -113,31 +119,17 @@ The following script runs all of them:
 
         .. code-block:: bash
 
-            bash -c " \
-                cd ~/SustainML/SustainML_ws/build/sustainml_modules/lib/sustainml_modules; \
-                python3 sustainml-wp1/app_requirements_node.py & \
-                python3 sustainml-wp1/ml_model_metadata_node.py & \
-                python3 sustainml-wp1/ml_model_provider_node.py & \
-                python3 sustainml-wp2/hw_constraints_node.py & \
-                python3 sustainml-wp2/hw_resources_provider_node.py & \
-                python3 sustainml-wp3/carbon_footprint_node.py & \
-                python3 sustainml-wp5/backend_node.py & \
-                sustainml”
+            cd ~/SustainML/SustainML_ws/src/sustainml_framework
+            chmod +x framework_run.sh && \
+            ./framework_run.sh
 
     .. group-tab:: MacOS
 
         .. code-block:: bash
 
-            bash -c " \
-                cd ~/SustainML/SustainML_ws/build/sustainml_modules/lib/sustainml_modules; \
-                python3 sustainml-wp1/app_requirements_node.py & \
-                python3 sustainml-wp1/ml_model_metadata_node.py & \
-                python3 sustainml-wp1/ml_model_provider_node.py & \
-                python3 sustainml-wp2/hw_constraints_node.py & \
-                python3 sustainml-wp2/hw_resources_provider_node.py & \
-                python3 sustainml-wp3/carbon_footprint_node.py & \
-                python3 sustainml-wp5/backend_node.py & \
-                sustainml”
+            cd ~/SustainML/SustainML_ws/src/sustainml_framework
+            chmod +x framework_run.sh && \
+            ./framework_run.sh
 
 .. note::
 
