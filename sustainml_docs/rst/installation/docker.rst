@@ -37,18 +37,18 @@ The following command downloads both Dockerfile, Docker compose and script files
         .. code-block:: bash
 
             mkdir -p ~/SustainML && cd ~/SustainML && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/Dockerfile && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/docker-compose.yaml && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/run.bash
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/v0.1.0/docker/Dockerfile && \
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/v0.1.0/docker/docker-compose.yaml && \
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/v0.1.0/docker/run.bash
 
     .. group-tab:: MacOS
 
         .. code-block:: bash
 
             mkdir -p ~/SustainML && cd ~/SustainML && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/Dockerfile && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/docker-compose.yaml && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/run.bash
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/v0.1.0/docker/Dockerfile && \
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/v0.1.0/docker/docker-compose.yaml && \
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/v0.1.0/docker/run.bash
 
         The *SustainML Framework* GUI application requires special privileges to access the X server.
         To provide them, `XQuartz <https://www.xquartz.org/>`_ and `socat <http://www.dest-unreach.org/socat/>`_ need to be installed:
