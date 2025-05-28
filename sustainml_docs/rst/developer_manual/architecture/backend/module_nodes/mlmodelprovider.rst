@@ -189,47 +189,18 @@ And inside ``configuration_callback()`` implement the response to the configurat
     def configuration_callback(req, res):
 
         # Callback for configuration implementation here
-        global graph
-        if 'model_from_goal' in req.configuration():
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
 
-            try:
-                text = req.configuration()[len("model_from_goal, "):]
-                parts = text.split(',')
-                if len(parts) >= 2:
-                    goal = parts[0].strip()
-                    tag = parts[1].strip()
-                    models = get_models_for_problem_and_tag(graph, goal, tag)
-                else:
-                    goal = text.strip()
-                    models = get_models_for_problem(graph, goal)
-
-                sorted_models = ', '.join(sorted([str(m[0]) for m in models]))
-
-                if not sorted_models:
-                    res.success(False)
-                    res.err_code(1)  # 0: No error || 1: Error
-                else:
-                    res.success(True)
-                    res.err_code(0)  # 0: No error || 1: Error
-
-                print(f"Models for {goal}: {sorted_models}")    #debug
-                res.configuration(json.dumps(dict(models=sorted_models)))
-
-            except Exception as e:
-                print(f"Error getting model from goal from request: {e}")
-                res.success(False)
-                res.err_code(1)
-
-        else:
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
-            error_msg = f"Unsupported configuration request: {req.configuration()}"
-            res.configuration(json.dumps({"error": error_msg}))
-            res.success(False)
-            res.err_code(1) # 0: No error || 1: Error
-            print(error_msg)
+        # Dummy JSON configuration and implementation
+        dummy_config = {
+            "param1": "value1",
+            "param2": "value2",
+            "param3": "value3"
+        }
+        res.configuration(json.dumps(dummy_config))
+        res.node_id(req.node_id())
+        res.transaction_id(req.transaction_id())
+        res.success(True)
+        res.err_code(0) # 0: No error || 1: Error
 
 
     # Main workflow routine

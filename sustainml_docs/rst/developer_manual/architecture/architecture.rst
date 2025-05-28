@@ -71,22 +71,3 @@ And the different ``Module Nodes`` that specializes in a particular task of the 
    backend/module_nodes/mlmodelmetadata
    backend/module_nodes/mlmodelprovider
    backend/module_nodes/hwprovider
-
-
-.. _node_config_service:
-
-Node Configuration Service
---------------------------
-
-.. image:: ../../figures/SustainML-Framework-Service_design.png
-    :align: center
-    :scale: 75%
-
-This service enables **real-time, dynamic configuration and information request** of any module node in the system.
-The orchestrator exposes a **synchronous RPC** over DDS, sending and receiving **JSON** strings that:
-
-- **node_id**: identifies the target node
-- **transaction_id**: tracks each request–response pair
-- **configuration**: carries the new or current settings
-
-On success, the response returns the updated configuration; on failure, an error code and message are provided.

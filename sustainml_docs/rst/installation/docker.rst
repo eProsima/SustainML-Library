@@ -103,7 +103,7 @@ The following command builds the Docker image using the downloaded Dockerfile, s
 SustainML Framework Docker deployment
 -------------------------------------
 
-.. note::
+.. important::
     Before running the framework, make sure you have set the ``HF_TOKEN`` environment variable on your host to your personal Hugging Face access token.
 
 .. note::

@@ -34,4 +34,5 @@
    :hidden:
 
    /rst/developer_manual/architecture/architecture
+   /rst/developer_manual/configuration_request/configuration_request
    /rst/developer_manual/data_model/data_model

@@ -103,7 +103,7 @@ The following command also builds and installs the SustainML framework and all i
 SustainML Framework deployment
 ------------------------------
 
-.. note::
+.. important::
     Before running the framework, make sure you have set the ``HF_TOKEN`` environment variable on your host to your personal Hugging Face access token.
 
 .. note::

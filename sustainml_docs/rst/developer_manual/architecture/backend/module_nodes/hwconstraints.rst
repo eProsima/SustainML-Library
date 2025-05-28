@@ -131,14 +131,17 @@ And inside ``configuration_callback()`` implement the response to the configurat
 
         # Callback for configuration implementation here
 
-        # Case not supported
+        # Dummy JSON configuration and implementation
+        dummy_config = {
+            "param1": "value1",
+            "param2": "value2",
+            "param3": "value3"
+        }
+        res.configuration(json.dumps(dummy_config))
         res.node_id(req.node_id())
         res.transaction_id(req.transaction_id())
-        error_msg = f"Unsupported configuration request: {req.configuration()}"
-        res.configuration(json.dumps({"error": error_msg}))
-        res.success(False)
-        res.err_code(1) # 0: No error || 1: Error
-        print(error_msg)
+        res.success(True)
+        res.err_code(0) # 0: No error || 1: Error
 
 
     # Main workflow routine

@@ -386,41 +386,18 @@ And inside ``configuration_callback()`` implement the response to the configurat
     def configuration_callback(req, res):
 
         # Callback for configuration implementation here
-        if req.configuration() == "hardwares":
-            try:
-                res.node_id(req.node_id())
-                res.transaction_id(req.transaction_id())
 
-                # Retrieve Hardwares from sim_architectures.yaml
-                with open(os.path.dirname(__file__)+'/upmem_llm_framework/sim_architectures.yaml', 'r') as file:
-                    architectures = yaml.safe_load(file)
-
-                # Extract the hardware names
-                hardware_names = list(architectures.keys())
-
-                if not hardware_names:
-                    res.success(False)
-                    res.err_code(1) # 0: No error || 1: Error
-                else:
-                    res.success(True)
-                    res.err_code(0) # 0: No error || 1: Error
-                sorted_hardware_names = ', '.join(sorted(hardware_names))
-                print(f"Available Hardwares: {sorted_hardware_names}")
-                res.configuration(json.dumps(dict(hardwares=sorted_hardware_names)))
-
-            except Exception as e:
-                print(f"Error getting types of hardwares from request: {e}")
-                res.success(False)
-                res.err_code(1) # 0: No error || 1: Error
-
-        else:
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
-            error_msg = f"Unsupported configuration request: {req.configuration()}"
-            res.configuration(json.dumps({"error": error_msg}))
-            res.success(False)
-            res.err_code(1) # 0: No error || 1: Error
-            print(error_msg)
+        # Dummy JSON configuration and implementation
+        dummy_config = {
+            "param1": "value1",
+            "param2": "value2",
+            "param3": "value3"
+        }
+        res.configuration(json.dumps(dummy_config))
+        res.node_id(req.node_id())
+        res.transaction_id(req.transaction_id())
+        res.success(True)
+        res.err_code(0) # 0: No error || 1: Error
 
     # Main workflow routine
     def run():
