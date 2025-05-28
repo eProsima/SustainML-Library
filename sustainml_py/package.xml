@@ -2,13 +2,13 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>sustainml_py</name>
-  <version>0.0.0</version>
+  <version>0.1.0</version>
   <description>
     *SustainML* Python Module to implement Node interface.
   </description>
   <maintainer email="RaulSanchezMateos@eprosima.com">Raul Sánchez-Mateos</maintainer>
   <maintainer email="mariodominguez@eprosima.com">Mario Domínguez</maintainer>
-  <maintainer email="jesuspoderoso@eprosima.com">Jesús Poderoso</maintainer>
+  <maintainer email="javiergil@eprosima.com">Javier Gil</maintainer>
   <license file="LICENSE">Apache 2.0</license>
 
   <url type="website">https://www.eprosima.com/</url>
