@@ -11,9 +11,9 @@ This service enables **real-time, dynamic configuration and information request*
 For details on the service request and request types specification in the IDL,
 please refer to the :ref:`Service Types <service_types>`.
 
-The orchestrator exposes a **synchronous RPC** over DDS via the `configuration_request()` API.
+The orchestrator exposes a **synchronous Remote Procedure Call (RPC)** over DDS via the `configuration_request()` API.
 When a client invokes `configuration_request(RequestType)` the call **blocks** until the target node processes the request and returns a `ResponseType`.
-You can use this RPC to:
+The Node Service Configuration can be used to:
 
   * **Query** a node’s current configuration
   * **Update** a node’s configuration with new settings
