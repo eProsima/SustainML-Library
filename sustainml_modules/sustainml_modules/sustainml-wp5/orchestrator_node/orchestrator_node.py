@@ -97,6 +97,7 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
                     if num_outputs > 1:
                         print(f"Reiterating for multiple outputs")
                         user_json = self.orchestrator.get_user_input_data(task_id)
+                        user_json.get('extra_data', {})['goal'] = self.orchestrator.get_model_metadata_task_data(task_id).get('metadata', None) # Get the last model goal
                         user_json.get('extra_data', {})['num_outputs'] = num_outputs - 1
                         user_json['previous_iteration'] = task_id.iteration_id()
                         user_json.get('extra_data', {})['previous_problem_id'] = task_id.problem_id()
