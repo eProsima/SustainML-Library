@@ -23,3 +23,6 @@ torchinfo
 transformers==4.48.3
 typer==0.15.1
 ultralytics==8.3.4
+datamart_profiler==0.11
+pandas==2.2.3
+scikit_learn==1.6.1
