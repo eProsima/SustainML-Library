@@ -15,7 +15,7 @@ Pillow==10.4.0
 PyQt5==5.15.11
 rdflib==7.0.0
 timm==1.0.14
-torch==2.4.1
+torch==2.2
 transformers==4.48.3
 typer==0.15.1
 ultralytics==8.3.4

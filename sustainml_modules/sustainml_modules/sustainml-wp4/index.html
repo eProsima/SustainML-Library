@@ -1,285 +1,1304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Interface</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>SustainML Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+    }
+    .sidebar {
+      width: 220px;
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      height: 100vh;
+    }
+    .sidebar h3 {
+      color: #ecf0f1;
+      font-size: 18px;
+      margin-top: 0;
+    }
+    .sidebar p {
+      font-size: 17px;
+      margin: 8px 0;
+      line-height: 1.4em;
+    }
+    .main-grid {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+    }
+    .top-zone {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      background: #eaf0f6;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .data-source {
+      flex: 0 0 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      max-height: 160px;
+      overflow-y: auto;
+      border: 2px dashed #bbb;
+      align-items: center;
+      text-align: center;
+      min-height: 100px;
+
+      margin-top: 200px; /* Adjust this value as needed */
+    }
+    .data-selection {
+      flex: 1 1 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      height: 600px;
+      overflow: visible;
+      position: relative;
+    }
+    .data-source {
+      border: 2px dashed #bbb;
+      align-items: center;
+      text-align: center;
+      min-height: 200px;
+    }
+    .data-source input[type="file"] {
+      display: none;
+    }
+    .upload-label {
+      background: #ccc;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .data-selection-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .data-selection table {
+      table-layout: auto;
+      width: 100%;
+    }
+    .data-selection thead th {
+      position: sticky;
+      top: 0;
+      background: #f0f0f0;
+      z-index: 1;
+    }
+
+    .data-selection th,
+    .data-selection td {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      text-align: left;
+      padding: 8px;
+      font-size: 16px;
+      max-width: 300px;
+    }
+    .data-selection .table-wrapper {
+      max-height: 600px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+    }
+    .meta-data {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .meta-data input {
+      width: 100px;
+    }
+    .middle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .section {
+      padding: 15px;
+      border-radius: 10px;
+      color: #fff;
+      max-height: 330px;
+      overflow-y: auto;
+    }
+    .define-env { background-color: #9DA865; }
+    .describe-problem { background-color: #814C66; }
+    .define-env label,
+    .define-env select,
+    .describe-problem label,
+    .describe-problem select,
+    .describe-problem input,
+    .describe-problem button {
+      display: block;
+      margin: 10px 0;
+      width: 100%;
+      padding: 8px;
+      font-size: 17px;
+    }
+    .model-results ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .model-results li {
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    .model-results li a {
+      text-decoration: none;
+      color: #3366cc;
+    }
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #222;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    .low { background-color: #4caf50; }
+    .medium { background-color: #ff9800; }
+    .high { background-color: #f44336; }
+    .na { background-color: #9e9e9e; }
+    .insight {
+      margin-top: 15px;
+      font-size: 17px;
+      background: #f0fff4;
+      padding: 10px;
+      border-left: 4px solid #4caf50;
+      color: #333;
+    }
+    .stats {
+      font-size: 17px;
+      margin-top: 8px;
+      background: #fff7e6;
+      padding: 8px;
+      border-left: 4px solid #ff9800;
+    }
+
+    select {
+      appearance: none;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10px 30px 10px 10px; /* Right padding for arrow space */
+      font-size: 17px;
+      border-radius: 8px;
+      box-shadow: 1px 1px 4px rgba(0,0,0,0.1);
+      background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><polygon points="0,0 16,0 8,8" style="fill:%23888"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+      transition: border-color 0.2s ease-in-out;
+    }
+
+    select:focus {
+      border-color: #6c63ff;
+      outline: none;
+    }
+
+    .describe-problem label {
+      font-weight: bold;
+      margin-top: 10px;
+      color: #f0f0f0;
+      margin-bottom: 6px;
+    }
+
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .grid-card {
+        padding: 10px;
+        margin: 5px;
+      }
+
+      .grid-card label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2px;  /* Minimal vertical space */
+        font-size: 17px;
+      }
+
+      .grid-card select {
+        padding: 3px 6px;
+        font-size: 17px;
+        margin-bottom: 4px; /* Reduce space after select */
+      }
+
+      .energy-label {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: white;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+    .green { background-color: #4caf50; }
+    .yellow { background-color: #ff9800; }
+    .red { background-color: #f44336; }
+    .hardware-insight {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-left: 4px solid #43a047;
+      padding: 10px;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .alt-models {
+      font-size: 14px;
+      margin-top: 5px;
+      background: #fff3e0;
+      padding: 8px;
+      border-left: 4px solid #ff9800;
+    }
+    .low { background-color: #4caf50; }
+    .medium { background-color: #ff9800; }
+    .high { background-color: #f44336; }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+    }
+
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: max-content;
+      max-width: 220px;
+      background-color: #333;
+      color: #fff;
+      text-align: left;
+      border-radius: 6px;
+      padding: 6px 10px;
+      position: absolute;
+      z-index: 10;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .big-button {
+      font-size: 16px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background-color: #000080;
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .big-button:hover {
+      background-color: #584bd4;
+    }
+    .model-card-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .model-card {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 16px;
+    width: 300px;
+    font-size: 15px;
+    color: #333;
+  }
+
+  .model-card a {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .model-card .badge {
+    display: inline-block;
+    margin: 5px 5px 0 0;
+    background-color: #eee;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .model-card p {
+    max-height: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .arrow-right {
+  align-self: center;
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 20px solid #555;
+  margin: 0 10px;
+}
+
+  .suggest-box {
+    flex: 0 0 220px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+  }
+
+  .suggest-button {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease;
+  }
+
+  .suggest-button:hover {
+    background-color: #584bd4;
+  }
+
+
+
+
+
+
+  </style>
 </head>
 <body>
-    <!-- Main interface -->
-    <div id="main-interface">
-        <div id="info-icon">i</div>
-        <div class="circle-container">
-            <div class="circle data-circle" id="data-circle">Data</div>
-            <div class="circle pd-circle" id="pd-circle">PD</div>
-            <div class="circle env-circle" id="env-circle">Environment</div>
-        </div>
-    </div>
 
-    <!-- PD section -->
-    <div id="pd-section" class="hidden">
-        <p>What's your data modality?</p>
-        <select id="modality-select">
-            <option value="">Select...</option>
-            <option value="Image/video">Image/video</option>
-            <option value="Text">Text</option>
-            <option value="Sensor">Sensor</option>
-            <option value="Audio">Audio</option>
-        </select>
-        <div id="problem-type-section" class="hidden">
-            <p>What's your problem type?</p>
-            <select id="problem-type-select"></select>
+  <div class="sidebar">
+    <h3> About This Dashboard</h3>
+    <p>This interactive dashboard helps users explore and select Hugging Face models based on task, framework, language, and energy efficiency.</p>
+    <p> You can upload a dataset, and the system will automatically detect the data modality (Text, Image, etc.).</p>
+    <p> Energy estimates are provided based on your dataset size, selected task, and hardware environment.</p>
+    <p> The model recommender shows the most eco-friendly models, with sorting options for likes and size.</p>
+    <p>This tool is ideal for ML practitioners looking to balance model performance with sustainability goals.</p>
+  </div>
+
+  <div class="main-grid">
+    <div class="top-zone">
+      <div class="data-source">
+        <strong> Data Source</strong>
+        <label for="fileUpload" class="upload-label">Click to upload</label>
+        <input type="file" id="fileUpload" accept=".csv" />
+      </div>
+      <div class="arrow-right"></div>
+      <div class="data-selection">
+        <strong> Data Selection</strong>
+        <div class="data-selection-controls">
+          <div class="tooltip" style="width: 100%;">
+            <input type="text" id="filterInput" placeholder="🔍 Filter columns..." style="width: 100%; padding: 6px;">
+            <span class="tooltip-text">Type to search for a column name. Matching columns will stay visible.</span>
+          </div>
         </div>
-        <div id="evaluation-metrics-section" class="hidden">
-            <p>What are your evaluation metrics?</p>
-            <select id="evaluation-metrics-select"></select>
-        </div>
-        <div id="model-section" class="hidden">
-            <p>Model's suggestion?</p>
-            <select id="model-select"></select>
-        </div>
-        <div id="submit-pd" class="hidden">
-            <button class="response-button">Submit PD Info</button>
-        </div>
-        <div id="node-status" class="hidden">
-            <!-- JSON data will be displayed here -->
-        </div>
-        <div id="refresh-status" class="hidden">
-            <button class="status-button">Refresh Node Status</button>
-        </div>
-        <div id="framework-results" class="hidden">
-            <!-- JSON data will be displayed here -->
-        </div>
-        <div id="refresh-results" class="hidden">
-            <button class="results-button">Refresh Results</button>
-        </div>
-    </div>
-    <!-- Environment section -->
-    <div id="env-section" class="hidden">
-        <h2>Environment Information</h2>
-        <div class="environment-input">
-            <label for="hardware-input">What's your hardware?</label>
-            <input type="text" id="hardware-input" placeholder="e.g., CPU, GPU, RAM"/>
-        </div>
-        <div class="environment-input">
-            <label for="cloud-local-select">Where are you running the ML model?</label>
-            <select id="cloud-local-select">
-                <option value="">Select...</option>
-                <option value="Local">Local</option>
-                <option value="Cloud">Cloud</option>
+
+      <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+        <div class="tooltip">
+          <label style="font-size: 14px;">Input:
+            <select id="input-type" style="font-size: 14px; padding: 4px 8px;">
+              <option value="">Choose...</option>
+              <option value="text">Text</option>
+              <option value="image">Image</option>
+              <option value="audio">Audio</option>
+              <option value="tabular">Tabular</option>
+              <option value="video">Video</option>
             </select>
+          </label>
+          <span class="tooltip-text">Select the type that corresponds to your model input.</span>
         </div>
-        <div class="environment-input">
-            <label for="location-input">What's your personal location?</label>
-            <input type="text" id="location-input" placeholder="e.g., City, Country"/>
+
+        <div class="tooltip">
+          <label style="font-size: 14px;">Output:
+            <select id="output-type" style="font-size: 14px; padding: 4px 8px;">
+              <option value="">Choose...</option>
+              <option value="text">Text</option>
+              <option value="image">Image</option>
+              <option value="audio">Audio</option>
+              <option value="tabular">Tabular</option>
+            </select>
+          </label>
+          <span class="tooltip-text">Select the type that represents the output of your model.</span>
         </div>
-        <button id="submit-environment" class="response-button">Submit Environment Info</button>
+      </div>
+        <div class="table-wrapper">
+          <table id="dataTable">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="meta-data">
+          <div>Name: <input type="text" id="metaName"></div>
+          <div>#Columns: <input type="text" id="metaCols"></div>
+          <div>Modality: <input type="text" id="modalityField" placeholder="Modality"></div>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <strong>⚡ Estimated Energy (Data): </strong>
+          <span id="energyData">—</span>
+        </div>
+    </div>
+      <div class="arrow-right"></div>
+      <!-- New suggestion box -->
+    <div class="suggest-box">
+      <strong> Model Suggestion</strong>
+      <p style="margin: 5px 0 10px; font-size: 14px;">Click to get eco-friendly model recommendations after filling all the information.</p>
+      <button onclick="fetchModels()" class="suggest-button">
+        Suggest Model
+      </button>
+    </div>
+    <!-- New Submit Problem button below the original suggestion -->
+    <div class="suggest-box">
+      <strong> Submit Problem</strong>
+      <p style="margin: 5px 0 10px; font-size: 14px;">Click to submit your problem after filling all the information.</p>
+      <button onclick="submitProblem()" class="suggest-button">
+        Submit Problem
+      </button>
     </div>
 
-    <div id="navigation-overview" class="hidden">
-        <div class="circle-container small">
-            <div class="circle data-circle small-circle">Data</div>
-            <div class="circle pd-circle large-circle">PD</div>
-            <div class="circle env-circle small-circle">Environment</div>
+</div>
+    <div class="middle-grid">
+      <div class="section define-env">
+        <div class="bottom-grid">
+        <div class="grid-card">
+        <label for="geo">Your Location</label>
+        <select id="geo">
+          <option value="Africa">Africa</option>
+          <option value="North America">North America</option>
+          <option value="South America">South America</option>
+          <option value="Europe">Europe</option>
+          <option value="Asia">Asia</option>
+          <option value="Australia">Australia</option>
+        </select>
+
+        <label for="hardware">Hardware</label>
+        <select id="hardware">
+          <option value="gpu">GPU</option>
+          <option value="cpu">CPU</option>
+          <option value="tpu">TPU</option>
+          <option value="edge">Edge Device</option>
+          <option value="unknown">I don't know</option>
+        </select>
+
+        <label for="environment">Execution Environment</label>
+        <select id="environment">
+          <option value="cloud">Cloud</option>
+          <option value="local">Local</option>
+          <option value="hybrid">Hybrid</option>
+        </select>
+        </div>
+
+          <div class="grid-card">
+        <label for="runtime">Runtime Limitations?</label>
+        <select id="runtime">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+            <input type="text" id="runtimeDetails" placeholder="Please describe..." style="display: none; margin-top: 5px;" />
+
+        <label for="resources">Memory/Storage Limits?</label>
+        <select id="resources">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+            <input type="text" id="resourcesDetails" placeholder="Please describe..." style="display: none; margin-top: 5px;" />
+
+            <label for="cloudServices">Are you open for using cloud based service?</label>
+        <select id="cloudServices">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <div style="margin-top: 10px;">
+          <strong>⚡ Estimated Energy (Hardware): </strong>
+          <span id="energyHardware">—</span>
+        </div>
+      </div>
+          </div>
+
+ </div>
+
+      <div class="section describe-problem">
+        <div class="bottom-grid">
+        <div class="grid-card">
+        <label for="problem-domain">Problem Description</label>
+        <select id="problem-domain" onchange="updateTaskOptions()">
+          <option value="">Select a domain</option>
+          <option value="Multimodal">Multimodal</option>
+          <option value="Computer Vision">Computer Vision</option>
+          <option value="Natural Language Processing">Natural Language Processing</option>
+          <option value="Audio">Audio</option>
+          <option value="Tabular">Tabular</option>
+          <option value="Reinforcement Learning">Reinforcement Learning</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="task">Task</label>
+        <select id="task">
+          <option value="">Select task...</option>
+        </select>
+
+          <label for="Data modality">Data modality</label>
+        <select id="Data modality">
+          <option value="Text">Text</option>
+          <option value="Image/video">Image/video</option>
+          <option value="Audio">Audio</option>
+          <option value="Sensor">Sensor</option>
+        </select>
+        </div>
+
+          <div class="grid-card">
+        <label for="framework">Framework</label>
+        <select id="framework">
+          <option value="">Any</option>
+          <option value="pytorch">PyTorch</option>
+          <option value="tensorflow">TensorFlow</option>
+          <option value="Transformers">Transformers</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="language">Language</label>
+        <select id="language">
+          <option value="">Any</option>
+          <option value="en">English</option>
+          <option value="fr">French</option>
+        </select>
+
+        <label for="search">Keyword</label>
+        <input type="text" id="search" placeholder="e.g., bert, gpt2...">
+        <div style="margin-top: 10px;">
+          <strong>⚡ Estimated Energy (Task): </strong>
+          <span id="energyTask">—</span>
+        </div>
+            </div>
+      </div>
+
         </div>
     </div>
+  </div>
 
-    <script>
-        document.getElementById('pd-section').style.display = 'none';
-        document.getElementById('navigation-overview').style.display = 'none';
-        document.getElementById('navigation-overview').style.display = 'none';
-        document.getElementById('info-icon').addEventListener('click', function() {
-            alert("Information: This interface contains three clickable circles named 'Data', 'PD', and 'Environment'. Click on a circle to get more information.");
+  <script>
+
+    const taskMapping = {
+        "Multimodal": ["Audio-Text-to-Text", "image-text-to-text", "visual-question-answering", "Document Question Answering", "Video-Text-to-Text", "Visual Document Retrieval", "Any-to-Any"],
+        "Computer Vision": ["depth-estimation", "image-classification", "object-detection", "Image Segmentation", "Text-to-Image", "Image-to-Text", "Image-to-Image", "Image-to-Video", "Unconditional Image Generation", "Video Classification", "Text-to-Video", "Zero-Shot Image Classification", "Mask Generation", "Zero-Shot Object Detection", "Text-to-3D", "Image-to-3D", "Image Feature Extraction", "Keypoint Detection"],
+        "Natural Language Processing": ["text-classification", "token-classification", "Table Question Answering", "Question Answering", "Zero-Shot Classification", "Translation", "Summarization", "Feature Extraction", "Text Generation", "Text2Text Generation", "Fill-Mask", "Sentence Similarity", "Text Ranking"],
+        "Audio": ["text-to-speech", "automatic-speech-recognition", "Audio-to-Audio", "Audio Classification", "Voice Activity Detection"],
+        "Tabular": ["tabular-classification", "tabular-regression"],
+        "Reinforcement Learning": ["reinforcement-learning", "robotics"],
+        "Other": ["graph-machine-learning"]
+      };
+    const inputType = document.getElementById("input-type").value;
+    const outputType = document.getElementById("output-type").value;
+
+    document.getElementById("filterInput").addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      const table = document.getElementById("dataTable");
+      const headerCheckboxes = table.querySelectorAll("thead input[type='checkbox']");
+      const headerThs = table.querySelectorAll("thead th");
+      const rows = table.querySelectorAll("tbody tr");
+
+      // Determine visible columns
+      const visibleCols = [];
+      headerCheckboxes.forEach((checkbox, i) => {
+        const colName = checkbox.dataset.col.toLowerCase();
+        const isVisible = colName.includes(query);
+        headerThs[i].style.display = isVisible ? "" : "none";
+        visibleCols[i] = isVisible;
+      });
+
+      // Hide and show corresponding data cells
+      rows.forEach(row => {
+        Array.from(row.children).forEach((cell, i) => {
+          cell.style.display = visibleCols[i] ? "table-cell" : "none";
         });
-
-        document.getElementById('data-circle').addEventListener('click', function() {
-            window.location.href = 'data.html';
-        });
-
-        document.getElementById('pd-circle').addEventListener('click', function() {
-            document.getElementById('main-interface').style.display = 'none';
-            document.getElementById('pd-section').style.display = 'block';
-            document.getElementById('navigation-overview').style.display = 'block';
-        });
-
-        document.getElementById('env-circle').addEventListener('click', function() {
-            document.getElementById('main-interface').style.display = 'none';
-            document.getElementById('env-section').style.display = 'block';
-            document.getElementById('navigation-overview').style.display = 'block';
-        });
+      });
+    });
 
 
-        document.getElementById('modality-select').addEventListener('change', function() {
-            const selectedModality = this.value;
-            loadProblemTypeOptions(selectedModality);
-        });
+    function updateTaskOptions() {
+        const domain = document.getElementById("problem-domain").value;
+        const taskSelect = document.getElementById("task");
+        taskSelect.innerHTML = "";
 
-        function loadProblemTypeOptions(modality) {
-            fetch('/filter_options', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ modality })
-            })
-            .then(response => response.json())
-            .then(options => {
-                console.log('Filtered options for modality:', options);
-                document.getElementById('problem-type-section').style.display = 'block';
-                const problemTypes = [...new Set(options.map(option => option['Problem type']))];
-                const problemTypeSelect = document.getElementById('problem-type-select');
-                problemTypeSelect.innerHTML = '<option value="">Select...</option>';
-                problemTypes.forEach(problemType => {
-                    const option = document.createElement('option');
-                    option.value = problemType;
-                    option.textContent = problemType;
-                    problemTypeSelect.appendChild(option);
-                });
-                problemTypeSelect.addEventListener('change', function() {
-                    const selectedProblemType = this.value;
-                    loadEvaluationMetricsOptions(modality, selectedProblemType);
-                });
-            })
-            .catch(error => {
-                console.error('Failed to fetch filtered options:', error);
+        if (domain && taskMapping[domain]) {
+            taskMapping[domain].forEach(task => {
+            const option = document.createElement("option");
+            option.value = task;
+            option.textContent = task;
+            taskSelect.appendChild(option);
             });
+        } else {
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Select task...";
+            taskSelect.appendChild(option);
         }
+    }
+    document.getElementById("runtime").addEventListener("change", function () {
+        const show = this.value === "yes";
+        document.getElementById("runtimeDetails").style.display = show ? "block" : "none";
+    });
 
-        function loadEvaluationMetricsOptions(modality, problemType) {
-            fetch('/filter_options', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ modality, problem_type: problemType })
-            })
-            .then(response => response.json())
-            .then(options => {
-                console.log('Filtered options for modality and problem type:', options);
-                document.getElementById('evaluation-metrics-section').style.display = 'block';
-                const evaluationMetrics = [...new Set(options.map(option => option['Evaluation metrics']))];
-                const evaluationMetricsSelect = document.getElementById('evaluation-metrics-select');
-                evaluationMetricsSelect.innerHTML = '<option value="">Select...</option>';
-                evaluationMetrics.forEach(evaluationMetric => {
-                    const option = document.createElement('option');
-                    option.value = evaluationMetric;
-                    option.textContent = evaluationMetric;
-                    evaluationMetricsSelect.appendChild(option);
-                });
-                evaluationMetricsSelect.addEventListener('change', function() {
-                    const selectedEvaluationMetric = this.value;
-                    loadModelOptions(modality, problemType, selectedEvaluationMetric);
-                });
-            })
-            .catch(error => {
-                console.error('Failed to fetch filtered options:', error);
+    document.getElementById("resources").addEventListener("change", function () {
+        const show = this.value === "yes";
+        document.getElementById("resourcesDetails").style.display = show ? "block" : "none";
+    });
+
+    const selectedColumns = {};
+
+    function estimateEnergyForData(rows) {
+        if (!rows.length) return 0;
+        const numRows = rows.length;
+        const numCols = rows[0].length;
+        return ((numRows * numCols) / 1000).toFixed(2); // very basic estimate
+    }
+
+    function estimateEnergyForHardware(hardware) {
+        const base = {
+        cpu: 50,
+        gpu: 100,
+        tpu: 120,
+        edge: 20,
+        unknown: 70
+        };
+        return base[hardware] || 70;
+    }
+
+    function estimateEnergyForTask(task) {
+        const taskEnergy = {
+            "text-classification": 20,
+            "translation": 40,
+            "text-generation": 80,
+            "image-classification": 60,
+            "automatic-speech-recognition": 100
+        };
+        return taskEnergy[task] || 30;
+    }
+
+    document.getElementById("fileUpload").addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById("metaName").value = file.name;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const text = event.target.result;
+        const rows = text.split("\n").map(r => r.split(","));
+        originalHeaders = rows[0];
+        originalData = rows.slice(1, 11);
+
+        document.getElementById("metaCols").value = originalHeaders.length;
+
+        let modality = "Text";
+        const sampleValues = originalData.flat().slice(0, 20).join(" ").toLowerCase();
+        const joinedHeaders = originalHeaders.join(" ").toLowerCase();
+        if (joinedHeaders.includes("image") || sampleValues.includes(".jpg") || sampleValues.includes(".png")) {
+          modality = "Image";
+        } else if (joinedHeaders.includes("audio") || sampleValues.includes(".mp3") || sampleValues.includes(".wav")) {
+          modality = "Audio";
+        } else if (sampleValues.match(/^[-+]?\d+(\.\d+)?$/)) {
+          modality = "Sensor";
+        }
+        document.getElementById("modalityField").value = modality;
+
+        const estimate = estimateEnergyForData(rows);
+        document.getElementById("energyData").innerText = estimate + " Wh";
+
+        renderTable(originalHeaders, originalData);
+      };
+      reader.readAsText(file);
+    });
+
+
+    function renderTable(headers, dataRows) {
+      const thead = document.querySelector("#dataTable thead");
+      const tbody = document.querySelector("#dataTable tbody");
+      thead.innerHTML = "";
+      tbody.innerHTML = "";
+
+      const headerRow = document.createElement("tr");
+      headers.forEach((h, index) => {
+        const th = document.createElement("th");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = true;
+        checkbox.dataset.col = h;
+        checkbox.dataset.index = index;
+        checkbox.addEventListener("change", filterTableBySelection);
+        selectedColumns[h] = true;
+        th.appendChild(checkbox);
+        th.appendChild(document.createElement("br"));
+        th.appendChild(document.createTextNode(h));
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+
+      dataRows.forEach(row => {
+        if (row.length === 1 && row[0] === "") return;
+        const tr = document.createElement("tr");
+        row.forEach(cell => {
+          const td = document.createElement("td");
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      const explanation = document.getElementById("table-explanation");
+      if (!explanation) {
+        const p = document.createElement("p");
+        p.id = "table-explanation";
+        p.innerHTML = "<strong>💡 Tip:</strong> Use the checkboxes above to exclude specific columns from view by unchecking them.";
+        document.querySelector(".data-selection").insertBefore(p, document.querySelector(".table-wrapper"));
+
+        const btn = document.createElement("button");
+        btn.innerText = "↩ Undo";
+        btn.className = "big-button";
+        btn.style.alignSelf = "flex-start";
+        btn.onclick = () => renderTable(originalHeaders, originalData);
+        document.querySelector(".data-selection").insertBefore(btn, document.querySelector(".table-wrapper"));
+      }
+    }
+
+    function filterTableBySelection() {
+      const checkboxes = document.querySelectorAll("#dataTable thead input[type='checkbox']");
+      const checkedIndices = [];
+      const checkedHeaders = [];
+
+      checkboxes.forEach((cb, idx) => {
+        if (cb.checked) {
+          checkedIndices.push(idx);
+          checkedHeaders.push(cb.dataset.col);
+        }
+      });
+
+      // Filter data
+      const filteredRows = originalData.map(row => checkedIndices.map(i => row[i]));
+      const filteredHeaders = checkedHeaders;
+
+      // Re-render table
+      renderTable(filteredHeaders, filteredRows);
+
+     // Update column count after filtering
+      const columnCount = checkedIndices.length;
+      document.getElementById("metaCols").value = columnCount;
+
+    }
+
+    document.getElementById("hardware").addEventListener("change", function() {
+      const hw = this.value;
+      document.getElementById("energyHardware").innerText = estimateEnergyForHardware(hw) + " Wh";
+    });
+
+    document.getElementById("task").addEventListener("change", function() {
+      const task = this.value;
+      document.getElementById("energyTask").innerText = estimateEnergyForTask(task) + " Wh";
+    });
+
+    async function fetchModels() {
+        const task = document.getElementById("task").value;
+        const framework = document.getElementById("framework").value;
+        const language = document.getElementById("language").value;
+        const searchKeyword = document.getElementById("search").value.toLowerCase();
+
+        // Hide the input grids
+        document.querySelector(".top-zone").style.display = "none";
+        document.querySelector(".middle-grid").style.display = "none";
+
+        // Build API URL
+        let url = `https://huggingface.co/api/models?limit=1000`;
+        if (task) url += `&pipeline_tag=${task}`;
+        if (framework) url += `&framework=${framework}`;
+        if (language) url += `&language=${language}`;
+
+        const carbonEstimates = {
+            "bert-base-uncased": 650,
+            "gpt2": 1850,
+            "gpt2-large": 2500,
+            "gpt2-xl": 3500,
+            "t5-11b": 120000,
+            "distilbert-base-uncased": 60,
+            "bigscience/bloom": 50000,
+            "facebook/wav2vec2-large-960h": 1250,
+            "google/mobilebert-uncased": 40,
+            "resnet-50": 450
+        };
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            const filtered = data.filter(model => {
+            const id = model.id.toLowerCase();
+            const tags = (model.tags || []).map(t => t.toLowerCase());
+            return (
+                !searchKeyword ||
+                id.includes(searchKeyword) ||
+                tags.some(t => t.includes(searchKeyword))
+            );
             });
-        }
 
-        function loadModelOptions(modality, problemType, evaluationMetric) {
-            fetch('/filter_options', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ modality, problem_type: problemType, evaluation_metrics: evaluationMetric })
-            })
-            .then(response => response.json())
-            .then(options => {
-                console.log('Filtered options for modality, problem type, and evaluation metric:', options);
-                document.getElementById('model-section').style.display = 'block';
-                const models = [...new Set(options.map(option => option['Model']))];
-                const modelSelect = document.getElementById('model-select');
-                modelSelect.innerHTML = '<option value="">Select...</option>';
-                models.forEach(model => {
-                    const option = document.createElement('option');
-                    option.value = model;
-                    option.textContent = model;
-                    modelSelect.appendChild(option);
-                });
-                modelSelect.addEventListener('change', function() {
-                    document.getElementById('submit-pd').style.display = 'block';
-                });
-            })
-            .catch(error => {
-                console.error('Failed to fetch filtered options:', error);
+            const enriched = filtered.map(model => {
+                const id = model.id.toLowerCase();
+                const carbon =
+                    carbonEstimates[id] ??
+                    (model.modelSize ? model.modelSize * 1.25 : 900 + Math.random() * 100);
+
+                return {
+                    ...model,
+                    carbon: parseFloat(carbon.toFixed(1)),
+                    likes: model.likes ?? Math.floor(Math.random() * 100),
+                    size: model.modelSize ?? 500 + Math.random() * 100,
+                    randomBoost: Math.random()
+                };
             });
+
+            const sorted = enriched.sort((a, b) => {
+                return a.carbon - b.carbon || b.likes - a.likes || b.randomBoost - a.randomBoost;
+            });
+
+            const topModels = sorted.slice(0, 3);
+
+            const modelGrid = document.createElement("div");
+            modelGrid.className = "model-card-container";
+
+            for (const model of topModels) {
+                const modelInfoRes = await fetch(`https://huggingface.co/api/models/${model.id}`);
+                const modelInfo = await modelInfoRes.json();
+
+                const summary = modelInfo.cardData?.summary || "No description available.";
+                const license = modelInfo.license || "—";
+                const downloads = modelInfo.downloads || "—";
+                const params = modelInfo.cardData?.params || "—";
+
+                const card = document.createElement("div");
+                card.className = "model-card";
+                card.innerHTML = `
+                    <h3>${model.id}</h3>
+                    <p style="font-size: 14px; color: #333;"><strong>Tags:</strong> ${(model.tags || []).join(', ')}</p>
+                    <p style="font-size: 14px;"><strong>Description:</strong><br>${summary}</p>
+                    <p style="font-size: 14px;"><strong>License:</strong> ${license}</p>
+                    <p style="font-size: 14px;"><strong>Downloads:</strong> ${downloads.toLocaleString()}</p>
+                    <p style="font-size: 14px;"><strong>Parameters:</strong> ${params}</p>
+                    <a href="https://huggingface.co/${model.id}" target="_blank" style="color: #1a73e8; font-weight: bold;">
+                    Open on Hugging Face ↗
+                    </a>
+                    <br><br>
+                    <span class="badge">CO₂: ${model.carbon.toLocaleString()} kg</span>
+                    <span class="badge">Size: ${Math.round(model.size)} MB</span>
+                    <span class="badge">Likes: ${model.likes}</span>
+                `;
+                modelGrid.appendChild(card);
+            }
+
+            document.querySelector(".main-grid").prepend(modelGrid);
+
+        } catch (err) {
+            const fallback = document.createElement("div");
+            fallback.innerHTML = `<p>Error loading models: ${err.message}</p>`;
+            document.querySelector(".main-grid").prepend(fallback);
         }
+    }
 
-        document.getElementById('submit-pd').addEventListener('click', function() {
-            const modality = document.getElementById('modality-select').value;
-            const problemType = document.getElementById('problem-type-select').value;
-            const evaluationMetrics = document.getElementById('evaluation-metrics-select').value;
-            const model = document.getElementById('model-select').value;
+    // Backend communication.
+    // TODO: Change to adapt to the new frontend
 
-            // Handle the PD data submission (e.g., send it to your server)
-            const pdData = {
-                modality,
-                problemType,
-                evaluationMetrics,
-                model
-            };
+    async function submitProblem() {
+        // Get input data
+        const task = document.getElementById("task").value;
+        const framework = document.getElementById("framework").value;
+        const language = document.getElementById("language").value;
+        const searchKeyword = document.getElementById("search").value.toLowerCase();
+        const geolocation = document.getElementById("geo").value;
+        const hardwareVal = document.getElementById("hardware").value;
+        const environmentVal = document.getElementById("environment").value;
+        const runtimeVal = document.getElementById("runtime").value;
+        const runtimeDetails = document.getElementById("runtimeDetails").value;
+        const resourcesVal = document.getElementById("resources").value;
+        const resourcesDetails = document.getElementById("resourcesDetails").value;
+        const cloudServicesVal = document.getElementById("cloudServices").value;
+        const problemDomain = document.getElementById("problem-domain").value;
+        const modality_value = document.getElementById("Data modality").value;
+        const input = document.getElementById("input-type").value
+        const output = document.getElementById("output-type").value
 
-            console.log('PD Data:', pdData);
-            fetch('/send_pd', {
+        // Hide the input grids
+        document.querySelector(".top-zone").style.display = "none";
+        document.querySelector(".middle-grid").style.display = "none";
+
+        // Fill backend input format
+        const problem_short_description =
+          (task ? `User requests a ${task} task ` : "") +
+          (problemDomain ? `in the ${problemDomain} domain ` : "") +
+          (framework ? `using ${framework} ` : "") +
+          (language ? `and ${language}` : "").trim();
+        const modality = modality_value || "";
+        const problem_definition =
+          (task ? `This problem involves ${task} ` : "") +
+          (modality ? `on ${modality} data ` : "") +
+          (problemDomain ? `within ${problemDomain}.` : "").trim();
+        const ins = input ? [input] : [];
+        const outs = output ? [output] : [];
+        const min_value = 1;
+        const max_value = 1;
+        const optimize_carbon_footprint_auto = false;
+        const optimize_carbon_footprint_manual = false;
+        const previous_iteration = 0;
+        const desired_carbon_footprint = 0.0;
+        const geo_location_continent = geolocation || "";
+        const geo_location_region = "";
+        // const hardware_required = hardwareVal || "";
+        const hardware_required = "PIM-AI-1chip";
+        const max_memory_footprint = 0;
+        // const goal = task || "";
+        const goal = ""
+        const previous_problem_id = 0;
+        const num_outputs = 1;
+
+        try {
+
+            const response = await fetch('/send_pd', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    'modality': modality,
-                    'problem_type': problemType,
-                    'evaluation_metrics': evaluationMetrics,
-                    'model': model
+                    "problem_short_description": problem_short_description,
+                    "modality": modality,
+                    "problem_definition": problem_definition,
+                    "inputs": ins,
+                    "outputs": outs,
+                    "minimum_samples": min_value,
+                    "maximum_samples": max_value,
+                    "optimize_carbon_footprint_auto": optimize_carbon_footprint_auto,
+                    "optimize_carbon_footprint_manual": optimize_carbon_footprint_manual,
+                    "previous_iteration": previous_iteration,
+                    "desired_carbon_footprint": desired_carbon_footprint,
+                    "geo_location_continent": geo_location_continent,
+                    "geo_location_region": geo_location_region,
+                    "extra_data": {
+                        "hardware_required": hardware_required,
+                        "max_memory_footprint": max_memory_footprint,
+                        "goal": goal,
+                        "previous_problem_id": previous_problem_id,
+                        "num_outputs": num_outputs
+                    }
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Show results
-                document.getElementById("refresh-status").style.display = 'block';
-                document.getElementById("refresh-results").style.display = 'block';
-                refreshStatusNode();
-                refreshResults();
-            })
-        });
-
-        function refreshStatusNode() {
-            fetch('/get_status', { method: 'GET' })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("node-status").style.display = 'block';
-                document.querySelector('#node-status').innerHTML = JSON.stringify(data, null, 6)
-                    .replace(/\n/g, "<br>");
-            })
-        }
-
-        document.getElementById('refresh-status').addEventListener('click', function() {
+            });
+            const data = await response.json();
             refreshStatusNode();
-        });
+            const results = await refreshResults();
+            console.log('Results: ', results);
 
-        function refreshResults() {
-            fetch('/get_results', { method: 'GET' })
+            const modelGrid = document.createElement("div");
+            modelGrid.className = "model-card-container";
+
+            const summary = results.cardData?.summary || "No description available.";
+            const license = results.license || "—";
+            const downloads = results.downloads || "—";
+            const params = results.cardData?.params || "—";
+            const model_id = results.ML_MODEL.model;
+            const model_tags = results.ML_MODEL_METADATA.tags;
+            const problem_id = results.ML_MODEL_METADATA.metadata;
+            const hw = results.HW_RESOURCES.hw_description;
+            const latency = results.HW_RESOURCES.latency;
+            const powerConsumption = results.HW_RESOURCES.power_consumption;
+            const carbonIntensity = results.CARBON_FOOTPRINT.carbon_intensity;
+            const energyConsumption = results.CARBON_FOOTPRINT.energy_consumption;
+
+            const card = document.createElement("div");
+            card.className = "model-card";
+            card.innerHTML = `
+                <h3>${model_id}</h3>
+                <p style="font-size: 14px;"><strong>Description:</strong><br>${summary}</p>
+                <p style="font-size: 14px;"><strong>License:</strong> ${license}</p>
+                <p style="font-size: 14px;"><strong>Downloads:</strong> ${downloads.toLocaleString()}</p>
+                <p style="font-size: 14px;"><strong>Parameters:</strong> ${params}</p>
+                <a href="https://huggingface.co/${model_id}" target="_blank" style="color: #1a73e8; font-weight: bold;">
+                Open on Hugging Face ↗
+                </a>
+                <br><br>
+                <span class="badge">Latency: ${latency} ms</span>
+                <span class="badge">Power: ${powerConsumption} W</span>
+                <span class="badge">CO₂: ${carbonIntensity} gCO₂/kW</span>
+                <span class="badge">Energy: ${energyConsumption} kWh</span>
+            `;
+            modelGrid.appendChild(card);
+
+
+            document.querySelector(".main-grid").prepend(modelGrid);
+
+        } catch (err) {
+            const fallback = document.createElement("div");
+            fallback.innerHTML = `<p>Error loading models: ${err.message}</p>`;
+            document.querySelector(".main-grid").prepend(fallback);
+        }
+    }
+
+    // <requestNodesState>
+    // - Fetches the current status of all nodes in the system.
+    // - Parameters: None
+    function refreshStatusNode() {
+        fetch('/get_status', { method: 'GET' })
             .then(response => response.json())
             .then(data => {
-                document.getElementById("framework-results").style.display = 'block';
-                document.querySelector('#framework-results').innerHTML = JSON.stringify(data, null, 6)
-                    .replace(/\n/g, "<br>");
+                // the json output is inside "data"
+                // data can be put in a return to reuse the function
+                console.log('States:', data);
+                return data;
+                })
+    }
+
+    // <refreshResults>
+    // - Fetches the output from the last iteration of all nodes in the system
+    // - Parameters: None
+    async function refreshResults() {
+        const response = await fetch('/get_results', { method: 'GET' })
+        const data = await response.json();
+        return data;    // the json output is inside "data"
+    }
+
+    // <specificResults>
+    // - Fetches the output from specific node in the system of a specific iteration
+    // - Parameters: node, problem_id, iteration_id
+    function specificResults(node, problem_id, iteration_id) {
+        fetch('/get_results', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "node_id": node,                    // Possible node values [ALL, APP_REQUIREMENTS, CARBON_FOOTPRINT, HW_CONSTRAINTS, HW_RESOURCES, ML_MODEL_METADATA, ML_MODEL, ORCHESTRATOR]
+                "task_id": {                        //  ORCHESTRATOR gives the user_input
+                    "problem_id": problem_id,
+                    "iteration_id": iteration_id
+                }
             })
-        }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // the json output is inside "data"
+                // data can be put in a return to reuse the function
+                console.log('Results:', data);
+                return data;
+                })
+    }
 
-        document.getElementById('refresh-results').addEventListener('click', function() {
-            refreshResults();
-        });
+    // Rxamples of requests
+    // document.getElementById('request-datas').addEventListener('change', function () {
+    //     switch (this.value) {
+    //         case "Modalities":
+    //             refreshModalities();
+    //             break;
+    //         case "Problems_from_modality":
+    //             refreshProblemsFromModality("audio");               // Example of modality (one of the modalities received)
+    //             break;
+    //         case "Model_info":
+    //             refreshModelInfo("facebook/opt-125m");              // Example of model (one of the model received)
+    //             break;
+    //         case "Input_output_modalities":
+    //             refreshInputOutputModalities();
+    //             break;
+    //         case "Metrics_from_modalities":
+    //             refreshMetricsFromModalities("Image", "Label");     // Example of modalities (Input modality, Output modality)
+    //             break;
+    //         case "Metrics_from_problem":
+    //             refreshMetricsFromProblem("audio-text-to-text");    // Example of problem (one of the problem received)
+    //             break;
+    //         case "All_metrics":
+    //             refreshAllMetrics();
+    //             break;
+    //         case "Hardwares":
+    //             refreshHardwares();
+    //             break;
+    //         default:
+    //             console.log("Option not supported:", this.value);
+    //     }
+    // });
 
-        // Handle the environment submission
-        document.getElementById('submit-environment').addEventListener('click', function() {
-            const hardware = document.getElementById('hardware-input').value;
-            const cloudLocal = document.getElementById('cloud-local-select').value;
-            const location = document.getElementById('location-input').value;
+    // <refreshModalities>
+    // - Return all the possible modalities (cover_tags) supported by DFKI
+    // - Parameters: None
+    function refreshModalities() {
+        fetch('/get_modality', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Modalities data:', data);      // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+            })
+    }
 
-            // Handle the environment data submission (e.g., send it to your server)
-            const environmentData = {
-                hardware,
-                cloudLocal,
-                location
-            };
+    // <refreshProblemsFromModality>
+    // - Return all possible problems for a modality(cover_tag)
+    // - Parameters: modality(cover_tag)
+    function refreshProblemsFromModality(modality) {
+        fetch('/get_problem_from_modality', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "modality": modality
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain problem types depending on the modality
+                console.log('Problem data:', data);                                         // the json output is inside "data"
+                return data;                                                                // data can be put in a return to reuse the function
+            })
+    }
 
-            console.log('Environment Data:', environmentData);
-            // Here you would typically send the data to your server using fetch or another method
-        });
-    </script>
+    // <refreshModelInfo>
+    // - Return all information available from DFKI about a model
+    // - Parameters: model_name
+    function refreshModelInfo(model_name) {
+        fetch('/get_model_info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "model": model_name
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain all info from a model
+                console.log('Model info:', data);                       // the json output is inside "data"
+                return data;                                            // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshInputOutputModalities>
+    // - Return all possible input and output modalities
+    // - Parameters: None
+    function refreshInputOutputModalities() {
+        fetch('/get_inout_modalities', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Inputs & Output Modalities data:', data);  // the json output is inside "data"
+                return data;                                            // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshMetricsFromModalities>
+    // - Return all possible metrics related to the input and output modalities
+    // - Parameters: input_modality, output_modality
+    function refreshMetricsFromModalities(input_modality, output_modality) {
+        fetch('/get_metrics_from_modalities', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "modalities": input_modality + ", " + output_modality
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Metrics data:', data);         // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+
+            })
+    }
+
+    // <refreshMetricsFromProblem>
+    // - Return all possible metrics related to a problem
+    // - Parameters: problem
+    function refreshMetricsFromProblem(problem) {
+        fetch('/get_metrics_from_problem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "problem": problem
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Metrics data:', data);         // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshAllMetrics>
+    // - Return all possible metrics
+    // - Parameters: None
+    function refreshAllMetrics() {
+        fetch('/get_all_metrics', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Metrics data:', data);         // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshHardwares>
+    // - Return all possible hardwares supported by upmem
+    // - Parameters: None
+    function refreshHardwares() {
+        fetch('/get_hardware', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Hardware data:', data);        // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+            })
+    }
+
+</script>
+
+  <div id="modelModal" style="display:none; position:fixed; top:5%; left:5%; width:90%; height:90%; background:white; z-index:9999; border: 2px solid #666; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.4);">
+    <button onclick="document.getElementById('modelModal').style.display='none'"
+            style="float:right; margin: 10px; padding: 8px 12px; font-size: 14px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      ❌ Close
+    </button>
+    <iframe id="modelIframe" src="" style="width:100%; height:90%; border:none;"></iframe>
+  </div>
 </body>
 </html>

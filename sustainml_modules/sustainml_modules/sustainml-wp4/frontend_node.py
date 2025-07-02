@@ -1,4 +1,4 @@
-# Copyright 2024 SustainML Consortium
+# Copyright 2025 SustainML Consortium
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ from flask import Flask, request, jsonify, send_from_directory
 import pandas as pd
 import csv
 import requests
+import json
 
 kaggle_available = True
 try:
@@ -41,179 +42,53 @@ if kaggle_available:
     kaggle_api = KaggleApi()
     kaggle_api.authenticate()
 
-@app.route('/search_datasets', methods=['POST'])
-def search_datasets():
-    data = request.json
-    modality = data.get('modality')
-    if not modality:
-        return jsonify({'error': 'No modality provided'}), 400
+# @app.route('/search_datasets', methods=['POST'])  #Previous function for searching datasets
+# def search_datasets():
+#     data = request.json
+#     modality = data.get('modality')
+#     if not modality:
+#         return jsonify({'error': 'No modality provided'}), 400
 
-    # Map modality to search terms
-    modality_mapping = {
-        'image_video': 'images OR videos',
-        'text': 'text data OR NLP',
-        'sensor': 'sensor data OR IoT',
-        'audio': 'audio data OR sound',
-    }
+#     # Map modality to search terms
+#     modality_mapping = {
+#         'image_video': 'images OR videos',
+#         'text': 'text data OR NLP',
+#         'sensor': 'sensor data OR IoT',
+#         'audio': 'audio data OR sound',
+#     }
 
-    search_term = modality_mapping.get(modality, '')
-    if not search_term:
-        return jsonify({'error': 'Invalid modality'}), 400
+#     search_term = modality_mapping.get(modality, '')
+#     if not search_term:
+#         return jsonify({'error': 'Invalid modality'}), 400
 
-    if kaggle_available:
-        try:
-            datasets = kaggle_api.dataset_list(search=search_term, page_size=10)
-            datasets_info = []
-            for dataset in datasets:
-                datasets_info.append({
-                    'title': dataset.title,
-                    'url': f'https://www.kaggle.com/datasets/{dataset.ref}',
-                    'description': dataset.subtitle,
-                    'downloads': dataset.downloadCount,
-                    'size': f'{dataset.totalBytes // (1024 * 1024)} MB',
-                })
-            return jsonify({'datasets': datasets_info})
-        except Exception as e:
-            print(f"Error searching datasets: {e}")
-            return jsonify({'error': 'Failed to fetch datasets'}), 500
-    else:
-        return jsonify({'error': 'kaggle is not available'}), 500
+#     if kaggle_available:
+#         try:
+#             datasets = kaggle_api.dataset_list(search=search_term, page_size=10)
+#             datasets_info = []
+#             for dataset in datasets:
+#                 datasets_info.append({
+#                     'title': dataset.title,
+#                     'url': f'https://www.kaggle.com/datasets/{dataset.ref}',
+#                     'description': dataset.subtitle,
+#                     'downloads': dataset.downloadCount,
+#                     'size': f'{dataset.totalBytes // (1024 * 1024)} MB',
+#                 })
+#             return jsonify({'datasets': datasets_info})
+#         except Exception as e:
+#             print(f"Error searching datasets: {e}")
+#             return jsonify({'error': 'Failed to fetch datasets'}), 500
+#     else:
+#         return jsonify({'error': 'kaggle is not available'}), 500
 
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
-
-@app.route('/data.html')
-def data():
-    return send_from_directory('.', 'data.html')
-
-@app.route('/styles.css')
-def styles():
-    return send_from_directory('.', 'styles.css')
-
-def handle_nan_values(data):
-    # Replace NaN with None
-    return data.where(pd.notnull(data), None)
+    return send_from_directory('.', 'Updated_index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    global uploaded_data
-    if 'file' not in request.files:
-        return jsonify({"error": "No file part"}), 400
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
-
-    try:
-        if file.filename.endswith('.csv'):
-            df = pd.read_csv(file)
-        elif file.filename.endswith('.json'):
-            df = pd.read_json(file)
-        else:
-            return jsonify({"error": "Invalid file type. Please upload a CSV or JSON file."}), 400
-
-        uploaded_data = df  # Save uploaded data globally
-
-        first_five_rows = handle_nan_values(df.head()).to_dict(orient='records')
-        empty_values_count = df.isnull().sum().sum()
-
-        return jsonify({
-            "first_five_rows": first_five_rows,
-            "empty_values_count": int(empty_values_count)
-        })
-    except Exception as e:
-        print(e)
-        return jsonify({"error": "Error processing file."}), 500
-
-@app.route('/data-info', methods=['GET'])
-def data_info():
-    global uploaded_data
-    if uploaded_data is None:
-        return jsonify({"error": "No data uploaded"}), 400
-
-    try:
-        data_size = uploaded_data.shape[0]
-        num_features = uploaded_data.shape[1]
-        empty_values = uploaded_data.isnull().sum().sum()
-
-        return jsonify({
-            "size": data_size,
-            "features": num_features,
-            "empty_values": int(empty_values)
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route('/count-empty-values', methods=['POST'])
-def count_empty_values():
-    global uploaded_data
-    if uploaded_data is None:
-        return jsonify({'error': 'No data uploaded'})
-
-    selected_columns = request.json.get('selectedColumns', [])
-    if not selected_columns:
-        return jsonify({'error': 'No columns selected'})
-
-    selected_data = uploaded_data[selected_columns]
-    empty_values_count = selected_data.isnull().sum().sum()
-
-    return jsonify({'empty_values_count': int(empty_values_count)})
-
-@app.route('/remove-empty', methods=['POST'])
-def remove_empty():
-    global uploaded_data
-    if uploaded_data is None:
-        return jsonify({"error": "No data uploaded"}), 400
-
-    try:
-        original_size = uploaded_data.shape[0]
-        df_cleaned = uploaded_data.dropna()
-        new_size = df_cleaned.shape[0]
-
-        return jsonify({
-            "original_size": original_size,
-            "new_size": new_size
-        })
-    except Exception as e:
-        print(e)
-        return jsonify({"error": "Error processing data."}), 500
-
-@app.route('/get_pd_options', methods=['GET'])
-def get_pd_options():
-    try:
-        pd_options = []
-        with open('ResearchData.csv', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                pd_options.append(row)
-        return jsonify(pd_options)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/filter_options', methods=['POST'])
-def filter_options():
-    try:
-        data = request.json
-        modality = data.get('modality')
-        problem_type = data.get('problem_type')
-        evaluation_metrics = data.get('evaluation_metrics')
-
-        filtered_options = []
-        research_data_path = os.path.join(os.path.dirname(__file__), 'ResearchData.csv')
-        with open(research_data_path, newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if modality and row['Data modality'] != modality:
-                    continue
-                if problem_type and row['Problem type'] != problem_type:
-                    continue
-                if evaluation_metrics and row['Evaluation metrics'] != evaluation_metrics:
-                    continue
-                filtered_options.append(row)
-        return jsonify(filtered_options)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    # TODO: Implement dataset upload as a path to the backend
+    return jsonify({'message': 'Upload endpoint is not implemented yet.'}), 501
 
 @app.route('/get_geolocation', methods=['GET'])
 def get_geolocation():
@@ -229,6 +104,7 @@ def get_geolocation():
 
 @app.route('/send_pd', methods=['POST'])
 def send_pd():
+    print("Terminal: /send_pd endpoint was called")
     try:
         data = request.json
         # pipe the information to the backend
@@ -252,6 +128,223 @@ def get_results():
         # pipe the information to the backend
         response = requests.get('http://127.0.0.1:5001/results')
         return jsonify(response.json()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_results', methods=['POST'])
+def get_results_args():
+    print("Terminal: /result POST")
+    try:
+        data = request.json
+        mapping = {
+            "APP_REQUIREMENTS": 0,
+            "CARBON_FOOTPRINT": 1,
+            "HW_CONSTRAINTS": 2,
+            "HW_RESOURCES": 3,
+            "ML_MODEL_METADATA": 4,
+            "ML_MODEL": 5,
+            "ORCHESTRATOR": 7,
+            "UNKNOWN": 8,
+            "ALL": 9
+        }
+        node_id = data.get("node_id")
+        if isinstance(node_id, str):
+            data["node_id"] = mapping.get(node_id, node_id)
+        # pipe the information to the backend
+        response = requests.post('http://127.0.0.1:5001/results', json=data)
+        return jsonify(response.json()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_modality', methods=['GET'])
+def get_modality():
+    print("Terminal: /request modality")
+    try:
+        data = {
+            "node_id": 4,
+            "configuration": "modality"
+        }
+        # pipe the information to the backend
+        url = 'http://127.0.0.1:5001/config_request'
+        response = requests.post(url, json=data)
+        config_str = response.json().get('response', {}).get('configuration', '{}')
+        config = json.loads(config_str)
+        new_config = {
+            "modality": config.get("modalities", ""),
+            "goals": config.get("goals", "")
+        }
+        print(new_config)
+        return jsonify(new_config), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_problem_from_modality', methods=['POST'])
+def get_problem_from_modality():
+    print("Terminal: /request problem from modality")
+    try:
+        in_data = request.json
+        req_type_values = in_data.get('modality')
+        data = {
+            "node_id": 4,
+            "configuration": "problem_from_modality, " + req_type_values
+        }
+        # pipe the information to the backend
+        url = 'http://127.0.0.1:5001/config_request'
+        response = requests.post(url, json=data)
+        config_str = response.json().get('response', {}).get('configuration', '{}')
+        config = json.loads(config_str)
+        new_config = {
+            "goals": config.get("goals", "")
+        }
+        print(new_config)
+        return jsonify(new_config), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_model_info', methods=['POST'])
+def get_model_info():
+    print("Terminal: /request model info")
+    try:
+        in_data = request.json
+        req_type_values = in_data.get('model')
+        data = {
+            "node_id": 4,
+            "configuration": "mode_info, " + req_type_values
+        }
+        # pipe the information to the backend
+        url = 'http://127.0.0.1:5001/config_request'
+        response = requests.post(url, json=data)
+        config_str = response.json().get('response', {}).get('configuration', '{}')
+        config = json.loads(config_str)
+        new_config = {
+            "model_uri": config.get("model_uri", ""),
+            "id": config.get("id", ""),
+            "name": config.get("name", ""),
+            "problem": config.get("problem", ""),
+            "coverTag": config.get("coverTag", ""),
+            "library": config.get("library", ""),
+            "downloads": config.get("downloads", ""),
+            "likes": config.get("likes", ""),
+            "lastModified": config.get("lastModified", "")
+        }
+        print(new_config)
+        return jsonify(new_config), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_inout_modalities', methods=['GET'])
+def get_inout_modalities():
+    print("Terminal: /request inputs and outputs modalities")
+    try:
+        data = {
+            "node_id": 4,
+            "configuration": "in_out_modalities"
+        }
+        # pipe the information to the backend
+        url = 'http://127.0.0.1:5001/config_request'
+        response = requests.post(url, json=data)
+        config_str = response.json().get('response', {}).get('configuration', '{}')
+        config = json.loads(config_str)
+        new_config = {
+            "inputs": config.get("inputs", ""),
+            "outputs": config.get("outputs", "")
+        }
+        print(new_config)
+        return jsonify(new_config), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_metrics_from_modalities', methods=['POST'])
+def get_metrics_from_modalities():
+    print("Terminal: /request metrics from modalities")
+    try:
+        in_data = request.json
+        req_type_values = in_data.get('modalities')
+        data = {
+            "node_id": 4,
+            "configuration": (
+                "metrics, " + "modality" + ": " + req_type_values
+            )    # Example of req_type_values (Input modality, output modality): "Image, Label"
+        }
+        # pipe the information to the backend
+        url = 'http://127.0.0.1:5001/config_request'
+        response = requests.post(url, json=data)
+        config_str = response.json().get('response', {}).get('configuration', '{}')
+        config = json.loads(config_str)
+        new_config = {
+            "metrics": config.get("metrics", "")
+        }
+        print(new_config)
+        return jsonify(new_config), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_metrics_from_problem', methods=['POST'])
+def get_metrics_from_problem():
+    print("Terminal: /request metrics from problem")
+    try:
+        in_data = request.json
+        req_type_values = in_data.get('problem')
+        data = {
+            "node_id": 4,
+            "configuration": (
+                "metrics, " + "problem" + ": " + req_type_values
+            )    # Example of req_type_values (goal): "audio-text-to-text"
+        }
+        # pipe the information to the backend
+        url = 'http://127.0.0.1:5001/config_request'
+        response = requests.post(url, json=data)
+        config_str = response.json().get('response', {}).get('configuration', '{}')
+        config = json.loads(config_str)
+        new_config = {
+            "metrics": config.get("metrics", "")
+        }
+        print(new_config)
+        return jsonify(new_config), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_all_metrics', methods=['GET'])
+def get_all_metrics():
+    print("Terminal: /request all metrics")
+    try:
+        data = {
+            "node_id": 4,
+            "configuration": (
+                "metrics, " + "all" + ": "
+            )
+        }
+        # pipe the information to the backend
+        url = 'http://127.0.0.1:5001/config_request'
+        response = requests.post(url, json=data)
+        config_str = response.json().get('response', {}).get('configuration', '{}')
+        config = json.loads(config_str)
+        new_config = {
+            "metrics": config.get("metrics", "")
+        }
+        print(new_config)
+        return jsonify(new_config), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_hardware', methods=['GET'])
+def get_hardware():
+    print("Terminal: /request hardware")
+    try:
+        data = {
+            "node_id": 3,
+            "configuration": "hardwares"
+        }
+        # pipe the information to the backend
+        url = 'http://127.0.0.1:5001/config_request'
+        response = requests.post(url, json=data)
+        config_str = response.json().get('response', {}).get('configuration', '{}')
+        config = json.loads(config_str)
+        new_config = {
+            "hardwares": config.get("hardwares", "")
+        }
+        print(new_config)
+        return jsonify(new_config), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
