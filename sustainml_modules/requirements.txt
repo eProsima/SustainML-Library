@@ -1,4 +1,5 @@
 accelerate>=0.26.0
+annoy
 brevitas
 carbontracker
 datamart_profiler==0.11
@@ -6,6 +7,7 @@ flask
 flask-socketio==5.2.0
 jsonschema
 kaggle
+neo4j
 networkx>=3.0
 numpy>=1.24.1
 ollama==0.3.3
@@ -20,9 +22,9 @@ pydot
 PyQt5==5.15.11
 rdflib==7.0.0
 scikit_learn==1.6.1
+sentence-transformers
 timm==1.0.14
 torch==2.4.1
 torchinfo
 transformers==4.48.3
 typer==0.15.1
-ultralytics==8.3.4
