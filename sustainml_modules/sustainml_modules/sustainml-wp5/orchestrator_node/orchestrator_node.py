@@ -406,6 +406,11 @@ class Orchestrator:
         model_restrains = extra.get('model_restrains', [])
         hf_token = extra.get('hf_token')
         type = extra.get('type')
+        dataset_metadata_description = extra.get('dataset_metadata_description', "")
+        dataset_metadata_topic = extra.get('dataset_metadata_topic', "")
+        dataset_metadata_profile = extra.get('dataset_metadata_profile', "")
+        dataset_metadata_keywords = extra.get('dataset_metadata_keywords', "")
+        dataset_metadata_applications = extra.get('dataset_metadata_applications', "")
 
         # Add extra data to user user_input
         extra_data = {'hardware_required': hw_req,
@@ -415,7 +420,12 @@ class Orchestrator:
                       'num_outputs': num_outputs,
                       'model_restrains': model_restrains,
                       'hf_token': hf_token,
-                      'type': type}
+                      'type': type,
+                      'dataset_metadata_description': dataset_metadata_description,
+                      'dataset_metadata_topic': dataset_metadata_topic,
+                      'dataset_metadata_profile': dataset_metadata_profile,
+                      'dataset_metadata_keywords': dataset_metadata_keywords,
+                      'dataset_metadata_applications': dataset_metadata_applications}
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
@@ -436,7 +446,7 @@ class Orchestrator:
 
         if "hardwares" in request_type.configuration():
             request_type.node_id(utils.node_id.HW_PROVIDER.value)
-        elif any(key in request_type.configuration() for key in ["modality", "in_out_modalities", "metrics", "model_info", "problem_from_modality"]):
+        elif any(key in request_type.configuration() for key in ["modality", "in_out_modalities", "metrics", "model_info", "problem_from_modality", "dataset_path"]):
             request_type.node_id(utils.node_id.ML_MODEL_METADATA.value)
         elif any(key in request_type.configuration() for key in ["goal", "model_from_goal"]):
             request_type.node_id(utils.node_id.ML_MODEL_PROVIDER.value)
