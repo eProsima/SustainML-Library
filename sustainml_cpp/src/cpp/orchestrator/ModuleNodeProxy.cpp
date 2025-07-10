@@ -167,9 +167,14 @@ ModuleNodeProxy::ModuleNodeProxy(
             return;
         }
 
+        DataWriterQos dwqos = DATAWRITER_QOS_DEFAULT;
+        dwqos.resource_limits().max_instances = 500;
+        dwqos.resource_limits().max_samples_per_instance = 1;
+        dwqos.durability().kind = eprosima::fastdds::dds::TRANSIENT_LOCAL_DURABILITY_QOS;
+
         baseline_writer_ = orchestrator_->pub_->create_datawriter(
             baseline_topic_,
-            DATAWRITER_QOS_DEFAULT,
+            dwqos,
             nullptr);
 
         if (baseline_writer_ == nullptr)
