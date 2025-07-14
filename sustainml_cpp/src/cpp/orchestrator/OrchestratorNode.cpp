@@ -256,7 +256,7 @@ bool OrchestratorNode::init()
 
     user_input_writer_ = pub_->create_datawriter(user_input_topic_, dwqos);
 
-    if (user_input_topic_ == nullptr)
+    if (user_input_writer_ == nullptr)
     {
         EPROSIMA_LOG_ERROR(ORCHESTRATOR, "Error creating the user input writer");
         return false;
