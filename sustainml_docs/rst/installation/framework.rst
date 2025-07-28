@@ -80,7 +80,14 @@ The following command also builds and installs the SustainML framework and all i
             git submodule update --init --recursive && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             cd ~/SustainML/SustainML_ws && colcon build && \
-            source ~/SustainML/SustainML_ws/install/setup.bash
+            source ~/SustainML/SustainML_ws/install/setup.bash && \
+            sudo neo4j-admin database load system \
+              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --overwrite-destination=true && \
+            sudo neo4j-admin database load neo4j \
+              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --overwrite-destination=true && \
+            sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
     .. group-tab:: MacOS
 
@@ -96,7 +103,14 @@ The following command also builds and installs the SustainML framework and all i
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             cd ~/SustainML/SustainML_ws && colcon build --packages-up-to sustainml --cmake-args -DCMAKE_CXX_STANDARD=17 \
                     -DQt5_DIR=/usr/local/opt/qt5/lib/cmake/Qt5 && \
-            cd ~/SustainML/SustainML_ws/install && source setup.bash
+            cd ~/SustainML/SustainML_ws/install && source setup.bash && \
+            sudo neo4j-admin database load system \
+              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --overwrite-destination=true && \
+            sudo neo4j-admin database load neo4j \
+              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --overwrite-destination=true && \
+            sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
 .. _installation_framework_deployment:
 
@@ -111,7 +125,7 @@ SustainML Framework deployment
 
 The *SustainML Framework* application retrieves the user inputs and deliver the information to the remain nodes that conform the framework.
 To run the complete framework, both GUI application and framework nodes need to be executed.
-The following bash script run each module, the backend orchestrator and the frontend application.
+The following command run each module, the backend orchestrator and the frontend application.
 
 .. tabs::
 
@@ -119,18 +133,14 @@ The following bash script run each module, the backend orchestrator and the fron
 
         .. code-block:: bash
 
-            cd ~/SustainML/SustainML_ws/src/sustainml_framework
-            chmod +x framework_run.sh && \
-            ./framework_run.sh
+            sustainml-framework
 
     .. group-tab:: MacOS
 
         .. code-block:: bash
 
-            cd ~/SustainML/SustainML_ws/src/sustainml_framework
-            chmod +x framework_run.sh && \
-            ./framework_run.sh
+            sustainml-framework
 
 .. note::
 
-    The *SustainML Framework* GUI application is run with the ``sustainml`` command.
+    The *SustainML Framework* GUI application alone is run with the ``sustainml`` command.

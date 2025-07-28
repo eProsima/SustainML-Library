@@ -73,7 +73,14 @@ The following command builds and installs the *SustainML library* and its depend
             vcs import src < sustainml.repos && \
             git submodule update --init --recursive && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
-            colcon build
+            colcon build && \
+            sudo neo4j-admin database load system \
+              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --overwrite-destination=true && \
+            sudo neo4j-admin database load neo4j \
+              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --overwrite-destination=true && \
+            sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
     .. group-tab:: MacOS
 
@@ -86,7 +93,14 @@ The following command builds and installs the *SustainML library* and its depend
             vcs import src < sustainml.repos && \
             git submodule update --init --recursive && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
-            colcon build --cmake-args -DCMAKE_CXX_STANDARD=17
+            colcon build --cmake-args -DCMAKE_CXX_STANDARD=17 && \
+            sudo neo4j-admin database load system \
+              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --overwrite-destination=true && \
+            sudo neo4j-admin database load neo4j \
+              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --overwrite-destination=true && \
+            sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
 .. _installation_library_run:
 
@@ -102,6 +116,7 @@ After building the SustainML library, you can start the backend as follows:
         .. code-block:: bash
 
             bash -c " \
+                systemctl start neo4j && \
                 cd ~/SustainML/SustainML_ws/build/sustainml_modules/lib/sustainml_modules; \
                 python3 sustainml-wp1/app_requirements_node.py & \
                 python3 sustainml-wp1/ml_model_metadata_node.py & \
@@ -116,6 +131,7 @@ After building the SustainML library, you can start the backend as follows:
         .. code-block:: bash
 
             bash -c " \
+                systemctl start neo4j && \
                 cd ~/SustainML/SustainML_ws/build/sustainml_modules/lib/sustainml_modules; \
                 python3 sustainml-wp1/app_requirements_node.py & \
                 python3 sustainml-wp1/ml_model_metadata_node.py & \
