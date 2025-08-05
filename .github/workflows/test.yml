@@ -37,6 +37,20 @@ jobs:
         os:
           - ubuntu-22.04
 
+    services:
+      neo4j:
+        image: neo4j:5.15-community
+        env:
+          NEO4J_AUTH: neo4j/12345678
+          NEO4J_PLUGINS: '["apoc"]'
+        ports:
+          - 7687:7687
+        options: >-
+          --health-cmd "cypher-shell -u neo4j -p 12345678 'RETURN 1'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Free Disk Space
         run: |
