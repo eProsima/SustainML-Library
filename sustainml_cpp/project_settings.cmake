@@ -29,3 +29,10 @@ set(MODULE_FIND_PACKAGES
         fastdds
         cpp_utils
     )
+
+set(MODULE_THIRDPARTY_PACKAGES
+    sqlite  # Not header-only though, need to include the sources
+)
+
+set(MODULE_THIRDPARTY_PATH
+    "thirdparty")

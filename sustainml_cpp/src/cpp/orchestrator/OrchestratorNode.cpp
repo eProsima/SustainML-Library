@@ -18,6 +18,7 @@
 
 #include <sustainml_cpp/core/RequestReplier.hpp>
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
+#include <sustainml_cpp/database/Database.hpp>
 
 #include "ModuleNodeProxyFactory.hpp"
 #include "TaskDB.ipp"
@@ -277,6 +278,19 @@ bool OrchestratorNode::init()
 
     initialized_.store(true);
     initialization_cv_.notify_one();
+
+    // Create/Open SQL Database
+    {
+        std::string db_file = "sustainml.db"; // Alternatively, fetch from an environment variable or configuration
+        sustainml::database::Database database(db_file);
+        if (database.initialize() != SQLITE_OK)
+        {
+            std::cerr << "Failed to open SQL database: " << db_file << std::endl;
+            return false;
+        }
+        std::cout << "DATABASE created successfully" << std::endl; // debug
+    }
+
     return true;
 }
 
