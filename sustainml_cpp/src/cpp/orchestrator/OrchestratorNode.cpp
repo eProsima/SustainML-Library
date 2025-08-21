@@ -18,7 +18,6 @@
 
 #include <sustainml_cpp/core/RequestReplier.hpp>
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
-#include <sustainml_cpp/database/Database.hpp>
 
 #include "ModuleNodeProxyFactory.hpp"
 #include "TaskDB.ipp"
@@ -124,7 +123,7 @@ OrchestratorNode::OrchestratorNode(
 
 OrchestratorNode::~OrchestratorNode()
 {
-    destroy();
+    terminate();
 }
 
 void OrchestratorNode::destroy()
@@ -276,24 +275,186 @@ bool OrchestratorNode::init()
                         this->req_res_->resume_taking_data();
                     }, "sustainml/request", "sustainml/response", participant_, pub_, sub_, res_.get_impl());
 
+    // Create/Open SQL Database and hydrate TaskDB BEFORE we mark initialized_
+    {
+        std::string db_file = "sustainml.db";
+        database_.reset(new sustainml::database::Database(db_file));
+        if (database_->initialize() != SQLITE_OK)
+        {
+            EPROSIMA_LOG_WARNING(ORCHESTRATOR, "Failed to open SQL database, continuing without persistence");
+        }
+        else
+        {
+            hydrate_from_db_();
+        }
+    }
+
     initialized_.store(true);
     initialization_cv_.notify_one();
-
-    // Create/Open SQL Database
-    {
-        std::string db_file = "sustainml.db"; // Alternatively, fetch from an environment variable or configuration
-        sustainml::database::Database database(db_file);
-        if (database.initialize() != SQLITE_OK)
-        {
-            std::cerr << "Failed to open SQL database: " << db_file << std::endl;
-            return false;
-        }
-        std::cout << "DATABASE created successfully" << std::endl; // debug
-    }
 
     return true;
 }
 
+static inline std::vector<uint8_t> to_bytes(const std::string& s)
+{
+    return std::vector<uint8_t>(s.begin(), s.end());
+}
+
+void OrchestratorNode::hydrate_from_db_()
+{
+    if (!database_)
+    {
+        return;
+    }
+
+    std::vector<sustainml::database::Database::Row> rows;
+    if (database_->read_all_rows(rows) != SQLITE_OK)
+    {
+        EPROSIMA_LOG_WARNING(ORCHESTRATOR, "Database read_all_rows failed");
+        return;
+    }
+
+    uint32_t max_problem_id = 0;
+
+    for (const auto& r : rows)
+    {
+        types::TaskId tid;
+        tid.problem_id(static_cast<uint32_t>(r.problem_id));
+        tid.iteration_id(static_cast<uint32_t>(r.iteration_id));
+
+        if (tid.problem_id() > max_problem_id)
+        {
+            max_problem_id = tid.problem_id();
+        }
+
+        std::lock_guard<std::mutex> lock(task_db_->get_mutex());
+        task_db_->prepare_new_entry_nts(tid, false);
+
+        {
+            types::UserInput ui;
+            ui.task_id(tid);
+            ui.extra_data(to_bytes(r.user_input_json));
+            task_db_->insert_task_data_nts(tid, ui);
+        }
+        {
+            types::AppRequirements x;
+            x.task_id(tid);
+            x.extra_data(to_bytes(r.app_requirements_json));
+            task_db_->insert_task_data_nts(tid, x);
+        }
+        {
+            types::MLModelMetadata x;
+            x.task_id(tid);
+            x.extra_data(to_bytes(r.ml_model_metadata_json));
+            task_db_->insert_task_data_nts(tid, x);
+        }
+        {
+            types::MLModel x;
+            x.task_id(tid);
+            x.extra_data(to_bytes(r.ml_model_json));
+            task_db_->insert_task_data_nts(tid, x);
+        }
+        {
+            types::HWConstraints x;
+            x.task_id(tid);
+            x.extra_data(to_bytes(r.hw_constraints_json));
+            task_db_->insert_task_data_nts(tid, x);
+        }
+        {
+            types::HWResource x;
+            x.task_id(tid);
+            x.extra_data(to_bytes(r.hw_resources_json));
+            task_db_->insert_task_data_nts(tid, x);
+        }
+        {
+            types::CO2Footprint x;
+            x.task_id(tid);
+            x.extra_data(to_bytes(r.carbon_footprint_json));
+            task_db_->insert_task_data_nts(tid, x);
+        }
+
+        persisted_task_ids_.push_back(tid);
+    }
+
+    if (max_problem_id > 0)
+    {
+        types::TaskId last_tid;
+        last_tid.problem_id(max_problem_id);
+        task_man_->update_task_id(last_tid);
+    }
+}
+
+void OrchestratorNode::persist_to_db_()
+{
+
+    if (!database_)
+    {
+        return;
+    }
+
+    auto same = [](const types::TaskId& a, const types::TaskId& b)
+    {
+        return a.problem_id() == b.problem_id() && a.iteration_id() == b.iteration_id();
+    };
+
+    std::vector<types::TaskId> ids;
+    for (auto& t : persisted_task_ids_)
+    {
+        bool found = false;
+        for (auto& u : ids) if (same(t,u)) { found = true; break; }
+        if (!found) ids.push_back(t);
+    }
+
+    auto bytes_to_string = [](const std::vector<uint8_t>& v) -> std::string
+    {
+        return std::string(reinterpret_cast<const char*>(v.data()), v.size());
+    };
+    auto j_or = [](const std::string& s, const char* fallback) -> std::string
+    {
+        std::string t = s;
+        auto ltrim = [](std::string& x){ x.erase(0, x.find_first_not_of(" \t\r\n")); };
+        auto rtrim = [](std::string& x){ x.erase(x.find_last_not_of(" \t\r\n")+1); };
+        ltrim(t); rtrim(t);
+        return (t.empty() || t == "null") ? fallback : s;
+    };
+
+    std::vector<sustainml::database::Database::Row> rows;
+    {
+        std::lock_guard<std::mutex> lock(task_db_->get_mutex());
+
+        for (auto& tid : ids)
+        {
+            types::UserInput* ui = nullptr;            task_db_->get_task_data_nts(tid, ui);
+            types::AppRequirements* app = nullptr;     task_db_->get_task_data_nts(tid, app);
+            types::MLModelMetadata* meta = nullptr;    task_db_->get_task_data_nts(tid, meta);
+            types::MLModel* mdl = nullptr;             task_db_->get_task_data_nts(tid, mdl);
+            types::HWConstraints* hwc = nullptr;       task_db_->get_task_data_nts(tid, hwc);
+            types::HWResource* hwr = nullptr;          task_db_->get_task_data_nts(tid, hwr);
+            types::CO2Footprint* co2 = nullptr;        task_db_->get_task_data_nts(tid, co2);
+
+            sustainml::database::Database::Row r;
+            r.problem_id            = tid.problem_id();
+            r.iteration_id          = tid.iteration_id();
+            r.user_input_json       = ui  ? j_or(bytes_to_string(ui->extra_data()),  "{}") : "{}";
+            r.app_requirements_json = app ? j_or(bytes_to_string(app->extra_data()), "[]") : "[]";
+            r.ml_model_metadata_json= meta? j_or(bytes_to_string(meta->extra_data()),"[]") : "[]";
+            r.ml_model_json         = mdl ? j_or(bytes_to_string(mdl->extra_data()), "{}") : "{}";
+            r.hw_constraints_json   = hwc ? j_or(bytes_to_string(hwc->extra_data()), "{}") : "{}";
+            r.hw_resources_json     = hwr ? j_or(bytes_to_string(hwr->extra_data()), "{}") : "{}";
+            r.carbon_footprint_json = co2 ? j_or(bytes_to_string(co2->extra_data()), "{}") : "{}";
+
+            rows.emplace_back(std::move(r));
+        }
+
+    }
+
+    if (database_->replace_all_rows(rows) != SQLITE_OK)
+    {
+        EPROSIMA_LOG_WARNING(ORCHESTRATOR, "Database replace_all_rows failed");
+    }
+}
+
+// Track new tasks for persistence
 std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_task()
 {
     std::pair<types::TaskId, types::UserInput*> output;
@@ -304,6 +465,7 @@ std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_task()
         task_db_->get_task_data_nts(task_id, output.second);
     }
     output.first = task_id;
+    persisted_task_ids_.push_back(task_id);
     return output;
 }
 
@@ -323,6 +485,7 @@ std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_iterat
         task_db_->get_task_data_nts(new_task_id, output.second);
     }
     output.first = new_task_id;
+    persisted_task_ids_.push_back(new_task_id);
     return output;
 }
 
@@ -548,9 +711,16 @@ void OrchestratorNode::spin()
 
 void OrchestratorNode::terminate()
 {
+    if (terminated_.load()) {
+        return;
+    }
+
     terminate_.store(true);
     // skip the wait in the replier if any request is pending
     req_res_->resume_taking_data();
+
+    persist_to_db_();
+    if (database_) { database_->close(); }
     destroy();
     spin_cv_.notify_all();
 }

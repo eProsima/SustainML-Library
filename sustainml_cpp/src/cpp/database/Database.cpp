@@ -71,9 +71,6 @@ int Database::initialize()
         return rc;
     }
 
-    // WIP - If the database already exist we should load its data to the backend
-    // WIP - If the database doesn't exist it would be just opening it and created the schema with the raw style of the data
-    // WIP - Apart from opening the database nothing more solve be done in the initialize. The load is callable method by the user
     if (created_on_open_)
     {
         rc = create_schema();
@@ -83,50 +80,6 @@ int Database::initialize()
             return rc;
         }
     }
-    // ------------------------- debug
-    // else
-    // {
-    //     std::string db_json;
-    //     rc = load(db_json);
-    //     if (rc != SQLITE_OK)
-    //     {
-    //         std::cerr << "load failed: " << rc << "\n";
-    //         return rc;
-    //     }
-
-
-    //     std::cout << "db from internal db: " << std::endl;
-    //     dump_to_stdout();   // show actual data from db
-    //     std::cout << "db from json loaded: " << std::endl;
-    //     std::cout << "db_json (" << db_json.size() << " bytes):\n" << db_json << "\n" << std::endl;
-
-    //     std::string new_json = R"JSON([
-    //         {"id":1,"problem_id":1,"iteration_id":1,"UserInputJson":{"user":"demo_updated"},"AppRequirementsJson":{"latency_ms":120},"MLModelMetadataJson":{"version":"0.2"},"MLModelJson":{"name":"ModelA","params":{"alpha":0.1}},"HWConstraintsJson":{"max_power_w":45},"HWResourcesJson":{"cpu":"4c","mem":"2GB"},"CarbonFootprintJson":{"co2_g":11.0},"created_at":"2025-08-19 10:15:27"},
-    //         {"id":2,"problem_id":1,"iteration_id":2,"UserInputJson":{"user":"tester"},"AppRequirementsJson":{"latency_ms":80},"MLModelMetadataJson":{"version":"1.0"},"MLModelJson":{"name":"ModelB","params":{"beta":1}},"HWConstraintsJson":{"max_power_w":30},"HWResourcesJson":{"cpu":"2c","mem":"1GB"},"CarbonFootprintJson":{"co2_g":5.5},"created_at":"2025-08-19 11:00:00"}
-    //     ])JSON";
-
-    //     int rc = save(new_json);
-    //     if (rc != SQLITE_OK)
-    //     {
-    //             std::cerr << "save failed: " << rc << "\n";
-    //             return rc;
-    //     }
-    //     std::cout << "Saved new JSON (" << new_json.size() << " bytes)\n";
-
-    //     // Show DB rows after saving
-    //     std::cout << "Database content after save:\n";
-    //     dump_to_stdout();
-
-    //     std::string reloaded_json;
-    //     rc = load(reloaded_json);
-    //     if (rc != SQLITE_OK)
-    //     {
-    //             std::cerr << "load after save failed: " << rc << "\n";
-    //             return rc;
-    //     }
-    //     std::cout << "Reloaded JSON (" << reloaded_json.size() << " bytes):\n" << reloaded_json << "\n";
-    // }
-    // ------------------------- debug
 
     return SQLITE_OK;
 }
@@ -155,7 +108,6 @@ int Database::create_schema()
 {
     const char* ddl =
         "CREATE TABLE IF NOT EXISTS task_results ("
-        "  id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "  problem_id INTEGER NOT NULL,"
         "  iteration_id INTEGER NOT NULL,"
         "  UserInputJson TEXT NOT NULL,"
@@ -165,7 +117,6 @@ int Database::create_schema()
         "  HWConstraintsJson TEXT NOT NULL,"
         "  HWResourcesJson TEXT NOT NULL,"
         "  CarbonFootprintJson TEXT NOT NULL,"
-        "  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,"
         "  CHECK (typeof(UserInputJson)='text'),"
         "  CHECK (typeof(AppRequirementsJson)='text'),"
         "  CHECK (typeof(MLModelMetadataJson)='text'),"
@@ -193,55 +144,11 @@ int Database::create_schema()
         return rc;
     }
 
-    // Test seed: Insert a couple of rows to ensure everything works.
-    // #ifdef SQLITE_ENABLE_JSON1
-    // const char* seed_sql =
-    //     "BEGIN;"
-    //     "INSERT OR IGNORE INTO task_results "
-    //     "(problem_id, iteration_id, UserInputJson, AppRequirementsJson, "
-    //     " MLModelMetadataJson, MLModelJson, HWConstraintsJson, HWResourcesJson, CarbonFootprintJson) "
-    //     "VALUES "
-    //     "(1, 1, "
-    //     " json('{\"user\":\"demo\"}'),"
-    //     " json('{\"latency_ms\":100}'),"
-    //     " json('{\"version\":\"0.1\"}'),"
-    //     " json('{\"name\":\"ModelA\",\"params\":{}}'),"
-    //     " json('{\"max_power_w\":50}'),"
-    //     " json('{\"cpu\":\"4c\",\"mem\":\"2GB\"}'),"
-    //     " json('{\"co2_g\":12.3}')"
-    //     ");"
-    //     "COMMIT;";
-    // #else
-    // const char* seed_sql =
-    //     "BEGIN;"
-    //     "INSERT OR IGNORE INTO task_results "
-    //     "(problem_id, iteration_id, UserInputJson, AppRequirementsJson, "
-    //     " MLModelMetadataJson, MLModelJson, HWConstraintsJson, HWResourcesJson, CarbonFootprintJson) "
-    //     "VALUES "
-    //     "(1, 1, "
-    //     " '{\"user\":\"demo\"}',"
-    //     " '{\"latency_ms\":100}',"
-    //     " '{\"version\":\"0.1\"}',"
-    //     " '{\"name\":\"ModelA\",\"params\":{}}',"
-    //     " '{\"max_power_w\":50}',"
-    //     " '{\"cpu\":\"4c\",\"mem\":\"2GB\"}',"
-    //     " '{\"co2_g\":12.3}'"
-    //     ");"
-    //     "COMMIT;";
-    // #endif
-
-    // rc = exec(seed_sql);
-    // if (rc != SQLITE_OK)
-    // {
-    //     std::cerr << "seed data insert failed: " << rc << "\n";
-    //     return rc;
-    // }
-
     return SQLITE_OK;
 }
 
 
-int Database::save(std::string& json_in)
+int Database::replace_all_rows(const std::vector<Row>& rows)
 {
     if (!db_)
     {
@@ -249,10 +156,7 @@ int Database::save(std::string& json_in)
     }
 
     int rc = exec("BEGIN;");
-    if (rc != SQLITE_OK)
-    {
-        return rc;
-    }
+    if (rc != SQLITE_OK) return rc;
 
     rc = exec("DELETE FROM task_results;");
     if (rc != SQLITE_OK)
@@ -263,153 +167,75 @@ int Database::save(std::string& json_in)
 
     const char* insert_sql =
         "INSERT INTO task_results ("
-        "  id, problem_id, iteration_id, "
-        "  UserInputJson, AppRequirementsJson, "
-        "  MLModelMetadataJson, MLModelJson, "
-        "  HWConstraintsJson, HWResourcesJson, "
-        "  CarbonFootprintJson, created_at)"
-        "SELECT "
-        "  json_extract(value, '$.id'),"
-        "  json_extract(value, '$.problem_id'),"
-        "  json_extract(value, '$.iteration_id'),"
-    #ifdef SQLITE_ENABLE_JSON1
-        "  json(json_extract(value, '$.UserInputJson')),"
-        "  json(json_extract(value, '$.AppRequirementsJson')),"
-        "  json(json_extract(value, '$.MLModelMetadataJson')),"
-        "  json(json_extract(value, '$.MLModelJson')),"
-        "  json(json_extract(value, '$.HWConstraintsJson')),"
-        "  json(json_extract(value, '$.HWResourcesJson')),"
-        "  json(json_extract(value, '$.CarbonFootprintJson')),"
-    #else
-        "  json_extract(value, '$.UserInputJson'),"
-        "  json_extract(value, '$.AppRequirementsJson'),"
-        "  json_extract(value, '$.MLModelMetadataJson'),"
-        "  json_extract(value, '$.MLModelJson'),"
-        "  json_extract(value, '$.HWConstraintsJson'),"
-        "  json_extract(value, '$.HWResourcesJson'),"
-        "  json_extract(value, '$.CarbonFootprintJson'),"
-    #endif
-        "  COALESCE(json_extract(value, '$.created_at'), CURRENT_TIMESTAMP)"
-        "FROM json_each(?) "
-        "WHERE json_type(value) = 'object';";
+        "  problem_id, iteration_id,"
+        "  UserInputJson, AppRequirementsJson, MLModelMetadataJson, MLModelJson,"
+        "  HWConstraintsJson, HWResourcesJson, CarbonFootprintJson)"
+        "VALUES (?,?,?,?,?,?,?,?,?);";
 
     sqlite3_stmt* stmt = nullptr;
     rc = sqlite3_prepare_v2(db_, insert_sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK)
     {
-        std::cerr << "sqlite3_prepare_v2(save) failed: " << rc
+        std::cerr << "sqlite3_prepare_v2(replace_all_rows) failed: " << rc
                   << " msg=" << sqlite3_errmsg(db_) << "\n";
         exec("ROLLBACK;");
         return rc;
     }
 
-    rc = sqlite3_bind_text(stmt, 1, json_in.c_str(),
-                           static_cast<int>(json_in.size()), SQLITE_TRANSIENT);
-    if (rc != SQLITE_OK)
+    auto bind_txt = [](sqlite3_stmt* s, int idx, const std::string& v) -> int
     {
-        std::cerr << "sqlite3_bind_text failed: " << rc << "\n";
-        sqlite3_finalize(stmt);
-        exec("ROLLBACK;");
-        return rc;
+        return sqlite3_bind_text(s, idx, v.c_str(), static_cast<int>(v.size()), SQLITE_TRANSIENT);
+    };
+
+    for (const auto& r : rows)
+    {
+        sqlite3_reset(stmt);
+        sqlite3_clear_bindings(stmt);
+
+        sqlite3_bind_int64(stmt, 1, r.problem_id);
+        sqlite3_bind_int64(stmt, 2, r.iteration_id);
+
+        bind_txt(stmt, 3,  r.user_input_json);
+        bind_txt(stmt, 4,  r.app_requirements_json);
+        bind_txt(stmt, 5,  r.ml_model_metadata_json);
+        bind_txt(stmt, 6,  r.ml_model_json);
+        bind_txt(stmt, 7,  r.hw_constraints_json);
+        bind_txt(stmt, 8,  r.hw_resources_json);
+        bind_txt(stmt, 9,  r.carbon_footprint_json);
+
+        rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE)
+        {
+            std::cerr << "sqlite3_step(replace_all_rows) failed: " << rc
+                      << " msg=" << sqlite3_errmsg(db_) << "\n";
+            sqlite3_finalize(stmt);
+            exec("ROLLBACK;");
+            return rc;
+        }
     }
 
-    rc = sqlite3_step(stmt);
-    if (rc != SQLITE_DONE)
-    {
-        std::cerr << "sqlite3_step(save) failed: " << rc
-                  << " msg=" << sqlite3_errmsg(db_) << "\n";
-        sqlite3_finalize(stmt);
-        exec("ROLLBACK;");
-        return rc;
-    }
     sqlite3_finalize(stmt);
 
     rc = exec("COMMIT;");
     if (rc != SQLITE_OK)
     {
         exec("ROLLBACK;");
-        return rc;
     }
-
-    return SQLITE_OK;
-}
-
-
-int Database::load(std::string& json_out)
-{
-    if (!db_)
-    {
-        return SQLITE_MISUSE;
-    }
-
-    const char* q =
-        "SELECT COALESCE(json_group_array(json_object("
-        "  'id', id,"
-        "  'problem_id', problem_id,"
-        "  'iteration_id', iteration_id,"
-        "  'UserInputJson', json(UserInputJson),"
-        "  'AppRequirementsJson', json(AppRequirementsJson),"
-        "  'MLModelMetadataJson', json(MLModelMetadataJson),"
-        "  'MLModelJson', json(MLModelJson),"
-        "  'HWConstraintsJson', json(HWConstraintsJson),"
-        "  'HWResourcesJson', json(HWResourcesJson),"
-        "  'CarbonFootprintJson', json(CarbonFootprintJson),"
-        "  'created_at', created_at"
-        ")), '[]') "
-        "FROM task_results;";
-
-    sqlite3_stmt* stmt = nullptr;
-    int rc = sqlite3_prepare_v2(db_, q, -1, &stmt, nullptr);
-    if (rc != SQLITE_OK)
-    {
-        std::cerr << "sqlite3_prepare_v2 failed: " << rc
-                  << " msg=" << sqlite3_errmsg(db_) << "\n";
-        return rc;
-    }
-
-    int step_rc = sqlite3_step(stmt);
-    if (step_rc == SQLITE_ROW)
-    {
-        const unsigned char* txt = sqlite3_column_text(stmt, 0);
-        json_out = txt ? reinterpret_cast<const char*>(txt) : "[]";
-        rc = SQLITE_OK;
-    }
-    else if (step_rc == SQLITE_DONE)
-    {
-        json_out = "[]";
-        rc = SQLITE_OK;
-    }
-    else
-    {
-        std::cerr << "sqlite3_step json build failed: " << step_rc
-                  << " msg=" << sqlite3_errmsg(db_) << "\n";
-        rc = step_rc;
-    }
-
-    sqlite3_finalize(stmt);
     return rc;
 }
 
-// ---------------------------- debug
-int Database::dump_to_stdout()
+
+int Database::read_all_rows(std::vector<Row>& out_rows)
 {
     if (!db_)
     {
         return SQLITE_MISUSE;
     }
 
-    // For the new schema; JSON1 normalizes JSON columns
     const char* q =
-        "SELECT "
-        " id, problem_id, iteration_id, "
-        " json(UserInputJson), "
-        " json(AppRequirementsJson), "
-        " json(MLModelMetadataJson), "
-        " json(MLModelJson), "
-        " json(HWConstraintsJson), "
-        " json(HWResourcesJson), "
-        " json(CarbonFootprintJson), "
-        " created_at "
+        "SELECT problem_id, iteration_id,"
+        "       UserInputJson, AppRequirementsJson, MLModelMetadataJson, MLModelJson,"
+        "       HWConstraintsJson, HWResourcesJson, CarbonFootprintJson "
         "FROM task_results "
         "ORDER BY problem_id, iteration_id;";
 
@@ -417,61 +243,38 @@ int Database::dump_to_stdout()
     int rc = sqlite3_prepare_v2(db_, q, -1, &stmt, nullptr);
     if (rc != SQLITE_OK)
     {
-        std::cerr << "sqlite3_prepare_v2 failed: " << rc
+        std::cerr << "sqlite3_prepare_v2(read_all_rows) failed: " << rc
                   << " msg=" << sqlite3_errmsg(db_) << "\n";
         return rc;
     }
 
-    bool any = false;
-    int step_rc = SQLITE_OK;
-    while ((step_rc = sqlite3_step(stmt)) == SQLITE_ROW)
+    auto to_str = [](sqlite3_stmt* s, int idx) -> std::string
     {
-        any = true;
+        const unsigned char* t = sqlite3_column_text(s, idx);
+        return t ? reinterpret_cast<const char*>(t) : std::string();
+    };
 
-        const auto txt = [&](int col) -> const char*
-        {
-            const unsigned char* v = sqlite3_column_text(stmt, col);
-            return v ? reinterpret_cast<const char*>(v) : "(null)";
-        };
-
-        long long id          = static_cast<long long>(sqlite3_column_int64(stmt, 0));
-        long long problem_id  = static_cast<long long>(sqlite3_column_int64(stmt, 1));
-        long long iteration   = static_cast<long long>(sqlite3_column_int64(stmt, 2));
-        const char* user_in   = txt(3);
-        const char* app_req   = txt(4);
-        const char* mdl_meta  = txt(5);
-        const char* mdl_json  = txt(6);
-        const char* hw_const  = txt(7);
-        const char* hw_res    = txt(8);
-        const char* co2       = txt(9);
-        const char* created   = txt(10);
-
-        std::cout
-            << "id=" << id
-            << " problem_id=" << problem_id
-            << " iteration_id=" << iteration
-            << " created_at=" << created
-            << "\n  UserInputJson=" << user_in
-            << "\n  AppRequirementsJson=" << app_req
-            << "\n  MLModelMetadataJson=" << mdl_meta
-            << "\n  MLModelJson=" << mdl_json
-            << "\n  HWConstraintsJson=" << hw_const
-            << "\n  HWResourcesJson=" << hw_res
-            << "\n  CarbonFootprintJson=" << co2
-            << "\n";
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+    {
+        Row r;
+        r.problem_id            = sqlite3_column_int64(stmt, 0);
+        r.iteration_id          = sqlite3_column_int64(stmt, 1);
+        r.user_input_json       = to_str(stmt, 2);
+        r.app_requirements_json = to_str(stmt, 3);
+        r.ml_model_metadata_json= to_str(stmt, 4);
+        r.ml_model_json         = to_str(stmt, 5);
+        r.hw_constraints_json   = to_str(stmt, 6);
+        r.hw_resources_json     = to_str(stmt, 7);
+        r.carbon_footprint_json = to_str(stmt, 8);
+        out_rows.emplace_back(std::move(r));
     }
 
-    if (step_rc != SQLITE_DONE)
+    if (rc != SQLITE_DONE)
     {
-        std::cerr << "sqlite3_step select failed: " << step_rc
+        std::cerr << "sqlite3_step(read_all_rows) failed: " << rc
                   << " msg=" << sqlite3_errmsg(db_) << "\n";
         sqlite3_finalize(stmt);
-        return step_rc;
-    }
-
-    if (!any)
-    {
-        std::cout << "task_results: (empty)\n";
+        return rc;
     }
 
     sqlite3_finalize(stmt);

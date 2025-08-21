@@ -19,8 +19,9 @@
 #ifndef SUSTAINMLCPP_DATABASE_DATABASE_HPP
 #define SUSTAINMLCPP_DATABASE_DATABASE_HPP
 
-#include <sqlite/sqlite3.h>
+#include <sqlite3.h>
 #include <string>
+#include <vector>
 
 namespace sustainml {
 namespace database {
@@ -35,6 +36,20 @@ namespace database {
 class Database
 {
 public:
+
+    struct Row
+    {
+        long long problem_id{0};
+        long long iteration_id{0};
+        std::string user_input_json;
+        std::string app_requirements_json;
+        std::string ml_model_metadata_json;
+        std::string ml_model_json;
+        std::string hw_constraints_json;
+        std::string hw_resources_json;
+        std::string carbon_footprint_json;
+    };
+
     /**
      * @brief Construct with the database file path.
      *
@@ -76,32 +91,21 @@ public:
     int create_schema();
 
     /**
-     * @brief Save a JSON payload into the database.
+     * @brief Replace all rows in the database with the provided set of rows.
      *
-     * Database must be open.
+     * @param rows Vector of rows to insert/replace.
      * @return SQLite result code.
      */
-    int save(std::string& json_in);
+    int replace_all_rows(const std::vector<Row>& rows);
 
     /**
-     * @brief Load JSON payload(s) from the database into json_out.
+     * @brief Load all rows from the database into the provided vector.
      *
-     * Database must be open.
+     * @param out_rows Vector to fill with loaded rows.
      * @return SQLite result code.
      */
-    int load(std::string& json_out);
+    int read_all_rows(std::vector<Row>& out_rows);
 
-    /**
-     * @brief True if the database was created during initialize().
-     */
-    bool created_on_open() const { return created_on_open_; }
-
-    /**
-     * @brief Dump database contents to stdout (for debugging).
-     *
-     * @return SQLite result code.
-     */
-    int dump_to_stdout();
 
     /**
      * @brief Access the raw sqlite3* handle (or nullptr if closed).

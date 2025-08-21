@@ -143,6 +143,7 @@ def shutdown():
 @server.route('/terminate', methods=['GET'])
 def terminate():
     signal.raise_signal(signal.SIGINT)
+    # flask_server_thread.shutdown()
     return jsonify({'message': 'Terminating...<br>'}), 200
 
 class ServerThread(threading.Thread):
@@ -178,7 +179,7 @@ def signal_handler(sig, frame):
 
 # Main program execution
 if __name__ == '__main__':
-    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
     hf_token = os.getenv("HF_TOKEN")
     if hf_token is None:
         print("Error: The HF_TOKEN environment variable is missing. Please set it before starting the node.")
