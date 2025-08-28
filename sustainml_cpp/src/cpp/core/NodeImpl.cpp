@@ -198,9 +198,16 @@ bool NodeImpl::init(
     }
 
     //! Initialize common topics
-    initialize_subscription(common::TopicCollection::get()[common::Topics::NODE_CONTROL].first.c_str(),
+    std::string name_no_node = name.substr(0, name.size() - std::string("_NODE").size());
+    std::string filter_expr   = "target_node = %0";
+std::vector<std::string> filter_params{ std::string("'") + name_no_node + "'" };
+    std::cout << "Node name without _NODE: " << name_no_node << std::endl;
+    initialize_subscription_content_filter(common::TopicCollection::get()[common::Topics::NODE_CONTROL].first.c_str(),
             common::TopicCollection::get()[common::Topics::NODE_CONTROL].second.c_str(),
-            &control_listener_, opts);
+            filter_expr.c_str(),
+            filter_params,
+            &control_listener_,
+            opts);
 
     initialize_publication(common::TopicCollection::get()[common::Topics::NODE_STATUS].first.c_str(),
             common::TopicCollection::get()[common::Topics::NODE_STATUS].second.c_str(),
@@ -243,6 +250,46 @@ bool NodeImpl::initialize_subscription(
     }
 
     DataReader* reader = subscriber_->create_datareader(topic, opts.rqos, listener);
+
+    if (reader == nullptr)
+    {
+        return false;
+    }
+
+    topics_.emplace_back(topic);
+    readers_.emplace_back(reader);
+
+    return true;
+}
+
+bool NodeImpl::initialize_subscription_content_filter(
+        const char* topic_name,
+        const char* type_name,
+        const char* filter_expression,
+        const std::vector<std::string>& filter_parameters,
+        eprosima::fastdds::dds::DataReaderListener* listener,
+        const Options& opts)
+{
+    Topic* topic = participant_->create_topic(topic_name, type_name, TOPIC_QOS_DEFAULT);
+
+    if (topic == nullptr)
+    {
+        return false;
+    }
+
+    for (const auto& parameter : filter_parameters)
+    {
+        std::cout << "Content Filter Parameter: " << parameter << std::endl;
+    }
+    std::string filter_name = std::string(topic_name) + "_cf";
+    ContentFilteredTopic* filter_topic = participant_->create_contentfilteredtopic(filter_name.c_str(), topic, filter_expression, filter_parameters);
+
+    if (filter_topic == nullptr)
+    {
+        return false;
+    }
+
+    DataReader* reader = subscriber_->create_datareader(filter_topic, opts.rqos, listener);
 
     if (reader == nullptr)
     {
@@ -310,6 +357,7 @@ void NodeImpl::NodeControlListener::on_subscription_matched(
         eprosima::fastdds::dds::DataReader* reader,
         const eprosima::fastdds::dds::SubscriptionMatchedStatus& status)
 {
+    std::cout << "[CONTROL] NodeControl subscription matched" << std::endl;
 
     EPROSIMA_LOG_INFO(NODE, "NodeControl Reader Suscription status");
 
@@ -336,7 +384,51 @@ void NodeImpl::NodeControlListener::on_subscription_matched(
 void NodeImpl::NodeControlListener::on_data_available(
         eprosima::fastdds::dds::DataReader* reader)
 {
+    std::cout << "[CONTROL] NodeControl data available" << std::endl;
     EPROSIMA_LOG_INFO(NODE, "NodeStatus has a new status ");
+    // NodeControl data
+    NodeControlImpl control;
+    eprosima::fastdds::dds::SampleInfo info;
+
+    while (reader->take_next_sample(&control, &info) == RETCODE_OK)
+    {
+        if (! info.valid_data)
+            continue;
+
+        std::string cmd_task_str;
+        switch (control.cmd_task())
+        {
+            case CmdTask::NO_CMD_TASK:
+            cmd_task_str = "NO_CMD_TASK";
+            break;
+            case CmdTask::STOP_TASK:
+            cmd_task_str = "STOP_TASK";
+            break;
+            case CmdTask::RESET_TASK:
+            cmd_task_str = "RESET_TASK";
+            break;
+            case CmdTask::PREEMPT_TASK:
+            cmd_task_str = "PREEMPT_TASK";
+            break;
+            case CmdTask::TERMINATE_TASK:
+            cmd_task_str = "TERMINATE_TASK";
+            break;
+            default:
+            cmd_task_str = "UNKNOWN";
+            break;
+        }
+
+        std::cout << "[CONTROL] recibido cmd=" << cmd_task_str
+              << " de " << control.source_node()
+              << " para task=" << control.task_id().problem_id() << "."
+              << control.task_id().iteration_id()
+              << std::endl;
+
+        if (static_cast<int32_t>(control.cmd_task()) == static_cast<int32_t>(CmdTask::STOP_TASK))
+        {
+            // node_->stop_task(control.task_id());    // TODO stop_task
+        }
+    }
 }
 
 } // namespace core

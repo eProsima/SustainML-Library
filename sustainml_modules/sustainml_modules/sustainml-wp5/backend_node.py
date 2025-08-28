@@ -130,6 +130,20 @@ def results_args():
 
     return jsonify({utils.string_node(node_id): orchestrator.get_results(node_id, task_id)}), 200
 
+# Cancels an iteration based on the provided problem_id and iteration_id.
+@server.route('/cancel', methods=['POST'])
+def cancel():
+    data = request.get_json(force=True)
+    pid = data.get("problem_id")
+    iid = data.get("iteration_id")
+    if pid is None or iid is None:
+        return jsonify({"error": "Either problem_id or iteration_id not selected"}), 400
+    ok = orchestrator.cancel_iteration(pid, iid)
+    if ok:
+        return jsonify({"status": "cancelled"}), 200
+    else:
+        return jsonify({"status": "not_found"}), 404
+
 # Flask server shutdown route
 @server.route('/shutdown', methods=['GET'])
 def shutdown():

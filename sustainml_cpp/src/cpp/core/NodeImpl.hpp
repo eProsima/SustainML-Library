@@ -112,7 +112,7 @@ protected:
      * @brief Starts a new subscription (DataReader) in the
      * given topic.
      *
-     * @param topic The topic name
+     * @param topic_name The topic name
      * @param type_name The type name
      * @param listener Listener object inheriting from DataReaderListener
      * @param opts Options object with the Subscription configuration
@@ -120,6 +120,25 @@ protected:
     bool initialize_subscription(
             const char* topic_name,
             const char* type_name,
+            eprosima::fastdds::dds::DataReaderListener* listener,
+            const Options& opts);
+
+    /**
+     * @brief Starts a new subscription (DataReader) in the
+     * given content filter topic.
+     *
+     * @param topic_name The topic name
+     * @param type_name The type name
+     * @param listener Listener object inheriting from DataReaderListener
+     * @param filter_expression The content filter expression
+     * @param filter_parameters The content filter parameters
+     * @param opts Options object with the Subscription configuration
+     */
+    bool initialize_subscription_content_filter(
+            const char* topic_name,
+            const char* type_name,
+            const char* filter_expression,
+            const std::vector<std::string>& filter_parameters,
             eprosima::fastdds::dds::DataReaderListener* listener,
             const Options& opts);
 
