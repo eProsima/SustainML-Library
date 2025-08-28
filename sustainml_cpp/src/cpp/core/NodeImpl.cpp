@@ -47,6 +47,7 @@ NodeImpl::NodeImpl(
     , subscriber_(nullptr)
     , req_res_listener_(*new RequestReplyListener())
     , control_listener_(this)
+    , stop_task_callback_(nullptr)
 {
     if (!init(name))
     {
@@ -65,6 +66,7 @@ NodeImpl::NodeImpl(
     , subscriber_(nullptr)
     , req_res_listener_(*new RequestReplyListener())
     , control_listener_(this)
+    , stop_task_callback_(nullptr)
 {
     if (!init(name, opts))
     {
@@ -83,6 +85,7 @@ NodeImpl::NodeImpl(
     , subscriber_(nullptr)
     , req_res_listener_(req_res_listener)
     , control_listener_(this)
+    , stop_task_callback_(nullptr)
 {
     if (!init(name))
     {
@@ -102,6 +105,7 @@ NodeImpl::NodeImpl(
     , subscriber_(nullptr)
     , req_res_listener_(req_res_listener)
     , control_listener_(this)
+    , stop_task_callback_(nullptr)
 {
     if (!init(name, opts))
     {
@@ -335,6 +339,25 @@ void NodeImpl::publish_node_status()
     }
 }
 
+void NodeImpl::stop_current_task(const TaskIdImpl& task_id)
+{
+    if (stop_task_callback_)
+    {
+        EPROSIMA_LOG_INFO(NODE, "Stopping task " << task_id.problem_id() << "." << task_id.iteration_id());
+        stop_task_callback_(task_id);
+    }
+    else
+    {
+        EPROSIMA_LOG_WARNING(NODE, "No stop task callback registered for task " << task_id.problem_id() << "." << task_id.iteration_id());
+    }
+}
+
+void NodeImpl::register_stop_task_callback(std::function<void(const TaskIdImpl&)> callback)
+{
+    stop_task_callback_ = callback;
+    EPROSIMA_LOG_INFO(NODE, "Stop task callback registered successfully");
+}
+
 void NodeImpl::terminate()
 {
     terminate_.store(true);
@@ -403,6 +426,8 @@ void NodeImpl::NodeControlListener::on_data_available(
             break;
             case CmdTask::STOP_TASK:
             cmd_task_str = "STOP_TASK";
+            // Call stop_task() here if needed
+            node_->stop_current_task(control.task_id());
             break;
             case CmdTask::RESET_TASK:
             cmd_task_str = "RESET_TASK";
@@ -423,11 +448,6 @@ void NodeImpl::NodeControlListener::on_data_available(
               << " para task=" << control.task_id().problem_id() << "."
               << control.task_id().iteration_id()
               << std::endl;
-
-        if (static_cast<int32_t>(control.cmd_task()) == static_cast<int32_t>(CmdTask::STOP_TASK))
-        {
-            // node_->stop_task(control.task_id());    // TODO stop_task
-        }
     }
 }
 

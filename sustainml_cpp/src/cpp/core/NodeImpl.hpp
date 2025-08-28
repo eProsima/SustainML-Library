@@ -160,6 +160,18 @@ protected:
      */
     void publish_node_status();
 
+    /**
+     * @brief Stops the current task execution
+     * @param task_id The task ID to stop
+     */
+    void stop_current_task(const TaskIdImpl& task_id);
+    
+    /**
+     * @brief Register a callback to handle task stopping
+     * @param callback Function to call when a task needs to be stopped
+     */
+    void register_stop_task_callback(std::function<void(const TaskIdImpl&)> callback);
+
     Node* node_;
 
     std::shared_ptr<Dispatcher> dispatcher_;
@@ -211,6 +223,9 @@ private:
     bool init(
             const std::string& name,
             const Options& opts = Options());
+
+    // Callback function pointer for task stopping
+    std::function<void(const TaskIdImpl&)> stop_task_callback_;
 
     class NodeControlListener : public eprosima::fastdds::dds::DataReaderListener
     {
