@@ -77,6 +77,14 @@ def status_args():
     node_id = data.get('node_id')
     return jsonify({'status': orchestrator.get_status(node_id)}), 200
 
+# Retrieve available tasks
+@server.route('/available_tasks', methods=['POST'])
+def available_tasks():
+    data = request.get_json(silent=True) or {}
+    task_ids = orchestrator.list_task_ids()
+    return jsonify({"task_ids": task_ids, "count": len(task_ids)}), 200
+
+
 # Retrieve Node results methods
 @server.route('/results', methods=['GET'])
 def results():

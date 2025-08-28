@@ -35,6 +35,8 @@
 #include <fastdds/dds/topic/Topic.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
 
+#include <iostream>  // + debug prints
+
 using namespace eprosima::fastdds::dds;
 
 namespace sustainml {
@@ -295,9 +297,313 @@ bool OrchestratorNode::init()
     return true;
 }
 
-static inline std::vector<uint8_t> to_bytes(const std::string& s)
+// --- JSON helpers (serialize) ---
+static inline std::string json_escape_(const std::string& in)
 {
-    return std::vector<uint8_t>(s.begin(), s.end());
+    std::string out; out.reserve(in.size()+8);
+    for (char c : in)
+    {
+        switch (c)
+        {
+            case '\"': out += "\\\""; break;
+            case '\\': out += "\\\\"; break;
+            case '\b': out += "\\b"; break;
+            case '\f': out += "\\f"; break;
+            case '\n': out += "\\n"; break;
+            case '\r': out += "\\r"; break;
+            case '\t': out += "\\t"; break;
+            default: out += c; break;
+        }
+    }
+    return out;
+}
+static inline std::string q_(const std::string& s) { return std::string("\"")+json_escape_(s)+"\""; }
+static inline std::string arr_strs_(const std::vector<std::string>& v)
+{
+    std::string out="["; bool first=true;
+    for (auto& s : v) { if(!first) out+=','; first=false; out+=q_(s); }
+    out += "]";
+    return out;
+}
+static inline std::string bytes_to_string_(const std::vector<uint8_t>& v)
+{
+    return std::string(reinterpret_cast<const char*>(v.data()), v.size());
+}
+static inline std::string base64_encode_(const std::vector<uint8_t>& data)
+{
+    static const char* tbl="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    std::string out; out.reserve((data.size()+2)/3*4);
+    size_t i=0;
+    while (i+2<data.size())
+    {
+        uint32_t n=(data[i]<<16)|(data[i+1]<<8)|data[i+2];
+        out.push_back(tbl[(n>>18)&63]); out.push_back(tbl[(n>>12)&63]);
+        out.push_back(tbl[(n>>6)&63]);  out.push_back(tbl[n&63]);
+        i+=3;
+    }
+    if (i+1==data.size())
+    {
+        uint32_t n=(data[i]<<16);
+        out.push_back(tbl[(n>>18)&63]); out.push_back(tbl[(n>>12)&63]);
+        out.push_back('='); out.push_back('=');
+    }
+    else if (i+2==data.size())
+    {
+        uint32_t n=(data[i]<<16)|(data[i+1]<<8);
+        out.push_back(tbl[(n>>18)&63]); out.push_back(tbl[(n>>12)&63]);
+        out.push_back(tbl[(n>>6)&63]);  out.push_back('=');
+    }
+    return out;
+}
+
+// Validate if a string is JSON using SQLite JSON1
+static inline bool sqlite_json_valid_(sqlite3* db, const std::string& s)
+{
+    if (!db) return false;
+    static const char* q="SELECT json_valid(?)";
+    sqlite3_stmt* st=nullptr;
+    if (sqlite3_prepare_v2(db,q,-1,&st,nullptr)!=SQLITE_OK) return false;
+    sqlite3_bind_text(st,1,s.c_str(),(int)s.size(),SQLITE_TRANSIENT);
+    bool ok=false;
+    if (sqlite3_step(st)==SQLITE_ROW) ok = sqlite3_column_int(st,0)!=0;
+    sqlite3_finalize(st);
+    return ok;
+}
+
+// Per-type to_json (full struct)
+static inline std::string to_json_user_input_(sqlite3* db, const types::UserInput& ui)
+{
+    std::string extra = bytes_to_string_(ui.extra_data());
+    bool ejson = sqlite_json_valid_(db, extra);
+    std::string out = "{";
+    out += "\"modality\":" + q_(ui.modality()) + ",";
+    out += "\"problem_short_description\":" + q_(ui.problem_short_description()) + ",";
+    out += "\"problem_definition\":" + q_(ui.problem_definition()) + ",";
+    out += "\"inputs\":" + arr_strs_(ui.inputs()) + ",";
+    out += "\"outputs\":" + arr_strs_(ui.outputs()) + ",";
+    out += "\"minimum_samples\":" + std::to_string(ui.minimum_samples()) + ",";
+    out += "\"maximum_samples\":" + std::to_string(ui.maximum_samples()) + ",";
+    out += "\"optimize_carbon_footprint_manual\":" + std::string(ui.optimize_carbon_footprint_manual()?"true":"false") + ",";
+    out += "\"previous_iteration\":" + std::to_string(ui.previous_iteration()) + ",";
+    out += "\"optimize_carbon_footprint_auto\":" + std::string(ui.optimize_carbon_footprint_auto()?"true":"false") + ",";
+    out += "\"desired_carbon_footprint\":" + std::to_string(ui.desired_carbon_footprint()) + ",";
+    out += "\"geo_location_continent\":" + q_(ui.geo_location_continent()) + ",";
+    out += "\"geo_location_region\":" + q_(ui.geo_location_region()) + ",";
+    out += "\"extra_data\":" + (ejson ? extra : q_(extra));
+    out += "}";
+    return out;
+}
+static inline std::string to_json_app_requirements_(sqlite3* db, const types::AppRequirements& x)
+{
+    std::string extra = bytes_to_string_(x.extra_data());
+    bool ejson = sqlite_json_valid_(db, extra);
+    std::string out="{";
+    out += "\"app_requirements\":" + arr_strs_(x.app_requirements()) + ",";
+    out += "\"extra_data\":" + (ejson ? extra : q_(extra));
+    out += "}";
+    return out;
+}
+static inline std::string to_json_ml_model_metadata_(sqlite3* db, const types::MLModelMetadata& x)
+{
+    std::string extra = bytes_to_string_(x.extra_data());
+    bool ejson = sqlite_json_valid_(db, extra);
+    std::string out="{";
+    out += "\"keywords\":" + arr_strs_(x.keywords()) + ",";
+    out += "\"ml_model_metadata\":" + arr_strs_(x.ml_model_metadata()) + ",";
+    out += "\"extra_data\":" + (ejson ? extra : q_(extra));
+    out += "}";
+    return out;
+}
+static inline std::string to_json_hw_constraints_(sqlite3* db, const types::HWConstraints& x)
+{
+    std::string extra = bytes_to_string_(x.extra_data());
+    bool ejson = sqlite_json_valid_(db, extra);
+    std::string out="{";
+    out += "\"max_memory_footprint\":" + std::to_string(x.max_memory_footprint()) + ",";
+    out += "\"hardware_required\":" + arr_strs_(x.hardware_required()) + ",";
+    out += "\"extra_data\":" + (ejson ? extra : q_(extra));
+    out += "}";
+    return out;
+}
+static inline std::string to_json_hw_resource_(sqlite3* db, const types::HWResource& x)
+{
+    std::string extra = bytes_to_string_(x.extra_data());
+    bool ejson = sqlite_json_valid_(db, extra);
+    std::string out="{";
+    out += "\"hw_description\":" + q_(x.hw_description()) + ",";
+    out += "\"power_consumption\":" + std::to_string(x.power_consumption()) + ",";
+    out += "\"latency\":" + std::to_string(x.latency()) + ",";
+    out += "\"memory_footprint_of_ml_model\":" + std::to_string(x.memory_footprint_of_ml_model()) + ",";
+    out += "\"max_hw_memory_footprint\":" + std::to_string(x.max_hw_memory_footprint()) + ",";
+    out += "\"extra_data\":" + (ejson ? extra : q_(extra));
+    out += "}";
+    return out;
+}
+static inline std::string to_json_ml_model_(sqlite3* /*db*/, const types::MLModel& x)
+{
+    std::string extra = bytes_to_string_(x.extra_data());
+    std::string out="{";
+    out += "\"model_path\":" + q_(x.model_path()) + ",";
+    out += "\"model\":" + q_(x.model()) + ",";
+    out += "\"raw_model_b64\":" + q_(base64_encode_(x.raw_model())) + ",";
+    out += "\"model_properties_path\":" + q_(x.model_properties_path()) + ",";
+    out += "\"model_properties\":" + q_(x.model_properties()) + ",";
+    out += "\"input_batch\":" + arr_strs_(x.input_batch()) + ",";
+    out += "\"target_latency\":" + std::to_string(x.target_latency()) + ",";
+    out += "\"extra_data\":" + q_(extra);
+    out += "}";
+    return out;
+}
+static inline std::string to_json_co2_(sqlite3* db, const types::CO2Footprint& x)
+{
+    std::string extra = bytes_to_string_(x.extra_data());
+    bool ejson = sqlite_json_valid_(db, extra);
+    std::string out="{";
+    out += "\"carbon_footprint\":" + std::to_string(x.carbon_footprint()) + ",";
+    out += "\"energy_consumption\":" + std::to_string(x.energy_consumption()) + ",";
+    out += "\"carbon_intensity\":" + std::to_string(x.carbon_intensity()) + ",";
+    out += "\"extra_data\":" + (ejson ? extra : q_(extra));
+    out += "}";
+    return out;
+}
+
+// --- JSON helpers (parse via SQLite JSON1) ---
+static inline bool j_text_(sqlite3* db, const std::string& j, const char* path, std::string& out)
+{
+    const char* q="SELECT json_extract(?, ?)";
+    sqlite3_stmt* st=nullptr;
+    if (sqlite3_prepare_v2(db,q,-1,&st,nullptr)!=SQLITE_OK) return false;
+    sqlite3_bind_text(st,1,j.c_str(),(int)j.size(),SQLITE_TRANSIENT);
+    sqlite3_bind_text(st,2,path,-1,SQLITE_TRANSIENT);
+    bool ok=false;
+    if (sqlite3_step(st)==SQLITE_ROW)
+    {
+        auto t = sqlite3_column_text(st,0);
+        if (t){ out.assign(reinterpret_cast<const char*>(t)); ok=true; }
+    }
+    sqlite3_finalize(st); return ok;
+}
+static inline bool j_i64_(sqlite3* db, const std::string& j, const char* path, long long& out)
+{
+    const char* q="SELECT json_extract(?, ?)";
+    sqlite3_stmt* st=nullptr;
+    if (sqlite3_prepare_v2(db,q,-1,&st,nullptr)!=SQLITE_OK) return false;
+    sqlite3_bind_text(st,1,j.c_str(),(int)j.size(),SQLITE_TRANSIENT);
+    sqlite3_bind_text(st,2,path,-1,SQLITE_TRANSIENT);
+    bool ok=false;
+    if (sqlite3_step(st)==SQLITE_ROW && sqlite3_column_type(st,0)!=SQLITE_NULL)
+    { out=sqlite3_column_int64(st,0); ok=true; }
+    sqlite3_finalize(st); return ok;
+}
+static inline bool j_d_(sqlite3* db, const std::string& j, const char* path, double& out)
+{
+    const char* q="SELECT json_extract(?, ?)";
+    sqlite3_stmt* st=nullptr;
+    if (sqlite3_prepare_v2(db,q,-1,&st,nullptr)!=SQLITE_OK) return false;
+    sqlite3_bind_text(st,1,j.c_str(),(int)j.size(),SQLITE_TRANSIENT);
+    sqlite3_bind_text(st,2,path,-1,SQLITE_TRANSIENT);
+    bool ok=false;
+    if (sqlite3_step(st)==SQLITE_ROW && sqlite3_column_type(st,0)!=SQLITE_NULL)
+    { out=sqlite3_column_double(st,0); ok=true; }
+    sqlite3_finalize(st); return ok;
+}
+static inline void j_arr_text_(sqlite3* db, const std::string& j, const char* path, std::vector<std::string>& out)
+{
+    out.clear();
+    const char* q="SELECT value FROM json_each(?, ?)";
+    sqlite3_stmt* st=nullptr;
+    if (sqlite3_prepare_v2(db,q,-1,&st,nullptr)!=SQLITE_OK) return;
+    sqlite3_bind_text(st,1,j.c_str(),(int)j.size(),SQLITE_TRANSIENT);
+    sqlite3_bind_text(st,2,path,-1,SQLITE_TRANSIENT);
+    while (sqlite3_step(st)==SQLITE_ROW)
+    {
+        auto t = sqlite3_column_text(st,0);
+        out.emplace_back(t? reinterpret_cast<const char*>(t) : "");
+    }
+    sqlite3_finalize(st);
+}
+static inline std::vector<uint8_t> base64_decode_(const std::string& s)
+{
+    auto val=[](char c)->int{
+        if('A'<=c&&c<='Z')return c-'A';
+        if('a'<=c&&c<='z')return c-'a'+26;
+        if('0'<=c&&c<='9')return c-'0'+52;
+        if(c=='+')return 62; if(c=='/')return 63; return -1;
+    };
+    std::vector<uint8_t> out; int acc=0,bits=0;
+    for(char c:s){ if(c=='=')break; int v=val(c); if(v<0)continue; acc=(acc<<6)|v; bits+=6;
+        if(bits>=8){ bits-=8; out.push_back((acc>>bits)&0xFF); } }
+    return out;
+}
+
+// Per-type from_json (full struct)
+static inline void from_json_user_input_(sqlite3* db, const std::string& j, types::UserInput& ui)
+{
+    std::string s; long long i=0; double d=0.0;
+    if (j_text_(db,j,"$.modality",s)) ui.modality(s);
+    if (j_text_(db,j,"$.problem_short_description",s)) ui.problem_short_description(s);
+    if (j_text_(db,j,"$.problem_definition",s)) ui.problem_definition(s);
+    std::vector<std::string> v;
+    j_arr_text_(db,j,"$.inputs",v); if(!v.empty()) ui.inputs(v);
+    j_arr_text_(db,j,"$.outputs",v); if(!v.empty()) ui.outputs(v);
+    if (j_i64_(db,j,"$.minimum_samples",i)) ui.minimum_samples((uint32_t)i);
+    if (j_i64_(db,j,"$.maximum_samples",i)) ui.maximum_samples((uint32_t)i);
+    if (j_i64_(db,j,"$.optimize_carbon_footprint_manual",i)) ui.optimize_carbon_footprint_manual(i!=0);
+    if (j_i64_(db,j,"$.previous_iteration",i)) ui.previous_iteration((int32_t)i);
+    if (j_i64_(db,j,"$.optimize_carbon_footprint_auto",i)) ui.optimize_carbon_footprint_auto(i!=0);
+    if (j_d_(db,j,"$.desired_carbon_footprint",d)) ui.desired_carbon_footprint(d);
+    if (j_text_(db,j,"$.geo_location_continent",s)) ui.geo_location_continent(s);
+    if (j_text_(db,j,"$.geo_location_region",s)) ui.geo_location_region(s);
+    if (j_text_(db,j,"$.extra_data",s)) ui.extra_data(std::vector<uint8_t>(s.begin(), s.end()));
+}
+static inline void from_json_app_requirements_(sqlite3* db, const std::string& j, types::AppRequirements& x)
+{
+    std::vector<std::string> v;
+    j_arr_text_(db,j,"$.app_requirements",v); if(!v.empty()) x.app_requirements(v);
+    std::string s; if (j_text_(db,j,"$.extra_data",s)) x.extra_data(std::vector<uint8_t>(s.begin(), s.end()));
+}
+static inline void from_json_ml_model_metadata_(sqlite3* db, const std::string& j, types::MLModelMetadata& x)
+{
+    std::vector<std::string> v;
+    j_arr_text_(db,j,"$.keywords",v); if(!v.empty()) x.keywords(v);
+    j_arr_text_(db,j,"$.ml_model_metadata",v); if(!v.empty()) x.ml_model_metadata(v);
+    std::string s; if (j_text_(db,j,"$.extra_data",s)) x.extra_data(std::vector<uint8_t>(s.begin(), s.end()));
+}
+static inline void from_json_hw_constraints_(sqlite3* db, const std::string& j, types::HWConstraints& x)
+{
+    long long i=0; if (j_i64_(db,j,"$.max_memory_footprint",i)) x.max_memory_footprint((uint32_t)i);
+    std::vector<std::string> v; j_arr_text_(db,j,"$.hardware_required",v); if(!v.empty()) x.hardware_required(v);
+    std::string s; if (j_text_(db,j,"$.extra_data",s)) x.extra_data(std::vector<uint8_t>(s.begin(), s.end()));
+}
+static inline void from_json_hw_resource_(sqlite3* db, const std::string& j, types::HWResource& x)
+{
+    std::string s; double d=0.0;
+    if (j_text_(db,j,"$.hw_description",s)) x.hw_description(s);
+    if (j_d_(db,j,"$.power_consumption",d)) x.power_consumption(d);
+    if (j_d_(db,j,"$.latency",d)) x.latency(d);
+    if (j_d_(db,j,"$.memory_footprint_of_ml_model",d)) x.memory_footprint_of_ml_model(d);
+    if (j_d_(db,j,"$.max_hw_memory_footprint",d)) x.max_hw_memory_footprint(d);
+    if (j_text_(db,j,"$.extra_data",s)) x.extra_data(std::vector<uint8_t>(s.begin(), s.end()));
+}
+static inline void from_json_ml_model_(sqlite3* db, const std::string& j, types::MLModel& x)
+{
+    std::string s; double d=0.0;
+    if (j_text_(db,j,"$.model_path",s)) x.model_path(s);
+    if (j_text_(db,j,"$.model",s)) x.model(s);
+    if (j_text_(db,j,"$.raw_model_b64",s)) x.raw_model(base64_decode_(s));
+    if (j_text_(db,j,"$.model_properties_path",s)) x.model_properties_path(s);
+    if (j_text_(db,j,"$.model_properties",s)) x.model_properties(s);
+    std::vector<std::string> v; j_arr_text_(db,j,"$.input_batch",v); if(!v.empty()) x.input_batch(v);
+    if (j_d_(db,j,"$.target_latency",d)) x.target_latency(d);
+    if (j_text_(db,j,"$.extra_data",s)) x.extra_data(std::vector<uint8_t>(s.begin(), s.end()));
+}
+static inline void from_json_co2_(sqlite3* db, const std::string& j, types::CO2Footprint& x)
+{
+    double d=0.0;
+    if (j_d_(db,j,"$.carbon_footprint",d)) x.carbon_footprint(d);
+    if (j_d_(db,j,"$.energy_consumption",d)) x.energy_consumption(d);
+    if (j_d_(db,j,"$.carbon_intensity",d)) x.carbon_intensity(d);
+    std::string s; if (j_text_(db,j,"$.extra_data",s)) x.extra_data(std::vector<uint8_t>(s.begin(), s.end()));
 }
 
 void OrchestratorNode::hydrate_from_db_()
@@ -315,63 +621,25 @@ void OrchestratorNode::hydrate_from_db_()
     }
 
     uint32_t max_problem_id = 0;
+    sqlite3* dbh = database_->getDB();
 
     for (const auto& r : rows)
     {
         types::TaskId tid;
         tid.problem_id(static_cast<uint32_t>(r.problem_id));
         tid.iteration_id(static_cast<uint32_t>(r.iteration_id));
-
-        if (tid.problem_id() > max_problem_id)
-        {
-            max_problem_id = tid.problem_id();
-        }
+        if (tid.problem_id() > max_problem_id) max_problem_id = tid.problem_id();
 
         std::lock_guard<std::mutex> lock(task_db_->get_mutex());
         task_db_->prepare_new_entry_nts(tid, false);
 
-        {
-            types::UserInput ui;
-            ui.task_id(tid);
-            ui.extra_data(to_bytes(r.user_input_json));
-            task_db_->insert_task_data_nts(tid, ui);
-        }
-        {
-            types::AppRequirements x;
-            x.task_id(tid);
-            x.extra_data(to_bytes(r.app_requirements_json));
-            task_db_->insert_task_data_nts(tid, x);
-        }
-        {
-            types::MLModelMetadata x;
-            x.task_id(tid);
-            x.extra_data(to_bytes(r.ml_model_metadata_json));
-            task_db_->insert_task_data_nts(tid, x);
-        }
-        {
-            types::MLModel x;
-            x.task_id(tid);
-            x.extra_data(to_bytes(r.ml_model_json));
-            task_db_->insert_task_data_nts(tid, x);
-        }
-        {
-            types::HWConstraints x;
-            x.task_id(tid);
-            x.extra_data(to_bytes(r.hw_constraints_json));
-            task_db_->insert_task_data_nts(tid, x);
-        }
-        {
-            types::HWResource x;
-            x.task_id(tid);
-            x.extra_data(to_bytes(r.hw_resources_json));
-            task_db_->insert_task_data_nts(tid, x);
-        }
-        {
-            types::CO2Footprint x;
-            x.task_id(tid);
-            x.extra_data(to_bytes(r.carbon_footprint_json));
-            task_db_->insert_task_data_nts(tid, x);
-        }
+        { types::UserInput x; x.task_id(tid); from_json_user_input_(dbh, r.user_input_json, x); task_db_->insert_task_data_nts(tid, x); }
+        { types::AppRequirements x; x.task_id(tid); from_json_app_requirements_(dbh, r.app_requirements_json, x); task_db_->insert_task_data_nts(tid, x); }
+        { types::MLModelMetadata x; x.task_id(tid); from_json_ml_model_metadata_(dbh, r.ml_model_metadata_json, x); task_db_->insert_task_data_nts(tid, x); }
+        { types::MLModel x; x.task_id(tid); from_json_ml_model_(dbh, r.ml_model_json, x); task_db_->insert_task_data_nts(tid, x); }
+        { types::HWConstraints x; x.task_id(tid); from_json_hw_constraints_(dbh, r.hw_constraints_json, x); task_db_->insert_task_data_nts(tid, x); }
+        { types::HWResource x; x.task_id(tid); from_json_hw_resource_(dbh, r.hw_resources_json, x); task_db_->insert_task_data_nts(tid, x); }
+        { types::CO2Footprint x; x.task_id(tid); from_json_co2_(dbh, r.carbon_footprint_json, x); task_db_->insert_task_data_nts(tid, x); }
 
         persisted_task_ids_.push_back(tid);
     }
@@ -405,23 +673,11 @@ void OrchestratorNode::persist_to_db_()
         if (!found) ids.push_back(t);
     }
 
-    auto bytes_to_string = [](const std::vector<uint8_t>& v) -> std::string
-    {
-        return std::string(reinterpret_cast<const char*>(v.data()), v.size());
-    };
-    auto j_or = [](const std::string& s, const char* fallback) -> std::string
-    {
-        std::string t = s;
-        auto ltrim = [](std::string& x){ x.erase(0, x.find_first_not_of(" \t\r\n")); };
-        auto rtrim = [](std::string& x){ x.erase(x.find_last_not_of(" \t\r\n")+1); };
-        ltrim(t); rtrim(t);
-        return (t.empty() || t == "null") ? fallback : s;
-    };
-
     std::vector<sustainml::database::Database::Row> rows;
+    sqlite3* dbh = database_->getDB();
+
     {
         std::lock_guard<std::mutex> lock(task_db_->get_mutex());
-
         for (auto& tid : ids)
         {
             types::UserInput* ui = nullptr;            task_db_->get_task_data_nts(tid, ui);
@@ -435,13 +691,13 @@ void OrchestratorNode::persist_to_db_()
             sustainml::database::Database::Row r;
             r.problem_id            = tid.problem_id();
             r.iteration_id          = tid.iteration_id();
-            r.user_input_json       = ui  ? j_or(bytes_to_string(ui->extra_data()),  "{}") : "{}";
-            r.app_requirements_json = app ? j_or(bytes_to_string(app->extra_data()), "[]") : "[]";
-            r.ml_model_metadata_json= meta? j_or(bytes_to_string(meta->extra_data()),"[]") : "[]";
-            r.ml_model_json         = mdl ? j_or(bytes_to_string(mdl->extra_data()), "{}") : "{}";
-            r.hw_constraints_json   = hwc ? j_or(bytes_to_string(hwc->extra_data()), "{}") : "{}";
-            r.hw_resources_json     = hwr ? j_or(bytes_to_string(hwr->extra_data()), "{}") : "{}";
-            r.carbon_footprint_json = co2 ? j_or(bytes_to_string(co2->extra_data()), "{}") : "{}";
+            r.user_input_json       = ui  ? to_json_user_input_(dbh, *ui)           : "{}";
+            r.app_requirements_json = app ? to_json_app_requirements_(dbh, *app)    : "{}";
+            r.ml_model_metadata_json= meta? to_json_ml_model_metadata_(dbh, *meta)  : "{}";
+            r.ml_model_json         = mdl ? to_json_ml_model_(dbh, *mdl)            : "{}";
+            r.hw_constraints_json   = hwc ? to_json_hw_constraints_(dbh, *hwc)      : "{}";
+            r.hw_resources_json     = hwr ? to_json_hw_resource_(dbh, *hwr)         : "{}";
+            r.carbon_footprint_json = co2 ? to_json_co2_(dbh, *co2)                 : "{}";
 
             rows.emplace_back(std::move(r));
         }
@@ -723,6 +979,27 @@ void OrchestratorNode::terminate()
     if (database_) { database_->close(); }
     destroy();
     spin_cv_.notify_all();
+}
+
+std::vector<types::TaskId> OrchestratorNode::get_all_task_ids()
+{
+    auto same = [](const types::TaskId& a, const types::TaskId& b)
+    {
+        return a.problem_id() == b.problem_id() && a.iteration_id() == b.iteration_id();
+    };
+
+    std::vector<types::TaskId> out;
+    {
+        out = persisted_task_ids_;
+    }
+
+    std::sort(out.begin(), out.end(), [](const types::TaskId& a, const types::TaskId& b)
+    {
+        if (a.problem_id() != b.problem_id()) return a.problem_id() < b.problem_id();
+        return a.iteration_id() < b.iteration_id();
+    });
+    out.erase(std::unique(out.begin(), out.end(), same), out.end());
+    return out;
 }
 
 } // namespace orchestrator

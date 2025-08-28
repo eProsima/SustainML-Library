@@ -232,6 +232,11 @@ public:
      */
     void terminate();
 
+    /**
+     * @brief Return all TaskIds currently known by the orchestrator (in-memory).
+     */
+    std::vector<types::TaskId> get_all_task_ids();
+
 protected:
 
     /**

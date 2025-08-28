@@ -22,10 +22,13 @@
 #define GEN_API_VER 2
 
 %include <std_pair.i>
+%include <std_vector.i>
 
 %feature("director") sustainml::orchestrator::OrchestratorNodeHandle;
 
 %template(sustainml_pair) std::pair<types::TaskId, types::UserInput*>;
+
+namespace std { %template(TaskIdVector) vector<types::TaskId>; }
 
 %{
 #include <sustainml_cpp/core/Constants.hpp>
