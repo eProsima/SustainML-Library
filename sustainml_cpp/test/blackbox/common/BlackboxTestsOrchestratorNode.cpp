@@ -132,6 +132,14 @@ TEST(OrchestratorNode, OrchestratorInitializesProperlyWhenNodesAreALive)
     hw_cons_node.start();
 
     ASSERT_TRUE(tonh->wait_for_data(std::chrono::seconds(5)));
+
+    co2_node.stop();
+    hw_node.stop();
+    ml_node.stop();
+    ml_met_node.stop();
+    app_req_node.stop();
+    hw_cons_node.stop();
+
     orchestrator.destroy();
 }
 
