@@ -151,21 +151,33 @@ jobs:
 
           sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
-      - name: Set Neo4j initial password
-        run: |
-
-          export JAVA_HOME=$JAVA_HOME
-          export PATH=$JAVA_HOME/bin:$PATH
-
-          sudo -E $JAVA_HOME/bin/java -version
-
-          sudo -E neo4j-admin dbms set-initial-password 12345678
-
       - name: Start Neo4j service
         run: |
-          sudo systemctl enable neo4j
           sudo systemctl start neo4j
 
+      - name: Show Neo4j logs
+        run: |
+          sudo journalctl -u neo4j --no-pager --since "5 minutes ago" || true
+          sudo cat /var/log/neo4j/debug.log || true
+          sudo cat /var/log/neo4j/neo4j.log || true
+
+      - name: Check Neo4j status
+        run: |
+          sudo systemctl status neo4j || true
+          ps aux | grep neo4j || true
+          netstat -tlnp | grep 7687 || true
+
+      - name: Check listening ports
+        run: |
+          sudo ss -tlnp | grep java || true
+
+      - name: Check listening ports
+        run: |
+          echo "=== ss output ==="
+          sudo ss -tlnp || true
+          echo "=== lsof output ==="
+          sudo lsof -i -P -n | grep LISTEN || true
+      
 
       - name: Download file from Google Drive
         run: |
