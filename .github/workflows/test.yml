@@ -37,20 +37,6 @@ jobs:
         os:
           - ubuntu-22.04
 
-    # services:
-    #   neo4j:
-    #     image: neo4j:5.26-community
-    #     env:
-    #       NEO4J_AUTH: neo4j/12345678
-    #       NEO4J_PLUGINS: '["apoc"]'
-    #     ports:
-    #       - 7687:7687
-    #     options: >-
-    #       --health-cmd "cypher-shell -u neo4j -p 12345678 'RETURN 1'"
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
-
     steps:
       - name: Free Disk Space
         run: |
@@ -116,11 +102,12 @@ jobs:
           cd ${{ github.workspace }}/src/sustainml_lib
           git submodule update --init --recursive
 
-      - name: Setup Java 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
+      - name: Install Java 21
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-21-jdk
+          echo "JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64" >> $GITHUB_ENV
+          echo "/usr/lib/jvm/java-21-openjdk-amd64/bin" >> $GITHUB_PATH
 
       - name: Install Neo4j
         run: |
@@ -135,12 +122,6 @@ jobs:
         run: |
           BACKUP_PATH=${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup
 
-          # Exportar Java 21 también para sudo
-          export JAVA_HOME=$JAVA_HOME
-          export PATH=$JAVA_HOME/bin:$PATH
-
-          sudo -E $JAVA_HOME/bin/java -version
-
           sudo -E neo4j-admin database load system \
             --from-path=$BACKUP_PATH \
             --overwrite-destination=true
@@ -154,42 +135,9 @@ jobs:
       - name: Start Neo4j service
         run: |
 
-          export JAVA_HOME=$JAVA_HOME
-          export PATH=$JAVA_HOME/bin:$PATH
+          sudo -E neo4j start
 
-          sudo -E $JAVA_HOME/bin/java -version
-          sudo -E systemctl start neo4j
-
-      - name: Show Neo4j logs
-        run: |
-          echo "=== Checking log locations ==="
-          sudo find /var/lib/neo4j -type f -name "*.log" || true
-          sudo find /usr/share/neo4j -type f -name "*.log" || true
-          sudo find /var/log -type f -name "neo4j*.log" || true
-      
-          echo "=== neo4j.log (if exists) ==="
-          sudo cat /var/lib/neo4j/logs/neo4j.log 2>/dev/null || true
-          sudo cat /usr/share/neo4j/logs/neo4j.log 2>/dev/null || true
-      
-      - name: Check Neo4j status
-        run: |
-          sudo systemctl status neo4j || true
-          ps aux | grep neo4j || true
-          netstat -tlnp | grep 7687 || true
-
-      - name: Check listening ports
-        run: |
-          sudo ss -tlnp | grep java || true
-
-      - name: Check listening ports
-        run: |
-          echo "=== ss output ==="
-          sudo ss -tlnp || true
-          echo "=== lsof output ==="
-          sudo lsof -i -P -n | grep LISTEN || true
-
-
-      - name: Download file from Google Drive
+      - name: Download Annoy Index file from Google Drive
         run: |
           pip install gdown
           gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/models_index.ann
