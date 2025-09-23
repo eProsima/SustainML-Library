@@ -151,7 +151,10 @@ jobs:
 
           sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
-      
+      - name: Set Neo4j initial password
+        run: |
+          echo "12345678" | sudo neo4j-admin set-initial-password
+          
       - name: Start Neo4j service
         run: |
           sudo systemctl enable neo4j
