@@ -39,7 +39,7 @@ jobs:
 
     services:
       neo4j:
-        image: neo4j:5.15-community
+        image: neo4j:5.26-community
         env:
           NEO4J_AUTH: neo4j/12345678
           NEO4J_PLUGINS: '["apoc"]'
@@ -115,6 +115,18 @@ jobs:
         run: |
           cd ${{ github.workspace }}/src/sustainml_lib
           git submodule update --init --recursive
+
+      - name: Load Neo4j backup
+        run: |
+          BACKUP_PATH=${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup
+          docker cp $BACKUP_PATH neo4j:/var/lib/neo4j/import/neo4j_backup
+          docker exec neo4j neo4j-admin database load system \
+            --from-path=/var/lib/neo4j/import/neo4j_backup \
+            --overwrite-destination=true
+          docker exec neo4j neo4j-admin database load neo4j \
+            --from-path=/var/lib/neo4j/import/neo4j_backup \
+            --overwrite-destination=true
+          docker exec neo4j chown -R neo4j:neo4j /var/lib/neo4j/data
 
       - name: Download file from Google Drive
         run: |
