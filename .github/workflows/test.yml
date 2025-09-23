@@ -135,16 +135,20 @@ jobs:
         run: |
           BACKUP_PATH=${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup
 
-          # Cargar system y neo4j desde el backup
-          sudo neo4j-admin database load system \
+          # Exportar Java 21 también para sudo
+          export JAVA_HOME=$JAVA_HOME
+          export PATH=$JAVA_HOME/bin:$PATH
+
+          sudo -E $JAVA_HOME/bin/java -version
+
+          sudo -E neo4j-admin database load system \
             --from-path=$BACKUP_PATH \
             --overwrite-destination=true
 
-          sudo neo4j-admin database load neo4j \
+          sudo -E neo4j-admin database load neo4j \
             --from-path=$BACKUP_PATH \
             --overwrite-destination=true
 
-          # Asegurar permisos correctos
           sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
       
