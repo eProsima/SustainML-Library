@@ -97,6 +97,16 @@ jobs:
           ollama serve &
           ollama pull llama3
 
+      - name: Init submodules manually
+        run: |
+          cd ${{ github.workspace }}/src/sustainml_lib
+          git submodule update --init --recursive
+
+      - name: Download file from Google Drive
+        run: |
+          pip install gdown
+          gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/modles_index.ann
+
       - name: Compile and run tests
         uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@v0
         with:
@@ -162,6 +172,16 @@ jobs:
         run: |
           ollama serve &
           ollama pull llama3
+
+      - name: Init submodules manually
+        run: |
+          cd ${{ github.workspace }}/src/sustainml_lib
+          git submodule update --init --recursive
+
+      - name: Download file from Google Drive
+        run: |
+          pip install gdown
+          gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/modles_index.ann
 
       - name: Compile and run tests
         uses: eProsima/eProsima-CI/multiplatform/clang_build_test@v0
