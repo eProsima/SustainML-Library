@@ -153,7 +153,12 @@ jobs:
 
       - name: Start Neo4j service
         run: |
-          sudo systemctl start neo4j
+
+          export JAVA_HOME=$JAVA_HOME
+          export PATH=$JAVA_HOME/bin:$PATH
+
+          sudo -E $JAVA_HOME/bin/java -version
+          sudo -E systemctl start neo4j
 
       - name: Show Neo4j logs
         run: |
@@ -177,7 +182,7 @@ jobs:
           sudo ss -tlnp || true
           echo "=== lsof output ==="
           sudo lsof -i -P -n | grep LISTEN || true
-      
+
 
       - name: Download file from Google Drive
         run: |
