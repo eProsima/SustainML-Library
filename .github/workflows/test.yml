@@ -116,6 +116,12 @@ jobs:
           cd ${{ github.workspace }}/src/sustainml_lib
           git submodule update --init --recursive
 
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
       - name: Install Neo4j
         run: |
           sudo apt update && sudo apt install -y gnupg ca-certificates wget
