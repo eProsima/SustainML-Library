@@ -37,19 +37,19 @@ jobs:
         os:
           - ubuntu-22.04
 
-    services:
-      neo4j:
-        image: neo4j:5.26-community
-        env:
-          NEO4J_AUTH: neo4j/12345678
-          NEO4J_PLUGINS: '["apoc"]'
-        ports:
-          - 7687:7687
-        options: >-
-          --health-cmd "cypher-shell -u neo4j -p 12345678 'RETURN 1'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   neo4j:
+    #     image: neo4j:5.26-community
+    #     env:
+    #       NEO4J_AUTH: neo4j/12345678
+    #       NEO4J_PLUGINS: '["apoc"]'
+    #     ports:
+    #       - 7687:7687
+    #     options: >-
+    #       --health-cmd "cypher-shell -u neo4j -p 12345678 'RETURN 1'"
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
     steps:
       - name: Free Disk Space
@@ -116,17 +116,37 @@ jobs:
           cd ${{ github.workspace }}/src/sustainml_lib
           git submodule update --init --recursive
 
+      - name: Install Neo4j
+        run: |
+          sudo apt update && sudo apt install -y gnupg ca-certificates wget
+          wget -O - https://debian.neo4j.com/neotechnology.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/neo4j.gpg > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/neo4j.gpg] https://debian.neo4j.com stable latest" | sudo tee /etc/apt/sources.list.d/neo4j.list
+          sudo apt update
+          sudo apt install -y neo4j
+          neo4j --version
+
       - name: Load Neo4j backup
         run: |
           BACKUP_PATH=${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup
-          docker cp $BACKUP_PATH neo4j:/var/lib/neo4j/import/neo4j_backup
-          docker exec neo4j neo4j-admin database load system \
-            --from-path=/var/lib/neo4j/import/neo4j_backup \
+
+          # Cargar system y neo4j desde el backup
+          sudo neo4j-admin database load system \
+            --from-path=$BACKUP_PATH \
             --overwrite-destination=true
-          docker exec neo4j neo4j-admin database load neo4j \
-            --from-path=/var/lib/neo4j/import/neo4j_backup \
+
+          sudo neo4j-admin database load neo4j \
+            --from-path=$BACKUP_PATH \
             --overwrite-destination=true
-          docker exec neo4j chown -R neo4j:neo4j /var/lib/neo4j/data
+
+          # Asegurar permisos correctos
+          sudo chown -R neo4j:neo4j /var/lib/neo4j/data
+
+      
+      - name: Start Neo4j service
+        run: |
+          sudo systemctl enable neo4j
+          sudo systemctl start neo4j
+
 
       - name: Download file from Google Drive
         run: |
