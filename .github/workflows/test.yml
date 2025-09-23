@@ -162,10 +162,15 @@ jobs:
 
       - name: Show Neo4j logs
         run: |
-          sudo journalctl -u neo4j --no-pager --since "5 minutes ago" || true
-          sudo cat /var/log/neo4j/debug.log || true
-          sudo cat /var/log/neo4j/neo4j.log || true
-
+          echo "=== Checking log locations ==="
+          sudo find /var/lib/neo4j -type f -name "*.log" || true
+          sudo find /usr/share/neo4j -type f -name "*.log" || true
+          sudo find /var/log -type f -name "neo4j*.log" || true
+      
+          echo "=== neo4j.log (if exists) ==="
+          sudo cat /var/lib/neo4j/logs/neo4j.log 2>/dev/null || true
+          sudo cat /usr/share/neo4j/logs/neo4j.log 2>/dev/null || true
+      
       - name: Check Neo4j status
         run: |
           sudo systemctl status neo4j || true
