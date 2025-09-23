@@ -153,8 +153,14 @@ jobs:
 
       - name: Set Neo4j initial password
         run: |
-          echo "12345678" | sudo neo4j-admin set-initial-password
-          
+
+          export JAVA_HOME=$JAVA_HOME
+          export PATH=$JAVA_HOME/bin:$PATH
+
+          sudo -E $JAVA_HOME/bin/java -version
+
+          sudo -E neo4j-admin dbms set-initial-password 12345678
+
       - name: Start Neo4j service
         run: |
           sudo systemctl enable neo4j
