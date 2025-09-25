@@ -39,7 +39,19 @@ Install them using the package manager of the appropriate OS distribution.
 
             apt install --yes --no-install-recommends \
                 wget git cmake g++ build-essential python3 python3-pip python3.10-venv libpython3-dev swig \
-                libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2
+                libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2 && \
+            sudo apt-get update && \
+            sudo apt-get install -y openjdk-21-jdk && \
+
+            # Add Java 21 to the path (bashrc or .zshrc)
+            echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> ~/.bashrc && \
+            echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc && \
+            source ~/.bashrc && \
+            sudo apt update && sudo apt install -y gnupg ca-certificates wget && \
+            wget -O - https://debian.neo4j.com/neotechnology.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/neo4j.gpg > /dev/null && \
+            echo "deb [signed-by=/usr/share/keyrings/neo4j.gpg] https://debian.neo4j.com stable latest" | sudo tee /etc/apt/sources.list.d/neo4j.list && \
+            sudo apt update && \
+            sudo apt install -y neo4j
 
     .. tab-item:: MacOS
 
@@ -48,7 +60,13 @@ Install them using the package manager of the appropriate OS distribution.
         .. code-block:: bash
 
             brew install \
-                wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm
+                wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm openjdk@21 neo4j
+            
+            # Add Java 21 to the PATH (bashrc, zshrc or fish config depending on your shell)
+            echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 21)' >> ~/.zshrc
+            echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
+            source ~/.zshrc
+    
 
 .. _installation_library_build:
 
@@ -67,17 +85,19 @@ The following command builds and installs the *SustainML library* and its depend
 
             mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && cd ~/SustainML/SustainML_ws && \
-            pip3 install -U colcon-common-extensions vcstool && \
+            pip3 install -U colcon-common-extensions vcstool gdown && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Library/main/sustainml.repos && \
             vcs import src < sustainml.repos && \
             git submodule update --init --recursive && \
+            cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
+            gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build && \
             sudo neo4j-admin database load system \
-              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --from-path=~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
               --overwrite-destination=true && \
             sudo neo4j-admin database load neo4j \
-              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --from-path=~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
               --overwrite-destination=true && \
             sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
@@ -87,17 +107,19 @@ The following command builds and installs the *SustainML library* and its depend
 
             mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && cd ~/SustainML/SustainML_ws && \
-            pip3 install -U colcon-common-extensions vcstool && \
+            pip3 install -U colcon-common-extensions vcstool gdown && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Library/macos-compilation/sustainml.repos && \
             vcs import src < sustainml.repos && \
             git submodule update --init --recursive && \
+            cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
+            gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build --cmake-args -DCMAKE_CXX_STANDARD=17 && \
             sudo neo4j-admin database load system \
-              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --from-path=~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
               --overwrite-destination=true && \
             sudo neo4j-admin database load neo4j \
-              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --from-path=~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
               --overwrite-destination=true && \
             sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
@@ -130,7 +152,7 @@ After building the SustainML library, you can start the backend as follows:
         .. code-block:: bash
 
             bash -c " \
-                systemctl start neo4j && \
+                brew services start neo4j && \
                 cd ~/SustainML/SustainML_ws/build/sustainml_modules/lib/sustainml_modules; \
                 python3 sustainml-wp1/app_requirements_node.py & \
                 python3 sustainml-wp1/ml_model_metadata_node.py & \
