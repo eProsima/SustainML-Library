@@ -104,9 +104,44 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
                         user_json.get('extra_data', {})['model_restrains'] = extra_data['model_restrains']
                         self.orchestrator.send_user_input(user_json)
 
+    def _prefill_existing_results(self, task_id):
+        key = utils.string_task(task_id)
+        if key not in self.result_status:
+            self.register_task(task_id)
+
+        # Table of (node_id_enum_value, corresponding swig getter function)
+        checks = [
+            (utils.node_id.APP_REQUIREMENTS.value,
+             sustainml_swig.get_app_requirements_task_data),
+            (utils.node_id.ML_MODEL_METADATA.value,
+             sustainml_swig.get_model_metadata_task_data),
+            (utils.node_id.HW_CONSTRAINTS.value,
+             sustainml_swig.get_hw_constraints_task_data),
+            (utils.node_id.ML_MODEL_PROVIDER.value,
+             sustainml_swig.get_model_provider_task_data),
+            (utils.node_id.HW_PROVIDER.value,
+             sustainml_swig.get_hw_provider_task_data),
+            (utils.node_id.CARBONTRACKER.value,
+             sustainml_swig.get_carbontracker_task_data),
+            (utils.node_id.ORCHESTRATOR.value,
+             sustainml_swig.get_user_input_data)
+        ]
+
+        for nid, getter in checks:
+            try:
+                obj = getter(self.orchestrator.node_, task_id)
+                if obj is not None:
+                    self.result_status[key][nid] = True
+            except Exception:
+                pass
+
     def results_available(self, task_id, node_id):
-        with self.condition:
-            return self.result_status[utils.string_task(task_id)].get(node_id, False)
+        key = utils.string_task(task_id)
+        if key not in self.result_status:
+            # Hydrated/old task that had not yet been registered in Python
+            self._prefill_existing_results(task_id)
+
+        return self.result_status.get(key, {}).get(node_id, False)
 
 class Orchestrator:
 
@@ -266,16 +301,18 @@ class Orchestrator:
         energy_consumption = node_data.energy_consumption()
         carbon_intensity = node_data.carbon_intensity()
         extra_data_vector = node_data.extra_data()
-        extra_data_list = [s for s in extra_data_vector]
-        extra_data_bytes = bytes(extra_data_list)
-        extra_data_str = extra_data_bytes.decode('utf-8')
-        extra_data = json.loads(extra_data_str)
+        extra_data_bytes = bytes([b for b in extra_data_vector])
+        extra_data_str = extra_data_bytes.decode('utf-8', errors='ignore').strip()
+        try:
+            extra_data = json.loads(extra_data_str) if extra_data_str else {}
+        except Exception:
+            extra_data = {}
+
         json_output = {'task_id': task_json,
                        'carbon_footprint': carbon_footprint,
                        'energy_consumption': energy_consumption,
                        'carbon_intensity': carbon_intensity,
                        'extra_data': extra_data}
-
         return json_output
 
     def get_user_input_data(self, task_id):
@@ -460,3 +497,12 @@ class Orchestrator:
             return res
         else:
             return None
+
+    def list_task_ids(self):
+        """
+        Return all TaskIds from the in-memory backend (C++ TaskDB).
+        """
+        print("[DEBUUUUUG]      Listing all TaskIds...")
+        tids = self.node_.get_all_task_ids()
+        # Convert to JSON-friendly objects
+        return [utils.task_json(t) for t in tids]

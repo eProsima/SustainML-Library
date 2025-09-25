@@ -19,6 +19,7 @@ cmake_minimum_required(VERSION 3.5)
 
 # Done this to set machine architecture and be able to call cmake_utils
 enable_language(CXX)
+enable_language(C)
 
 ###############################################################################
 # Find package cmake_utils
@@ -59,10 +60,28 @@ project(
 # - Configure log depending on LOG_INFO flag and CMake type
 configure_project_cpp()
 
+file(
+    GLOB_RECURSE SOURCES_FILES
+        "${PROJECT_SOURCE_DIR}/src/cpp/*.c*"
+        "${PROJECT_SOURCE_DIR}/thirdparty/sqlite/*.c"
+    )
+
 # Compile C++ library
 compile_library(
     "${PROJECT_SOURCE_DIR}/src/cpp" # Source directory
     "${PROJECT_SOURCE_DIR}/include" # Include directory
+    "${SOURCES_FILES}"
+)
+
+set_source_files_properties(
+    "${PROJECT_SOURCE_DIR}/thirdparty/sqlite/sqlite3.c"
+    PROPERTIES
+        COMPILE_DEFINITIONS "SQLITE_ENABLE_JSON1"
+)
+
+target_include_directories(${MODULE_NAME}
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/thirdparty
 )
 
 # Compile C++ poc executable

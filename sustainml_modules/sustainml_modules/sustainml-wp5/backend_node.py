@@ -77,6 +77,14 @@ def status_args():
     node_id = data.get('node_id')
     return jsonify({'status': orchestrator.get_status(node_id)}), 200
 
+# Retrieve available tasks
+@server.route('/available_tasks', methods=['POST'])
+def available_tasks():
+    data = request.get_json(silent=True) or {}
+    task_ids = orchestrator.list_task_ids()
+    return jsonify({"task_ids": task_ids, "count": len(task_ids)}), 200
+
+
 # Retrieve Node results methods
 @server.route('/results', methods=['GET'])
 def results():
@@ -143,6 +151,7 @@ def shutdown():
 @server.route('/terminate', methods=['GET'])
 def terminate():
     signal.raise_signal(signal.SIGINT)
+    # flask_server_thread.shutdown()
     return jsonify({'message': 'Terminating...<br>'}), 200
 
 class ServerThread(threading.Thread):
@@ -178,7 +187,7 @@ def signal_handler(sig, frame):
 
 # Main program execution
 if __name__ == '__main__':
-    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
     hf_token = os.getenv("HF_TOKEN")
     if hf_token is None:
         print("Error: The HF_TOKEN environment variable is missing. Please set it before starting the node.")

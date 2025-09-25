@@ -22,9 +22,11 @@
 #include <condition_variable>
 #include <memory>
 #include <mutex>
+#include <vector>
 
 #include <sustainml_cpp/core/Constants.hpp>
 #include <sustainml_cpp/types/types.hpp>
+#include <sustainml_cpp/database/Database.hpp>
 
 #include <fastdds/dds/domain/DomainParticipantListener.hpp>
 
@@ -230,6 +232,11 @@ public:
      */
     void terminate();
 
+    /**
+     * @brief Return all TaskIds currently known by the orchestrator (in-memory).
+     */
+    std::vector<types::TaskId> get_all_task_ids();
+
 protected:
 
     /**
@@ -306,6 +313,19 @@ protected:
 
     std::unique_ptr<OrchestratorParticipantListener> participant_listener_;
 
+    // Persistence
+    std::unique_ptr<sustainml::database::Database> database_;
+    std::vector<types::TaskId> persisted_task_ids_;
+
+    /**
+     * @brief Restores the orchestrator's internal tasks data from the database.
+     */
+    void hydrate_from_db_();
+
+    /**
+     * @brief Saves the orchestrator's internal tasks data to the database.
+     */
+    void persist_to_db_();
 };
 
 } // namespace orchestrator
