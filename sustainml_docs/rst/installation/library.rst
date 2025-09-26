@@ -6,10 +6,9 @@ SustainML Stand-alone library installation
 The instructions for installing the :ref:`SustainML Library <index_introduction>` from sources are provided in this page.
 It is organized as follows:
 
-.. contents::
-    :local:
-    :backlinks: none
-    :depth: 2
+* :ref:`installation_library_dependencies`
+* :ref:`installation_library_build`
+* :ref:`installation_library_run`
 
 The *SustainML Library* is composed of different software modules, each one related to specific task, which are specialized in solving the different parts of the framework.
 Each of the modules conforms a **Node**, which shall import its corresponding Python library, so that each node can be abstracted from the communication between other nodes.
@@ -30,9 +29,9 @@ General and build tools such as `wget <https://www.gnu.org/software/wget/>`_, `g
 
 Install them using the package manager of the appropriate OS distribution.
 
-.. tabs::
+.. tab-set::
 
-    .. group-tab:: Ubuntu
+    .. tab-item:: Ubuntu
 
         On **Ubuntu** use the following command to install all the dependencies:
 
@@ -42,7 +41,7 @@ Install them using the package manager of the appropriate OS distribution.
                 wget git cmake g++ build-essential python3 python3-pip python3.10-venv libpython3-dev swig \
                 libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2
 
-    .. group-tab:: MacOS
+    .. tab-item:: MacOS
 
         On **MacOS** use the following command to install all the dependencies:
 
@@ -60,9 +59,9 @@ Create a SustainML directory and download the repositories file that will be use
 The following command builds and installs the *SustainML library* and its dependencies.
 
 
-.. tabs::
+.. tab-set::
 
-    .. group-tab:: Ubuntu
+    .. tab-item:: Ubuntu
 
         .. code-block:: bash
 
@@ -75,7 +74,7 @@ The following command builds and installs the *SustainML library* and its depend
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build
 
-    .. group-tab:: MacOS
+    .. tab-item:: MacOS
 
         .. code-block:: bash
 
@@ -95,9 +94,9 @@ Run SustainML Modules and Backend
 
 After building the SustainML library, you can start the backend as follows:
 
-.. tabs::
+.. tab-set::
 
-    .. group-tab:: Ubuntu
+    .. tab-item:: Ubuntu
 
         .. code-block:: bash
 
@@ -111,7 +110,7 @@ After building the SustainML library, you can start the backend as follows:
                 python3 sustainml-wp3/carbon_footprint_node.py & \
                 python3 sustainml-wp5/backend_node.py”
 
-    .. group-tab:: MacOS
+    .. tab-item:: MacOS
 
         .. code-block:: bash
 

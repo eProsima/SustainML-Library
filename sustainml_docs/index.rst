@@ -30,7 +30,7 @@
 .. toctree::
    :caption: Developer Manual
    :maxdepth: 1
-   :numbered: 1
+   :numbered:
    :hidden:
 
    /rst/developer_manual/architecture/architecture

@@ -6,10 +6,9 @@ SustainML Framework installation
 The instructions for installing the :ref:`SustainML Framework <index_introduction>` from sources are provided in this page.
 It is organized as follows:
 
-.. contents::
-    :local:
-    :backlinks: none
-    :depth: 2
+* :ref:`installation_framework_dependencies`
+* :ref:`installation_framework_build`
+* :ref:`installation_framework_deployment`
 
 The *SustainML Framework* is composed of different software modules, each one related to specific task, which are specialized in solving the different parts of the framework.
 Each of the modules conforms a **Node**, which shall import its corresponding Python library, so that each node can be abstracted from the communication between other nodes.
@@ -31,9 +30,9 @@ General and build tools such as `wget <https://www.gnu.org/software/wget/>`_, `g
 
 Install them using the package manager of the appropriate Linux distribution.
 
-.. tabs::
+.. tab-set::
 
-    .. group-tab:: Ubuntu
+    .. tab-item:: Ubuntu
 
         On **Ubuntu** use the following command to install all the dependencies:
 
@@ -45,7 +44,7 @@ Install them using the package manager of the appropriate Linux distribution.
                 qtdeclarative5-dev libqt5charts5-dev qml-module-qtcharts qtquickcontrols2-5-dev libqt5svg5 \
                 qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qt-labs-qmlmodels
 
-    .. group-tab:: MacOS
+    .. tab-item:: MacOS
 
         `Homebrew <https://brew.sh/>`_ is a package manager for MacOS that simplifies the installation of software.
         Install Homebrew following it installation instructions.
@@ -65,9 +64,9 @@ Build SustainML Framework sources
 Create a SustainML directory and download the repositories file that will be used to install *SustainML Framework*, and all its repository dependencies (such as the `SustainML Library <https://github.com/eProsima/SustainML-Library>`_, `Fast DDS <https://github.com/eProsima/Fast-DDS>`_, or `Fast CDR <https://github.com/eProsima/Fast-CDR>`_).
 The following command also builds and installs the SustainML framework and all its dependencies, and the generated libraries and applications are sourced.
 
-.. tabs::
+.. tab-set::
 
-    .. group-tab:: Ubuntu
+    .. tab-item:: Ubuntu
 
         .. code-block:: bash
 
@@ -82,7 +81,7 @@ The following command also builds and installs the SustainML framework and all i
             cd ~/SustainML/SustainML_ws && colcon build && \
             source ~/SustainML/SustainML_ws/install/setup.bash
 
-    .. group-tab:: MacOS
+    .. tab-item:: MacOS
 
         .. code-block:: bash
 
@@ -113,9 +112,9 @@ The *SustainML Framework* application retrieves the user inputs and deliver the 
 To run the complete framework, both GUI application and framework nodes need to be executed.
 The following bash script run each module, the backend orchestrator and the frontend application.
 
-.. tabs::
+.. tab-set::
 
-    .. group-tab:: Ubuntu
+    .. tab-item:: Ubuntu
 
         .. code-block:: bash
 
@@ -123,7 +122,7 @@ The following bash script run each module, the backend orchestrator and the fron
             chmod +x framework_run.sh && \
             ./framework_run.sh
 
-    .. group-tab:: MacOS
+    .. tab-item:: MacOS
 
         .. code-block:: bash
 
