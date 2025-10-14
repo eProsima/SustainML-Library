@@ -81,7 +81,7 @@ Build the SustainML Framework Docker image
 ------------------------------------------
 
 The Dockerfile defines the set of dependencies and configurations required to build a image with the *SustainML Framework*.
-The following command builds the Docker image using the downloaded Dockerfile, setting the image name as *sustainml*, and tagged as version **v0.1.0**.
+The following command builds the Docker image using the downloaded Dockerfile, setting the image name as *sustainml*, and tagged as version **v0.2.0**.
 
 .. tab-set::
 
@@ -89,13 +89,13 @@ The following command builds the Docker image using the downloaded Dockerfile, s
 
         .. code-block:: bash
 
-            docker build -f ~/SustainML/Dockerfile -t sustainml:v0.1.0 .
+            docker build -f ~/SustainML/Dockerfile -t sustainml:v0.2.0 .
 
     .. tab-item:: MacOS
 
         .. code-block:: bash
 
-            docker build -f ~/SustainML/Dockerfile -t sustainml:v0.1.0 .
+            docker build -f ~/SustainML/Dockerfile -t sustainml:v0.2.0 .
 
 .. _installation_framework_docker_deployment:
 
