@@ -122,9 +122,9 @@ SustainML Framework deployment
 .. note::
     You can also override the default DDS domain ID for all nodes by setting the environment variable ``SUSTAINML_DOMAIN_ID`` on the host before launching the containers.
 
-The *SustainML Framework* application retrieves the user inputs and deliver the information to the remain nodes that conform the framework.
+The *SustainML Framework* application retrieves the user inputs and delivers the information to the remaining nodes that conform the framework.
 To run the complete framework, both GUI application and framework nodes need to be executed.
-The following command run each module, the backend orchestrator and the frontend application.
+The following command runs each module, the backend orchestrator and the frontend application.
 
 .. tab-set::
 

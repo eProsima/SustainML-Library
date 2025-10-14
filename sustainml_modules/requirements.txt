@@ -21,7 +21,7 @@ Pillow==10.4.0
 pydot
 PyQt5==5.15.11
 rdflib==7.0.0
-scikit_learn==1.6.1
+scikit-learn==1.6.1
 sentence-transformers
 timm==1.0.14
 torch==2.4.1
