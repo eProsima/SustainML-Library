@@ -102,7 +102,42 @@ jobs:
           cd ${{ github.workspace }}/src/sustainml_lib
           git submodule update --init --recursive
 
-      - name: Download file from Google Drive
+      - name: Install Java 21
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-21-jdk
+          echo "JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64" >> $GITHUB_ENV
+          echo "/usr/lib/jvm/java-21-openjdk-amd64/bin" >> $GITHUB_PATH
+
+      - name: Install Neo4j
+        run: |
+          sudo apt update && sudo apt install -y gnupg ca-certificates wget
+          wget -O - https://debian.neo4j.com/neotechnology.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/neo4j.gpg > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/neo4j.gpg] https://debian.neo4j.com stable latest" | sudo tee /etc/apt/sources.list.d/neo4j.list
+          sudo apt update
+          sudo apt install -y neo4j
+          neo4j --version
+
+      - name: Load Neo4j backup
+        run: |
+          BACKUP_PATH=${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup
+
+          sudo -E neo4j-admin database load system \
+            --from-path=$BACKUP_PATH \
+            --overwrite-destination=true
+
+          sudo -E neo4j-admin database load neo4j \
+            --from-path=$BACKUP_PATH \
+            --overwrite-destination=true
+
+          sudo chown -R neo4j:neo4j /var/lib/neo4j/data
+
+      - name: Start Neo4j service
+        run: |
+
+          sudo -E neo4j start
+
+      - name: Download Annoy Index file from Google Drive
         run: |
           pip install gdown
           gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/models_index.ann
@@ -122,6 +157,20 @@ jobs:
   clang:
     runs-on: ubuntu-24.04
     steps:
+      - name: Free Disk Space
+        run: |
+          echo "Disk space before cleanup:"
+          df -h
+          sudo rm -rf /usr/local/.ghcup
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/lib/android/sdk/ndk
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo apt-get clean
+          echo "Disk space after cleanup:"
+          df -h
+
       - name: Sync repository
         uses: eProsima/eProsima-CI/external/checkout@v0
         with:

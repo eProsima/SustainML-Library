@@ -66,14 +66,14 @@ Run the following commands to install and deploy `ollama <https://ollama.com/>`_
         .. code-block:: bash
 
             curl -fsSL https://ollama.com/install.sh | sh && \
-            ollama pull llama3
+            ollama pull llama3 && ollama pull mistral-small
 
     .. tab-item:: MacOS
 
         .. code-block:: bash
 
             curl -fsSL https://ollama.com/install.sh | sh && \
-            ollama pull llama3
+            ollama pull llama3 && ollama pull mistral-small
 
 .. _installation_framework_docker_build:
 

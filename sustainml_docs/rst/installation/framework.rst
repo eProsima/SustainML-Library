@@ -42,7 +42,20 @@ Install them using the package manager of the appropriate Linux distribution.
                 curl wget git cmake g++ build-essential python3 python3-pip python3-venv libpython3-dev swig \
                 libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2 \
                 qtdeclarative5-dev libqt5charts5-dev qml-module-qtcharts qtquickcontrols2-5-dev libqt5svg5 \
-                qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qt-labs-qmlmodels
+                qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qt-labs-qmlmodels qml-module-qtquick-dialogs && \
+            sudo apt-get update && \
+            sudo apt-get install -y openjdk-21-jdk && \
+
+            # Add Java 21 to the path (bashrc or .zshrc)
+            echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> ~/.bashrc && \
+            echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc && \
+            source ~/.bashrc && \
+            sudo apt update && sudo apt install -y gnupg ca-certificates wget && \
+            wget -O - https://debian.neo4j.com/neotechnology.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/neo4j.gpg > /dev/null && \
+            echo "deb [signed-by=/usr/share/keyrings/neo4j.gpg] https://debian.neo4j.com stable latest" | sudo tee /etc/apt/sources.list.d/neo4j.list && \
+            sudo apt update && \
+            sudo apt install -y neo4j
+
 
     .. tab-item:: MacOS
 
@@ -54,7 +67,15 @@ Install them using the package manager of the appropriate Linux distribution.
         .. code-block:: bash
 
             brew install \
-                curl wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm qt@5
+                curl wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm qt@5 openjdk@21 neo4j
+            
+            # Add Java 21 to the PATH (bashrc, zshrc or fish config depending on your shell)
+            echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 21)' >> ~/.zshrc
+            echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
+            source ~/.zshrc
+    
+            # Start Neo4j as a service
+            brew services start neo4j
 
 .. _installation_framework_build:
 
@@ -72,19 +93,21 @@ The following command also builds and installs the SustainML framework and all i
 
             mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && \
-            pip3 install -U colcon-common-extensions vcstool && \
-            curl -fsSL https://ollama.com/install.sh | sh && ollama pull llama3 && cd ~/SustainML/SustainML_ws && \
+            pip3 install -U colcon-common-extensions vcstool gdown && \
+            curl -fsSL https://ollama.com/install.sh | sh && ollama pull llama3 && ollama pull mistral-small && cd ~/SustainML/SustainML_ws && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/sustainml.repos && \
             vcs import src < sustainml.repos && cd ~/SustainML/SustainML_ws/src/sustainml_lib && \
             git submodule update --init --recursive && \
+            cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
+            gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             cd ~/SustainML/SustainML_ws && colcon build && \
             source ~/SustainML/SustainML_ws/install/setup.bash && \
             sudo neo4j-admin database load system \
-              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --from-path=~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
               --overwrite-destination=true && \
             sudo neo4j-admin database load neo4j \
-              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --from-path=~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
               --overwrite-destination=true && \
             sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
@@ -94,20 +117,22 @@ The following command also builds and installs the SustainML framework and all i
 
             mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && \
-            pip3 install -U colcon-common-extensions vcstool && \
-            curl -fsSL https://ollama.com/install.sh | sh && ollama pull llama3 && cd ~/SustainML/SustainML_ws && \
+            pip3 install -U colcon-common-extensions vcstool gdown && \
+            curl -fsSL https://ollama.com/install.sh | sh && ollama pull llama3 && ollama pull mistral-small && cd ~/SustainML/SustainML_ws && \
             wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/macos-compilation/sustainml.repos && \
             vcs import src < sustainml.repos && cd ~/SustainML/SustainML_ws/src/sustainml_lib && \
             git submodule update --init --recursive && \
+            cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
+            gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             cd ~/SustainML/SustainML_ws && colcon build --packages-up-to sustainml --cmake-args -DCMAKE_CXX_STANDARD=17 \
                     -DQt5_DIR=/usr/local/opt/qt5/lib/cmake/Qt5 && \
             cd ~/SustainML/SustainML_ws/install && source setup.bash && \
             sudo neo4j-admin database load system \
-              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --from-path=~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
               --overwrite-destination=true && \
             sudo neo4j-admin database load neo4j \
-              --from-path=/home/eprosima/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
+              --from-path=~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/neo4j_backup \
               --overwrite-destination=true && \
             sudo chown -R neo4j:neo4j /var/lib/neo4j/data
 
