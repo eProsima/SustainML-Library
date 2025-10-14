@@ -298,7 +298,7 @@ try:
     ]
 
     from sphinxcontrib.spelling.filters import ContractionFilter
-    
+
     spelling_filters = [ContractionFilter]
     spelling_ignore_contributor_names = False
 except ImportError:
@@ -411,8 +411,9 @@ todo_include_todos = False
 html_theme = 'furo'
 html_theme_options = {}
 html_theme_options.update(download_json())
+html_theme_options["sidebar_hide_name"] = True
 
-html_title = f'<center><i>{project}</i></center>'
+# html_title = f'<center><i>{project}</i></center>'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -435,7 +436,7 @@ html_title = f'<center><i>{project}</i></center>'
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-# html_logo = 'rst/_static/eprosima-logo.svg'
+html_logo = 'rst/_static/sustainml-logo.png'
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs. This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -469,7 +470,7 @@ html_css_files = [select_css(project_source_docs_dir)]
 
 # Custom sidebar templates, maps document names to template names.
 #
-html_sidebars = retrieve_custom_sidebar(project_source_docs_dir) 
+html_sidebars = retrieve_custom_sidebar(project_source_docs_dir)
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
