@@ -95,7 +95,7 @@ The following command also builds and installs the SustainML framework and all i
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && \
             pip3 install -U colcon-common-extensions vcstool gdown && \
             curl -fsSL https://ollama.com/install.sh | sh && ollama pull llama3 && ollama pull mistral-small && cd ~/SustainML/SustainML_ws && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/sustainml.repos && \
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/0.2.0/sustainml.repos && \
             vcs import src < sustainml.repos && cd ~/SustainML/SustainML_ws/src/sustainml_lib && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \

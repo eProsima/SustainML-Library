@@ -86,7 +86,7 @@ The following command builds and installs the *SustainML library* and its depend
             mkdir -p ~/SustainML/SustainML_ws/src && cd ~/SustainML && \
             python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && cd ~/SustainML/SustainML_ws && \
             pip3 install -U colcon-common-extensions vcstool gdown && \
-            wget https://raw.githubusercontent.com/eProsima/SustainML-Library/main/sustainml.repos && \
+            wget https://raw.githubusercontent.com/eProsima/SustainML-Library/0.2.0/sustainml.repos && \
             vcs import src < sustainml.repos && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
