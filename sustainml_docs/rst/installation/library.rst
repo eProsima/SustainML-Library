@@ -61,12 +61,12 @@ Install them using the package manager of the appropriate OS distribution.
 
             brew install \
                 wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm openjdk@21 neo4j
-            
+
             # Add Java 21 to the PATH (bashrc, zshrc or fish config depending on your shell)
             echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 21)' >> ~/.zshrc
             echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
             source ~/.zshrc
-    
+
 
 .. _installation_library_build:
 
@@ -90,7 +90,7 @@ The following command builds and installs the *SustainML library* and its depend
             vcs import src < sustainml.repos && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
-            gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O rag/models_index.ann && \
+            gdown --id 1eR9IKrO0yS9ITl29rFjoWfARBlIYnDLq -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build && \
             sudo neo4j-admin database load system \
@@ -112,7 +112,7 @@ The following command builds and installs the *SustainML library* and its depend
             vcs import src < sustainml.repos && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
-            gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O rag/models_index.ann && \
+            gdown --id 1eR9IKrO0yS9ITl29rFjoWfARBlIYnDLq -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build --cmake-args -DCMAKE_CXX_STANDARD=17 && \
             sudo neo4j-admin database load system \
