@@ -112,7 +112,7 @@ protected:
      * @brief Starts a new subscription (DataReader) in the
      * given topic.
      *
-     * @param topic The topic name
+     * @param topic_name The topic name
      * @param type_name The type name
      * @param listener Listener object inheriting from DataReaderListener
      * @param opts Options object with the Subscription configuration
@@ -120,6 +120,25 @@ protected:
     bool initialize_subscription(
             const char* topic_name,
             const char* type_name,
+            eprosima::fastdds::dds::DataReaderListener* listener,
+            const Options& opts);
+
+    /**
+     * @brief Starts a new subscription (DataReader) in the
+     * given content filter topic.
+     *
+     * @param topic_name The topic name
+     * @param type_name The type name
+     * @param listener Listener object inheriting from DataReaderListener
+     * @param filter_expression The content filter expression
+     * @param filter_parameters The content filter parameters
+     * @param opts Options object with the Subscription configuration
+     */
+    bool initialize_subscription_content_filter(
+            const char* topic_name,
+            const char* type_name,
+            const char* filter_expression,
+            const std::vector<std::string>& filter_parameters,
             eprosima::fastdds::dds::DataReaderListener* listener,
             const Options& opts);
 
@@ -140,6 +159,18 @@ protected:
      * @brief Publishes the internal status of the node to DDS.
      */
     void publish_node_status();
+
+    /**
+     * @brief Stops the current task execution
+     * @param task_id The task ID to stop
+     */
+    void stop_current_task(const TaskIdImpl& task_id);
+    
+    /**
+     * @brief Register a callback to handle task stopping
+     * @param callback Function to call when a task needs to be stopped
+     */
+    void register_stop_task_callback(std::function<void(const TaskIdImpl&)> callback);
 
     Node* node_;
 
@@ -192,6 +223,9 @@ private:
     bool init(
             const std::string& name,
             const Options& opts = Options());
+
+    // Callback function pointer for task stopping
+    std::function<void(const TaskIdImpl&)> stop_task_callback_;
 
     class NodeControlListener : public eprosima::fastdds::dds::DataReaderListener
     {

@@ -116,6 +116,7 @@ class Orchestrator:
         self.node_ = cpp_OrchestratorNode(self.handler_)
         self._txn_lock = threading.Lock()
         self._txn_counter = 0
+        self._cancelled = set()
 
     # Proxy method to run the node
     def run(self):
@@ -126,6 +127,27 @@ class Orchestrator:
     def terminate(self):
 
         self.node_.terminate()
+
+    def cancel_iteration(self, problem_id: int, iteration_id: int) -> bool:
+
+        print(f"Canceling iteration {iteration_id} for problem {problem_id}")
+        tid = sustainml_swig.TaskId()
+        tid.problem_id(problem_id)
+        tid.iteration_id(iteration_id)
+        key = (problem_id, iteration_id)
+        self._cancelled.add(key)
+
+        ctrl = sustainml_swig.NodeControl()
+        ctrl.task_id(tid)
+        ctrl.source_node(utils.string_node(utils.node_id.ORCHESTRATOR.value))
+        ctrl.cmd_task(utils.cmd_task.STOP_TASK.value)
+        ctrl.cmd_node(utils.cmd_node.RESET_NODE.value)  # Reset or doing nothing? WIP
+        ctrl.target_node(utils.string_node(utils.node_id.ML_MODEL_METADATA.value))
+        print(f"Target node: {utils.string_node(utils.node_id.ML_MODEL_METADATA.value)}")
+        self.node_.send_control_command(ctrl)
+        # 3) borra la entrada en C++
+        # return self.node_.delete_task(tid)    # WIP. Delate the last that was stopped
+        return True
 
     def get_last_task_id(self):
         return self.handler_.last_task_id
@@ -402,6 +424,7 @@ class Orchestrator:
         hw_req = extra.get('hardware_required', utils.default_hw_requirement)
         mem_footprint = extra.get('max_memory_footprint', utils.default_mem_footprint)
         goal = extra.get('goal')
+        metric = extra.get('metric', None)
         model_selected = extra.get('model_selected', None)
         num_outputs = extra.get('num_outputs')
         model_restrains = extra.get('model_restrains', [])
@@ -417,6 +440,7 @@ class Orchestrator:
         extra_data = {'hardware_required': hw_req,
                       'max_memory_footprint': mem_footprint,
                       'goal': goal,
+                      'metric': metric,
                       'model_selected': model_selected,
                       'num_outputs': num_outputs,
                       'model_restrains': model_restrains,

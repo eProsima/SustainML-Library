@@ -40,6 +40,23 @@ class node_status(Enum):
     TERMINATING = 5
     UNKNOWN = 6
 
+class cmd_task(Enum):
+    NO_CMD_TASK    = 0
+    START_TASK     = 1
+    STOP_TASK      = 2
+    RESET_TASK     = 3
+    PREEMPT_TASK   = 4
+    TERMINATE_TASK = 5
+    UNKNOWN        = 6
+
+class cmd_node(Enum):
+    NO_CMD_NODE     = 0
+    START_NODE      = 1
+    STOP_NODE       = 2
+    RESET_NODE      = 3
+    TERMINATE_NODE  = 4
+    UNKNOWN         = 5
+
 # Node status from integer to string
 def string_status(status):
     if status == node_status.INACTIVE.value:          # NODE_INACTIVE

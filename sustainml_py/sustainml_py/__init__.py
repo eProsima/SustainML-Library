@@ -13,3 +13,7 @@
 # limitations under the License.
 
 """SustainML Python Bindings"""
+
+from .AsyncTaskManager import AsyncTaskManager, get_task_manager
+
+__all__ = ['AsyncTaskManager', 'get_task_manager']
