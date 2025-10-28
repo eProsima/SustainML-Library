@@ -90,7 +90,7 @@ The following command builds and installs the *SustainML library* and its depend
             vcs import src < sustainml.repos && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
-            gdown --id 1eR9IKrO0yS9ITl29rFjoWfARBlIYnDLq -O rag/models_index.ann && \
+            gdown --id 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build && \
             sudo neo4j-admin database load system \
@@ -112,7 +112,7 @@ The following command builds and installs the *SustainML library* and its depend
             vcs import src < sustainml.repos && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
-            gdown --id 1eR9IKrO0yS9ITl29rFjoWfARBlIYnDLq -O rag/models_index.ann && \
+            gdown --id 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_docs/requirements.txt && \
             colcon build --cmake-args -DCMAKE_CXX_STANDARD=17 && \
             sudo neo4j-admin database load system \

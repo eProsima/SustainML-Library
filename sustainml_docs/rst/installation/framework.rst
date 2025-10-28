@@ -99,7 +99,7 @@ The following command also builds and installs the SustainML framework and all i
             vcs import src < sustainml.repos && cd ~/SustainML/SustainML_ws/src/sustainml_lib && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
-            gdown --id 1eR9IKrO0yS9ITl29rFjoWfARBlIYnDLq -O rag/models_index.ann && \
+            gdown --id 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             cd ~/SustainML/SustainML_ws && colcon build && \
             source ~/SustainML/SustainML_ws/install/setup.bash && \
@@ -123,7 +123,7 @@ The following command also builds and installs the SustainML framework and all i
             vcs import src < sustainml.repos && cd ~/SustainML/SustainML_ws/src/sustainml_lib && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
-            gdown --id 1eR9IKrO0yS9ITl29rFjoWfARBlIYnDLq -O rag/models_index.ann && \
+            gdown --id 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             cd ~/SustainML/SustainML_ws && colcon build --packages-up-to sustainml --cmake-args -DCMAKE_CXX_STANDARD=17 \
                     -DQt5_DIR=/usr/local/opt/qt5/lib/cmake/Qt5 && \

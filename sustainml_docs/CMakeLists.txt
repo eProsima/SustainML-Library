@@ -53,9 +53,11 @@ compile_documentation()
 # Test
 ###############################################################################
 # Compile tests if CMake options requires it
-compile_test_documentation(
-    "${PROJECT_SOURCE_DIR}/test" # Test directory
-)
+if (EXISTS "${PROJECT_SOURCE_DIR}/test/CMakeLists.txt")
+   compile_test_documentation("${PROJECT_SOURCE_DIR}/test")
+else()
+   message(STATUS "[sustainml_docs] No tests directory; skipping test compilation.")
+endif()
 
 ###############################################################################
 # Packaging
