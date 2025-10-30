@@ -80,14 +80,7 @@ def status_args():
 # Cancels an iteration based on the provided problem_id and iteration_id.
 @server.route('/cancel', methods=['POST'])
 def cancel():
-    data = request.get_json(force=True)
-    pid = data.get("problem_id")
-    iid = data.get("iteration_id")
-    if pid is None or iid is None:
-        return jsonify({"error": "Either problem_id or iteration_id not selected"}), 400
-    # ok = orchestrator.cancel_iteration(pid, iid)
     orchestrator.handler_.set_cancel_requested(True)
-    print(f"Cancellation requested for problem_id: {pid}, iteration_id: {iid}")
     return jsonify({"status": "cancelled"}), 200
     # if ok:
     #     return jsonify({"status": "cancelled"}), 200
