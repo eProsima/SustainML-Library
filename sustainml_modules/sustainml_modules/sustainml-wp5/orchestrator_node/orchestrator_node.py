@@ -15,6 +15,7 @@
 
 from . import utils
 import numpy as np
+import time
 
 from sustainml_swig import OrchestratorNodeHandle as cpp_OrchestratorNodeHandle
 from sustainml_swig import OrchestratorNode as cpp_OrchestratorNode
@@ -32,7 +33,30 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
         self.last_task_id = None
         self.node_status_ = {}
         self.result_status = {}
+        self.cancel_requested = False
 
+
+    def set_cancel_requested(self, value: bool):
+        """Llamado desde el frontend para marcar la cancelación."""
+        with self.condition:
+            self.cancel_requested = value
+            print(f"[Frontend] Cancel requested set to {value}")
+            self.condition.notify_all()
+
+    def is_cancel_requested(self) -> bool:
+        """Lectura segura del flag."""
+        with self.condition:
+            return self.cancel_requested
+        
+    def has_pending_tasks(self) -> bool:
+        """Devuelve True si hay al menos una tarea con nodos pendientes."""
+        with self.condition:
+            for task_id, node_results in self.result_status.items():
+                # Si algún nodo sigue a False → tarea pendiente
+                if not all(node_results.values()):
+                    return True
+            return False
+  
     # Callback
     def on_node_status_change(
             self,
@@ -73,12 +97,23 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
             }
 
     def register_result(self, task_id, node_id):
+        print("Cancel requested:", end=" ")
+        print(self.cancel_requested)
         with self.condition:
+
+            cancel_now = self.cancel_requested
+
             if utils.string_task(task_id) not in self.result_status:
+                print ("task_id not registered, registering now.", task_id)
                 self.register_task(task_id)
             self.result_status[utils.string_task(task_id)][node_id] = True
+            print ("Registered result for task", utils.string_task(task_id), "node", utils.string_node(node_id))
             self.condition.notify_all()
 
+            if not self.has_pending_tasks():
+                if self.cancel_requested:
+                    print("[Orchestrator] All tasks completed or cancelled — resetting cancel_requested = False")
+                    self.cancel_requested = False
             # If the node is CarbonTracker and its output extra_data is non-empty, print a message
             if node_id == utils.node_id.CARBONTRACKER.value:
                 carbon_data = sustainml_swig.get_carbontracker_task_data(self.orchestrator.node_, task_id)
@@ -94,7 +129,8 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
                 if extra_data is not None and len(extra_data) > 0:
                     num_outputs = extra_data['num_outputs']
 
-                    if num_outputs > 1:
+                    if num_outputs > 1 and not cancel_now:
+                        print("We have multiple outputs requested:", end=" ")
                         print(f"Reiterating for multiple outputs")
                         user_json = self.orchestrator.get_user_input_data(task_id)
                         user_json.get('extra_data', {})['goal'] = self.orchestrator.get_model_metadata_task_data(task_id).get('metadata', None) # Get the last model goal
@@ -106,6 +142,8 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
 
     def results_available(self, task_id, node_id):
         with self.condition:
+            print(self.result_status)
+            print("Checking results for task", utils.string_task(task_id), "node", utils.string_node(node_id))
             return self.result_status[utils.string_task(task_id)].get(node_id, False)
 
 class Orchestrator:
@@ -325,7 +363,7 @@ class Orchestrator:
     def get_results(self, node_id, task_id):
         if task_id is None:
             task_id = self.get_last_task_id()
-
+        print ("Getting results for task", utils.string_task(task_id), "node", utils.string_node(node_id))
         if node_id == utils.node_id.APP_REQUIREMENTS.value:
             return self.get_app_requirements_task_data(task_id)
         elif node_id == utils.node_id.ML_MODEL_METADATA.value:

@@ -77,12 +77,31 @@ def status_args():
     node_id = data.get('node_id')
     return jsonify({'status': orchestrator.get_status(node_id)}), 200
 
+# Cancels an iteration based on the provided problem_id and iteration_id.
+@server.route('/cancel', methods=['POST'])
+def cancel():
+    data = request.get_json(force=True)
+    pid = data.get("problem_id")
+    iid = data.get("iteration_id")
+    if pid is None or iid is None:
+        return jsonify({"error": "Either problem_id or iteration_id not selected"}), 400
+    # ok = orchestrator.cancel_iteration(pid, iid)
+    orchestrator.handler_.set_cancel_requested(True)
+    print(f"Cancellation requested for problem_id: {pid}, iteration_id: {iid}")
+    return jsonify({"status": "cancelled"}), 200
+    # if ok:
+    #     return jsonify({"status": "cancelled"}), 200
+    # else:
+    #     return jsonify({"status": "not_found"}), 404
+
 # Retrieve Node results methods
 @server.route('/results', methods=['GET'])
 def results():
     last_task_id = orchestrator.get_last_task_id()
     if last_task_id is None:
         return 'Nodes have not reported any output yet.\n', 200
+    
+    print("Results request for last task", utils.string_task(last_task_id))
     app_req = orchestrator.get_results(utils.node_id.APP_REQUIREMENTS.value, last_task_id)
     metadata = orchestrator.get_results(utils.node_id.ML_MODEL_METADATA.value, last_task_id)
     constraints = orchestrator.get_results(utils.node_id.HW_CONSTRAINTS.value, last_task_id)
@@ -108,7 +127,7 @@ def results_args():
         task_id = sustainml_swig.set_task_id(json_task.get('problem_id', 0), json_task.get('iteration_id', 0))
     else:
         task_id = None
-
+    print("Results request for task", utils.string_task(task_id), "node", utils.string_node(node_id))
     # Case of returning all nodes results. 9 = ALL
     if node_id == 9:
         app_req = orchestrator.get_results(utils.node_id.APP_REQUIREMENTS.value, task_id)
