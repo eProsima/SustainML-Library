@@ -14,6 +14,7 @@
 """SustainML Backend Node Implementation."""
 
 from flask import Flask, request, jsonify
+import json
 import os
 import threading
 import time
@@ -40,16 +41,34 @@ def user_input():
     global hf_token
 
     data = request.json
-    if 'extra_data' in data:
-        try:
-            if isinstance(data['extra_data'], str):
-                data['extra_data'] = json.loads(data['extra_data'])
-        except Exception as e:
-            print("Error decoding extra_data, initializing as empty dict:", e)
-            data['extra_data'] = {}
-    else:
+
+    # 1) Read the model family coming from QML ("transformers" by default).
+    #    QML sends this as the field named "type" in engine.launch_task(..., type)
+    incoming_type_top = data.get('type')
+    incoming_extra = data.get('extra_data') or {}
+    incoming_type_extra = incoming_extra.get('type')
+    incoming_model_family = incoming_extra.get('model_family')
+
+    # Resolve final model_family: prefer explicit model_family, then type, then default
+    model_family = (
+        incoming_model_family
+        or incoming_type_top
+        or incoming_type_extra
+        or 'transformers'
+    )
+
+    print(f"[DEBUG backend] resolved model_family -> {model_family}")
+
+    # Make sure extra_data exists
+    if 'extra_data' not in data or not isinstance(data['extra_data'], dict):
         data['extra_data'] = {}
+
+    # Inject both hf_token and model_family into extra_data
     data['extra_data']['hf_token'] = hf_token
+    data['extra_data']['model_family'] = model_family
+
+    print(f"[DEBUG backend] final extra_data -> {data['extra_data']}")
+
     task_id = orchestrator.send_user_input(data)
     if task_id is None:
         return jsonify({'error': 'Invalid input data'}), 400
