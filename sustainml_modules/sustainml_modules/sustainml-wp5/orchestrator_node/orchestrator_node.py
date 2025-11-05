@@ -37,22 +37,22 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
 
 
     def set_cancel_requested(self, value: bool):
-        """Llamado desde el frontend para marcar la cancelación."""
+        """Called from frontend to mark cancellation."""
         with self.condition:
             self.cancel_requested = value
             print(f"[Frontend] Cancel requested set to {value}")
             self.condition.notify_all()
 
     def is_cancel_requested(self) -> bool:
-        """Lectura segura del flag."""
+        """Safe reading of the flag."""
         with self.condition:
             return self.cancel_requested
-        
+
     def has_pending_tasks(self) -> bool:
-        """Devuelve True si hay al menos una tarea con nodos pendientes."""
+        """Returns True if there is at least one task with pending nodes."""
         with self.condition:
             for task_id, node_results in self.result_status.items():
-                # Si algún nodo sigue a False → tarea pendiente
+                # If any node is still False → pending task
                 if not all(node_results.values()):
                     return True
             return False
