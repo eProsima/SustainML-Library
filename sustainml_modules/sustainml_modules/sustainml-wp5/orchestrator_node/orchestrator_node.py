@@ -97,8 +97,7 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
             }
 
     def register_result(self, task_id, node_id):
-        print("Cancel requested:", end=" ")
-        print(self.cancel_requested)
+        print(f"Cancel requested: {self.cancel_requested}")
         with self.condition:
 
             cancel_now = self.cancel_requested
