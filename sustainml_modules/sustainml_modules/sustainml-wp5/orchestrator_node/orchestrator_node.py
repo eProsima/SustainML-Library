@@ -143,7 +143,8 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
         with self.condition:
             print(self.result_status)
             print("Checking results for task", utils.string_task(task_id), "node", utils.string_node(node_id))
-            return self.result_status[utils.string_task(task_id)].get(node_id, False)
+            key = utils.string_task(task_id)
+            return self.result_status.get(key, {}).get(node_id, False)
 
 class Orchestrator:
 
