@@ -42,7 +42,7 @@ def user_input():
 
     data = request.json
 
-    # 1) Read the model family coming from QML ("transformers" by default).
+    # 1) Read the model family coming from QML ("Transformers" by default).
     #    QML sends this as the field named "type" in engine.launch_task(..., type)
     incoming_type_top = data.get('type')
     incoming_extra = data.get('extra_data') or {}
@@ -54,7 +54,7 @@ def user_input():
         incoming_model_family
         or incoming_type_top
         or incoming_type_extra
-        or 'transformers'
+        or 'Transformers'
     )
 
     print(f"[DEBUG backend] resolved model_family -> {model_family}")
