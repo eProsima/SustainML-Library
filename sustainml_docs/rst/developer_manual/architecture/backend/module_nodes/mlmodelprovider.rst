@@ -89,11 +89,11 @@ And inside ``configuration_callback()`` implement the response to the configurat
     import threading
     import time
 
-    WP2_SRC = os.path.expanduser(
-        "~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp2"
-    )
-    if os.path.isdir(WP2_SRC) and WP2_SRC not in sys.path:
-        sys.path.insert(0, WP2_SRC)
+    HERE = os.path.dirname(__file__)
+    WP2_ROOT = os.path.abspath(os.path.join(HERE, "..", "sustainml-wp2"))
+
+    if WP2_ROOT not in sys.path:
+        sys.path.insert(0, WP2_ROOT)
 
     import hw_provider_fpga
 
@@ -337,11 +337,11 @@ And inside ``configuration_callback()`` implement the response to the configurat
 
             fam_l = (family or "").lower()
             hw_l  = (hw or "").lower()
-            is_cnn  = fam_l in ("cnn", "cnns")
+            is_cnn  = fam_l.lower() == "cnns"
             is_fpga = "fpga" in hw_l
 
             # U-Net fast path: allow sentinel goals like U_NET_MODELS or any goal when (FPGA+CNNs)
-            if goal.upper() in ("U_NET_MODELS", "U-NET", "UNET") or (is_cnn and is_fpga):
+            if (goal.upper() == "U_NET_MODELS") or (is_cnn and is_fpga):
                 try:
                     try:
                         vendored = abspath(join(dirname(hw_provider_fpga.__file__),

@@ -79,14 +79,13 @@ And inside ``configuration_callback()`` implement the response to the configurat
 
     import onnx
     import sys, os
-    WP2_SRC = os.path.expanduser(
-        "~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp2"
-    )
-    if os.path.isdir(WP2_SRC) and WP2_SRC not in sys.path:
-        sys.path.insert(0, WP2_SRC)
+    HERE = os.path.dirname(__file__)
+
+    if HERE not in sys.path:
+        sys.path.insert(0, HERE)
 
     import hw_provider_fpga
-    from hw_provider_fpga.fpga_predictor_adapter import predict_latency_energy
+    from hw_provider_fpga import predict_latency_energy
 
     # Managing UPMEMEM LLM
     import upmem_llm_framework as upmem_layers
@@ -284,7 +283,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
         print(f"[INFO] model_family selected by user: {model_family}")
 
         mf = (model_family or '').strip().lower()
-        is_cnn = mf == 'cnn' or mf == 'cnns' or mf.startswith('cnn')
+        is_cnn = mf.lower() == 'cnns'
 
         # Use RPTU hw predictor for their devices
         if hw_selected in ["Zynq UltraScale+ ZCU102", "Zynq UltraScale+ ZCU104", "Ultra96-V2", "TySOM-3A-ZU19EG"]:
@@ -408,7 +407,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
 
                 model.eval()  # Put model in evaluation / inference mode
 
-                # noinspection PyUnresolvedReferences
+                # Noinspection PyUnresolvedReferences
                 upmem_layers.profiler_start(
                     layer_mapping=layer_mapping,
                     last_layer=last_layer,
@@ -438,7 +437,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
                     except Exception as e_model:
                         raise Exception(f"[ERROR_MODEL_FORWARD] {e_model}")
 
-                # noinspection PyUnresolvedReferences
+                # Noinspection PyUnresolvedReferences
                 upmem_layers.profiler_end()
 
                 latency = upmem_layers.profiler_get_latency()
