@@ -29,6 +29,13 @@
 #include <types/typesImplPubSubTypes.hpp>
 #include <types/typesImplTypeObjectSupport.hpp>
 
+#include <types/SustainMLServiceServer.hpp>
+#include <types/SustainMLService.hpp>
+#include <fastdds/dds/domain/qos/ReplierQos.hpp>
+#include <fastdds/dds/rpc/exceptions.hpp>
+
+#include <core/GenericServiceNodeImpl.hpp>
+
 using namespace eprosima::fastdds::dds;
 
 namespace sustainml {
@@ -113,14 +120,23 @@ NodeImpl::~NodeImpl()
 {
     EPROSIMA_LOG_INFO(NODE, "Destroying Node");
 
+    // Stop RPC server before destroying the participant
+    if (rpc_server_)
+    {
+        rpc_server_->stop();
+    }
+
+    if (rpc_server_thread_.joinable())
+    {
+        rpc_server_thread_.join();
+    }
+
     if (nullptr != participant_)
     {
         participant_->delete_contained_entities();
         auto dpf = DomainParticipantFactory::get_instance();
         dpf->delete_participant(participant_);
     }
-
-    delete req_res_;
 
     dispatcher_->stop();
 }
@@ -163,19 +179,145 @@ bool NodeImpl::init(
         return false;
     }
 
-    req_res_ = new RequestReplier([this, name](void* input)
-                    {
-                        RequestTypeImpl* in = static_cast<RequestTypeImpl*>(input);
+    std::cout << "[DEBUG NodeImpl] init() called with name='" << name << "'" << std::endl;
 
-                        if (in->node_id() == static_cast<int32_t>(common::get_node_id_from_name(name)))
-                        {
-                            types::ResponseType res;
-                            types::RequestType req;
-                            req = *in;
-                            req_res_listener_.on_configuration_request(req, res);
-                            req_res_->write_res(res.get_impl());
-                        }
-                    }, "sustainml/response", "sustainml/request", participant_, publisher_, subscriber_, &req_data_);
+    eprosima::fastdds::dds::ReplierQos rqos;
+
+    try
+    {
+        if (name == common::APP_REQUIREMENTS_NODE)
+        {
+            std::shared_ptr<AppRequirementsServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::AppRequirementsServiceNodeImpl>(*this, "APP_REQUIREMENTS");
+            rpc_impl_ = impl;
+            rpc_service_name_ = "AppRequirementsService";
+
+            rpc_server_ = create_AppRequirementsServiceServer(
+                    *participant_,
+                    rpc_service_name_.c_str(),
+                    rqos,
+                    1u,
+                    impl);
+
+            std::cout << "[DEBUG NodeImpl] create_AppRequirementsServiceServer returned "
+                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+        }
+        else if (name == common::HW_CONSTRAINTS_NODE)
+        {
+            std::shared_ptr<HWConstraintsServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::HWConstraintsServiceNodeImpl>(*this, "HW_CONSTRAINTS");
+            rpc_impl_ = impl;
+            rpc_service_name_ = "HWConstraintsService";
+
+            rpc_server_ = create_HWConstraintsServiceServer(
+                    *participant_,
+                    rpc_service_name_.c_str(),
+                    rqos,
+                    1u,
+                    impl);
+
+            std::cout << "[DEBUG NodeImpl] create_HWConstraintsServiceServer returned "
+                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+        }
+        else if (name == common::HW_RESOURCES_NODE)
+        {
+            std::shared_ptr<HWResourcesServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::HWResourcesServiceNodeImpl>(*this, "HW_RESOURCES");
+            rpc_impl_ = impl;
+            rpc_service_name_ = "HWResourcesService";
+
+            rpc_server_ = create_HWResourcesServiceServer(
+                    *participant_,
+                    rpc_service_name_.c_str(),
+                    rqos,
+                    1u,
+                    impl);
+
+            std::cout << "[DEBUG NodeImpl] create_HWResourcesServiceServer returned "
+                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+        }
+        else if (name == common::CARBON_FOOTPRINT_NODE)
+        {
+            std::shared_ptr<CarbonFootprintServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::CarbonFootprintServiceNodeImpl>(*this, "CARBON_FOOTPRINT");
+            rpc_impl_ = impl;
+            rpc_service_name_ = "CarbonFootprintService";
+
+            rpc_server_ = create_CarbonFootprintServiceServer(
+                    *participant_,
+                    rpc_service_name_.c_str(),
+                    rqos,
+                    1u,
+                    impl);
+
+            std::cout << "[DEBUG NodeImpl] create_CarbonFootprintServiceServer returned "
+                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+        }
+        else if (name == common::ML_MODEL_METADATA_NODE)
+        {
+            std::shared_ptr<MLModelMetadataServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::MLModelMetadataServiceNodeImpl>(*this, "ML_MODEL_METADATA");
+            rpc_impl_ = impl;
+            rpc_service_name_ = "MLModelMetadataService";
+
+            rpc_server_ = create_MLModelMetadataServiceServer(
+                    *participant_,
+                    rpc_service_name_.c_str(),
+                    rqos,
+                    1u,
+                    impl);
+
+            std::cout << "[DEBUG NodeImpl] create_MLModelMetadataServiceServer returned "
+                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+        }
+        else if (name == common::ML_MODEL_NODE)
+        {
+            std::shared_ptr<MLModelServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::MLModelServiceNodeImpl>(*this, "ML_MODEL");
+            rpc_impl_ = impl;
+            rpc_service_name_ = "MLModelService";
+
+            rpc_server_ = create_MLModelServiceServer(
+                    *participant_,
+                    rpc_service_name_.c_str(),
+                    rqos,
+                    1u,
+                    impl);
+
+            std::cout << "[DEBUG NodeImpl] create_MLModelServiceServer returned "
+                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+        }
+        else
+        {
+            EPROSIMA_LOG_WARNING(NODE,
+                    "No RPC service configured for node name '" << name << "'");
+        }
+    }
+    catch (const eprosima::fastdds::dds::rpc::RpcException& e)
+    {
+        EPROSIMA_LOG_ERROR(NODE,
+                "RpcException while creating RPC server for node '" << name
+                << "': " << e.what());
+    }
+    catch (const std::exception& e)
+    {
+        EPROSIMA_LOG_ERROR(NODE,
+                "std::exception while creating RPC server for node '" << name
+                << "': " << e.what());
+    }
+
+    if (!rpc_server_)
+    {
+        EPROSIMA_LOG_WARNING(NODE,
+                "No RPC server created for node '" << name
+                << "' (service_name='" << rpc_service_name_ << "'). Node will run without RPC.");
+    }
+
+    if (rpc_server_)
+    {
+        rpc_server_thread_ = std::thread([this]()
+        {
+            rpc_server_->run();
+        });
+    }
+
+    std::cout << "[DEBUG NodeImpl] RPC server created on node '"
+            << name
+            << "' with service '" << rpc_service_name_ << "'" << std::endl;
 
     //! Register Common Types
 

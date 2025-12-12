@@ -21,12 +21,11 @@
 
 #include <sustainml_cpp/config/Macros.hpp>
 #include <sustainml_cpp/types/types.hpp>
-
 #include <core/Options.hpp>
 #include <core/RequestReplyListener.hpp>
-#include <core/RequestReplier.hpp>
 #include <types/typesImplPubSubTypes.hpp>
 
+#include <thread>
 #include <utility>
 #include <vector>
 #include <memory>
@@ -45,6 +44,18 @@
 #include <fastdds/dds/subscriber/qos/DataReaderQos.hpp>
 #include <fastdds/dds/subscriber/qos/SubscriberQos.hpp>
 #include <fastdds/dds/subscriber/Subscriber.hpp>
+
+namespace eprosima {
+namespace fastdds {
+namespace dds {
+namespace rpc {
+
+class RpcServer;
+
+} // namespace rpc
+} // namespace dds
+} // namespace fastdds
+} // namespace eprosima
 
 #define STATUS_WRITER_IDX 0
 #define OUTPUT_WRITER_IDX 1
@@ -106,6 +117,16 @@ public:
      */
     static void terminate();
 
+    inline const std::string& node_name() const
+    {
+        return node_status_.node_name();
+    }
+
+    inline RequestReplyListener& request_listener()
+    {
+        return req_res_listener_;
+    }
+
 protected:
 
     /**
@@ -166,11 +187,13 @@ protected:
 
     NodeStatusImpl node_status_;
 
-    RequestReplier* req_res_;
+    std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> rpc_server_;
+
+    std::shared_ptr<void> rpc_impl_;
+
+    std::string rpc_service_name_;
 
     RequestReplyListener& req_res_listener_;
-
-    RequestTypeImpl req_data_;
 
 private:
 
@@ -192,6 +215,9 @@ private:
     bool init(
             const std::string& name,
             const Options& opts = Options());
+
+    // RPC over DDS server background thread
+    std::thread rpc_server_thread_;
 
     class NodeControlListener : public eprosima::fastdds::dds::DataReaderListener
     {

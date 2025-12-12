@@ -16,14 +16,14 @@
  * @file OrchestratorNode.cpp
  */
 
-#include <sustainml_cpp/core/RequestReplier.hpp>
+#include <chrono>
+
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
 
 #include "ModuleNodeProxyFactory.hpp"
 #include "TaskDB.ipp"
 
 #include <common/Common.hpp>
-#include <core/RequestReplier.hpp>
 #include <orchestrator/TaskManager.hpp>
 #include <types/typesImplPubSubTypes.hpp>
 #include <types/typesImplTypeObjectSupport.hpp>
@@ -32,10 +32,84 @@
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
 #include <fastdds/dds/log/Log.hpp>
 #include <fastdds/dds/publisher/Publisher.hpp>
+#include <fastdds/dds/subscriber/Subscriber.hpp>
 #include <fastdds/dds/topic/Topic.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
 
+#include <fastdds/dds/domain/qos/RequesterQos.hpp>
+#include <fastdds/dds/rpc/exceptions.hpp>
+
+#include <types/SustainMLServiceClient.hpp>
+#include <types/SustainMLService.hpp>
+
 using namespace eprosima::fastdds::dds;
+
+namespace {
+
+// One holder with a client per service/interface type
+struct RpcClientHolder
+{
+    std::shared_ptr<::AppRequirementsService>    app_requirements_client;
+    std::shared_ptr<::HWConstraintsService>      hw_constraints_client;
+    std::shared_ptr<::HWResourcesService>        hw_resources_client;
+    std::shared_ptr<::CarbonFootprintService>    carbon_footprint_client;
+    std::shared_ptr<::MLModelMetadataService>    ml_model_metadata_client;
+    std::shared_ptr<::MLModelService>            ml_model_client;
+};
+
+// Helper to do the generic "update_configuration / wait / get" logic
+template <typename ClientT>
+bool rpc_update_configuration(
+        ClientT& client,
+        const std::string& configuration,
+        std::string& out_cfg)
+{
+    std::cout << "[DEBUG Orchestrator] rpc_update_configuration: request bytes="
+          << configuration.size()
+          << std::endl;
+
+    auto future = client.update_configuration(configuration);
+
+    std::cout << "[DEBUG Orchestrator] update_configuration() future created" << std::endl;
+
+    auto status = future.wait_for(std::chrono::seconds(5));
+    std::cout << "[DEBUG Orchestrator] wait_for result = "
+              << (status == std::future_status::ready ? "ready" :
+                  status == std::future_status::timeout ? "timeout" :
+                  "deferred")
+              << std::endl;
+
+    if (status != std::future_status::ready)
+    {
+        return false;
+    }
+
+    try
+    {
+        out_cfg = future.get(); // will throw on remote InternalError
+        std::cout << "[DEBUG Orchestrator] future.get() returned bytes=" << out_cfg.size()
+          << " prefix='" << out_cfg.substr(0, std::min<size_t>(out_cfg.size(), 120)) << "'"
+          << std::endl;
+    }
+    catch (const ::InternalError& e)
+    {
+        std::cerr << "[ERROR] RPC InternalError: " << e.what() << "\n";
+        return false;
+    }
+    catch (const eprosima::fastdds::dds::rpc::RpcException& e)
+    {
+        std::cerr << "[ERROR] RPC exception: " << e.what() << "\n";
+        return false;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "[ERROR] std::exception: " << e.what() << "\n";
+        return false;
+    }
+
+    return true;
+}
+} // anonymous namespace
 
 namespace sustainml {
 namespace orchestrator {
@@ -44,7 +118,6 @@ OrchestratorNode::OrchestratorParticipantListener::OrchestratorParticipantListen
         OrchestratorNode* orchestrator)
     : orchestrator_(orchestrator)
 {
-
 }
 
 void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery(
@@ -69,6 +142,12 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
 
     // create the proxy for this node
     NodeID node_id = common::get_node_id_from_name(participant_name);
+
+    std::cout << "[DEBUG Orchestrator] Participant discovered: name='"
+          << participant_name.to_string()
+          << "' -> node_id=" << static_cast<int>(node_id)
+          << " reason=" << static_cast<int>(reason)
+          << std::endl;
 
     std::lock_guard<std::mutex> lock(orchestrator_->proxies_mtx_);
 
@@ -103,6 +182,14 @@ OrchestratorNode::OrchestratorNode(
         uint32_t domain)
     : domain_(domain)
     , handler_(&handle)
+    , participant_(nullptr)
+    , control_topic_(nullptr)
+    , status_topic_(nullptr)
+    , user_input_topic_(nullptr)
+    , pub_(nullptr)
+    , sub_(nullptr)
+    , control_writer_(nullptr)
+    , user_input_writer_(nullptr)
     , node_proxies_({
             nullptr,
             nullptr,
@@ -143,6 +230,13 @@ void OrchestratorNode::destroy()
             }
         }
 
+        if (rpc_client_holder_)
+        {
+            auto* holder = static_cast<RpcClientHolder*>(rpc_client_holder_);
+            delete holder;
+            rpc_client_holder_ = nullptr;
+        }
+
         if (sub_ != nullptr)
         {
             sub_->delete_contained_entities();
@@ -156,12 +250,12 @@ void OrchestratorNode::destroy()
         if (participant_ != nullptr)
         {
             participant_->delete_contained_entities();
+            DomainParticipantFactory::get_instance()->delete_participant(participant_);
+            participant_ = nullptr;
         }
 
-        DomainParticipantFactory::get_instance()->delete_participant(participant_);
-
         delete task_man_;
-        delete req_res_;
+        task_man_ = nullptr;
 
         handler_ = nullptr;
         terminated_.store(true);
@@ -270,10 +364,85 @@ bool OrchestratorNode::init()
         return false;
     }
 
-    req_res_ = new core::RequestReplier([this](void* input)
-                    {
-                        this->req_res_->resume_taking_data();
-                    }, "sustainml/request", "sustainml/response", participant_, pub_, sub_, res_.get_impl());
+    // Create per-node RPC clients
+    auto* holder = new RpcClientHolder();
+
+    RequesterQos rqos;
+
+    holder->app_requirements_client = create_AppRequirementsServiceClient(
+            *participant_,
+            "AppRequirementsService",   // must match server side
+            rqos);
+    std::cout << "[DEBUG Orchestrator] Created AppRequirementsServiceClient service='AppRequirementsService' ok="
+          << (holder->app_requirements_client ? "true" : "false")
+          << std::endl;
+
+    holder->hw_constraints_client = create_HWConstraintsServiceClient(
+            *participant_,
+            "HWConstraintsService",
+            rqos);
+    std::cout << "[DEBUG Orchestrator] Created HWConstraintsServiceClient service='HWConstraintsService' ok="
+          << (holder->hw_constraints_client ? "true" : "false")
+          << std::endl;
+
+    holder->hw_resources_client = create_HWResourcesServiceClient(
+            *participant_,
+            "HWResourcesService",
+            rqos);
+    std::cout << "[DEBUG Orchestrator] Created HWResourcesServiceClient service='HWResourcesService' ok="
+          << (holder->hw_resources_client ? "true" : "false")
+          << std::endl;
+
+    holder->carbon_footprint_client = create_CarbonFootprintServiceClient(
+            *participant_,
+            "CarbonFootprintService",
+            rqos);
+    std::cout << "[DEBUG Orchestrator] Created CarbonFootprintServiceClient service='CarbonFootprintService' ok="
+          << (holder->carbon_footprint_client ? "true" : "false")
+          << std::endl;
+
+    holder->ml_model_metadata_client = create_MLModelMetadataServiceClient(
+            *participant_,
+            "MLModelMetadataService",
+            rqos);
+    std::cout << "[DEBUG Orchestrator] Created MLModelMetadataServiceClient service='MLModelMetadataService' ok="
+          << (holder->ml_model_metadata_client ? "true" : "false")
+          << std::endl;
+
+    holder->ml_model_client = create_MLModelServiceClient(
+            *participant_,
+            "MLModelService",
+            rqos);
+    std::cout << "[DEBUG Orchestrator] Created MLModelServiceClient service='MLModelService' ok="
+          << (holder->ml_model_client ? "true" : "false")
+          << std::endl;
+
+    std::cout << "[DEBUG Orchestrator] RPC clients summary: "
+          << "app=" << (holder->app_requirements_client ? "1" : "0") << " "
+          << "hwc=" << (holder->hw_constraints_client ? "1" : "0") << " "
+          << "hwr=" << (holder->hw_resources_client ? "1" : "0") << " "
+          << "co2=" << (holder->carbon_footprint_client ? "1" : "0") << " "
+          << "meta=" << (holder->ml_model_metadata_client ? "1" : "0") << " "
+          << "ml=" << (holder->ml_model_client ? "1" : "0")
+          << std::endl;
+
+    if (!holder->app_requirements_client ||
+            !holder->hw_constraints_client ||
+            !holder->hw_resources_client ||
+            !holder->carbon_footprint_client ||
+            !holder->ml_model_metadata_client ||
+            !holder->ml_model_client)
+    {
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR,
+                "Failed to create one or more per-node RPC clients");
+        delete holder;
+        return false;
+    }
+
+    rpc_client_holder_ = holder;
+
+    std::cout << "[DEBUG Orchestrator] RPC clients created for per-node services"
+              << std::endl;
 
     initialized_.store(true);
     initialization_cv_.notify_one();
@@ -333,7 +502,7 @@ bool OrchestratorNode::start_iteration(
 void OrchestratorNode::publish_baselines(
         const types::TaskId& task_id)
 {
-    //publish in the iteration topics
+    // Publish in the iteration topics
     for (size_t i = 0; i < (size_t)NodeID::MAX; i++)
     {
         std::lock_guard<std::mutex> lock(proxies_mtx_);
@@ -496,30 +665,125 @@ void OrchestratorNode::send_control_command(
 types::ResponseType OrchestratorNode::configuration_request (
         const types::RequestType& req)
 {
-    req_res_->write_req(req.get_impl());
-    types::ResponseType user_res;
-    req_res_->wait_until([this, &req]
+    types::ResponseType res;
+
+    // Default: failure
+    res.node_id(req.node_id());
+    res.transaction_id(req.transaction_id());
+    res.success(false);
+    res.configuration("");
+
+    if (terminate_.load())
+    {
+        EPROSIMA_LOG_WARNING(ORCHESTRATOR,
+                "Orchestrator is terminating, no RPC request will be sent");
+        return res;
+    }
+
+    std::cout << "[DEBUG Orchestrator] configuration_request() entered, "
+              << "node_id=" << req.node_id()
+              << " config='" << req.configuration() << "'" << std::endl;
+
+    auto* holder = static_cast<RpcClientHolder*>(rpc_client_holder_);
+    if (!holder)
+    {
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR, "RPC client holder not initialized");
+        return res;
+    }
+
+    NodeID node_id = static_cast<NodeID>(req.node_id());
+    std::string cfg;
+
+    std::cout << "[DEBUG Orchestrator] configuration_request route: tx=" << req.transaction_id()
+          << " node_id(enum)=" << static_cast<int>(node_id)
+          << " node_id(raw)=" << req.node_id()
+          << std::endl;
+
+    try
+    {
+        switch (node_id)
+        {
+            case NodeID::ID_APP_REQUIREMENTS:
             {
-                bool is_expected_response =
-                (res_.node_id() == req.node_id() && res_.transaction_id() == req.transaction_id()) || terminate_.load();
-                if (!is_expected_response)
+                std::cout << "[RPC CLIENT] calling AppRequirementsService.update_configuration tx="
+                << req.transaction_id() << std::endl;
+                if (!rpc_update_configuration(*holder->app_requirements_client, req.configuration(), cfg))
                 {
-                    req_res_->resume_taking_data();
+                    return res; // Timeout or not ready
                 }
-                return is_expected_response;
-            });
+                break;
+            }
+            case NodeID::ID_HW_CONSTRAINTS:
+            {
+                std::cout << "[RPC CLIENT] calling HWConstraintsService.update_configuration tx="
+                << req.transaction_id() << std::endl;
+                if (!rpc_update_configuration(*holder->hw_constraints_client, req.configuration(), cfg))
+                {
+                    return res;
+                }
+                break;
+            }
+            case NodeID::ID_HW_RESOURCES:
+            {
+                std::cout << "[RPC CLIENT] calling HWResourcesService.update_configuration tx="
+                << req.transaction_id() << std::endl;
 
-    if (!terminate_.load())
-    {
-        user_res = res_;
-        req_res_->resume_taking_data();
+                if (!rpc_update_configuration(*holder->hw_resources_client, req.configuration(), cfg))
+                {
+                    return res;
+                }
+                break;
+            }
+            case NodeID::ID_CARBON_FOOTPRINT:
+            {
+                std::cout << "[RPC CLIENT] calling CarbonFootprintService.update_configuration tx="
+                << req.transaction_id() << std::endl;
+                if (!rpc_update_configuration(*holder->carbon_footprint_client, req.configuration(), cfg))
+                {
+                    return res;
+                }
+                break;
+            }
+            case NodeID::ID_ML_MODEL_METADATA:
+            {
+                std::cout << "[RPC CLIENT] calling MLModelMetadataService.update_configuration tx="
+                << req.transaction_id() << std::endl;
+                if (!rpc_update_configuration(*holder->ml_model_metadata_client, req.configuration(), cfg))
+                {
+                    return res;
+                }
+                break;
+            }
+            case NodeID::ID_ML_MODEL:
+            {
+                std::cout << "[RPC CLIENT] calling MLModelService.update_configuration tx="
+                << req.transaction_id() << std::endl;
+                if (!rpc_update_configuration(*holder->ml_model_client, req.configuration(), cfg))
+                {
+                    return res;
+                }
+                break;
+            }
+            default:
+            {
+                EPROSIMA_LOG_ERROR(ORCHESTRATOR,
+                        "configuration_request: unsupported node_id=" << static_cast<int>(node_id));
+                return res;
+            }
+        }
+
+        res.success(true);
+        res.configuration(cfg);
+
     }
-    else
+    catch (const std::exception& e)
     {
-        EPROSIMA_LOG_WARNING(ORCHESTRATOR, "Orchestrator is terminating, no response will be sent");
+        EPROSIMA_LOG_ERROR(ORCHESTRATOR,
+                "RPC call failed with exception: " << e.what());
+        // Leave success=false, configuration=""
     }
 
-    return user_res;
+    return res;
 }
 
 void OrchestratorNode::spin()
@@ -535,12 +799,9 @@ void OrchestratorNode::spin()
 void OrchestratorNode::terminate()
 {
     terminate_.store(true);
-    // skip the wait in the replier if any request is pending
-    req_res_->resume_taking_data();
     destroy();
     spin_cv_.notify_all();
 }
 
 } // namespace orchestrator
 } // namespace sustainml
-
