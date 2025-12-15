@@ -40,15 +40,6 @@ struct AppRequirementsServiceServerImplementation :
         throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
     }
 
-    std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) override
-    {
-        static_cast<void>(info);
-        static_cast<void>(data);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'send_data' is not implemented");
-    }
-
 };
 
 //} interface AppRequirementsService
@@ -66,15 +57,6 @@ struct HWConstraintsServiceServerImplementation :
         static_cast<void>(info);
         static_cast<void>(configuration);
         throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
-    }
-
-    std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) override
-    {
-        static_cast<void>(info);
-        static_cast<void>(data);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'send_data' is not implemented");
     }
 
 };
@@ -96,15 +78,6 @@ struct HWResourcesServiceServerImplementation :
         throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
     }
 
-    std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) override
-    {
-        static_cast<void>(info);
-        static_cast<void>(data);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'send_data' is not implemented");
-    }
-
 };
 
 //} interface HWResourcesService
@@ -122,15 +95,6 @@ struct CarbonFootprintServiceServerImplementation :
         static_cast<void>(info);
         static_cast<void>(configuration);
         throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
-    }
-
-    std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) override
-    {
-        static_cast<void>(info);
-        static_cast<void>(data);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'send_data' is not implemented");
     }
 
 };
@@ -152,15 +116,6 @@ struct MLModelMetadataServiceServerImplementation :
         throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
     }
 
-    std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) override
-    {
-        static_cast<void>(info);
-        static_cast<void>(data);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'send_data' is not implemented");
-    }
-
 };
 
 //} interface MLModelMetadataService
@@ -178,15 +133,6 @@ struct MLModelServiceServerImplementation :
         static_cast<void>(info);
         static_cast<void>(configuration);
         throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
-    }
-
-    std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) override
-    {
-        static_cast<void>(info);
-        static_cast<void>(data);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'send_data' is not implemented");
     }
 
 };

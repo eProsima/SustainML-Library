@@ -187,99 +187,108 @@ bool NodeImpl::init(
     {
         if (name == common::APP_REQUIREMENTS_NODE)
         {
-            std::shared_ptr<AppRequirementsServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::AppRequirementsServiceNodeImpl>(*this, "APP_REQUIREMENTS");
+            std::shared_ptr<AppRequirementsServiceServer_IServerImplementation> impl =
+                    std::make_shared<sustainml::core::AppRequirementsServiceNodeImpl>(*this,
+                            "APP_REQUIREMENTS");
             rpc_impl_ = impl;
             rpc_service_name_ = "AppRequirementsService";
 
             rpc_server_ = create_AppRequirementsServiceServer(
-                    *participant_,
-                    rpc_service_name_.c_str(),
-                    rqos,
-                    1u,
-                    impl);
+                *participant_,
+                rpc_service_name_.c_str(),
+                rqos,
+                1u,
+                impl);
 
             std::cout << "[DEBUG NodeImpl] create_AppRequirementsServiceServer returned "
-                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::HW_CONSTRAINTS_NODE)
         {
-            std::shared_ptr<HWConstraintsServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::HWConstraintsServiceNodeImpl>(*this, "HW_CONSTRAINTS");
+            std::shared_ptr<HWConstraintsServiceServer_IServerImplementation> impl =
+                    std::make_shared<sustainml::core::HWConstraintsServiceNodeImpl>(*this, "HW_CONSTRAINTS");
             rpc_impl_ = impl;
             rpc_service_name_ = "HWConstraintsService";
 
             rpc_server_ = create_HWConstraintsServiceServer(
-                    *participant_,
-                    rpc_service_name_.c_str(),
-                    rqos,
-                    1u,
-                    impl);
+                *participant_,
+                rpc_service_name_.c_str(),
+                rqos,
+                1u,
+                impl);
 
             std::cout << "[DEBUG NodeImpl] create_HWConstraintsServiceServer returned "
-                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::HW_RESOURCES_NODE)
         {
-            std::shared_ptr<HWResourcesServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::HWResourcesServiceNodeImpl>(*this, "HW_RESOURCES");
+            std::shared_ptr<HWResourcesServiceServer_IServerImplementation> impl =
+                    std::make_shared<sustainml::core::HWResourcesServiceNodeImpl>(*this, "HW_RESOURCES");
             rpc_impl_ = impl;
             rpc_service_name_ = "HWResourcesService";
 
             rpc_server_ = create_HWResourcesServiceServer(
-                    *participant_,
-                    rpc_service_name_.c_str(),
-                    rqos,
-                    1u,
-                    impl);
+                *participant_,
+                rpc_service_name_.c_str(),
+                rqos,
+                1u,
+                impl);
 
             std::cout << "[DEBUG NodeImpl] create_HWResourcesServiceServer returned "
-                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::CARBON_FOOTPRINT_NODE)
         {
-            std::shared_ptr<CarbonFootprintServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::CarbonFootprintServiceNodeImpl>(*this, "CARBON_FOOTPRINT");
+            std::shared_ptr<CarbonFootprintServiceServer_IServerImplementation> impl =
+                    std::make_shared<sustainml::core::CarbonFootprintServiceNodeImpl>(*this,
+                            "CARBON_FOOTPRINT");
             rpc_impl_ = impl;
             rpc_service_name_ = "CarbonFootprintService";
 
             rpc_server_ = create_CarbonFootprintServiceServer(
-                    *participant_,
-                    rpc_service_name_.c_str(),
-                    rqos,
-                    1u,
-                    impl);
+                *participant_,
+                rpc_service_name_.c_str(),
+                rqos,
+                1u,
+                impl);
 
             std::cout << "[DEBUG NodeImpl] create_CarbonFootprintServiceServer returned "
-                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::ML_MODEL_METADATA_NODE)
         {
-            std::shared_ptr<MLModelMetadataServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::MLModelMetadataServiceNodeImpl>(*this, "ML_MODEL_METADATA");
+            std::shared_ptr<MLModelMetadataServiceServer_IServerImplementation> impl =
+                    std::make_shared<sustainml::core::MLModelMetadataServiceNodeImpl>(*this,
+                            "ML_MODEL_METADATA");
             rpc_impl_ = impl;
             rpc_service_name_ = "MLModelMetadataService";
 
             rpc_server_ = create_MLModelMetadataServiceServer(
-                    *participant_,
-                    rpc_service_name_.c_str(),
-                    rqos,
-                    1u,
-                    impl);
+                *participant_,
+                rpc_service_name_.c_str(),
+                rqos,
+                1u,
+                impl);
 
             std::cout << "[DEBUG NodeImpl] create_MLModelMetadataServiceServer returned "
-                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::ML_MODEL_NODE)
         {
-            std::shared_ptr<MLModelServiceServer_IServerImplementation> impl = std::make_shared<sustainml::core::MLModelServiceNodeImpl>(*this, "ML_MODEL");
+            std::shared_ptr<MLModelServiceServer_IServerImplementation> impl =
+                    std::make_shared<sustainml::core::MLModelServiceNodeImpl>(*this, "ML_MODEL");
             rpc_impl_ = impl;
             rpc_service_name_ = "MLModelService";
 
             rpc_server_ = create_MLModelServiceServer(
-                    *participant_,
-                    rpc_service_name_.c_str(),
-                    rqos,
-                    1u,
-                    impl);
+                *participant_,
+                rpc_service_name_.c_str(),
+                rqos,
+                1u,
+                impl);
 
             std::cout << "[DEBUG NodeImpl] create_MLModelServiceServer returned "
-                    << (rpc_server_ ? "non-null" : "null") << std::endl;
+                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else
         {
@@ -291,33 +300,34 @@ bool NodeImpl::init(
     {
         EPROSIMA_LOG_ERROR(NODE,
                 "RpcException while creating RPC server for node '" << name
-                << "': " << e.what());
+                                                                    << "': " << e.what());
     }
     catch (const std::exception& e)
     {
         EPROSIMA_LOG_ERROR(NODE,
                 "std::exception while creating RPC server for node '" << name
-                << "': " << e.what());
+                                                                      << "': " << e.what());
     }
 
     if (!rpc_server_)
     {
         EPROSIMA_LOG_WARNING(NODE,
                 "No RPC server created for node '" << name
-                << "' (service_name='" << rpc_service_name_ << "'). Node will run without RPC.");
+                                                   << "' (service_name='" << rpc_service_name_ <<
+                "'). Node will run without RPC.");
     }
 
     if (rpc_server_)
     {
         rpc_server_thread_ = std::thread([this]()
-        {
-            rpc_server_->run();
-        });
+                        {
+                            rpc_server_->run();
+                        });
     }
 
     std::cout << "[DEBUG NodeImpl] RPC server created on node '"
-            << name
-            << "' with service '" << rpc_service_name_ << "'" << std::endl;
+              << name
+              << "' with service '" << rpc_service_name_ << "'" << std::endl;
 
     //! Register Common Types
 

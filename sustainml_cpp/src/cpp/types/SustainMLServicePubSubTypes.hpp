@@ -38,15 +38,18 @@
     Generated SustainMLService is not compatible with current installed Fast DDS. Please, regenerate it with fastddsgen.
 #endif  // FASTDDS_GEN_API_VER
 
-eProsima_user_DllExport eprosima::fastdds::dds::rpc::ServiceTypeSupport create_AppRequirementsService_service_type_support();
+eProsima_user_DllExport eprosima::fastdds::dds::rpc::ServiceTypeSupport
+create_AppRequirementsService_service_type_support();
 
 eProsima_user_DllExport eprosima::fastdds::dds::rpc::ServiceTypeSupport create_HWConstraintsService_service_type_support();
 
 eProsima_user_DllExport eprosima::fastdds::dds::rpc::ServiceTypeSupport create_HWResourcesService_service_type_support();
 
-eProsima_user_DllExport eprosima::fastdds::dds::rpc::ServiceTypeSupport create_CarbonFootprintService_service_type_support();
+eProsima_user_DllExport eprosima::fastdds::dds::rpc::ServiceTypeSupport
+create_CarbonFootprintService_service_type_support();
 
-eProsima_user_DllExport eprosima::fastdds::dds::rpc::ServiceTypeSupport create_MLModelMetadataService_service_type_support();
+eProsima_user_DllExport eprosima::fastdds::dds::rpc::ServiceTypeSupport
+create_MLModelMetadataService_service_type_support();
 
 eProsima_user_DllExport eprosima::fastdds::dds::rpc::ServiceTypeSupport create_MLModelService_service_type_support();
 

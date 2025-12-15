@@ -64,51 +64,59 @@ bool rpc_update_configuration(
         const std::string& configuration,
         std::string& out_cfg)
 {
-    std::cout << "[DEBUG Orchestrator] rpc_update_configuration: request bytes="
-          << configuration.size()
-          << std::endl;
-
     auto future = client.update_configuration(configuration);
 
-    std::cout << "[DEBUG Orchestrator] update_configuration() future created" << std::endl;
+    constexpr auto total_timeout = std::chrono::minutes(5);
+    constexpr auto step = std::chrono::seconds(1);
 
-    auto status = future.wait_for(std::chrono::seconds(5));
-    std::cout << "[DEBUG Orchestrator] wait_for result = "
-              << (status == std::future_status::ready ? "ready" :
-                  status == std::future_status::timeout ? "timeout" :
-                  "deferred")
-              << std::endl;
+    const auto start = std::chrono::steady_clock::now();
 
-    if (status != std::future_status::ready)
+    while (true)
     {
-        return false;
-    }
+        // Wait a bit, but don’t block forever
+        auto status = future.wait_for(step);
 
-    try
-    {
-        out_cfg = future.get(); // will throw on remote InternalError
-        std::cout << "[DEBUG Orchestrator] future.get() returned bytes=" << out_cfg.size()
-          << " prefix='" << out_cfg.substr(0, std::min<size_t>(out_cfg.size(), 120)) << "'"
-          << std::endl;
-    }
-    catch (const ::InternalError& e)
-    {
-        std::cerr << "[ERROR] RPC InternalError: " << e.what() << "\n";
-        return false;
-    }
-    catch (const eprosima::fastdds::dds::rpc::RpcException& e)
-    {
-        std::cerr << "[ERROR] RPC exception: " << e.what() << "\n";
-        return false;
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "[ERROR] std::exception: " << e.what() << "\n";
-        return false;
-    }
+        if (status == std::future_status::ready)
+        {
+            // Completed (success path OR remote exception thrown here)
+            try
+            {
+                out_cfg = future.get();
+                return true;
+            }
+            catch (const ::InternalError& e)
+            {
+                std::cerr << "[ERROR] RPC InternalError: " << e.what() << "\n";
+                return false;
+            }
+            catch (const eprosima::fastdds::dds::rpc::RpcException& e)
+            {
+                std::cerr << "[ERROR] RPC exception: " << e.what() << "\n";
+                return false;
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "[ERROR] std::exception: " << e.what() << "\n";
+                return false;
+            }
+        }
 
-    return true;
+        if (status == std::future_status::deferred)
+        {
+            // Unusual for your RPC futures, but treat as “not running” / failure
+            std::cerr << "[ERROR] RPC future is deferred\n";
+            return false;
+        }
+
+        // status == timeout: check total time budget
+        if (std::chrono::steady_clock::now() - start >= total_timeout)
+        {
+            std::cerr << "[ERROR] RPC timeout after 5 minutes\n";
+            return false;
+        }
+    }
 }
+
 } // anonymous namespace
 
 namespace sustainml {
@@ -144,10 +152,10 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
     NodeID node_id = common::get_node_id_from_name(participant_name);
 
     std::cout << "[DEBUG Orchestrator] Participant discovered: name='"
-          << participant_name.to_string()
-          << "' -> node_id=" << static_cast<int>(node_id)
-          << " reason=" << static_cast<int>(reason)
-          << std::endl;
+              << participant_name.to_string()
+              << "' -> node_id=" << static_cast<int>(node_id)
+              << " reason=" << static_cast<int>(reason)
+              << std::endl;
 
     std::lock_guard<std::mutex> lock(orchestrator_->proxies_mtx_);
 
@@ -370,61 +378,61 @@ bool OrchestratorNode::init()
     RequesterQos rqos;
 
     holder->app_requirements_client = create_AppRequirementsServiceClient(
-            *participant_,
-            "AppRequirementsService",   // must match server side
-            rqos);
+        *participant_,
+        "AppRequirementsService",       // must match server side
+        rqos);
     std::cout << "[DEBUG Orchestrator] Created AppRequirementsServiceClient service='AppRequirementsService' ok="
-          << (holder->app_requirements_client ? "true" : "false")
-          << std::endl;
+              << (holder->app_requirements_client ? "true" : "false")
+              << std::endl;
 
     holder->hw_constraints_client = create_HWConstraintsServiceClient(
-            *participant_,
-            "HWConstraintsService",
-            rqos);
+        *participant_,
+        "HWConstraintsService",
+        rqos);
     std::cout << "[DEBUG Orchestrator] Created HWConstraintsServiceClient service='HWConstraintsService' ok="
-          << (holder->hw_constraints_client ? "true" : "false")
-          << std::endl;
+              << (holder->hw_constraints_client ? "true" : "false")
+              << std::endl;
 
     holder->hw_resources_client = create_HWResourcesServiceClient(
-            *participant_,
-            "HWResourcesService",
-            rqos);
+        *participant_,
+        "HWResourcesService",
+        rqos);
     std::cout << "[DEBUG Orchestrator] Created HWResourcesServiceClient service='HWResourcesService' ok="
-          << (holder->hw_resources_client ? "true" : "false")
-          << std::endl;
+              << (holder->hw_resources_client ? "true" : "false")
+              << std::endl;
 
     holder->carbon_footprint_client = create_CarbonFootprintServiceClient(
-            *participant_,
-            "CarbonFootprintService",
-            rqos);
+        *participant_,
+        "CarbonFootprintService",
+        rqos);
     std::cout << "[DEBUG Orchestrator] Created CarbonFootprintServiceClient service='CarbonFootprintService' ok="
-          << (holder->carbon_footprint_client ? "true" : "false")
-          << std::endl;
+              << (holder->carbon_footprint_client ? "true" : "false")
+              << std::endl;
 
     holder->ml_model_metadata_client = create_MLModelMetadataServiceClient(
-            *participant_,
-            "MLModelMetadataService",
-            rqos);
+        *participant_,
+        "MLModelMetadataService",
+        rqos);
     std::cout << "[DEBUG Orchestrator] Created MLModelMetadataServiceClient service='MLModelMetadataService' ok="
-          << (holder->ml_model_metadata_client ? "true" : "false")
-          << std::endl;
+              << (holder->ml_model_metadata_client ? "true" : "false")
+              << std::endl;
 
     holder->ml_model_client = create_MLModelServiceClient(
-            *participant_,
-            "MLModelService",
-            rqos);
+        *participant_,
+        "MLModelService",
+        rqos);
     std::cout << "[DEBUG Orchestrator] Created MLModelServiceClient service='MLModelService' ok="
-          << (holder->ml_model_client ? "true" : "false")
-          << std::endl;
+              << (holder->ml_model_client ? "true" : "false")
+              << std::endl;
 
     std::cout << "[DEBUG Orchestrator] RPC clients summary: "
-          << "app=" << (holder->app_requirements_client ? "1" : "0") << " "
-          << "hwc=" << (holder->hw_constraints_client ? "1" : "0") << " "
-          << "hwr=" << (holder->hw_resources_client ? "1" : "0") << " "
-          << "co2=" << (holder->carbon_footprint_client ? "1" : "0") << " "
-          << "meta=" << (holder->ml_model_metadata_client ? "1" : "0") << " "
-          << "ml=" << (holder->ml_model_client ? "1" : "0")
-          << std::endl;
+              << "app=" << (holder->app_requirements_client ? "1" : "0") << " "
+              << "hwc=" << (holder->hw_constraints_client ? "1" : "0") << " "
+              << "hwr=" << (holder->hw_resources_client ? "1" : "0") << " "
+              << "co2=" << (holder->carbon_footprint_client ? "1" : "0") << " "
+              << "meta=" << (holder->ml_model_metadata_client ? "1" : "0") << " "
+              << "ml=" << (holder->ml_model_client ? "1" : "0")
+              << std::endl;
 
     if (!holder->app_requirements_client ||
             !holder->hw_constraints_client ||
@@ -695,9 +703,9 @@ types::ResponseType OrchestratorNode::configuration_request (
     std::string cfg;
 
     std::cout << "[DEBUG Orchestrator] configuration_request route: tx=" << req.transaction_id()
-          << " node_id(enum)=" << static_cast<int>(node_id)
-          << " node_id(raw)=" << req.node_id()
-          << std::endl;
+              << " node_id(enum)=" << static_cast<int>(node_id)
+              << " node_id(raw)=" << req.node_id()
+              << std::endl;
 
     try
     {
@@ -706,7 +714,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             case NodeID::ID_APP_REQUIREMENTS:
             {
                 std::cout << "[RPC CLIENT] calling AppRequirementsService.update_configuration tx="
-                << req.transaction_id() << std::endl;
+                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->app_requirements_client, req.configuration(), cfg))
                 {
                     return res; // Timeout or not ready
@@ -716,7 +724,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             case NodeID::ID_HW_CONSTRAINTS:
             {
                 std::cout << "[RPC CLIENT] calling HWConstraintsService.update_configuration tx="
-                << req.transaction_id() << std::endl;
+                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->hw_constraints_client, req.configuration(), cfg))
                 {
                     return res;
@@ -726,7 +734,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             case NodeID::ID_HW_RESOURCES:
             {
                 std::cout << "[RPC CLIENT] calling HWResourcesService.update_configuration tx="
-                << req.transaction_id() << std::endl;
+                          << req.transaction_id() << std::endl;
 
                 if (!rpc_update_configuration(*holder->hw_resources_client, req.configuration(), cfg))
                 {
@@ -737,7 +745,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             case NodeID::ID_CARBON_FOOTPRINT:
             {
                 std::cout << "[RPC CLIENT] calling CarbonFootprintService.update_configuration tx="
-                << req.transaction_id() << std::endl;
+                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->carbon_footprint_client, req.configuration(), cfg))
                 {
                     return res;
@@ -747,7 +755,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             case NodeID::ID_ML_MODEL_METADATA:
             {
                 std::cout << "[RPC CLIENT] calling MLModelMetadataService.update_configuration tx="
-                << req.transaction_id() << std::endl;
+                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->ml_model_metadata_client, req.configuration(), cfg))
                 {
                     return res;
@@ -757,7 +765,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             case NodeID::ID_ML_MODEL:
             {
                 std::cout << "[RPC CLIENT] calling MLModelService.update_configuration tx="
-                << req.transaction_id() << std::endl;
+                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->ml_model_client, req.configuration(), cfg))
                 {
                     return res;

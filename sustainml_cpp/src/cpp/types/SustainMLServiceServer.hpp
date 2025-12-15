@@ -41,12 +41,6 @@ struct AppRequirementsServiceServer_IServerImplementation
             const eprosima::fastdds::dds::rpc::RpcRequest& info,
             /*in*/ const std::string& configuration) = 0;
 
-
-
-    virtual std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) = 0;
-
 };
 
 /**
@@ -59,7 +53,8 @@ struct AppRequirementsServiceServer_IServerImplementation
  *                         When set to 0, a pool with a single thread will be created.
  * @param implementation   The implementation of the server interface.
  */
-extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_AppRequirementsServiceServer(
+extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer>
+create_AppRequirementsServiceServer(
         eprosima::fastdds::dds::DomainParticipant& part,
         const char* service_name,
         const eprosima::fastdds::dds::ReplierQos& qos,
@@ -75,7 +70,8 @@ extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcS
  * @param scheduler       The request scheduling strategy to use for the server.
  * @param implementation  The implementation of the server interface.
  */
-extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_AppRequirementsServiceServer(
+extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer>
+create_AppRequirementsServiceServer(
         eprosima::fastdds::dds::DomainParticipant& part,
         const char* service_name,
         const eprosima::fastdds::dds::ReplierQos& qos,
@@ -89,12 +85,6 @@ struct HWConstraintsServiceServer_IServerImplementation
     virtual std::string update_configuration(
             const eprosima::fastdds::dds::rpc::RpcRequest& info,
             /*in*/ const std::string& configuration) = 0;
-
-
-
-    virtual std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) = 0;
 
 };
 
@@ -139,12 +129,6 @@ struct HWResourcesServiceServer_IServerImplementation
             const eprosima::fastdds::dds::rpc::RpcRequest& info,
             /*in*/ const std::string& configuration) = 0;
 
-
-
-    virtual std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) = 0;
-
 };
 
 /**
@@ -188,12 +172,6 @@ struct CarbonFootprintServiceServer_IServerImplementation
             const eprosima::fastdds::dds::rpc::RpcRequest& info,
             /*in*/ const std::string& configuration) = 0;
 
-
-
-    virtual std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) = 0;
-
 };
 
 /**
@@ -206,7 +184,8 @@ struct CarbonFootprintServiceServer_IServerImplementation
  *                         When set to 0, a pool with a single thread will be created.
  * @param implementation   The implementation of the server interface.
  */
-extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_CarbonFootprintServiceServer(
+extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer>
+create_CarbonFootprintServiceServer(
         eprosima::fastdds::dds::DomainParticipant& part,
         const char* service_name,
         const eprosima::fastdds::dds::ReplierQos& qos,
@@ -222,7 +201,8 @@ extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcS
  * @param scheduler       The request scheduling strategy to use for the server.
  * @param implementation  The implementation of the server interface.
  */
-extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_CarbonFootprintServiceServer(
+extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer>
+create_CarbonFootprintServiceServer(
         eprosima::fastdds::dds::DomainParticipant& part,
         const char* service_name,
         const eprosima::fastdds::dds::ReplierQos& qos,
@@ -237,12 +217,6 @@ struct MLModelMetadataServiceServer_IServerImplementation
             const eprosima::fastdds::dds::rpc::RpcRequest& info,
             /*in*/ const std::string& configuration) = 0;
 
-
-
-    virtual std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) = 0;
-
 };
 
 /**
@@ -255,7 +229,8 @@ struct MLModelMetadataServiceServer_IServerImplementation
  *                         When set to 0, a pool with a single thread will be created.
  * @param implementation   The implementation of the server interface.
  */
-extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_MLModelMetadataServiceServer(
+extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer>
+create_MLModelMetadataServiceServer(
         eprosima::fastdds::dds::DomainParticipant& part,
         const char* service_name,
         const eprosima::fastdds::dds::ReplierQos& qos,
@@ -271,7 +246,8 @@ extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcS
  * @param scheduler       The request scheduling strategy to use for the server.
  * @param implementation  The implementation of the server interface.
  */
-extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_MLModelMetadataServiceServer(
+extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer>
+create_MLModelMetadataServiceServer(
         eprosima::fastdds::dds::DomainParticipant& part,
         const char* service_name,
         const eprosima::fastdds::dds::ReplierQos& qos,
@@ -285,12 +261,6 @@ struct MLModelServiceServer_IServerImplementation
     virtual std::string update_configuration(
             const eprosima::fastdds::dds::rpc::RpcRequest& info,
             /*in*/ const std::string& configuration) = 0;
-
-
-
-    virtual std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& info,
-            /*in*/ const std::string& data) = 0;
 
 };
 

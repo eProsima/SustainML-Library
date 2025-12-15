@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * @file GenericServiceNode.cpp
+ * @file GenericServiceNode.hpp
  */
 
  #ifndef SUSTAINML_CORE_GENERICSERVICENODEIMPL_HPP
 #define SUSTAINML_CORE_GENERICSERVICENODEIMPL_HPP
 
-#include <string>
 #include <iostream>
+#include <string>
 
 #include <core/NodeImpl.hpp>
 #include <types/types.hpp>
@@ -43,7 +43,10 @@ template <typename ServerBase>
 class GenericServiceNodeImpl : public ServerBase
 {
 public:
-    GenericServiceNodeImpl(NodeImpl& node, const char* tag)
+
+    GenericServiceNodeImpl(
+            NodeImpl& node,
+            const char* tag)
         : node_(node)
         , tag_(tag)
     {
@@ -74,27 +77,11 @@ public:
             throw ::InternalError("update_configuration: unknown error");
         }
 
-        // If your listener reports failures via res.success():
-        if (!res.success())
-        {
-            // If you have an error string field, put it here. If not:
-            throw ::InternalError("update_configuration: res.success==false");
-        }
-
         return res.configuration();
     }
 
-    std::string send_data(
-            const eprosima::fastdds::dds::rpc::RpcRequest& /*info*/,
-            const std::string& data) override
-    {
-        (void)data;
-
-        // If not implemented yet, raise InternalError (matches IDL)
-        throw ::InternalError("send_data not implemented");
-    }
-
 private:
+
     NodeImpl& node_;
     const char* tag_;
 };

@@ -106,8 +106,6 @@ public:
      */
     virtual ~InternalError() noexcept = default;
 
-
-
 private:
 
 
@@ -118,18 +116,15 @@ private:
  * @brief This class represents the interface AppRequirementsService defined by the user in the IDL file.
  * @ingroup SustainMLService
  */
-class eProsima_user_DllExport AppRequirementsService 
+class eProsima_user_DllExport AppRequirementsService
 {
 public:
+
     virtual ~AppRequirementsService() = default;
 
 
     virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> update_configuration(
             /*in*/ const std::string& configuration) = 0;
-
-
-    virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) = 0;
 
 };
 
@@ -139,18 +134,15 @@ public:
  * @brief This class represents the interface HWConstraintsService defined by the user in the IDL file.
  * @ingroup SustainMLService
  */
-class eProsima_user_DllExport HWConstraintsService 
+class eProsima_user_DllExport HWConstraintsService
 {
 public:
+
     virtual ~HWConstraintsService() = default;
 
 
     virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> update_configuration(
             /*in*/ const std::string& configuration) = 0;
-
-
-    virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) = 0;
 
 };
 
@@ -160,18 +152,15 @@ public:
  * @brief This class represents the interface HWResourcesService defined by the user in the IDL file.
  * @ingroup SustainMLService
  */
-class eProsima_user_DllExport HWResourcesService 
+class eProsima_user_DllExport HWResourcesService
 {
 public:
+
     virtual ~HWResourcesService() = default;
 
 
     virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> update_configuration(
             /*in*/ const std::string& configuration) = 0;
-
-
-    virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) = 0;
 
 };
 
@@ -181,18 +170,15 @@ public:
  * @brief This class represents the interface CarbonFootprintService defined by the user in the IDL file.
  * @ingroup SustainMLService
  */
-class eProsima_user_DllExport CarbonFootprintService 
+class eProsima_user_DllExport CarbonFootprintService
 {
 public:
+
     virtual ~CarbonFootprintService() = default;
 
 
     virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> update_configuration(
             /*in*/ const std::string& configuration) = 0;
-
-
-    virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) = 0;
 
 };
 
@@ -202,18 +188,15 @@ public:
  * @brief This class represents the interface MLModelMetadataService defined by the user in the IDL file.
  * @ingroup SustainMLService
  */
-class eProsima_user_DllExport MLModelMetadataService 
+class eProsima_user_DllExport MLModelMetadataService
 {
 public:
+
     virtual ~MLModelMetadataService() = default;
 
 
     virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> update_configuration(
             /*in*/ const std::string& configuration) = 0;
-
-
-    virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) = 0;
 
 };
 
@@ -223,18 +206,15 @@ public:
  * @brief This class represents the interface MLModelService defined by the user in the IDL file.
  * @ingroup SustainMLService
  */
-class eProsima_user_DllExport MLModelService 
+class eProsima_user_DllExport MLModelService
 {
 public:
+
     virtual ~MLModelService() = default;
 
 
     virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> update_configuration(
             /*in*/ const std::string& configuration) = 0;
-
-
-    virtual eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) = 0;
 
 };
 

@@ -76,11 +76,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<AppRequirementsServiceServer_IServerImplementation> implementation)
         : AppRequirementsServiceServerLogic(
-                part,
-                service_name,
-                qos,
-                std::make_shared<ThreadPool>(*this, thread_pool_size),
-                std::move(implementation))
+            part,
+            service_name,
+            qos,
+            std::make_shared<ThreadPool>(*this, thread_pool_size),
+            std::move(implementation))
     {
     }
 
@@ -231,10 +231,6 @@ private:
 
     //} operation update_configuration
 
-    //{ operation send_data
-
-    //} operation send_data
-
     struct RequestContext : frpc::RpcRequest
     {
         RequestType request;
@@ -246,11 +242,6 @@ private:
         {
         }
         update_configuration_feeds;
-
-        struct send_data_feeds_t
-        {
-        }
-        send_data_feeds;
 
         const frtps::GUID_t& get_client_id() const override
         {
@@ -278,7 +269,6 @@ private:
         {
             size_t n_fields = 0;
             n_fields += request.update_configuration.has_value() ? 1 : 0;
-            n_fields += request.send_data.has_value() ? 1 : 0;
 
             return n_fields == 1U;
         }
@@ -323,11 +313,6 @@ private:
                 return prepare_update_configuration(replier);
             }
 
-            if (request.send_data.has_value())
-            {
-                return prepare_send_data(replier);
-            }
-
 
             send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNKNOWN_OPERATION, replier);
             return false;
@@ -363,13 +348,6 @@ private:
         std::vector<std::shared_ptr<IInputFeedProcessor>> input_feed_processors_;
 
         bool prepare_update_configuration(
-                frpc::Replier* replier)
-        {
-            static_cast<void>(replier);
-            return true;
-        }
-
-        bool prepare_send_data(
                 frpc::Replier* replier)
         {
             static_cast<void>(replier);
@@ -526,28 +504,6 @@ private:
                     break;
                 }
 
-                if (req->request.send_data.has_value())
-                {
-                    try
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::AppRequirementsService_send_data_Result{};
-                        reply.send_data->result = detail::AppRequirementsService_send_data_Out{};
-                        reply.send_data->result->return_ = implementation_->send_data(
-                            *req,
-                            req->request.send_data->data);
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    catch (const InternalError& ex)
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::AppRequirementsService_send_data_Result{};
-                        reply.send_data->InternalError_ex = ex;
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    break;
-                }
-
                 req->send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNSUPPORTED, replier_);
                 break;
             }
@@ -613,7 +569,7 @@ struct AppRequirementsServiceServerProxy
 
 private:
 
-   std::shared_ptr<frpc::RpcServer> impl_;
+    std::shared_ptr<frpc::RpcServer> impl_;
 };
 
 }  // namespace detail
@@ -668,11 +624,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<HWConstraintsServiceServer_IServerImplementation> implementation)
         : HWConstraintsServiceServerLogic(
-                part,
-                service_name,
-                qos,
-                std::make_shared<ThreadPool>(*this, thread_pool_size),
-                std::move(implementation))
+            part,
+            service_name,
+            qos,
+            std::make_shared<ThreadPool>(*this, thread_pool_size),
+            std::move(implementation))
     {
     }
 
@@ -823,10 +779,6 @@ private:
 
     //} operation update_configuration
 
-    //{ operation send_data
-
-    //} operation send_data
-
     struct RequestContext : frpc::RpcRequest
     {
         RequestType request;
@@ -838,11 +790,6 @@ private:
         {
         }
         update_configuration_feeds;
-
-        struct send_data_feeds_t
-        {
-        }
-        send_data_feeds;
 
         const frtps::GUID_t& get_client_id() const override
         {
@@ -870,7 +817,6 @@ private:
         {
             size_t n_fields = 0;
             n_fields += request.update_configuration.has_value() ? 1 : 0;
-            n_fields += request.send_data.has_value() ? 1 : 0;
 
             return n_fields == 1U;
         }
@@ -915,11 +861,6 @@ private:
                 return prepare_update_configuration(replier);
             }
 
-            if (request.send_data.has_value())
-            {
-                return prepare_send_data(replier);
-            }
-
 
             send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNKNOWN_OPERATION, replier);
             return false;
@@ -955,13 +896,6 @@ private:
         std::vector<std::shared_ptr<IInputFeedProcessor>> input_feed_processors_;
 
         bool prepare_update_configuration(
-                frpc::Replier* replier)
-        {
-            static_cast<void>(replier);
-            return true;
-        }
-
-        bool prepare_send_data(
                 frpc::Replier* replier)
         {
             static_cast<void>(replier);
@@ -1118,28 +1052,6 @@ private:
                     break;
                 }
 
-                if (req->request.send_data.has_value())
-                {
-                    try
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::HWConstraintsService_send_data_Result{};
-                        reply.send_data->result = detail::HWConstraintsService_send_data_Out{};
-                        reply.send_data->result->return_ = implementation_->send_data(
-                            *req,
-                            req->request.send_data->data);
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    catch (const InternalError& ex)
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::HWConstraintsService_send_data_Result{};
-                        reply.send_data->InternalError_ex = ex;
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    break;
-                }
-
                 req->send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNSUPPORTED, replier_);
                 break;
             }
@@ -1205,7 +1117,7 @@ struct HWConstraintsServiceServerProxy
 
 private:
 
-   std::shared_ptr<frpc::RpcServer> impl_;
+    std::shared_ptr<frpc::RpcServer> impl_;
 };
 
 }  // namespace detail
@@ -1260,11 +1172,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<HWResourcesServiceServer_IServerImplementation> implementation)
         : HWResourcesServiceServerLogic(
-                part,
-                service_name,
-                qos,
-                std::make_shared<ThreadPool>(*this, thread_pool_size),
-                std::move(implementation))
+            part,
+            service_name,
+            qos,
+            std::make_shared<ThreadPool>(*this, thread_pool_size),
+            std::move(implementation))
     {
     }
 
@@ -1415,10 +1327,6 @@ private:
 
     //} operation update_configuration
 
-    //{ operation send_data
-
-    //} operation send_data
-
     struct RequestContext : frpc::RpcRequest
     {
         RequestType request;
@@ -1430,11 +1338,6 @@ private:
         {
         }
         update_configuration_feeds;
-
-        struct send_data_feeds_t
-        {
-        }
-        send_data_feeds;
 
         const frtps::GUID_t& get_client_id() const override
         {
@@ -1462,7 +1365,6 @@ private:
         {
             size_t n_fields = 0;
             n_fields += request.update_configuration.has_value() ? 1 : 0;
-            n_fields += request.send_data.has_value() ? 1 : 0;
 
             return n_fields == 1U;
         }
@@ -1507,11 +1409,6 @@ private:
                 return prepare_update_configuration(replier);
             }
 
-            if (request.send_data.has_value())
-            {
-                return prepare_send_data(replier);
-            }
-
 
             send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNKNOWN_OPERATION, replier);
             return false;
@@ -1547,13 +1444,6 @@ private:
         std::vector<std::shared_ptr<IInputFeedProcessor>> input_feed_processors_;
 
         bool prepare_update_configuration(
-                frpc::Replier* replier)
-        {
-            static_cast<void>(replier);
-            return true;
-        }
-
-        bool prepare_send_data(
                 frpc::Replier* replier)
         {
             static_cast<void>(replier);
@@ -1710,28 +1600,6 @@ private:
                     break;
                 }
 
-                if (req->request.send_data.has_value())
-                {
-                    try
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::HWResourcesService_send_data_Result{};
-                        reply.send_data->result = detail::HWResourcesService_send_data_Out{};
-                        reply.send_data->result->return_ = implementation_->send_data(
-                            *req,
-                            req->request.send_data->data);
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    catch (const InternalError& ex)
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::HWResourcesService_send_data_Result{};
-                        reply.send_data->InternalError_ex = ex;
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    break;
-                }
-
                 req->send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNSUPPORTED, replier_);
                 break;
             }
@@ -1797,7 +1665,7 @@ struct HWResourcesServiceServerProxy
 
 private:
 
-   std::shared_ptr<frpc::RpcServer> impl_;
+    std::shared_ptr<frpc::RpcServer> impl_;
 };
 
 }  // namespace detail
@@ -1852,11 +1720,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<CarbonFootprintServiceServer_IServerImplementation> implementation)
         : CarbonFootprintServiceServerLogic(
-                part,
-                service_name,
-                qos,
-                std::make_shared<ThreadPool>(*this, thread_pool_size),
-                std::move(implementation))
+            part,
+            service_name,
+            qos,
+            std::make_shared<ThreadPool>(*this, thread_pool_size),
+            std::move(implementation))
     {
     }
 
@@ -2007,10 +1875,6 @@ private:
 
     //} operation update_configuration
 
-    //{ operation send_data
-
-    //} operation send_data
-
     struct RequestContext : frpc::RpcRequest
     {
         RequestType request;
@@ -2022,11 +1886,6 @@ private:
         {
         }
         update_configuration_feeds;
-
-        struct send_data_feeds_t
-        {
-        }
-        send_data_feeds;
 
         const frtps::GUID_t& get_client_id() const override
         {
@@ -2054,7 +1913,6 @@ private:
         {
             size_t n_fields = 0;
             n_fields += request.update_configuration.has_value() ? 1 : 0;
-            n_fields += request.send_data.has_value() ? 1 : 0;
 
             return n_fields == 1U;
         }
@@ -2099,11 +1957,6 @@ private:
                 return prepare_update_configuration(replier);
             }
 
-            if (request.send_data.has_value())
-            {
-                return prepare_send_data(replier);
-            }
-
 
             send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNKNOWN_OPERATION, replier);
             return false;
@@ -2139,13 +1992,6 @@ private:
         std::vector<std::shared_ptr<IInputFeedProcessor>> input_feed_processors_;
 
         bool prepare_update_configuration(
-                frpc::Replier* replier)
-        {
-            static_cast<void>(replier);
-            return true;
-        }
-
-        bool prepare_send_data(
                 frpc::Replier* replier)
         {
             static_cast<void>(replier);
@@ -2302,28 +2148,6 @@ private:
                     break;
                 }
 
-                if (req->request.send_data.has_value())
-                {
-                    try
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::CarbonFootprintService_send_data_Result{};
-                        reply.send_data->result = detail::CarbonFootprintService_send_data_Out{};
-                        reply.send_data->result->return_ = implementation_->send_data(
-                            *req,
-                            req->request.send_data->data);
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    catch (const InternalError& ex)
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::CarbonFootprintService_send_data_Result{};
-                        reply.send_data->InternalError_ex = ex;
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    break;
-                }
-
                 req->send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNSUPPORTED, replier_);
                 break;
             }
@@ -2389,7 +2213,7 @@ struct CarbonFootprintServiceServerProxy
 
 private:
 
-   std::shared_ptr<frpc::RpcServer> impl_;
+    std::shared_ptr<frpc::RpcServer> impl_;
 };
 
 }  // namespace detail
@@ -2444,11 +2268,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<MLModelMetadataServiceServer_IServerImplementation> implementation)
         : MLModelMetadataServiceServerLogic(
-                part,
-                service_name,
-                qos,
-                std::make_shared<ThreadPool>(*this, thread_pool_size),
-                std::move(implementation))
+            part,
+            service_name,
+            qos,
+            std::make_shared<ThreadPool>(*this, thread_pool_size),
+            std::move(implementation))
     {
     }
 
@@ -2599,10 +2423,6 @@ private:
 
     //} operation update_configuration
 
-    //{ operation send_data
-
-    //} operation send_data
-
     struct RequestContext : frpc::RpcRequest
     {
         RequestType request;
@@ -2614,11 +2434,6 @@ private:
         {
         }
         update_configuration_feeds;
-
-        struct send_data_feeds_t
-        {
-        }
-        send_data_feeds;
 
         const frtps::GUID_t& get_client_id() const override
         {
@@ -2646,7 +2461,6 @@ private:
         {
             size_t n_fields = 0;
             n_fields += request.update_configuration.has_value() ? 1 : 0;
-            n_fields += request.send_data.has_value() ? 1 : 0;
 
             return n_fields == 1U;
         }
@@ -2691,11 +2505,6 @@ private:
                 return prepare_update_configuration(replier);
             }
 
-            if (request.send_data.has_value())
-            {
-                return prepare_send_data(replier);
-            }
-
 
             send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNKNOWN_OPERATION, replier);
             return false;
@@ -2731,13 +2540,6 @@ private:
         std::vector<std::shared_ptr<IInputFeedProcessor>> input_feed_processors_;
 
         bool prepare_update_configuration(
-                frpc::Replier* replier)
-        {
-            static_cast<void>(replier);
-            return true;
-        }
-
-        bool prepare_send_data(
                 frpc::Replier* replier)
         {
             static_cast<void>(replier);
@@ -2894,28 +2696,6 @@ private:
                     break;
                 }
 
-                if (req->request.send_data.has_value())
-                {
-                    try
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::MLModelMetadataService_send_data_Result{};
-                        reply.send_data->result = detail::MLModelMetadataService_send_data_Out{};
-                        reply.send_data->result->return_ = implementation_->send_data(
-                            *req,
-                            req->request.send_data->data);
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    catch (const InternalError& ex)
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::MLModelMetadataService_send_data_Result{};
-                        reply.send_data->InternalError_ex = ex;
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    break;
-                }
-
                 req->send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNSUPPORTED, replier_);
                 break;
             }
@@ -2981,7 +2761,7 @@ struct MLModelMetadataServiceServerProxy
 
 private:
 
-   std::shared_ptr<frpc::RpcServer> impl_;
+    std::shared_ptr<frpc::RpcServer> impl_;
 };
 
 }  // namespace detail
@@ -3036,11 +2816,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<MLModelServiceServer_IServerImplementation> implementation)
         : MLModelServiceServerLogic(
-                part,
-                service_name,
-                qos,
-                std::make_shared<ThreadPool>(*this, thread_pool_size),
-                std::move(implementation))
+            part,
+            service_name,
+            qos,
+            std::make_shared<ThreadPool>(*this, thread_pool_size),
+            std::move(implementation))
     {
     }
 
@@ -3191,10 +2971,6 @@ private:
 
     //} operation update_configuration
 
-    //{ operation send_data
-
-    //} operation send_data
-
     struct RequestContext : frpc::RpcRequest
     {
         RequestType request;
@@ -3206,11 +2982,6 @@ private:
         {
         }
         update_configuration_feeds;
-
-        struct send_data_feeds_t
-        {
-        }
-        send_data_feeds;
 
         const frtps::GUID_t& get_client_id() const override
         {
@@ -3238,7 +3009,6 @@ private:
         {
             size_t n_fields = 0;
             n_fields += request.update_configuration.has_value() ? 1 : 0;
-            n_fields += request.send_data.has_value() ? 1 : 0;
 
             return n_fields == 1U;
         }
@@ -3283,11 +3053,6 @@ private:
                 return prepare_update_configuration(replier);
             }
 
-            if (request.send_data.has_value())
-            {
-                return prepare_send_data(replier);
-            }
-
 
             send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNKNOWN_OPERATION, replier);
             return false;
@@ -3323,13 +3088,6 @@ private:
         std::vector<std::shared_ptr<IInputFeedProcessor>> input_feed_processors_;
 
         bool prepare_update_configuration(
-                frpc::Replier* replier)
-        {
-            static_cast<void>(replier);
-            return true;
-        }
-
-        bool prepare_send_data(
                 frpc::Replier* replier)
         {
             static_cast<void>(replier);
@@ -3486,28 +3244,6 @@ private:
                     break;
                 }
 
-                if (req->request.send_data.has_value())
-                {
-                    try
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::MLModelService_send_data_Result{};
-                        reply.send_data->result = detail::MLModelService_send_data_Out{};
-                        reply.send_data->result->return_ = implementation_->send_data(
-                            *req,
-                            req->request.send_data->data);
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    catch (const InternalError& ex)
-                    {
-                        ReplyType reply{};
-                        reply.send_data = detail::MLModelService_send_data_Result{};
-                        reply.send_data->InternalError_ex = ex;
-                        replier_->send_reply(&reply, req->info);
-                    }
-                    break;
-                }
-
                 req->send_exception(frpc::RemoteExceptionCode_t::REMOTE_EX_UNSUPPORTED, replier_);
                 break;
             }
@@ -3573,7 +3309,7 @@ struct MLModelServiceServerProxy
 
 private:
 
-   std::shared_ptr<frpc::RpcServer> impl_;
+    std::shared_ptr<frpc::RpcServer> impl_;
 };
 
 }  // namespace detail

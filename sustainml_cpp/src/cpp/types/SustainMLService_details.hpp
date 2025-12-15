@@ -35,10 +35,10 @@ namespace detail {
 //{ update_configuration
 struct AppRequirementsService_update_configuration_In
 {
-    std::string configuration; 
+    std::string configuration;
 };
 
- 
+
 
 struct AppRequirementsService_update_configuration_Out
 {
@@ -52,41 +52,18 @@ struct AppRequirementsService_update_configuration_Result
 };
 
 //}  // update_configuration
- 
-//{ send_data
-struct AppRequirementsService_send_data_In
-{
-    std::string data; 
-};
 
- 
-
-struct AppRequirementsService_send_data_Out
-{
-    std::string return_;
-};
-
-struct AppRequirementsService_send_data_Result
-{
-    eprosima::fastcdr::optional<detail::AppRequirementsService_send_data_Out> result;
-    eprosima::fastcdr::optional<InternalError> InternalError_ex;
-};
-
-//}  // send_data
- 
 
 //{ top level
 
 struct AppRequirementsService_Request
 {
-    eprosima::fastcdr::optional<detail::AppRequirementsService_update_configuration_In> update_configuration;  
-    eprosima::fastcdr::optional<detail::AppRequirementsService_send_data_In> send_data;  
+    eprosima::fastcdr::optional<detail::AppRequirementsService_update_configuration_In> update_configuration;
 };
 
 struct AppRequirementsService_Reply
 {
-    eprosima::fastcdr::optional<detail::AppRequirementsService_update_configuration_Result> update_configuration; 
-    eprosima::fastcdr::optional<detail::AppRequirementsService_send_data_Result> send_data; 
+    eprosima::fastcdr::optional<detail::AppRequirementsService_update_configuration_Result> update_configuration;
     eprosima::fastcdr::optional<eprosima::fastdds::dds::rpc::RemoteExceptionCode_t> remoteEx;
 };
 
@@ -102,10 +79,10 @@ namespace detail {
 //{ update_configuration
 struct HWConstraintsService_update_configuration_In
 {
-    std::string configuration; 
+    std::string configuration;
 };
 
- 
+
 
 struct HWConstraintsService_update_configuration_Out
 {
@@ -119,41 +96,18 @@ struct HWConstraintsService_update_configuration_Result
 };
 
 //}  // update_configuration
- 
-//{ send_data
-struct HWConstraintsService_send_data_In
-{
-    std::string data; 
-};
 
- 
-
-struct HWConstraintsService_send_data_Out
-{
-    std::string return_;
-};
-
-struct HWConstraintsService_send_data_Result
-{
-    eprosima::fastcdr::optional<detail::HWConstraintsService_send_data_Out> result;
-    eprosima::fastcdr::optional<InternalError> InternalError_ex;
-};
-
-//}  // send_data
- 
 
 //{ top level
 
 struct HWConstraintsService_Request
 {
-    eprosima::fastcdr::optional<detail::HWConstraintsService_update_configuration_In> update_configuration;  
-    eprosima::fastcdr::optional<detail::HWConstraintsService_send_data_In> send_data;  
+    eprosima::fastcdr::optional<detail::HWConstraintsService_update_configuration_In> update_configuration;
 };
 
 struct HWConstraintsService_Reply
 {
-    eprosima::fastcdr::optional<detail::HWConstraintsService_update_configuration_Result> update_configuration; 
-    eprosima::fastcdr::optional<detail::HWConstraintsService_send_data_Result> send_data; 
+    eprosima::fastcdr::optional<detail::HWConstraintsService_update_configuration_Result> update_configuration;
     eprosima::fastcdr::optional<eprosima::fastdds::dds::rpc::RemoteExceptionCode_t> remoteEx;
 };
 
@@ -169,10 +123,10 @@ namespace detail {
 //{ update_configuration
 struct HWResourcesService_update_configuration_In
 {
-    std::string configuration; 
+    std::string configuration;
 };
 
- 
+
 
 struct HWResourcesService_update_configuration_Out
 {
@@ -186,41 +140,18 @@ struct HWResourcesService_update_configuration_Result
 };
 
 //}  // update_configuration
- 
-//{ send_data
-struct HWResourcesService_send_data_In
-{
-    std::string data; 
-};
 
- 
-
-struct HWResourcesService_send_data_Out
-{
-    std::string return_;
-};
-
-struct HWResourcesService_send_data_Result
-{
-    eprosima::fastcdr::optional<detail::HWResourcesService_send_data_Out> result;
-    eprosima::fastcdr::optional<InternalError> InternalError_ex;
-};
-
-//}  // send_data
- 
 
 //{ top level
 
 struct HWResourcesService_Request
 {
-    eprosima::fastcdr::optional<detail::HWResourcesService_update_configuration_In> update_configuration;  
-    eprosima::fastcdr::optional<detail::HWResourcesService_send_data_In> send_data;  
+    eprosima::fastcdr::optional<detail::HWResourcesService_update_configuration_In> update_configuration;
 };
 
 struct HWResourcesService_Reply
 {
-    eprosima::fastcdr::optional<detail::HWResourcesService_update_configuration_Result> update_configuration; 
-    eprosima::fastcdr::optional<detail::HWResourcesService_send_data_Result> send_data; 
+    eprosima::fastcdr::optional<detail::HWResourcesService_update_configuration_Result> update_configuration;
     eprosima::fastcdr::optional<eprosima::fastdds::dds::rpc::RemoteExceptionCode_t> remoteEx;
 };
 
@@ -236,10 +167,10 @@ namespace detail {
 //{ update_configuration
 struct CarbonFootprintService_update_configuration_In
 {
-    std::string configuration; 
+    std::string configuration;
 };
 
- 
+
 
 struct CarbonFootprintService_update_configuration_Out
 {
@@ -253,41 +184,18 @@ struct CarbonFootprintService_update_configuration_Result
 };
 
 //}  // update_configuration
- 
-//{ send_data
-struct CarbonFootprintService_send_data_In
-{
-    std::string data; 
-};
 
- 
-
-struct CarbonFootprintService_send_data_Out
-{
-    std::string return_;
-};
-
-struct CarbonFootprintService_send_data_Result
-{
-    eprosima::fastcdr::optional<detail::CarbonFootprintService_send_data_Out> result;
-    eprosima::fastcdr::optional<InternalError> InternalError_ex;
-};
-
-//}  // send_data
- 
 
 //{ top level
 
 struct CarbonFootprintService_Request
 {
-    eprosima::fastcdr::optional<detail::CarbonFootprintService_update_configuration_In> update_configuration;  
-    eprosima::fastcdr::optional<detail::CarbonFootprintService_send_data_In> send_data;  
+    eprosima::fastcdr::optional<detail::CarbonFootprintService_update_configuration_In> update_configuration;
 };
 
 struct CarbonFootprintService_Reply
 {
-    eprosima::fastcdr::optional<detail::CarbonFootprintService_update_configuration_Result> update_configuration; 
-    eprosima::fastcdr::optional<detail::CarbonFootprintService_send_data_Result> send_data; 
+    eprosima::fastcdr::optional<detail::CarbonFootprintService_update_configuration_Result> update_configuration;
     eprosima::fastcdr::optional<eprosima::fastdds::dds::rpc::RemoteExceptionCode_t> remoteEx;
 };
 
@@ -303,10 +211,10 @@ namespace detail {
 //{ update_configuration
 struct MLModelMetadataService_update_configuration_In
 {
-    std::string configuration; 
+    std::string configuration;
 };
 
- 
+
 
 struct MLModelMetadataService_update_configuration_Out
 {
@@ -320,41 +228,18 @@ struct MLModelMetadataService_update_configuration_Result
 };
 
 //}  // update_configuration
- 
-//{ send_data
-struct MLModelMetadataService_send_data_In
-{
-    std::string data; 
-};
 
- 
-
-struct MLModelMetadataService_send_data_Out
-{
-    std::string return_;
-};
-
-struct MLModelMetadataService_send_data_Result
-{
-    eprosima::fastcdr::optional<detail::MLModelMetadataService_send_data_Out> result;
-    eprosima::fastcdr::optional<InternalError> InternalError_ex;
-};
-
-//}  // send_data
- 
 
 //{ top level
 
 struct MLModelMetadataService_Request
 {
-    eprosima::fastcdr::optional<detail::MLModelMetadataService_update_configuration_In> update_configuration;  
-    eprosima::fastcdr::optional<detail::MLModelMetadataService_send_data_In> send_data;  
+    eprosima::fastcdr::optional<detail::MLModelMetadataService_update_configuration_In> update_configuration;
 };
 
 struct MLModelMetadataService_Reply
 {
-    eprosima::fastcdr::optional<detail::MLModelMetadataService_update_configuration_Result> update_configuration; 
-    eprosima::fastcdr::optional<detail::MLModelMetadataService_send_data_Result> send_data; 
+    eprosima::fastcdr::optional<detail::MLModelMetadataService_update_configuration_Result> update_configuration;
     eprosima::fastcdr::optional<eprosima::fastdds::dds::rpc::RemoteExceptionCode_t> remoteEx;
 };
 
@@ -370,10 +255,10 @@ namespace detail {
 //{ update_configuration
 struct MLModelService_update_configuration_In
 {
-    std::string configuration; 
+    std::string configuration;
 };
 
- 
+
 
 struct MLModelService_update_configuration_Out
 {
@@ -387,41 +272,18 @@ struct MLModelService_update_configuration_Result
 };
 
 //}  // update_configuration
- 
-//{ send_data
-struct MLModelService_send_data_In
-{
-    std::string data; 
-};
 
- 
-
-struct MLModelService_send_data_Out
-{
-    std::string return_;
-};
-
-struct MLModelService_send_data_Result
-{
-    eprosima::fastcdr::optional<detail::MLModelService_send_data_Out> result;
-    eprosima::fastcdr::optional<InternalError> InternalError_ex;
-};
-
-//}  // send_data
- 
 
 //{ top level
 
 struct MLModelService_Request
 {
-    eprosima::fastcdr::optional<detail::MLModelService_update_configuration_In> update_configuration;  
-    eprosima::fastcdr::optional<detail::MLModelService_send_data_In> send_data;  
+    eprosima::fastcdr::optional<detail::MLModelService_update_configuration_In> update_configuration;
 };
 
 struct MLModelService_Reply
 {
-    eprosima::fastcdr::optional<detail::MLModelService_update_configuration_Result> update_configuration; 
-    eprosima::fastcdr::optional<detail::MLModelService_send_data_Result> send_data; 
+    eprosima::fastcdr::optional<detail::MLModelService_update_configuration_Result> update_configuration;
     eprosima::fastcdr::optional<eprosima::fastdds::dds::rpc::RemoteExceptionCode_t> remoteEx;
 };
 

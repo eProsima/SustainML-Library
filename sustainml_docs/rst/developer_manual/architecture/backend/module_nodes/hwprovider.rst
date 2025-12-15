@@ -325,14 +325,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
 
                 onnx_to_use = candidates[0]
 
-                # 2) Quick CNN check: must contain Conv or ConvTranspose
-                m = onnx.load(onnx_to_use)
-                has_conv = any(n.op_type in ("Conv", "ConvTranspose") for n in m.graph.node)
-                if not has_conv:
-                    raise ValueError(f"Selected ONNX '{onnx_to_use}' is not a CNN (no Conv/ConvTranspose). "
-                                    "DFKI predictor is for U-Net-like CNNs.")
-
-                # 3) Run predictor
+                # 2) Run predictor
                 pred = predict_latency_energy(onnx_to_use)
                 latency = float(pred.get("latency_h", 0.0))
                 power_consumption = float(pred.get("power_w", 0.0))

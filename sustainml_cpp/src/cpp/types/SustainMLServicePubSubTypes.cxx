@@ -36,6 +36,7 @@ using DataRepresentationId_t = eprosima::fastdds::dds::DataRepresentationId_t;
 class AppRequirementsService_RequestPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::AppRequirementsService_Request type;
 
@@ -43,7 +44,7 @@ public:
     AppRequirementsService_RequestPubSubType()
     {
         set_name("AppRequirementsService_Request");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -78,7 +79,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -131,8 +132,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -184,6 +185,7 @@ public:
 class AppRequirementsService_ReplyPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::AppRequirementsService_Reply type;
 
@@ -191,7 +193,7 @@ public:
     AppRequirementsService_ReplyPubSubType()
     {
         set_name("AppRequirementsService_Reply");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -226,7 +228,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -279,8 +281,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -346,6 +348,7 @@ eprosima::fastdds::dds::rpc::ServiceTypeSupport create_AppRequirementsService_se
 class HWConstraintsService_RequestPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::HWConstraintsService_Request type;
 
@@ -353,7 +356,7 @@ public:
     HWConstraintsService_RequestPubSubType()
     {
         set_name("HWConstraintsService_Request");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -388,7 +391,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -441,8 +444,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -494,6 +497,7 @@ public:
 class HWConstraintsService_ReplyPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::HWConstraintsService_Reply type;
 
@@ -501,7 +505,7 @@ public:
     HWConstraintsService_ReplyPubSubType()
     {
         set_name("HWConstraintsService_Reply");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -536,7 +540,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -589,8 +593,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -656,6 +660,7 @@ eprosima::fastdds::dds::rpc::ServiceTypeSupport create_HWConstraintsService_serv
 class HWResourcesService_RequestPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::HWResourcesService_Request type;
 
@@ -663,7 +668,7 @@ public:
     HWResourcesService_RequestPubSubType()
     {
         set_name("HWResourcesService_Request");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -698,7 +703,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -751,8 +756,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -804,6 +809,7 @@ public:
 class HWResourcesService_ReplyPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::HWResourcesService_Reply type;
 
@@ -811,7 +817,7 @@ public:
     HWResourcesService_ReplyPubSubType()
     {
         set_name("HWResourcesService_Reply");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -846,7 +852,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -899,8 +905,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -966,6 +972,7 @@ eprosima::fastdds::dds::rpc::ServiceTypeSupport create_HWResourcesService_servic
 class CarbonFootprintService_RequestPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::CarbonFootprintService_Request type;
 
@@ -973,7 +980,7 @@ public:
     CarbonFootprintService_RequestPubSubType()
     {
         set_name("CarbonFootprintService_Request");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -1008,7 +1015,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1061,8 +1068,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1114,6 +1121,7 @@ public:
 class CarbonFootprintService_ReplyPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::CarbonFootprintService_Reply type;
 
@@ -1121,7 +1129,7 @@ public:
     CarbonFootprintService_ReplyPubSubType()
     {
         set_name("CarbonFootprintService_Reply");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -1156,7 +1164,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1209,8 +1217,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1276,6 +1284,7 @@ eprosima::fastdds::dds::rpc::ServiceTypeSupport create_CarbonFootprintService_se
 class MLModelMetadataService_RequestPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::MLModelMetadataService_Request type;
 
@@ -1283,7 +1292,7 @@ public:
     MLModelMetadataService_RequestPubSubType()
     {
         set_name("MLModelMetadataService_Request");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -1318,7 +1327,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1371,8 +1380,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1424,6 +1433,7 @@ public:
 class MLModelMetadataService_ReplyPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::MLModelMetadataService_Reply type;
 
@@ -1431,7 +1441,7 @@ public:
     MLModelMetadataService_ReplyPubSubType()
     {
         set_name("MLModelMetadataService_Reply");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -1466,7 +1476,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1519,8 +1529,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1586,6 +1596,7 @@ eprosima::fastdds::dds::rpc::ServiceTypeSupport create_MLModelMetadataService_se
 class MLModelService_RequestPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::MLModelService_Request type;
 
@@ -1593,7 +1604,7 @@ public:
     MLModelService_RequestPubSubType()
     {
         set_name("MLModelService_Request");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -1628,7 +1639,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1681,8 +1692,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1734,6 +1745,7 @@ public:
 class MLModelService_ReplyPubSubType : public eprosima::fastdds::dds::TopicDataType
 {
 public:
+
     // Alias for the type to be serialized.
     typedef detail::MLModelService_Reply type;
 
@@ -1741,7 +1753,7 @@ public:
     MLModelService_ReplyPubSubType()
     {
         set_name("MLModelService_Reply");
-        uint32_t type_size = 548UL;
+        uint32_t type_size = 276UL;
         type_size += static_cast<uint32_t>(eprosima::fastcdr::Cdr::alignment(type_size, 4)); /* possible submessage alignment */
         max_serialized_type_size = type_size + 4; /*encapsulation*/
         is_compute_key_provided = false;
@@ -1776,7 +1788,7 @@ public:
             ser.serialize_encapsulation();
             // Serialize the object.
             ser << *p_type;
-            ser.set_dds_cdr_options({0,0});
+            ser.set_dds_cdr_options({0, 0});
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {
@@ -1829,8 +1841,8 @@ public:
                 eprosima::fastcdr::CdrVersion::XCDRv1 : eprosima::fastcdr::CdrVersion::XCDRv2);
             size_t current_alignment {0};
             return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                        *static_cast<const type*>(data), current_alignment)) +
-                    4u /*encapsulation*/;
+                       *static_cast<const type*>(data), current_alignment)) +
+                   4u /*encapsulation*/;
         }
         catch (eprosima::fastcdr::exception::Exception& /*exception*/)
         {

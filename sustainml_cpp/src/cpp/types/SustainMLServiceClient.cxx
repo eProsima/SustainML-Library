@@ -283,7 +283,6 @@ private:
     {
         size_t n_fields = 0;
         n_fields += reply.update_configuration.has_value() ? 1 : 0;
-        n_fields += reply.send_data.has_value() ? 1 : 0;
         n_fields += reply.remoteEx.has_value() ? 1 : 0;
         return n_fields;
     }
@@ -401,81 +400,7 @@ private:
 
 
     //} operation update_configuration
- 
-    //{ operation send_data
 
-public:
-
-    eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) override
-    {
-        // Create a promise to hold the result
-        auto result = std::make_shared<send_data_promise>();
-
-        // Create and send the request
-        RequestType request;
-        request.send_data = detail::AppRequirementsService_send_data_In{};
-        request.send_data->data = data;
-
-        return send_request_with_promise(request, result, result->promise);
-    }
-
-private:
-
-    struct send_data_promise : public IReplyProcessor
-    {
-        std::promise<std::string> promise;
-
-        void process_reply(
-                const ReplyType& reply,
-                const frpc::RequestInfo& req_info,
-                bool& should_remove) override
-        {
-            should_remove = false;
-            if (req_info.related_sample_identity != info.related_sample_identity)
-            {
-                return;
-            }
-
-            should_remove = true;
-            if (!validate_reply(promise, reply))
-            {
-                return;
-            }
-
-            if (reply.remoteEx.has_value())
-            {
-                set_remote_exception(promise, reply.remoteEx.value());
-                return;
-            }
-
-            if (reply.send_data.has_value())
-            {
-                const auto& result = reply.send_data.value();
-                if (result.result.has_value())
-                {
-                    const auto& out = result.result.value();
-                    promise.set_value(out.return_);
-                    return;
-                }
-                if (result.InternalError_ex.has_value())
-                {
-                    promise.set_exception(
-                        std::make_exception_ptr(result.InternalError_ex.value()));
-                    return;
-                }
-            }
-
-            // If we reach this point, the reply is for another operation
-            set_invalid_reply(promise);
-        }
-
-    };
-
-
-
-    //} operation send_data
- 
 
 };
 
@@ -725,7 +650,6 @@ private:
     {
         size_t n_fields = 0;
         n_fields += reply.update_configuration.has_value() ? 1 : 0;
-        n_fields += reply.send_data.has_value() ? 1 : 0;
         n_fields += reply.remoteEx.has_value() ? 1 : 0;
         return n_fields;
     }
@@ -843,81 +767,7 @@ private:
 
 
     //} operation update_configuration
- 
-    //{ operation send_data
 
-public:
-
-    eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) override
-    {
-        // Create a promise to hold the result
-        auto result = std::make_shared<send_data_promise>();
-
-        // Create and send the request
-        RequestType request;
-        request.send_data = detail::HWConstraintsService_send_data_In{};
-        request.send_data->data = data;
-
-        return send_request_with_promise(request, result, result->promise);
-    }
-
-private:
-
-    struct send_data_promise : public IReplyProcessor
-    {
-        std::promise<std::string> promise;
-
-        void process_reply(
-                const ReplyType& reply,
-                const frpc::RequestInfo& req_info,
-                bool& should_remove) override
-        {
-            should_remove = false;
-            if (req_info.related_sample_identity != info.related_sample_identity)
-            {
-                return;
-            }
-
-            should_remove = true;
-            if (!validate_reply(promise, reply))
-            {
-                return;
-            }
-
-            if (reply.remoteEx.has_value())
-            {
-                set_remote_exception(promise, reply.remoteEx.value());
-                return;
-            }
-
-            if (reply.send_data.has_value())
-            {
-                const auto& result = reply.send_data.value();
-                if (result.result.has_value())
-                {
-                    const auto& out = result.result.value();
-                    promise.set_value(out.return_);
-                    return;
-                }
-                if (result.InternalError_ex.has_value())
-                {
-                    promise.set_exception(
-                        std::make_exception_ptr(result.InternalError_ex.value()));
-                    return;
-                }
-            }
-
-            // If we reach this point, the reply is for another operation
-            set_invalid_reply(promise);
-        }
-
-    };
-
-
-
-    //} operation send_data
- 
 
 };
 
@@ -1167,7 +1017,6 @@ private:
     {
         size_t n_fields = 0;
         n_fields += reply.update_configuration.has_value() ? 1 : 0;
-        n_fields += reply.send_data.has_value() ? 1 : 0;
         n_fields += reply.remoteEx.has_value() ? 1 : 0;
         return n_fields;
     }
@@ -1285,81 +1134,7 @@ private:
 
 
     //} operation update_configuration
- 
-    //{ operation send_data
 
-public:
-
-    eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) override
-    {
-        // Create a promise to hold the result
-        auto result = std::make_shared<send_data_promise>();
-
-        // Create and send the request
-        RequestType request;
-        request.send_data = detail::HWResourcesService_send_data_In{};
-        request.send_data->data = data;
-
-        return send_request_with_promise(request, result, result->promise);
-    }
-
-private:
-
-    struct send_data_promise : public IReplyProcessor
-    {
-        std::promise<std::string> promise;
-
-        void process_reply(
-                const ReplyType& reply,
-                const frpc::RequestInfo& req_info,
-                bool& should_remove) override
-        {
-            should_remove = false;
-            if (req_info.related_sample_identity != info.related_sample_identity)
-            {
-                return;
-            }
-
-            should_remove = true;
-            if (!validate_reply(promise, reply))
-            {
-                return;
-            }
-
-            if (reply.remoteEx.has_value())
-            {
-                set_remote_exception(promise, reply.remoteEx.value());
-                return;
-            }
-
-            if (reply.send_data.has_value())
-            {
-                const auto& result = reply.send_data.value();
-                if (result.result.has_value())
-                {
-                    const auto& out = result.result.value();
-                    promise.set_value(out.return_);
-                    return;
-                }
-                if (result.InternalError_ex.has_value())
-                {
-                    promise.set_exception(
-                        std::make_exception_ptr(result.InternalError_ex.value()));
-                    return;
-                }
-            }
-
-            // If we reach this point, the reply is for another operation
-            set_invalid_reply(promise);
-        }
-
-    };
-
-
-
-    //} operation send_data
- 
 
 };
 
@@ -1609,7 +1384,6 @@ private:
     {
         size_t n_fields = 0;
         n_fields += reply.update_configuration.has_value() ? 1 : 0;
-        n_fields += reply.send_data.has_value() ? 1 : 0;
         n_fields += reply.remoteEx.has_value() ? 1 : 0;
         return n_fields;
     }
@@ -1727,81 +1501,7 @@ private:
 
 
     //} operation update_configuration
- 
-    //{ operation send_data
 
-public:
-
-    eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) override
-    {
-        // Create a promise to hold the result
-        auto result = std::make_shared<send_data_promise>();
-
-        // Create and send the request
-        RequestType request;
-        request.send_data = detail::CarbonFootprintService_send_data_In{};
-        request.send_data->data = data;
-
-        return send_request_with_promise(request, result, result->promise);
-    }
-
-private:
-
-    struct send_data_promise : public IReplyProcessor
-    {
-        std::promise<std::string> promise;
-
-        void process_reply(
-                const ReplyType& reply,
-                const frpc::RequestInfo& req_info,
-                bool& should_remove) override
-        {
-            should_remove = false;
-            if (req_info.related_sample_identity != info.related_sample_identity)
-            {
-                return;
-            }
-
-            should_remove = true;
-            if (!validate_reply(promise, reply))
-            {
-                return;
-            }
-
-            if (reply.remoteEx.has_value())
-            {
-                set_remote_exception(promise, reply.remoteEx.value());
-                return;
-            }
-
-            if (reply.send_data.has_value())
-            {
-                const auto& result = reply.send_data.value();
-                if (result.result.has_value())
-                {
-                    const auto& out = result.result.value();
-                    promise.set_value(out.return_);
-                    return;
-                }
-                if (result.InternalError_ex.has_value())
-                {
-                    promise.set_exception(
-                        std::make_exception_ptr(result.InternalError_ex.value()));
-                    return;
-                }
-            }
-
-            // If we reach this point, the reply is for another operation
-            set_invalid_reply(promise);
-        }
-
-    };
-
-
-
-    //} operation send_data
- 
 
 };
 
@@ -2051,7 +1751,6 @@ private:
     {
         size_t n_fields = 0;
         n_fields += reply.update_configuration.has_value() ? 1 : 0;
-        n_fields += reply.send_data.has_value() ? 1 : 0;
         n_fields += reply.remoteEx.has_value() ? 1 : 0;
         return n_fields;
     }
@@ -2169,81 +1868,7 @@ private:
 
 
     //} operation update_configuration
- 
-    //{ operation send_data
 
-public:
-
-    eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) override
-    {
-        // Create a promise to hold the result
-        auto result = std::make_shared<send_data_promise>();
-
-        // Create and send the request
-        RequestType request;
-        request.send_data = detail::MLModelMetadataService_send_data_In{};
-        request.send_data->data = data;
-
-        return send_request_with_promise(request, result, result->promise);
-    }
-
-private:
-
-    struct send_data_promise : public IReplyProcessor
-    {
-        std::promise<std::string> promise;
-
-        void process_reply(
-                const ReplyType& reply,
-                const frpc::RequestInfo& req_info,
-                bool& should_remove) override
-        {
-            should_remove = false;
-            if (req_info.related_sample_identity != info.related_sample_identity)
-            {
-                return;
-            }
-
-            should_remove = true;
-            if (!validate_reply(promise, reply))
-            {
-                return;
-            }
-
-            if (reply.remoteEx.has_value())
-            {
-                set_remote_exception(promise, reply.remoteEx.value());
-                return;
-            }
-
-            if (reply.send_data.has_value())
-            {
-                const auto& result = reply.send_data.value();
-                if (result.result.has_value())
-                {
-                    const auto& out = result.result.value();
-                    promise.set_value(out.return_);
-                    return;
-                }
-                if (result.InternalError_ex.has_value())
-                {
-                    promise.set_exception(
-                        std::make_exception_ptr(result.InternalError_ex.value()));
-                    return;
-                }
-            }
-
-            // If we reach this point, the reply is for another operation
-            set_invalid_reply(promise);
-        }
-
-    };
-
-
-
-    //} operation send_data
- 
 
 };
 
@@ -2493,7 +2118,6 @@ private:
     {
         size_t n_fields = 0;
         n_fields += reply.update_configuration.has_value() ? 1 : 0;
-        n_fields += reply.send_data.has_value() ? 1 : 0;
         n_fields += reply.remoteEx.has_value() ? 1 : 0;
         return n_fields;
     }
@@ -2611,81 +2235,7 @@ private:
 
 
     //} operation update_configuration
- 
-    //{ operation send_data
 
-public:
-
-    eprosima::fastdds::dds::rpc::RpcFuture<std::string> send_data(
-            /*in*/ const std::string& data) override
-    {
-        // Create a promise to hold the result
-        auto result = std::make_shared<send_data_promise>();
-
-        // Create and send the request
-        RequestType request;
-        request.send_data = detail::MLModelService_send_data_In{};
-        request.send_data->data = data;
-
-        return send_request_with_promise(request, result, result->promise);
-    }
-
-private:
-
-    struct send_data_promise : public IReplyProcessor
-    {
-        std::promise<std::string> promise;
-
-        void process_reply(
-                const ReplyType& reply,
-                const frpc::RequestInfo& req_info,
-                bool& should_remove) override
-        {
-            should_remove = false;
-            if (req_info.related_sample_identity != info.related_sample_identity)
-            {
-                return;
-            }
-
-            should_remove = true;
-            if (!validate_reply(promise, reply))
-            {
-                return;
-            }
-
-            if (reply.remoteEx.has_value())
-            {
-                set_remote_exception(promise, reply.remoteEx.value());
-                return;
-            }
-
-            if (reply.send_data.has_value())
-            {
-                const auto& result = reply.send_data.value();
-                if (result.result.has_value())
-                {
-                    const auto& out = result.result.value();
-                    promise.set_value(out.return_);
-                    return;
-                }
-                if (result.InternalError_ex.has_value())
-                {
-                    promise.set_exception(
-                        std::make_exception_ptr(result.InternalError_ex.value()));
-                    return;
-                }
-            }
-
-            // If we reach this point, the reply is for another operation
-            set_invalid_reply(promise);
-        }
-
-    };
-
-
-
-    //} operation send_data
- 
 
 };
 
