@@ -62,7 +62,8 @@ template <typename ClientT>
 bool rpc_update_configuration(
         ClientT& client,
         const std::string& configuration,
-        std::string& out_cfg)
+        std::string& out_cfg,
+        const std::atomic<bool>& terminate_flag)
 {
     auto future = client.update_configuration(configuration);
 
@@ -73,6 +74,12 @@ bool rpc_update_configuration(
 
     while (true)
     {
+        if (terminate_flag.load(std::memory_order_acquire))
+        {
+            std::cerr << "[INFO] RPC aborted due to shutdown\n";
+            return false;
+        }
+
         // Wait a bit, but don’t block forever
         auto status = future.wait_for(step);
 
@@ -148,7 +155,7 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
                 });
     }
 
-    // create the proxy for this node
+    // Create the proxy for this node
     NodeID node_id = common::get_node_id_from_name(participant_name);
 
     std::cout << "[DEBUG Orchestrator] Participant discovered: name='"
@@ -159,8 +166,9 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
 
     std::lock_guard<std::mutex> lock(orchestrator_->proxies_mtx_);
 
-    // check if the node has been terminated
-    if (!orchestrator_->terminated_.load())
+    // Check if the node has been terminated
+    if (!orchestrator_->terminate_.load(std::memory_order_acquire) &&
+            !orchestrator_->terminated_.load(std::memory_order_acquire))
     {
         if (reason == eprosima::fastdds::rtps::ParticipantDiscoveryStatus::DISCOVERED_PARTICIPANT &&
                 orchestrator_->node_proxies_[static_cast<uint32_t>(node_id)] == nullptr)
@@ -223,6 +231,8 @@ OrchestratorNode::~OrchestratorNode()
 
 void OrchestratorNode::destroy()
 {
+    terminate_.store(true, std::memory_order_release);
+
     if (!terminated_.load())
     {
         {
@@ -379,7 +389,7 @@ bool OrchestratorNode::init()
 
     holder->app_requirements_client = create_AppRequirementsServiceClient(
         *participant_,
-        "AppRequirementsService",       // must match server side
+        "AppRequirementsService",       // Must match server side
         rqos);
     std::cout << "[DEBUG Orchestrator] Created AppRequirementsServiceClient service='AppRequirementsService' ok="
               << (holder->app_requirements_client ? "true" : "false")
@@ -481,7 +491,7 @@ std::pair<types::TaskId, types::UserInput*> OrchestratorNode::prepare_new_iterat
         std::lock_guard<std::mutex> lock(task_db_->get_mutex());
         task_db_->prepare_new_entry_nts(new_task_id, true);
         // Copy the UserInput from the previous iteration
-        // it also updates the iteration_id in the data
+        // It also updates the iteration_id in the data
         task_db_->copy_data_nts(old_task_id, new_task_id, {NodeID::ID_ORCHESTRATOR});
         task_db_->get_task_data_nts(new_task_id, output.second);
     }
@@ -715,7 +725,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             {
                 std::cout << "[RPC CLIENT] calling AppRequirementsService.update_configuration tx="
                           << req.transaction_id() << std::endl;
-                if (!rpc_update_configuration(*holder->app_requirements_client, req.configuration(), cfg))
+                if (!rpc_update_configuration(*holder->app_requirements_client, req.configuration(), cfg, terminate_))
                 {
                     return res; // Timeout or not ready
                 }
@@ -725,7 +735,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             {
                 std::cout << "[RPC CLIENT] calling HWConstraintsService.update_configuration tx="
                           << req.transaction_id() << std::endl;
-                if (!rpc_update_configuration(*holder->hw_constraints_client, req.configuration(), cfg))
+                if (!rpc_update_configuration(*holder->hw_constraints_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
                 }
@@ -736,7 +746,7 @@ types::ResponseType OrchestratorNode::configuration_request (
                 std::cout << "[RPC CLIENT] calling HWResourcesService.update_configuration tx="
                           << req.transaction_id() << std::endl;
 
-                if (!rpc_update_configuration(*holder->hw_resources_client, req.configuration(), cfg))
+                if (!rpc_update_configuration(*holder->hw_resources_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
                 }
@@ -746,7 +756,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             {
                 std::cout << "[RPC CLIENT] calling CarbonFootprintService.update_configuration tx="
                           << req.transaction_id() << std::endl;
-                if (!rpc_update_configuration(*holder->carbon_footprint_client, req.configuration(), cfg))
+                if (!rpc_update_configuration(*holder->carbon_footprint_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
                 }
@@ -756,7 +766,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             {
                 std::cout << "[RPC CLIENT] calling MLModelMetadataService.update_configuration tx="
                           << req.transaction_id() << std::endl;
-                if (!rpc_update_configuration(*holder->ml_model_metadata_client, req.configuration(), cfg))
+                if (!rpc_update_configuration(*holder->ml_model_metadata_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
                 }
@@ -766,7 +776,7 @@ types::ResponseType OrchestratorNode::configuration_request (
             {
                 std::cout << "[RPC CLIENT] calling MLModelService.update_configuration tx="
                           << req.transaction_id() << std::endl;
-                if (!rpc_update_configuration(*holder->ml_model_client, req.configuration(), cfg))
+                if (!rpc_update_configuration(*holder->ml_model_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
                 }

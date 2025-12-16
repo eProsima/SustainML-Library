@@ -127,6 +127,11 @@ public:
         return req_res_listener_;
     }
 
+    bool shutting_down() const noexcept
+    {
+        return shutting_down_.load(std::memory_order_acquire);
+    }
+
 protected:
 
     /**
@@ -253,6 +258,8 @@ private:
 
     }
     control_listener_;
+
+    std::atomic<bool> shutting_down_{false};
 };
 
 } // namespace core

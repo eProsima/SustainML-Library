@@ -14,6 +14,7 @@
 
 
 file(GLOB BLACKBOXTESTS_TEST_SOURCE "common/BlackboxTests*.cpp")
+list(FILTER BLACKBOXTESTS_TEST_SOURCE EXCLUDE REGEX ".*ResponseNodes.*\\.cpp$") # Old behavior tests
 set(BLACKBOXTESTS_SOURCE ${BLACKBOXTESTS_TEST_SOURCE}
     ${PROJECT_SOURCE_DIR}/src/cpp/types/typesImplTypeObjectSupport.cxx
     ${PROJECT_SOURCE_DIR}/src/cpp/types/typesImplPubSubTypes.cxx

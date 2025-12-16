@@ -56,6 +56,11 @@ public:
             const eprosima::fastdds::dds::rpc::RpcRequest& /*info*/,
             const std::string& configuration) override
     {
+        if (node_.shutting_down())
+        {
+            throw ::InternalError("update_configuration: node is shutting down");
+        }
+
         std::cout << "[RPC SERVER/" << tag_ << "] update_configuration cfg='"
                   << configuration << "'\n";
 

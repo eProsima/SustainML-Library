@@ -118,24 +118,26 @@ NodeImpl::NodeImpl(
 
 NodeImpl::~NodeImpl()
 {
+    shutting_down_.store(true, std::memory_order_release);
+
     EPROSIMA_LOG_INFO(NODE, "Destroying Node");
 
-    // Stop RPC server before destroying the participant
     if (rpc_server_)
     {
         rpc_server_->stop();
+
+        if (rpc_server_thread_.joinable())
+        {
+            rpc_server_thread_.join();
+        }
+        rpc_server_.reset();
     }
 
-    if (rpc_server_thread_.joinable())
-    {
-        rpc_server_thread_.join();
-    }
-
-    if (nullptr != participant_)
+    if (participant_)
     {
         participant_->delete_contained_entities();
-        auto dpf = DomainParticipantFactory::get_instance();
-        dpf->delete_participant(participant_);
+        DomainParticipantFactory::get_instance()->delete_participant(participant_);
+        participant_ = nullptr;
     }
 
     dispatcher_->stop();
