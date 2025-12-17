@@ -61,9 +61,6 @@ public:
             throw ::InternalError("update_configuration: node is shutting down");
         }
 
-        std::cout << "[RPC SERVER/" << tag_ << "] update_configuration cfg='"
-                  << configuration << "'\n";
-
         types::RequestType req;
         types::ResponseType res;
 
@@ -77,12 +74,14 @@ public:
         {
             throw ::InternalError(std::string("update_configuration: ") + e.what());
         }
-        catch (...)
-        {
-            throw ::InternalError("update_configuration: unknown error");
-        }
 
-        return res.configuration();
+        // Copy into owned std::string
+        std::string reply = res.configuration();
+
+        std::cout << "[RPC SERVER/" << tag_
+                  << "] returning cfg='" << reply << "'\n";
+
+        return reply;   // Safe
     }
 
 private:

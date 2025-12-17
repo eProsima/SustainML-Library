@@ -133,7 +133,6 @@ public:
     ~ManagedNode()
     {
         stop();
-        th_->join();
     }
 
     void start()
@@ -149,6 +148,11 @@ public:
     void stop()
     {
         _NODE_TYPE::terminate();
+
+        if (th_ && th_->joinable())
+        {
+            th_->join();
+        }
     }
 
     void prepare_expected_samples(
@@ -198,4 +202,3 @@ private:
 };
 
 #endif // _TEST_BLACKBOX_MANAGEDNODE_HPP_
-
