@@ -462,7 +462,7 @@ class Orchestrator:
             request_type.node_id(utils.node_id.HW_PROVIDER.value)
         elif any(key in request_type.configuration() for key in ["modality", "in_out_modalities", "metrics", "model_info", "problem_from_modality", "dataset_path"]):
             request_type.node_id(utils.node_id.ML_MODEL_METADATA.value)
-        elif any(key in request_type.configuration() for key in ["goal", "model_from_goal"]):
+        elif any(key in request_type.configuration() for key in ["goal", "model_from_goal", "hf_search"]):
             request_type.node_id(utils.node_id.ML_MODEL_PROVIDER.value)
 
         if request_type.node_id() is None or request_type.transaction_id() is None or request_type.configuration() is None:
