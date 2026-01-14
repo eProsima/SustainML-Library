@@ -39,7 +39,7 @@ class RpcRequest;
 namespace sustainml {
 namespace core {
 
-template <typename ServerBase>
+template<typename ServerBase>
 class GenericServiceNodeImpl : public ServerBase
 {
 public:
@@ -78,10 +78,7 @@ public:
         // Copy into owned std::string
         std::string reply = res.configuration();
 
-        std::cout << "[RPC SERVER/" << tag_
-                  << "] returning cfg='" << reply << "'\n";
-
-        return reply;   // Safe
+        return reply;
     }
 
 private:

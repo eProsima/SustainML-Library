@@ -67,7 +67,8 @@ public:
      * Default constructor.
      */
     InternalError()
-        : InternalError("InternalError")
+        : InternalError(
+                "InternalError")
     {
     }
 

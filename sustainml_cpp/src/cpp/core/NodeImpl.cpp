@@ -181,8 +181,6 @@ bool NodeImpl::init(
         return false;
     }
 
-    std::cout << "[DEBUG NodeImpl] init() called with name='" << name << "'" << std::endl;
-
     eprosima::fastdds::dds::ReplierQos rqos;
 
     try
@@ -315,8 +313,8 @@ bool NodeImpl::init(
     {
         EPROSIMA_LOG_WARNING(NODE,
                 "No RPC server created for node '" << name
-                                                   << "' (service_name='" << rpc_service_name_ <<
-                "'). Node will run without RPC.");
+                                                   << "' (service_name='" << rpc_service_name_
+                                                   << "'). Node will run without RPC.");
     }
 
     if (rpc_server_)

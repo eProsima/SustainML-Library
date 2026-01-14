@@ -438,8 +438,6 @@ class Orchestrator:
         if 'model_family' not in extra_data and type:
             extra_data['model_family'] = type
 
-        print(f"[DEBUG orchestrator] Final extra_data sent -> {extra_data}")
-
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
