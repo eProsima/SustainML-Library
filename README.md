@@ -8,7 +8,7 @@
         <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
         <a href="https://sustainml.readthedocs.io/en/latest">Docs</a>
         <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-        <a href="https://sustainml.eu/index.php/news">News</a>
+        <a href="https://sustainml.eu/showroom/news">News</a>
         <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
         <a href="https://twitter.com/EProsima">Twitter</a>
         <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
@@ -23,8 +23,8 @@
     <a href="https://github.com/eProsima/SustainML/releases"><img alt="Releases" src="https://img.shields.io/github/v/release/eProsima/SustainML?sort=semver"/></a>
     <a href="https://github.com/eProsima/SustainML-Library/actions/workflows/test.yml"><img alt="SustainML Ubuntu CI" src="https://github.com/eProsima/SustainML-Library/actions/workflows/test.yml/badge.svg"/></a>
     <a href="https://github.com/eProsima/SustainML/issues"><img alt="Issues" src="https://img.shields.io/github/issues/eProsima/SustainML.svg"/></a>
-    <a href="https://github.com/eProsima/SustainML/network/memberss"><img alt="Forks" src="https://img.shields.io/github/forks/eProsima/SustainML.svg"/></a>
-    <a href="https://github.com/eProsima/SustainML/stargazerss"><img alt="Stars" src="https://img.shields.io/github/stars/eProsima/SustainML.svg"/></a>
+    <a href="https://github.com/eProsima/SustainML/network/members"><img alt="Forks" src="https://img.shields.io/github/forks/eProsima/SustainML.svg"/></a>
+    <a href="https://github.com/eProsima/SustainML/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/eProsima/SustainML.svg"/></a>
     <a href="https://SustainML.readthedocs.io/en/latest/"><img alt="Documentation Status" src="https://readthedocs.org/projects/sustainml/badge/?version=latest&style=flat"/></a>
 </div>
 
@@ -45,25 +45,26 @@ AI developers from all experience levels can make use of the framework through i
 ### Project Architecture
 
 The *SustainML Framework* is composed of different Software Modules, each one related to a specific task, which are specialized in solving the different parts of the machine learning problem architecture definition, starting from the user’s problem description.
-Each of the modules forms a Node.
-These steps are basically:
+Each of these modules forms a Node.
+The main processing steps are:
 
 1. Encode the problem and constraints defined by the user
 2. Suggest a machine learning model
 3. Propose an optimized hardware for running the suggested model
-4. Warn about the estimated carbon footprint that would take training the model in the hardware
+4. Warn about the estimated carbon footprint of training the model on the proposed hardware
 
-All the Nodes shall import its corresponding Python library, so that each Node can be abstracted from the DDS communications.
+All the Nodes shall import their corresponding Python library, so that each Node can be abstracted from the DDS communications.
 
 ### Library
 
-This library repository contains all the modules definitions.
-The Framework uses the library API to deploy those different SustainML modules.
-The exchanged information between the modules is over DDS.
+This library repository contains all the modules definitions. This repository is not intended to be used or installed independently.
+It is consumed internally by the SustainML Framework.
+The Framework uses the library API to deploy different SustainML modules.
+Information exchanged between modules is transmitted over DDS.
 
 ### Framework
 
-The Framework includes a *Graphical User Interface* (GUI) in which user interacts and introduces the ML problem definition.
+The Framework includes a *Graphical User Interface* (GUI) through which the user interacts with the framework and defines the ML problem.
 That GUI implements also the **Orchestrator** node, a key node that feeds the remaining modules with the information provided by the user, retrieves all the results, and display them to the user through this GUI.
 
 This process can be iterative.

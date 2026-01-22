@@ -30,7 +30,7 @@
 #include <sustainml_cpp/nodes/MLModelMetadataNode.hpp>
 #include <sustainml_cpp/core/RequestReplyListener.hpp>
 
-template <size_t n_inputs, typename ... PACK>
+template<size_t n_inputs, typename ... PACK>
 struct GenericTaskListener : public sustainml::core::Callable<PACK...>
 {
 
@@ -54,7 +54,7 @@ struct GenericTaskListener : public sustainml::core::Callable<PACK...>
     std::function<void(PACK&...)> functor_;
 };
 
-template <typename _NODE_TYPE, typename _LISTENER_TYPE, typename ... Args>
+template<typename _NODE_TYPE, typename _LISTENER_TYPE, typename ... Args>
 class ManagedNode
 {
     using functor_t = std::function<void (Args&...)>;
