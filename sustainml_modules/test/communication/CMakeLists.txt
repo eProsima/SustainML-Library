@@ -103,4 +103,8 @@ if (Python3_FOUND)
             -ap app_requirements_node.py
             -py-orc RequestOrchestratorNode.py)
 
+    set_tests_properties(SimpleCommunicationOrchestratorSixNodesPython     PROPERTIES TIMEOUT 600)
+    set_tests_properties(SimpleCommunicationPythonOrchestratorSixNodesPython PROPERTIES TIMEOUT 600)
+    set_tests_properties(SimpleServicePythonOrchestratorSixNodesPython     PROPERTIES TIMEOUT 600)
+
 endif()

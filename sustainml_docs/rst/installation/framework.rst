@@ -68,12 +68,12 @@ Install them using the package manager of the appropriate Linux distribution.
 
             brew install \
                 curl wget git llvm cmake gcc python swig openssl@3.0 asio tinyxml2 libp11 softhsm qt@5 openjdk@21 neo4j
-            
+
             # Add Java 21 to the PATH (bashrc, zshrc or fish config depending on your shell)
             echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 21)' >> ~/.zshrc
             echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
             source ~/.zshrc
-    
+
             # Start Neo4j as a service
             brew services start neo4j
 
@@ -99,7 +99,7 @@ The following command also builds and installs the SustainML framework and all i
             vcs import src < sustainml.repos && cd ~/SustainML/SustainML_ws/src/sustainml_lib && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
-            gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O rag/models_index.ann && \
+            gdown --id 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             cd ~/SustainML/SustainML_ws && colcon build && \
             source ~/SustainML/SustainML_ws/install/setup.bash && \
@@ -123,7 +123,7 @@ The following command also builds and installs the SustainML framework and all i
             vcs import src < sustainml.repos && cd ~/SustainML/SustainML_ws/src/sustainml_lib && \
             git submodule update --init --recursive && \
             cd ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1 && \
-            gdown --id 1gTXqQtP9JS92gAtPzhKgZpdIHSV_Lcnp -O rag/models_index.ann && \
+            gdown --id 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O rag/models_index.ann && \
             pip3 install -r ~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/requirements.txt && \
             cd ~/SustainML/SustainML_ws && colcon build --packages-up-to sustainml --cmake-args -DCMAKE_CXX_STANDARD=17 \
                     -DQt5_DIR=/usr/local/opt/qt5/lib/cmake/Qt5 && \
