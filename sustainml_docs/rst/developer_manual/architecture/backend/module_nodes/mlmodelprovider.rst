@@ -82,23 +82,56 @@ And inside ``configuration_callback()`` implement the response to the configurat
     from sustainml_py.nodes.MLModelNode import MLModelNode
 
     # Manage signaling
+    import json
     import os
     import signal
+    import sys
     import threading
     import time
-    import json
+
+    HERE = os.path.dirname(__file__)
+    WP2_ROOT = os.path.abspath(os.path.join(HERE, "..", "sustainml-wp2"))
+
+    if WP2_ROOT not in sys.path:
+        sys.path.insert(0, WP2_ROOT)
+
+    import hw_provider_fpga
 
     from rdftool.ModelONNXCodebase import model
     from neo4j import GraphDatabase
-    from rdftool.rdfCode import load_graph, get_models_for_problem, get_models_for_problem_and_tag
-
+    from rdftool.rdfCode import load_graph, get_models_for_problem
     from rag.rag_backend import answer_question
+    from os.path import isdir, dirname, abspath, join
+    from os import listdir
 
     # Neo4j config/driver for local checks (used by _model_has_goal)
     NEO4J_URI = "bolt://localhost:7687"
     NEO4J_USER = "neo4j"
     NEO4J_PASSWORD = "12345678"
     neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+
+
+    def _unet_models_dir():
+        # optional override: SUSTAINML_UNET_DIR=/path/to/unet_models
+        env = os.environ.get("SUSTAINML_UNET_DIR")
+        if env:
+            return os.path.abspath(env)
+
+        return os.path.abspath(
+            os.path.join(os.path.dirname(hw_provider_fpga.__file__),
+                        "vendor", "sustain_ml_predictor", "unet_models")
+        )
+
+
+    def list_unet_onnx_models(basename_only=True):
+        d = _unet_models_dir()
+        if not os.path.isdir(d):
+            print(f"[WARN] U-Net directory not found: {d}")
+            return []
+        names = [f for f in os.listdir(d) if f.endswith(".onnx")]
+        return sorted([os.path.splitext(f)[0] for f in names]) if basename_only else \
+            sorted([os.path.join(d, f) for f in names])
+
 
     def _model_has_goal(neo4j_driver, model_name: str, goal: str) -> bool:
         cypher = """
@@ -139,13 +172,13 @@ And inside ``configuration_callback()`` implement the response to the configurat
     # Inputs: ml_model_metadata, app_requirements, hw_constraints, ml_model_baseline, hw_baseline, carbonfootprint_baseline
     # Outputs: node_status, ml_model
     def task_callback(ml_model_metadata,
-                      app_requirements,
-                      hw_constraints,
-                      ml_model_baseline,
-                      hw_baseline,
-                      carbonfootprint_baseline,
-                      node_status,
-                      ml_model):
+                    app_requirements,
+                    hw_constraints,
+                    ml_model_baseline,
+                    hw_baseline,
+                    carbonfootprint_baseline,
+                    node_status,
+                    ml_model):
 
         # Callback implementation here
 
@@ -175,9 +208,41 @@ And inside ``configuration_callback()`` implement the response to the configurat
                     chosen_model = extra_data_dict["model_selected"]
                     print("Model already selected: ", chosen_model)
 
+                # If a model was manually selected, skip automatic selection
+                if chosen_model:
+                    print(f"[INFO] Using manually selected model: {chosen_model}")
+
+                    # If user passed a full path to an .onnx, use it directly
+                    onnx_path = None
+                    if isinstance(chosen_model, str) and chosen_model.endswith(".onnx") and os.path.isfile(chosen_model):
+                        onnx_path = chosen_model
+
+                    # Else, try U-Net vendor dir: <basename>[.onnx]
+                    if onnx_path is None:
+                        unet_dir = _unet_models_dir()
+                        cand1 = os.path.join(unet_dir, chosen_model)          # maybe includes .onnx already
+                        cand2 = os.path.join(unet_dir, chosen_model + ".onnx")
+                        if os.path.isfile(cand1):
+                            onnx_path = cand1
+                        elif os.path.isfile(cand2):
+                            onnx_path = cand2
+
+                    # Else, fall back to graph name -> onnx path resolution
+                    if onnx_path is None:
+                        onnx_path = model(chosen_model)
+
+                    ml_model.model(chosen_model)
+                    ml_model.model_path(onnx_path)
+
+                    # Add unsupported_models information to extra_data in JSON format
+                    extra_data = {"unsupported_models": unsupported_models}
+                    encoded_data = json.dumps(extra_data).encode("utf-8")
+                    ml_model.extra_data(encoded_data)
+                    return
+
                 problem_short_description = extra_data_dict["problem_short_description"]
 
-            goal = ml_model_metadata.ml_model_metadata()[0]  # goal selected by metadata node
+            goal = ml_model_metadata.ml_model_metadata()[0]  # Goal selected by metadata node
             print(f"Problem short description: {problem_short_description}")
             print(f"Selected goal (metadata): {goal}")
 
@@ -210,7 +275,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
                 )
 
                 if not candidate or candidate.strip().lower() == "none":
-                    # mark and try again
+                    # Mark and try again
                     if candidate:
                         restrained_models.append(candidate)
                     continue
@@ -252,60 +317,92 @@ And inside ``configuration_callback()`` implement the response to the configurat
     # Outputs: res
     def configuration_callback(req, res):
 
-        # Callback for configuration implementation here
-        if 'model_from_goal' in req.configuration():
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
+        raw = (req.configuration() or "").strip()
+        res.node_id(req.node_id())
+        res.transaction_id(req.transaction_id())
 
-            try:
-                text = req.configuration()[len("model_from_goal, "):]
-                parts = text.split(',')
-                if len(parts) >= 2:
-                    goal = parts[0].strip()
-                    tag = parts[1].strip()
-                    models = get_models_for_problem_and_tag(goal, tag)
-                else:
-                    goal = text.strip()
-                    models = get_models_for_problem(goal)
+        # Only handle the listing endpoint(s)
+        if raw.lower().startswith("model_from_goal"):
+            # Accept both forms:
+            #   "model_from_goal, <goal>, <hw>, <family>"
+            #   "model_from_goal, model_from_goal, <goal-or-sentinel>, <hw>, <family>" (buggy frontend)
+            s = raw.split(",", 1)
+            args_str = s[1] if len(s) > 1 else ""          # everything after first comma
+            parts = [p.strip() for p in args_str.split(",") if p is not None]
 
-                sorted_models = ', '.join(sorted([str(m[0]) for m in models]))
+            # Normalize arity (goal, hw, family)
+            goal   = parts[0] if len(parts) >= 1 else ""
+            hw     = parts[1] if len(parts) >= 2 else ""
+            family = parts[2] if len(parts) >= 3 else ""
 
-                if not sorted_models:
-                    res.success(False)
-                    res.err_code(1)  # 0: No error || 1: Error
-                else:
+            fam_l = (family or "").lower()
+            hw_l  = (hw or "").lower()
+            is_cnn  = fam_l.lower() == "cnns"
+            is_fpga = "fpga" in hw_l
+
+            # U-Net fast path: allow sentinel goals like U_NET_MODELS or any goal when (FPGA+CNNs)
+            if (goal.upper() == "U_NET_MODELS") or (is_cnn and is_fpga):
+                try:
+                    try:
+                        vendored = abspath(join(dirname(hw_provider_fpga.__file__),
+                                                "vendor", "sustain_ml_predictor", "unet_models"))
+                    except Exception as e:
+                        print(f"[ML_MODEL_PROVIDER] hw_provider_fpga not importable: {e}")
+                        vendored = ""  # fall back to empty
+
+                    names = []
+                    if vendored and isdir(vendored):
+                        names = [f[:-5] for f in listdir(vendored) if f.endswith(".onnx")]
+
+                    csv = ", ".join(sorted(names))
+                    print(f"[ML_MODEL_PROVIDER] U-NET returning {len(names)} items")
                     res.success(True)
-                    res.err_code(0)  # 0: No error || 1: Error
+                    res.err_code(0)
+                    res.configuration(json.dumps({"models": csv}))
+                    return
+                except Exception as e:
+                    print(f"[ML_MODEL_PROVIDER] U-NET listing error: {e}")
+                    res.success(False)
+                    res.err_code(1)
+                    res.configuration(json.dumps({"models": ""}))
+                    return
 
-                print(f"Models for {goal}: {sorted_models}")  # debug
-                res.configuration(json.dumps(dict(models=sorted_models)))
-
+            # Default path: fetch by real goal from Neo4j
+            try:
+                models = get_models_for_problem(goal)  # [(name, downloads)]
+                names = [m for (m, _) in models]
+                csv = ", ".join(sorted(names))
+                print(f"[ML_MODEL_PROVIDER] Neo4j listing: goal='{goal}', count={len(names)}")
+                res.success(bool(names))
+                res.err_code(0 if names else 1)
+                res.configuration(json.dumps({"models": csv}))
+                return
             except Exception as e:
-                print(f"Error getting model from goal from request: {e}")
+                print(f"[ML_MODEL_PROVIDER] Neo4j listing error: {e}")
                 res.success(False)
                 res.err_code(1)
+                res.configuration(json.dumps({"models": ""}))
+                return
 
-        else:
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
-            error_msg = f"Unsupported configuration request: {req.configuration()}"
-            res.configuration(json.dumps({"error": error_msg}))
-            res.success(False)
-            res.err_code(1) # 0: No error || 1: Error
-            print(error_msg)
+        # Unsupported
+        msg = f"Unsupported configuration request: {raw}"
+        print(f"[ML_MODEL_PROVIDER] {msg}")
+        res.success(False)
+        res.err_code(1)
+        res.configuration(json.dumps({"models": ""}))
 
 
     # Main workflow routine
     def run():
         start_time = time.time()
         loaded = False
-        while time.time() - start_time < 5:
+        while time.time() - start_time < 30:
             if load_graph():
                 loaded = True
                 break
-            time.sleep(0.1)
+            time.sleep(0.5)
         if not loaded:
-            print("[Error] Graph not available")
+            print("[Error][ml_model_provider] Graph not available")
             exit(1)
         node = MLModelNode(callback=task_callback, service_callback=configuration_callback)
         global running

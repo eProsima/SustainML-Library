@@ -413,20 +413,33 @@ class Orchestrator:
         dataset_metadata_keywords = extra.get('dataset_metadata_keywords', "")
         dataset_metadata_applications = extra.get('dataset_metadata_applications', "")
 
-        # Add extra data to user user_input
-        extra_data = {'hardware_required': hw_req,
-                      'max_memory_footprint': mem_footprint,
-                      'goal': goal,
-                      'model_selected': model_selected,
-                      'num_outputs': num_outputs,
-                      'model_restrains': model_restrains,
-                      'hf_token': hf_token,
-                      'type': type,
-                      'dataset_metadata_description': dataset_metadata_description,
-                      'dataset_metadata_topic': dataset_metadata_topic,
-                      'dataset_metadata_profile': dataset_metadata_profile,
-                      'dataset_metadata_keywords': dataset_metadata_keywords,
-                      'dataset_metadata_applications': dataset_metadata_applications}
+        # Start from existing user extra_data to preserve all keys like model_family
+        extra = json_data.get('extra_data', {})
+        extra_data = dict(extra)  # make a copy so we can modify it safely
+
+        # Update or add keys that orchestrator needs to enforce
+        extra_data.update({
+            'hardware_required': hw_req,
+            'max_memory_footprint': mem_footprint,
+            'goal': goal,
+            'model_selected': model_selected,
+            'num_outputs': num_outputs,
+            'model_restrains': model_restrains,
+            'hf_token': hf_token,
+            'type': type,
+            'dataset_metadata_description': dataset_metadata_description,
+            'dataset_metadata_topic': dataset_metadata_topic,
+            'dataset_metadata_profile': dataset_metadata_profile,
+            'dataset_metadata_keywords': dataset_metadata_keywords,
+            'dataset_metadata_applications': dataset_metadata_applications,
+        })
+
+        # Keep model_family if backend/UI already set it
+        if 'model_family' not in extra_data and type:
+            extra_data['model_family'] = type
+
+        print(f"[DEBUG orchestrator] Final extra_data sent -> {extra_data}")
+
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))

@@ -9,3 +9,6 @@ sustainml_docs/rst/_templates/sidebar/
 # local build & venv
 sustainml_docs/_build/
 .venv/
+build/
+log/
+install/
