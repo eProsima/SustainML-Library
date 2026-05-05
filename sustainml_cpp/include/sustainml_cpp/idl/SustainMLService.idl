@@ -1,0 +1,39 @@
+exception InternalError
+{
+};
+
+// 1. AppRequirements
+interface AppRequirementsService
+{
+    string update_configuration(in string configuration) raises (InternalError);
+};
+
+// 2. HWConstraints
+interface HWConstraintsService
+{
+    string update_configuration(in string configuration) raises (InternalError);
+};
+
+// 3. HWResources
+interface HWResourcesService
+{
+    string update_configuration(in string configuration) raises (InternalError);
+};
+
+// 4. CarbonFootprint
+interface CarbonFootprintService
+{
+    string update_configuration(in string configuration) raises (InternalError);
+};
+
+// 5. MLModelMetadata
+interface MLModelMetadataService
+{
+    string update_configuration(in string configuration) raises (InternalError);
+};
+
+// 6. MLModel
+interface MLModelService
+{
+    string update_configuration(in string configuration) raises (InternalError);
+};

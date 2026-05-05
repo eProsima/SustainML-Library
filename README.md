@@ -44,8 +44,8 @@ AI developers from all experience levels can make use of the framework through i
 
 ### Project Architecture
 
-The *SustainML Framework* is composed of different Software Modules, each one related to specific task, which are specialized in solving the different parts of the machine learning problem architecture definition, starting from the user’s problem description.
-Each of the modules conforms a Node.
+The *SustainML Framework* is composed of different Software Modules, each one related to a specific task, which are specialized in solving the different parts of the machine learning problem architecture definition, starting from the user’s problem description.
+Each of the modules forms a Node.
 These steps are basically:
 
 1. Encode the problem and constraints defined by the user
@@ -64,7 +64,7 @@ The exchanged information between the modules is over DDS.
 ### Framework
 
 The Framework includes a *Graphical User Interface* (GUI) in which user interacts and introduces the ML problem definition.
-That GUI implements also the **Orchestrator** node, a key node that feds the remain modules with the information provided by the user, retrieves all the results, and display them to the user though this GUI.
+That GUI implements also the **Orchestrator** node, a key node that feeds the remaining modules with the information provided by the user, retrieves all the results, and display them to the user through this GUI.
 
 This process can be iterative.
 So, based on a previous solution and the user's feedback, the framework provides new ML solutions.
@@ -77,9 +77,9 @@ This repository is divided in sub-packages with different targets:
 
 * `sustainml_cpp`: Main definition and implementation of the project logic library. C++ API provided.
 * `sustainml_docs`: ReadTheDocs documentation project ([available here](https://sustainml.readthedocs.io/en/latest/))
-* `sustainml_modules`: Set of piped modules that use the Python API.
-* `sustainml_py`: Wrap of the project logic library. Python API.
-* `sustainml_swig`: Binding from the C++ API `sustainml_cpp` to the `sustainml_py` Python API.
+* `sustainml_modules`: Set of pipeline modules that use the Python API.
+* `sustainml_py`: Wrapper of the project logic library. Python API.
+* `sustainml_swig`: Bindings from the C++ API `sustainml_cpp` to the `sustainml_py` Python API.
 
 ## Getting Help
 

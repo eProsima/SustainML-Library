@@ -35,6 +35,7 @@ namespace dds {
 class DomainParticipant;
 class Topic;
 class Publisher;
+class Subscriber;
 class DataWriter;
 
 } // namespace dds
@@ -42,9 +43,6 @@ class DataWriter;
 } // namespace eprosima
 
 namespace sustainml {
-namespace core {
-class RequestReplier;
-} // namespace core
 namespace orchestrator {
 
 class ModuleNodeProxy;
@@ -251,17 +249,17 @@ protected:
      */
     OrchestratorNodeHandle* handler_;
 
-    eprosima::fastdds::dds::DomainParticipant* participant_;
+    eprosima::fastdds::dds::DomainParticipant* participant_{nullptr};
 
-    eprosima::fastdds::dds::Topic* control_topic_;
-    eprosima::fastdds::dds::Topic* status_topic_;
-    eprosima::fastdds::dds::Topic* user_input_topic_;
+    eprosima::fastdds::dds::Topic* control_topic_{nullptr};
+    eprosima::fastdds::dds::Topic* status_topic_{nullptr};
+    eprosima::fastdds::dds::Topic* user_input_topic_{nullptr};
 
-    eprosima::fastdds::dds::Publisher* pub_;
-    eprosima::fastdds::dds::Subscriber* sub_;
+    eprosima::fastdds::dds::Publisher* pub_{nullptr};
+    eprosima::fastdds::dds::Subscriber* sub_{nullptr};
 
-    eprosima::fastdds::dds::DataWriter* control_writer_;
-    eprosima::fastdds::dds::DataWriter* user_input_writer_;
+    eprosima::fastdds::dds::DataWriter* control_writer_{nullptr};
+    eprosima::fastdds::dds::DataWriter* user_input_writer_{nullptr};
 
     std::array<ModuleNodeProxy*, (size_t)NodeID::MAX> node_proxies_;
     std::mutex proxies_mtx_;
@@ -276,8 +274,8 @@ protected:
     std::atomic_bool terminated_{false};
     std::condition_variable initialization_cv_;
 
-    types::ResponseType res_;
-    sustainml::core::RequestReplier* req_res_;
+    // Opaque holder for per-service RPC clients (defined in OrchestratorNode.cpp)
+    void* rpc_client_holder_{nullptr};
 
     /**
      * @brief This class implements the callbacks for the DomainParticipant
@@ -312,4 +310,3 @@ protected:
 } // namespace sustainml
 
 #endif // SUSTAINMLCPP_ORCHESTRATOR_ORCHESTRATORNODE_HPP
-
