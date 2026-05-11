@@ -281,8 +281,10 @@ def config_request():
     res = orchestrator.send_request(data)
     if res is None:
         return jsonify({'error': 'Invalid input data'}), 400
+    response_data = utils.response_json(res)
+    response_data['request_id'] = data.get('request_id', 0)
     return jsonify({'message': 'Configuration request sent successfully.',
-                    'response': utils.response_json(res)}), 200
+                    'response': response_data}), 200
 
 
 @server.route('/hf_models_info', methods=['POST'])
