@@ -98,7 +98,8 @@ struct HWConstraintsServiceServer_IServerImplementation
  *                         When set to 0, a pool with a single thread will be created.
  * @param implementation   The implementation of the server interface.
  */
-extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_HWConstraintsServiceServer(
+extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_HWConstraintsServiceServer
+(
         eprosima::fastdds::dds::DomainParticipant& part,
         const char* service_name,
         const eprosima::fastdds::dds::ReplierQos& qos,
@@ -114,7 +115,8 @@ extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcS
  * @param scheduler       The request scheduling strategy to use for the server.
  * @param implementation  The implementation of the server interface.
  */
-extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_HWConstraintsServiceServer(
+extern eProsima_user_DllExport std::shared_ptr<eprosima::fastdds::dds::rpc::RpcServer> create_HWConstraintsServiceServer
+(
         eprosima::fastdds::dds::DomainParticipant& part,
         const char* service_name,
         const eprosima::fastdds::dds::ReplierQos& qos,

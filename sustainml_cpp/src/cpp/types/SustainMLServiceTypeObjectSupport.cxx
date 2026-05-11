@@ -159,7 +159,8 @@ void register_AppRequirementsService_update_configuration_In_type_identifier(
             MemberId member_id_configuration = 0x00000000;
             bool common_configuration_ec {false};
             CommonStructMember common_configuration {TypeObjectUtils::build_common_struct_member(
-                                                         member_id_configuration, member_flags_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                         member_id_configuration, member_flags_configuration,
+                                                         TypeObjectUtils::retrieve_complete_type_identifier(
                                                              type_ids_configuration,
                                                              common_configuration_ec))};
             if (!common_configuration_ec)
@@ -254,7 +255,8 @@ void register_AppRequirementsService_update_configuration_Out_type_identifier(
             MemberId member_id_return_ = 0x00000000;
             bool common_return__ec {false};
             CommonStructMember common_return_ {TypeObjectUtils::build_common_struct_member(member_id_return_,
-                                                       member_flags_return_, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                       member_flags_return_,
+                                                       TypeObjectUtils::retrieve_complete_type_identifier(
                                                            type_ids_return_,
                                                            common_return__ec))};
             if (!common_return__ec)
@@ -338,7 +340,8 @@ void register_AppRequirementsService_update_configuration_Result_type_identifier
             MemberId member_id_result = 0x0784a8b4;
             bool common_result_ec {false};
             CommonStructMember common_result {TypeObjectUtils::build_common_struct_member(member_id_result,
-                                                      member_flags_result, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                      member_flags_result,
+                                                      TypeObjectUtils::retrieve_complete_type_identifier(
                                                           type_ids_result,
                                                           common_result_ec))};
             if (!common_result_ec)
@@ -394,7 +397,8 @@ void register_AppRequirementsService_update_configuration_Result_type_identifier
             MemberId member_id_InternalError_ex = 0x0cc0b893;
             bool common_InternalError_ex_ec {false};
             CommonStructMember common_InternalError_ex {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_InternalError_ex, member_flags_InternalError_ex, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                            member_id_InternalError_ex, member_flags_InternalError_ex,
+                                                            TypeObjectUtils::retrieve_complete_type_identifier(
                                                                 type_ids_InternalError_ex,
                                                                 common_InternalError_ex_ec))};
             if (!common_InternalError_ex_ec)
@@ -499,7 +503,8 @@ void register_AppRequirementsService_Request_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -595,7 +600,8 @@ void register_AppRequirementsService_Reply_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -651,7 +657,8 @@ void register_AppRequirementsService_Reply_type_identifier(
             MemberId member_id_remoteEx = 0x0f8e48f0;
             bool common_remoteEx_ec {false};
             CommonStructMember common_remoteEx {TypeObjectUtils::build_common_struct_member(member_id_remoteEx,
-                                                        member_flags_remoteEx, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                        member_flags_remoteEx,
+                                                        TypeObjectUtils::retrieve_complete_type_identifier(
                                                             type_ids_remoteEx,
                                                             common_remoteEx_ec))};
             if (!common_remoteEx_ec)
@@ -762,7 +769,8 @@ void register_HWConstraintsService_update_configuration_In_type_identifier(
             MemberId member_id_configuration = 0x00000000;
             bool common_configuration_ec {false};
             CommonStructMember common_configuration {TypeObjectUtils::build_common_struct_member(
-                                                         member_id_configuration, member_flags_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                         member_id_configuration, member_flags_configuration,
+                                                         TypeObjectUtils::retrieve_complete_type_identifier(
                                                              type_ids_configuration,
                                                              common_configuration_ec))};
             if (!common_configuration_ec)
@@ -857,7 +865,8 @@ void register_HWConstraintsService_update_configuration_Out_type_identifier(
             MemberId member_id_return_ = 0x00000000;
             bool common_return__ec {false};
             CommonStructMember common_return_ {TypeObjectUtils::build_common_struct_member(member_id_return_,
-                                                       member_flags_return_, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                       member_flags_return_,
+                                                       TypeObjectUtils::retrieve_complete_type_identifier(
                                                            type_ids_return_,
                                                            common_return__ec))};
             if (!common_return__ec)
@@ -941,7 +950,8 @@ void register_HWConstraintsService_update_configuration_Result_type_identifier(
             MemberId member_id_result = 0x0784a8b4;
             bool common_result_ec {false};
             CommonStructMember common_result {TypeObjectUtils::build_common_struct_member(member_id_result,
-                                                      member_flags_result, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                      member_flags_result,
+                                                      TypeObjectUtils::retrieve_complete_type_identifier(
                                                           type_ids_result,
                                                           common_result_ec))};
             if (!common_result_ec)
@@ -997,7 +1007,8 @@ void register_HWConstraintsService_update_configuration_Result_type_identifier(
             MemberId member_id_InternalError_ex = 0x0cc0b893;
             bool common_InternalError_ex_ec {false};
             CommonStructMember common_InternalError_ex {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_InternalError_ex, member_flags_InternalError_ex, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                            member_id_InternalError_ex, member_flags_InternalError_ex,
+                                                            TypeObjectUtils::retrieve_complete_type_identifier(
                                                                 type_ids_InternalError_ex,
                                                                 common_InternalError_ex_ec))};
             if (!common_InternalError_ex_ec)
@@ -1102,7 +1113,8 @@ void register_HWConstraintsService_Request_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -1198,7 +1210,8 @@ void register_HWConstraintsService_Reply_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -1254,7 +1267,8 @@ void register_HWConstraintsService_Reply_type_identifier(
             MemberId member_id_remoteEx = 0x0f8e48f0;
             bool common_remoteEx_ec {false};
             CommonStructMember common_remoteEx {TypeObjectUtils::build_common_struct_member(member_id_remoteEx,
-                                                        member_flags_remoteEx, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                        member_flags_remoteEx,
+                                                        TypeObjectUtils::retrieve_complete_type_identifier(
                                                             type_ids_remoteEx,
                                                             common_remoteEx_ec))};
             if (!common_remoteEx_ec)
@@ -1365,7 +1379,8 @@ void register_HWResourcesService_update_configuration_In_type_identifier(
             MemberId member_id_configuration = 0x00000000;
             bool common_configuration_ec {false};
             CommonStructMember common_configuration {TypeObjectUtils::build_common_struct_member(
-                                                         member_id_configuration, member_flags_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                         member_id_configuration, member_flags_configuration,
+                                                         TypeObjectUtils::retrieve_complete_type_identifier(
                                                              type_ids_configuration,
                                                              common_configuration_ec))};
             if (!common_configuration_ec)
@@ -1458,7 +1473,8 @@ void register_HWResourcesService_update_configuration_Out_type_identifier(
             MemberId member_id_return_ = 0x00000000;
             bool common_return__ec {false};
             CommonStructMember common_return_ {TypeObjectUtils::build_common_struct_member(member_id_return_,
-                                                       member_flags_return_, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                       member_flags_return_,
+                                                       TypeObjectUtils::retrieve_complete_type_identifier(
                                                            type_ids_return_,
                                                            common_return__ec))};
             if (!common_return__ec)
@@ -1542,7 +1558,8 @@ void register_HWResourcesService_update_configuration_Result_type_identifier(
             MemberId member_id_result = 0x0784a8b4;
             bool common_result_ec {false};
             CommonStructMember common_result {TypeObjectUtils::build_common_struct_member(member_id_result,
-                                                      member_flags_result, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                      member_flags_result,
+                                                      TypeObjectUtils::retrieve_complete_type_identifier(
                                                           type_ids_result,
                                                           common_result_ec))};
             if (!common_result_ec)
@@ -1598,7 +1615,8 @@ void register_HWResourcesService_update_configuration_Result_type_identifier(
             MemberId member_id_InternalError_ex = 0x0cc0b893;
             bool common_InternalError_ex_ec {false};
             CommonStructMember common_InternalError_ex {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_InternalError_ex, member_flags_InternalError_ex, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                            member_id_InternalError_ex, member_flags_InternalError_ex,
+                                                            TypeObjectUtils::retrieve_complete_type_identifier(
                                                                 type_ids_InternalError_ex,
                                                                 common_InternalError_ex_ec))};
             if (!common_InternalError_ex_ec)
@@ -1703,7 +1721,8 @@ void register_HWResourcesService_Request_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -1799,7 +1818,8 @@ void register_HWResourcesService_Reply_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -1855,7 +1875,8 @@ void register_HWResourcesService_Reply_type_identifier(
             MemberId member_id_remoteEx = 0x0f8e48f0;
             bool common_remoteEx_ec {false};
             CommonStructMember common_remoteEx {TypeObjectUtils::build_common_struct_member(member_id_remoteEx,
-                                                        member_flags_remoteEx, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                        member_flags_remoteEx,
+                                                        TypeObjectUtils::retrieve_complete_type_identifier(
                                                             type_ids_remoteEx,
                                                             common_remoteEx_ec))};
             if (!common_remoteEx_ec)
@@ -1967,7 +1988,8 @@ void register_CarbonFootprintService_update_configuration_In_type_identifier(
             MemberId member_id_configuration = 0x00000000;
             bool common_configuration_ec {false};
             CommonStructMember common_configuration {TypeObjectUtils::build_common_struct_member(
-                                                         member_id_configuration, member_flags_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                         member_id_configuration, member_flags_configuration,
+                                                         TypeObjectUtils::retrieve_complete_type_identifier(
                                                              type_ids_configuration,
                                                              common_configuration_ec))};
             if (!common_configuration_ec)
@@ -2062,7 +2084,8 @@ void register_CarbonFootprintService_update_configuration_Out_type_identifier(
             MemberId member_id_return_ = 0x00000000;
             bool common_return__ec {false};
             CommonStructMember common_return_ {TypeObjectUtils::build_common_struct_member(member_id_return_,
-                                                       member_flags_return_, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                       member_flags_return_,
+                                                       TypeObjectUtils::retrieve_complete_type_identifier(
                                                            type_ids_return_,
                                                            common_return__ec))};
             if (!common_return__ec)
@@ -2146,7 +2169,8 @@ void register_CarbonFootprintService_update_configuration_Result_type_identifier
             MemberId member_id_result = 0x0784a8b4;
             bool common_result_ec {false};
             CommonStructMember common_result {TypeObjectUtils::build_common_struct_member(member_id_result,
-                                                      member_flags_result, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                      member_flags_result,
+                                                      TypeObjectUtils::retrieve_complete_type_identifier(
                                                           type_ids_result,
                                                           common_result_ec))};
             if (!common_result_ec)
@@ -2202,7 +2226,8 @@ void register_CarbonFootprintService_update_configuration_Result_type_identifier
             MemberId member_id_InternalError_ex = 0x0cc0b893;
             bool common_InternalError_ex_ec {false};
             CommonStructMember common_InternalError_ex {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_InternalError_ex, member_flags_InternalError_ex, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                            member_id_InternalError_ex, member_flags_InternalError_ex,
+                                                            TypeObjectUtils::retrieve_complete_type_identifier(
                                                                 type_ids_InternalError_ex,
                                                                 common_InternalError_ex_ec))};
             if (!common_InternalError_ex_ec)
@@ -2307,7 +2332,8 @@ void register_CarbonFootprintService_Request_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -2403,7 +2429,8 @@ void register_CarbonFootprintService_Reply_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -2459,7 +2486,8 @@ void register_CarbonFootprintService_Reply_type_identifier(
             MemberId member_id_remoteEx = 0x0f8e48f0;
             bool common_remoteEx_ec {false};
             CommonStructMember common_remoteEx {TypeObjectUtils::build_common_struct_member(member_id_remoteEx,
-                                                        member_flags_remoteEx, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                        member_flags_remoteEx,
+                                                        TypeObjectUtils::retrieve_complete_type_identifier(
                                                             type_ids_remoteEx,
                                                             common_remoteEx_ec))};
             if (!common_remoteEx_ec)
@@ -2571,7 +2599,8 @@ void register_MLModelMetadataService_update_configuration_In_type_identifier(
             MemberId member_id_configuration = 0x00000000;
             bool common_configuration_ec {false};
             CommonStructMember common_configuration {TypeObjectUtils::build_common_struct_member(
-                                                         member_id_configuration, member_flags_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                         member_id_configuration, member_flags_configuration,
+                                                         TypeObjectUtils::retrieve_complete_type_identifier(
                                                              type_ids_configuration,
                                                              common_configuration_ec))};
             if (!common_configuration_ec)
@@ -2666,7 +2695,8 @@ void register_MLModelMetadataService_update_configuration_Out_type_identifier(
             MemberId member_id_return_ = 0x00000000;
             bool common_return__ec {false};
             CommonStructMember common_return_ {TypeObjectUtils::build_common_struct_member(member_id_return_,
-                                                       member_flags_return_, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                       member_flags_return_,
+                                                       TypeObjectUtils::retrieve_complete_type_identifier(
                                                            type_ids_return_,
                                                            common_return__ec))};
             if (!common_return__ec)
@@ -2750,7 +2780,8 @@ void register_MLModelMetadataService_update_configuration_Result_type_identifier
             MemberId member_id_result = 0x0784a8b4;
             bool common_result_ec {false};
             CommonStructMember common_result {TypeObjectUtils::build_common_struct_member(member_id_result,
-                                                      member_flags_result, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                      member_flags_result,
+                                                      TypeObjectUtils::retrieve_complete_type_identifier(
                                                           type_ids_result,
                                                           common_result_ec))};
             if (!common_result_ec)
@@ -2806,7 +2837,8 @@ void register_MLModelMetadataService_update_configuration_Result_type_identifier
             MemberId member_id_InternalError_ex = 0x0cc0b893;
             bool common_InternalError_ex_ec {false};
             CommonStructMember common_InternalError_ex {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_InternalError_ex, member_flags_InternalError_ex, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                            member_id_InternalError_ex, member_flags_InternalError_ex,
+                                                            TypeObjectUtils::retrieve_complete_type_identifier(
                                                                 type_ids_InternalError_ex,
                                                                 common_InternalError_ex_ec))};
             if (!common_InternalError_ex_ec)
@@ -2911,7 +2943,8 @@ void register_MLModelMetadataService_Request_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -3007,7 +3040,8 @@ void register_MLModelMetadataService_Reply_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -3063,7 +3097,8 @@ void register_MLModelMetadataService_Reply_type_identifier(
             MemberId member_id_remoteEx = 0x0f8e48f0;
             bool common_remoteEx_ec {false};
             CommonStructMember common_remoteEx {TypeObjectUtils::build_common_struct_member(member_id_remoteEx,
-                                                        member_flags_remoteEx, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                        member_flags_remoteEx,
+                                                        TypeObjectUtils::retrieve_complete_type_identifier(
                                                             type_ids_remoteEx,
                                                             common_remoteEx_ec))};
             if (!common_remoteEx_ec)
@@ -3173,7 +3208,8 @@ void register_MLModelService_update_configuration_In_type_identifier(
             MemberId member_id_configuration = 0x00000000;
             bool common_configuration_ec {false};
             CommonStructMember common_configuration {TypeObjectUtils::build_common_struct_member(
-                                                         member_id_configuration, member_flags_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                         member_id_configuration, member_flags_configuration,
+                                                         TypeObjectUtils::retrieve_complete_type_identifier(
                                                              type_ids_configuration,
                                                              common_configuration_ec))};
             if (!common_configuration_ec)
@@ -3265,7 +3301,8 @@ void register_MLModelService_update_configuration_Out_type_identifier(
             MemberId member_id_return_ = 0x00000000;
             bool common_return__ec {false};
             CommonStructMember common_return_ {TypeObjectUtils::build_common_struct_member(member_id_return_,
-                                                       member_flags_return_, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                       member_flags_return_,
+                                                       TypeObjectUtils::retrieve_complete_type_identifier(
                                                            type_ids_return_,
                                                            common_return__ec))};
             if (!common_return__ec)
@@ -3347,7 +3384,8 @@ void register_MLModelService_update_configuration_Result_type_identifier(
             MemberId member_id_result = 0x0784a8b4;
             bool common_result_ec {false};
             CommonStructMember common_result {TypeObjectUtils::build_common_struct_member(member_id_result,
-                                                      member_flags_result, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                      member_flags_result,
+                                                      TypeObjectUtils::retrieve_complete_type_identifier(
                                                           type_ids_result,
                                                           common_result_ec))};
             if (!common_result_ec)
@@ -3403,7 +3441,8 @@ void register_MLModelService_update_configuration_Result_type_identifier(
             MemberId member_id_InternalError_ex = 0x0cc0b893;
             bool common_InternalError_ex_ec {false};
             CommonStructMember common_InternalError_ex {TypeObjectUtils::build_common_struct_member(
-                                                            member_id_InternalError_ex, member_flags_InternalError_ex, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                            member_id_InternalError_ex, member_flags_InternalError_ex,
+                                                            TypeObjectUtils::retrieve_complete_type_identifier(
                                                                 type_ids_InternalError_ex,
                                                                 common_InternalError_ex_ec))};
             if (!common_InternalError_ex_ec)
@@ -3497,7 +3536,8 @@ void register_MLModelService_Request_type_identifier(
 
             if (eprosima::fastdds::dds::RETCODE_OK != return_code_update_configuration)
             {
-                ::detail::register_MLModelService_update_configuration_In_type_identifier(type_ids_update_configuration);
+                ::detail::register_MLModelService_update_configuration_In_type_identifier(
+                    type_ids_update_configuration);
             }
             StructMemberFlag member_flags_update_configuration = TypeObjectUtils::build_struct_member_flag(
                 eprosima::fastdds::dds::xtypes::TryConstructFailAction::DISCARD,
@@ -3506,7 +3546,8 @@ void register_MLModelService_Request_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -3600,7 +3641,8 @@ void register_MLModelService_Reply_type_identifier(
             bool common_update_configuration_ec {false};
             CommonStructMember common_update_configuration {TypeObjectUtils::build_common_struct_member(
                                                                 member_id_update_configuration,
-                                                                member_flags_update_configuration, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                                member_flags_update_configuration,
+                                                                TypeObjectUtils::retrieve_complete_type_identifier(
                                                                     type_ids_update_configuration,
                                                                     common_update_configuration_ec))};
             if (!common_update_configuration_ec)
@@ -3655,7 +3697,8 @@ void register_MLModelService_Reply_type_identifier(
             MemberId member_id_remoteEx = 0x0f8e48f0;
             bool common_remoteEx_ec {false};
             CommonStructMember common_remoteEx {TypeObjectUtils::build_common_struct_member(member_id_remoteEx,
-                                                        member_flags_remoteEx, TypeObjectUtils::retrieve_complete_type_identifier(
+                                                        member_flags_remoteEx,
+                                                        TypeObjectUtils::retrieve_complete_type_identifier(
                                                             type_ids_remoteEx,
                                                             common_remoteEx_ec))};
             if (!common_remoteEx_ec)

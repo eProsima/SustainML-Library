@@ -90,7 +90,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
 
     # Whether to go on spinning or interrupt
     running = False
-    GRID_CARBON_INTENSITY = float(os.getenv("SUSTAINML_GRID_CI", "174.05"))
+    GRID_CARBON_INTENSITY = float(os.getenv("SUSTAINML_GRID_CI", "0"))
 
 
     # CarbonTracker log parser helper
@@ -310,29 +310,95 @@ And inside ``configuration_callback()`` implement the response to the configurat
         log_directory = f"/tmp/logs/carbontracker/{run_tag}"
         os.makedirs(log_directory, exist_ok=True)
 
-        output_extra_data = {}
-        # adding number of output request to extra data
+        # Safe default extra_data, always defined always sent
+        model_name = ml_model.model()
+        if isinstance(model_name, (bytes, bytearray, list, tuple)):
+            try:
+                model_name = ''.join(chr(b) for b in model_name)
+            except Exception:
+                model_name = str(model_name)
+
+        output_extra_data = {
+            "num_outputs": 1,
+            "model_restrains": [model_name],
+        }
+
+        # Read user_input.extra_data() to refine num_outputs / restrains
         extra_data_bytes = user_input.extra_data()
-        extra_data_str = ''.join(chr(b) for b in extra_data_bytes)
-        try:
-            extra_data_dict = json.loads(extra_data_str)
-        except json.JSONDecodeError:
-            print("[WARN] In carbon node extra_data JSON is not valid.")
-            extra_data_dict = {}
+        user_extra = {}
+        if extra_data_bytes:
+            try:
+                extra_data_str = ''.join(chr(b) for b in extra_data_bytes)
+                if extra_data_str:
+                    user_extra = json.loads(extra_data_str)
+            except json.JSONDecodeError:
+                print("[WARN] In carbon node extra_data JSON is not valid.")
+                user_extra = {}
 
-        if "num_outputs" in extra_data_dict and extra_data_dict["num_outputs"] != "":
-            num_outputs = extra_data_dict["num_outputs"]
-            model_restrains_list = [ml_model.model()]
-            if "model_restrains" in extra_data_dict:
-                model_restrains_list.extend(extra_data_dict["model_restrains"])
+        if "num_outputs" in user_extra and user_extra["num_outputs"] != "":
+            output_extra_data["num_outputs"] = user_extra["num_outputs"]
 
-            output_extra_data["num_outputs"]     = num_outputs
-            output_extra_data["model_restrains"] = model_restrains_list
+        if "model_restrains" in user_extra:
+            lst = [model_name] + list(user_extra["model_restrains"])
+            seen = set()
+            merged = []
+            for m in lst:
+                if m not in seen:
+                    merged.append(m)
+                    seen.add(m)
+            output_extra_data["model_restrains"] = merged
 
+        # NO_MODEL → early exit (zeros, safe extra_data, NO CRASH)
+        if str(model_name).upper() == "NO_MODEL":
+            print(f"[INFO][carbon] Skipping carbon estimation: no model selected for this task ({model_name}).")
+
+            co2.carbon_footprint(0.0)
+            co2.energy_consumption(0.0)
+            co2.carbon_intensity(0.0)
+
+            output_extra_data.update({
+                "mode": "no_model",
+                "error": "No model selected (NO_MODEL). Carbon footprint not computed."
+            })
+
+            co2.extra_data(json.dumps(output_extra_data).encode("utf-8"))
+            return
+
+        # ONNX path (FPGA / RPTU) → use HW latency & power only
         model_path = ml_model.model_path()
         is_onnx = isinstance(model_path, str) and model_path.endswith(".onnx")
 
         if is_onnx:
+            global GRID_CARBON_INTENSITY
+
+            # Calibrate GRID_CARBON_INTENSITY if not set
+            if (not os.getenv("SUSTAINML_GRID_CI")) and (not GRID_CARBON_INTENSITY or GRID_CARBON_INTENSITY <= 0):
+                try:
+                    run_tag = f"ci_calib_{int(time.time())}_{os.getpid()}"
+                    calib_log_dir = f"/tmp/logs/carbontracker/{run_tag}"
+                    os.makedirs(calib_log_dir, exist_ok=True)
+
+                    tracker = CarbonTracker(log_dir=calib_log_dir, epochs=1)
+                    tracker.epoch_start()
+
+                    t0 = time.time()
+                    while time.time() - t0 < 0.5:
+                        _ = (torch.rand(256, 256) @ torch.rand(256, 256)).sum().item()
+
+                    tracker.epoch_end()
+                    tracker.stop()
+                    time.sleep(0.2)
+
+                    _, _, ci = _parse_tracker_logs(calib_log_dir)
+                    if ci is not None and ci > 0:
+                        GRID_CARBON_INTENSITY = float(ci)
+                    else:
+                        # Fallback if calibration didn't yield a CI
+                        GRID_CARBON_INTENSITY = 0.0
+                except Exception as e:
+                    print(f"[WARN] CI calibration failed; using fallback. Reason: {e}")
+                    GRID_CARBON_INTENSITY = 0.0
+
             raw_latency = float(hw.latency())            # h
             raw_power   = float(hw.power_consumption())  # W
 
@@ -344,34 +410,32 @@ And inside ``configuration_callback()`` implement the response to the configurat
             co2.carbon_intensity(GRID_CARBON_INTENSITY)
 
             output_extra_data["mode"] = "onnx_hw_only"
-            # Make sure num_outputs exists (fallback)
-            output_extra_data.setdefault("num_outputs", 1)
-            output_extra_data.setdefault("model_restrains", [ml_model.model()])
-
+            output_extra_data["grid_ci_source"] = "env" if os.getenv("SUSTAINML_GRID_CI") else "calibrated_or_fallback"
             co2.extra_data(json.dumps(output_extra_data).encode("utf-8"))
             return
 
+        # HF / CarbonTracker path (non-ONNX models)
         unsupported_models = None
         extra_data_bytes = ml_model.extra_data()
         if extra_data_bytes:
-            extra_data_str = ''.join(chr(b) for b in extra_data_bytes)
-            if extra_data_str:
-                try:
-                    extra_data_dict = json.loads(extra_data_str)
-                except json.JSONDecodeError:
-                    print("[WARN] In ml_model node extra_data JSON is not valid.")
-                    extra_data_dict = {}
-                if "unsupported_models" in extra_data_dict:
-                    unsupported_models = extra_data_dict["unsupported_models"]
+            try:
+                extra_data_str = ''.join(chr(b) for b in extra_data_bytes)
+                if extra_data_str:
+                    md = json.loads(extra_data_str)
+                else:
+                    md = {}
+            except json.JSONDecodeError:
+                print("[WARN] In ml_model node extra_data JSON is not valid.")
+                md = {}
+            if "unsupported_models" in md:
+                unsupported_models = md["unsupported_models"]
 
-        #log_directory = "/tmp/logs/carbontracker"               # temp log dir for reading carbon data results
-
-        # Define CarbonTracker with fallback for no available components
         try:
             queue = multiprocessing.Queue()
-            ### proc = multiprocessing.Process(target=create_tracker, args=(log_directory, 1, queue, ml_model, unsupported_models))
-
-            proc = multiprocessing.Process(target=create_tracker, args=(log_directory, 1, queue, ml_model, unsupported_models))
+            proc = multiprocessing.Process(
+                target=create_tracker,
+                args=(log_directory, 1, queue, ml_model, unsupported_models)
+            )
             proc.start()
             proc.join(timeout=60)
             if proc.is_alive():
@@ -391,7 +455,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
                         print("Tracker created successfully.")
                         carbon = float(result or 0.0)
 
-                        # Prefer tracker energy if present, else fall back to HW-based estimate
+                        # Try to get energy from tracker logs
                         tracker_energy_kwh = None
                         try:
                             _, ekwh, _ = _parse_tracker_logs(log_directory)
@@ -409,13 +473,13 @@ And inside ``configuration_callback()`` implement the response to the configurat
                             print("[CT DEBUG] HW energy compute failed:", e)
                             energy_consump_hw_kwh = 0.0
 
-                        # Choose energy source (per-epoch/second energy)
+                        # Choose energy source
                         if tracker_energy_kwh is not None and tracker_energy_kwh > 0:
                             energy_consump = tracker_energy_kwh
                         else:
                             energy_consump = energy_consump_hw_kwh
 
-                        # Convert epoch-based values to per-inference values (approximate)
+                        # Scale to per-inference
                         try:
                             epoch_s = float(os.getenv("CT_TARGET_SECONDS", "1.0"))
                             latency_h = float(hw.latency())        # hours per inference
@@ -426,7 +490,6 @@ And inside ``configuration_callback()`` implement the response to the configurat
                                 if inf_per_epoch > 0.0:
                                     carbon = carbon / inf_per_epoch
                                     energy_consump = energy_consump / inf_per_epoch
-                                    # print(f"[CT DEBUG] per-inference metrics: "f"carbon_g={carbon:.9f}, energy_kwh={energy_consump:.9f}, "f"approx_inf_per_epoch={inf_per_epoch:.2f}")
                                 else:
                                     print("[CT DEBUG] inf_per_epoch <= 0, skipping per-inference scaling")
                             else:
@@ -438,13 +501,14 @@ And inside ``configuration_callback()`` implement the response to the configurat
 
             intensity = 0.0
             if energy_consump > 0:
-                intensity = carbon/energy_consump
-                GRID_CARBON_INTENSITY = intensity  # Update global for consistency
+                intensity = carbon / energy_consump
+                GRID_CARBON_INTENSITY = intensity  # Update global
 
-            # populate carbon footprint information
             co2.carbon_footprint(carbon)
             co2.energy_consumption(energy_consump)
             co2.carbon_intensity(intensity)
+
+            output_extra_data["mode"] = "tracker"
             co2.extra_data(json.dumps(output_extra_data).encode("utf-8"))
 
         except Exception as e:
@@ -452,7 +516,11 @@ And inside ``configuration_callback()`` implement the response to the configurat
             co2.carbon_footprint(0.0)
             co2.energy_consumption(0.0)
             co2.carbon_intensity(0.0)
-            output_extra_data["error"] = f"Failed to obtain carbon footprint information: {e}"
+
+            output_extra_data.update({
+                "mode": "error",
+                "error": f"Failed to obtain carbon footprint information: {e}"
+            })
             co2.extra_data(json.dumps(output_extra_data).encode("utf-8"))
 
 

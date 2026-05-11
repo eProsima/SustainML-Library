@@ -76,11 +76,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<AppRequirementsServiceServer_IServerImplementation> implementation)
         : AppRequirementsServiceServerLogic(
-            part,
-            service_name,
-            qos,
-            std::make_shared<ThreadPool>(*this, thread_pool_size),
-            std::move(implementation))
+                part,
+                service_name,
+                qos,
+                std::make_shared<ThreadPool>(*this, thread_pool_size),
+                std::move(implementation))
     {
     }
 
@@ -624,11 +624,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<HWConstraintsServiceServer_IServerImplementation> implementation)
         : HWConstraintsServiceServerLogic(
-            part,
-            service_name,
-            qos,
-            std::make_shared<ThreadPool>(*this, thread_pool_size),
-            std::move(implementation))
+                part,
+                service_name,
+                qos,
+                std::make_shared<ThreadPool>(*this, thread_pool_size),
+                std::move(implementation))
     {
     }
 
@@ -1172,11 +1172,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<HWResourcesServiceServer_IServerImplementation> implementation)
         : HWResourcesServiceServerLogic(
-            part,
-            service_name,
-            qos,
-            std::make_shared<ThreadPool>(*this, thread_pool_size),
-            std::move(implementation))
+                part,
+                service_name,
+                qos,
+                std::make_shared<ThreadPool>(*this, thread_pool_size),
+                std::move(implementation))
     {
     }
 
@@ -1720,11 +1720,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<CarbonFootprintServiceServer_IServerImplementation> implementation)
         : CarbonFootprintServiceServerLogic(
-            part,
-            service_name,
-            qos,
-            std::make_shared<ThreadPool>(*this, thread_pool_size),
-            std::move(implementation))
+                part,
+                service_name,
+                qos,
+                std::make_shared<ThreadPool>(*this, thread_pool_size),
+                std::move(implementation))
     {
     }
 
@@ -2268,11 +2268,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<MLModelMetadataServiceServer_IServerImplementation> implementation)
         : MLModelMetadataServiceServerLogic(
-            part,
-            service_name,
-            qos,
-            std::make_shared<ThreadPool>(*this, thread_pool_size),
-            std::move(implementation))
+                part,
+                service_name,
+                qos,
+                std::make_shared<ThreadPool>(*this, thread_pool_size),
+                std::move(implementation))
     {
     }
 
@@ -2816,11 +2816,11 @@ public:
             size_t thread_pool_size,
             std::shared_ptr<MLModelServiceServer_IServerImplementation> implementation)
         : MLModelServiceServerLogic(
-            part,
-            service_name,
-            qos,
-            std::make_shared<ThreadPool>(*this, thread_pool_size),
-            std::move(implementation))
+                part,
+                service_name,
+                qos,
+                std::make_shared<ThreadPool>(*this, thread_pool_size),
+                std::move(implementation))
     {
     }
 

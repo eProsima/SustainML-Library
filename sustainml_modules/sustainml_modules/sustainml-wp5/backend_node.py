@@ -14,7 +14,6 @@
 """SustainML Backend Node Implementation."""
 
 from flask import Flask, request, jsonify
-import json
 import os
 import threading
 import time
@@ -66,8 +65,6 @@ def user_input():
     # Inject both hf_token and model_family into extra_data
     data['extra_data']['hf_token'] = hf_token
     data['extra_data']['model_family'] = model_family
-
-    print(f"[DEBUG backend] final extra_data -> {data['extra_data']}")
 
     task_id = orchestrator.send_user_input(data)
     if task_id is None:

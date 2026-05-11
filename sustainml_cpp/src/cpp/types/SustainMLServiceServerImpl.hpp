@@ -37,7 +37,8 @@ struct AppRequirementsServiceServerImplementation :
     {
         static_cast<void>(info);
         static_cast<void>(configuration);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
+        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError(
+                  "Operation 'update_configuration' is not implemented");
     }
 
 };
@@ -56,7 +57,8 @@ struct HWConstraintsServiceServerImplementation :
     {
         static_cast<void>(info);
         static_cast<void>(configuration);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
+        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError(
+                  "Operation 'update_configuration' is not implemented");
     }
 
 };
@@ -75,7 +77,8 @@ struct HWResourcesServiceServerImplementation :
     {
         static_cast<void>(info);
         static_cast<void>(configuration);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
+        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError(
+                  "Operation 'update_configuration' is not implemented");
     }
 
 };
@@ -94,7 +97,8 @@ struct CarbonFootprintServiceServerImplementation :
     {
         static_cast<void>(info);
         static_cast<void>(configuration);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
+        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError(
+                  "Operation 'update_configuration' is not implemented");
     }
 
 };
@@ -113,7 +117,8 @@ struct MLModelMetadataServiceServerImplementation :
     {
         static_cast<void>(info);
         static_cast<void>(configuration);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
+        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError(
+                  "Operation 'update_configuration' is not implemented");
     }
 
 };
@@ -132,7 +137,8 @@ struct MLModelServiceServerImplementation :
     {
         static_cast<void>(info);
         static_cast<void>(configuration);
-        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError("Operation 'update_configuration' is not implemented");
+        throw eprosima::fastdds::dds::rpc::RemoteUnsupportedError(
+                  "Operation 'update_configuration' is not implemented");
     }
 
 };

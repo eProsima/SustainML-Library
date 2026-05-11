@@ -438,8 +438,6 @@ class Orchestrator:
         if 'model_family' not in extra_data and type:
             extra_data['model_family'] = type
 
-        print(f"[DEBUG orchestrator] Final extra_data sent -> {extra_data}")
-
         json_obj = utils.json_dict(extra_data)
         data_array = np.frombuffer(json_obj.encode(), dtype=np.uint8)
         user_input.extra_data(sustainml_swig.uint8_t_vector(data_array.tolist()))
@@ -462,7 +460,7 @@ class Orchestrator:
             request_type.node_id(utils.node_id.HW_PROVIDER.value)
         elif any(key in request_type.configuration() for key in ["modality", "in_out_modalities", "metrics", "model_info", "problem_from_modality", "dataset_path"]):
             request_type.node_id(utils.node_id.ML_MODEL_METADATA.value)
-        elif any(key in request_type.configuration() for key in ["goal", "model_from_goal"]):
+        elif any(key in request_type.configuration() for key in ["goal", "model_from_goal", "hf_search"]):
             request_type.node_id(utils.node_id.ML_MODEL_PROVIDER.value)
 
         if request_type.node_id() is None or request_type.transaction_id() is None or request_type.configuration() is None:

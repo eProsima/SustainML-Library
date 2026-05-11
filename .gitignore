@@ -6,9 +6,11 @@ sustainml_docs/rst/_static/css/eprosima-furo.css
 sustainml_docs/rst/_static/eprosima-logo-white.png
 sustainml_docs/rst/_templates/sidebar/
 
-# local build & venv
+# Local build & venv
 sustainml_docs/_build/
 .venv/
+
+# Build artifacts
 build/
-log/
 install/
+log/

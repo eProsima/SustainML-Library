@@ -58,7 +58,7 @@ struct RpcClientHolder
 };
 
 // Helper to do the generic "update_configuration / wait / get" logic
-template <typename ClientT>
+template<typename ClientT>
 bool rpc_update_configuration(
         ClientT& client,
         const std::string& configuration,
@@ -207,13 +207,13 @@ OrchestratorNode::OrchestratorNode(
     , control_writer_(nullptr)
     , user_input_writer_(nullptr)
     , node_proxies_({
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr
-        }),
+                nullptr,
+                nullptr,
+                nullptr,
+                nullptr,
+                nullptr,
+                nullptr
+            }),
     task_db_(new TaskDB_t()),
     task_man_(new TaskManager()),
     participant_listener_(new OrchestratorParticipantListener(this))
@@ -435,15 +435,6 @@ bool OrchestratorNode::init()
               << (holder->ml_model_client ? "true" : "false")
               << std::endl;
 
-    std::cout << "[DEBUG Orchestrator] RPC clients summary: "
-              << "app=" << (holder->app_requirements_client ? "1" : "0") << " "
-              << "hwc=" << (holder->hw_constraints_client ? "1" : "0") << " "
-              << "hwr=" << (holder->hw_resources_client ? "1" : "0") << " "
-              << "co2=" << (holder->carbon_footprint_client ? "1" : "0") << " "
-              << "meta=" << (holder->ml_model_metadata_client ? "1" : "0") << " "
-              << "ml=" << (holder->ml_model_client ? "1" : "0")
-              << std::endl;
-
     if (!holder->app_requirements_client ||
             !holder->hw_constraints_client ||
             !holder->hw_resources_client ||
@@ -458,9 +449,6 @@ bool OrchestratorNode::init()
     }
 
     rpc_client_holder_ = holder;
-
-    std::cout << "[DEBUG Orchestrator] RPC clients created for per-node services"
-              << std::endl;
 
     initialized_.store(true);
     initialization_cv_.notify_one();
@@ -698,10 +686,6 @@ types::ResponseType OrchestratorNode::configuration_request (
         return res;
     }
 
-    std::cout << "[DEBUG Orchestrator] configuration_request() entered, "
-              << "node_id=" << req.node_id()
-              << " config='" << req.configuration() << "'" << std::endl;
-
     auto* holder = static_cast<RpcClientHolder*>(rpc_client_holder_);
     if (!holder)
     {
@@ -711,11 +695,6 @@ types::ResponseType OrchestratorNode::configuration_request (
 
     NodeID node_id = static_cast<NodeID>(req.node_id());
     std::string cfg;
-
-    std::cout << "[DEBUG Orchestrator] configuration_request route: tx=" << req.transaction_id()
-              << " node_id(enum)=" << static_cast<int>(node_id)
-              << " node_id(raw)=" << req.node_id()
-              << std::endl;
 
     try
     {
