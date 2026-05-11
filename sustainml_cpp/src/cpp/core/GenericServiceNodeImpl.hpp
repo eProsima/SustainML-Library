@@ -13,13 +13,12 @@
 // limitations under the License.
 
 /**
- * @file GenericServiceNode.hpp
+ * @file GenericServiceNodeImpl.hpp
  */
 
- #ifndef SUSTAINML_CORE_GENERICSERVICENODEIMPL_HPP
+#ifndef SUSTAINML_CORE_GENERICSERVICENODEIMPL_HPP
 #define SUSTAINML_CORE_GENERICSERVICENODEIMPL_HPP
 
-#include <iostream>
 #include <string>
 
 #include <core/NodeImpl.hpp>
@@ -45,10 +44,8 @@ class GenericServiceNodeImpl : public ServerBase
 public:
 
     GenericServiceNodeImpl(
-            NodeImpl& node,
-            const char* tag)
+            NodeImpl& node)
         : node_(node)
-        , tag_(tag)
     {
     }
 
@@ -75,16 +72,12 @@ public:
             throw ::InternalError(std::string("update_configuration: ") + e.what());
         }
 
-        // Copy into owned std::string
-        std::string reply = res.configuration();
-
-        return reply;
+        return res.configuration();
     }
 
 private:
 
     NodeImpl& node_;
-    const char* tag_;
 };
 
 using AppRequirementsServiceNodeImpl =

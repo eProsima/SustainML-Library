@@ -15,6 +15,7 @@
 
 from flask import Flask, request, jsonify
 import json
+import logging
 import os
 import re
 import requests
@@ -29,6 +30,7 @@ from werkzeug.serving import make_server
 running = True
 orchestrator = orchestrator_node.Orchestrator()
 server = Flask(__name__)
+logging.getLogger('werkzeug').setLevel(logging.ERROR)
 server_ip_address = '127.0.0.1'
 server_port = 5001
 
@@ -241,6 +243,11 @@ def user_input():
     #    QML sends this as the field named "type" in engine.launch_task(..., type)
     incoming_type_top = data.get('type')
     incoming_extra = data.get('extra_data') or {}
+    if isinstance(incoming_extra, str):
+        try:
+            incoming_extra = json.loads(incoming_extra)
+        except Exception:
+            incoming_extra = {}
     incoming_type_extra = incoming_extra.get('type')
     incoming_model_family = incoming_extra.get('model_family')
 
