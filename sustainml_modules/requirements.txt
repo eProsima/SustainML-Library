@@ -18,7 +18,7 @@ onnxsim
 opencv-python==4.10.0.84
 optimum==1.17.1
 pandas==2.2.3
-Pillow==10.4.0
+pillow>=12.2.0
 pydot
 PyQt5==5.15.11
 rdflib==7.0.0
