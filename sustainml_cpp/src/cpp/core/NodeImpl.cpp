@@ -199,9 +199,6 @@ bool NodeImpl::init(
                 rqos,
                 1u,
                 impl);
-
-            std::cout << "[DEBUG NodeImpl] create_AppRequirementsServiceServer returned "
-                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::HW_CONSTRAINTS_NODE)
         {
@@ -216,9 +213,6 @@ bool NodeImpl::init(
                 rqos,
                 1u,
                 impl);
-
-            std::cout << "[DEBUG NodeImpl] create_HWConstraintsServiceServer returned "
-                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::HW_RESOURCES_NODE)
         {
@@ -233,9 +227,6 @@ bool NodeImpl::init(
                 rqos,
                 1u,
                 impl);
-
-            std::cout << "[DEBUG NodeImpl] create_HWResourcesServiceServer returned "
-                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::CARBON_FOOTPRINT_NODE)
         {
@@ -251,9 +242,6 @@ bool NodeImpl::init(
                 rqos,
                 1u,
                 impl);
-
-            std::cout << "[DEBUG NodeImpl] create_CarbonFootprintServiceServer returned "
-                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::ML_MODEL_METADATA_NODE)
         {
@@ -269,9 +257,6 @@ bool NodeImpl::init(
                 rqos,
                 1u,
                 impl);
-
-            std::cout << "[DEBUG NodeImpl] create_MLModelMetadataServiceServer returned "
-                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else if (name == common::ML_MODEL_NODE)
         {
@@ -286,9 +271,6 @@ bool NodeImpl::init(
                 rqos,
                 1u,
                 impl);
-
-            std::cout << "[DEBUG NodeImpl] create_MLModelServiceServer returned "
-                      << (rpc_server_ ? "non-null" : "null") << std::endl;
         }
         else
         {
@@ -325,11 +307,11 @@ bool NodeImpl::init(
                         });
     }
 
-    std::cout << "[DEBUG NodeImpl] RPC server created on node '"
-              << name
-              << "' with service '" << rpc_service_name_ << "'" << std::endl;
+    // std::cout << "[DEBUG NodeImpl] RPC server created on node '"
+    //           << name
+    //           << "' with service '" << rpc_service_name_ << "'" << std::endl;
 
-    //! Register Common Types
+    // Register Common Types
 
     std::vector<eprosima::fastdds::dds::TypeSupport> sustainml_types;
     sustainml_types.reserve(common::Topics::MAX);

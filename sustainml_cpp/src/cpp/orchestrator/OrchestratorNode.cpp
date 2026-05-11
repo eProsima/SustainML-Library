@@ -391,49 +391,31 @@ bool OrchestratorNode::init()
         *participant_,
         "AppRequirementsService",       // Must match server side
         rqos);
-    std::cout << "[DEBUG Orchestrator] Created AppRequirementsServiceClient service='AppRequirementsService' ok="
-              << (holder->app_requirements_client ? "true" : "false")
-              << std::endl;
 
     holder->hw_constraints_client = create_HWConstraintsServiceClient(
         *participant_,
         "HWConstraintsService",
         rqos);
-    std::cout << "[DEBUG Orchestrator] Created HWConstraintsServiceClient service='HWConstraintsService' ok="
-              << (holder->hw_constraints_client ? "true" : "false")
-              << std::endl;
 
     holder->hw_resources_client = create_HWResourcesServiceClient(
         *participant_,
         "HWResourcesService",
         rqos);
-    std::cout << "[DEBUG Orchestrator] Created HWResourcesServiceClient service='HWResourcesService' ok="
-              << (holder->hw_resources_client ? "true" : "false")
-              << std::endl;
 
     holder->carbon_footprint_client = create_CarbonFootprintServiceClient(
         *participant_,
         "CarbonFootprintService",
         rqos);
-    std::cout << "[DEBUG Orchestrator] Created CarbonFootprintServiceClient service='CarbonFootprintService' ok="
-              << (holder->carbon_footprint_client ? "true" : "false")
-              << std::endl;
 
     holder->ml_model_metadata_client = create_MLModelMetadataServiceClient(
         *participant_,
         "MLModelMetadataService",
         rqos);
-    std::cout << "[DEBUG Orchestrator] Created MLModelMetadataServiceClient service='MLModelMetadataService' ok="
-              << (holder->ml_model_metadata_client ? "true" : "false")
-              << std::endl;
 
     holder->ml_model_client = create_MLModelServiceClient(
         *participant_,
         "MLModelService",
         rqos);
-    std::cout << "[DEBUG Orchestrator] Created MLModelServiceClient service='MLModelService' ok="
-              << (holder->ml_model_client ? "true" : "false")
-              << std::endl;
 
     if (!holder->app_requirements_client ||
             !holder->hw_constraints_client ||
