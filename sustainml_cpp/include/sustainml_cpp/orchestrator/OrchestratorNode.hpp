@@ -46,7 +46,7 @@ namespace sustainml {
 namespace orchestrator {
 
 class ModuleNodeProxy;
-template <typename ... Args> class TaskDB;
+template<typename ... Args> class TaskDB;
 class TaskManager;
 
 /**

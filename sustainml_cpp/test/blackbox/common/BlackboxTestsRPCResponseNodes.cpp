@@ -62,7 +62,7 @@ void destroy_participant(
     dpf->delete_participant(p);
 }
 
-template <typename FutureT>
+template<typename FutureT>
 void wait_ready_or_fail(
         FutureT& fut,
         const char* tag,
