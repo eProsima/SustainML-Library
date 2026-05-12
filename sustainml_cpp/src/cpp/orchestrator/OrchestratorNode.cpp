@@ -17,6 +17,8 @@
  */
 
 #include <chrono>
+#include <cstdlib>
+#include <cstring>
 
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
 
@@ -67,7 +69,9 @@ bool rpc_update_configuration(
 {
     auto future = client.update_configuration(configuration);
 
-    constexpr auto total_timeout = std::chrono::minutes(5);
+    const char* env = std::getenv("SUSTAINML_RPC_TIMEOUT_MINUTES");
+    const int timeout_minutes = (env && std::strlen(env) > 0) ? std::atoi(env) : 10;
+    const auto total_timeout = std::chrono::minutes(timeout_minutes);
     constexpr auto step = std::chrono::seconds(1);
 
     const auto start = std::chrono::steady_clock::now();
@@ -118,7 +122,7 @@ bool rpc_update_configuration(
         // status == timeout: check total time budget
         if (std::chrono::steady_clock::now() - start >= total_timeout)
         {
-            EPROSIMA_LOG_ERROR(ORCHESTRATOR, "RPC timeout after 5 minutes");
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR, "RPC timeout after " << timeout_minutes << " minutes -> Function rpc_update_configuration");
             return false;
         }
     }
