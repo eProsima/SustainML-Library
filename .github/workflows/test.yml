@@ -140,7 +140,7 @@ jobs:
       - name: Download Annoy Index file from Google Drive
         run: |
           pip install gdown
-          gdown --id 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/models_index.ann
+          gdown 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/models_index.ann
 
       - name: Compile and run tests
         uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@v0
@@ -230,7 +230,7 @@ jobs:
       - name: Download file from Google Drive
         run: |
           pip install gdown
-          gdown --id 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/models_index.ann
+          gdown 1TQvt1bSXares-I9l7Wki0Jge3oubRkOJ -O ${{ github.workspace }}/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/rag/models_index.ann
 
       - name: Compile and run tests
         uses: eProsima/eProsima-CI/multiplatform/clang_build_test@v0

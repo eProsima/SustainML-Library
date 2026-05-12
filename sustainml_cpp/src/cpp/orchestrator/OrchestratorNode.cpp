@@ -17,6 +17,8 @@
  */
 
 #include <chrono>
+#include <cstdlib>
+#include <cstring>
 
 #include <sustainml_cpp/orchestrator/OrchestratorNode.hpp>
 
@@ -67,7 +69,9 @@ bool rpc_update_configuration(
 {
     auto future = client.update_configuration(configuration);
 
-    constexpr auto total_timeout = std::chrono::minutes(5);
+    const char* env = std::getenv("SUSTAINML_RPC_TIMEOUT_MINUTES");
+    const int timeout_minutes = (env && std::strlen(env) > 0) ? std::atoi(env) : 10;
+    const auto total_timeout = std::chrono::minutes(timeout_minutes);
     constexpr auto step = std::chrono::seconds(1);
 
     const auto start = std::chrono::steady_clock::now();
@@ -76,11 +80,11 @@ bool rpc_update_configuration(
     {
         if (terminate_flag.load(std::memory_order_acquire))
         {
-            std::cerr << "[INFO] RPC aborted due to shutdown\n";
+            EPROSIMA_LOG_INFO(ORCHESTRATOR, "RPC aborted due to shutdown");
             return false;
         }
 
-        // Wait a bit, but don’t block forever
+        // Wait a bit, but don't block forever
         auto status = future.wait_for(step);
 
         if (status == std::future_status::ready)
@@ -93,32 +97,32 @@ bool rpc_update_configuration(
             }
             catch (const ::InternalError& e)
             {
-                std::cerr << "[ERROR] RPC InternalError: " << e.what() << "\n";
+                EPROSIMA_LOG_ERROR(ORCHESTRATOR, "RPC InternalError: " << e.what());
                 return false;
             }
             catch (const eprosima::fastdds::dds::rpc::RpcException& e)
             {
-                std::cerr << "[ERROR] RPC exception: " << e.what() << "\n";
+                EPROSIMA_LOG_ERROR(ORCHESTRATOR, "RPC exception: " << e.what());
                 return false;
             }
             catch (const std::exception& e)
             {
-                std::cerr << "[ERROR] std::exception: " << e.what() << "\n";
+                EPROSIMA_LOG_ERROR(ORCHESTRATOR, "std::exception in RPC call: " << e.what());
                 return false;
             }
         }
 
         if (status == std::future_status::deferred)
         {
-            // Unusual for your RPC futures, but treat as “not running” / failure
-            std::cerr << "[ERROR] RPC future is deferred\n";
+            // Unusual for your RPC futures, but treat as "not running" / failure
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR, "RPC future is deferred");
             return false;
         }
 
         // status == timeout: check total time budget
         if (std::chrono::steady_clock::now() - start >= total_timeout)
         {
-            std::cerr << "[ERROR] RPC timeout after 5 minutes\n";
+            EPROSIMA_LOG_ERROR(ORCHESTRATOR, "RPC timeout after " << timeout_minutes << " minutes -> Function rpc_update_configuration");
             return false;
         }
     }
@@ -158,12 +162,6 @@ void OrchestratorNode::OrchestratorParticipantListener::on_participant_discovery
     // Create the proxy for this node
     NodeID node_id = common::get_node_id_from_name(participant_name);
 
-    std::cout << "[DEBUG Orchestrator] Participant discovered: name='"
-              << participant_name.to_string()
-              << "' -> node_id=" << static_cast<int>(node_id)
-              << " reason=" << static_cast<int>(reason)
-              << std::endl;
-
     std::lock_guard<std::mutex> lock(orchestrator_->proxies_mtx_);
 
     // Check if the node has been terminated
@@ -198,14 +196,6 @@ OrchestratorNode::OrchestratorNode(
         uint32_t domain)
     : domain_(domain)
     , handler_(&handle)
-    , participant_(nullptr)
-    , control_topic_(nullptr)
-    , status_topic_(nullptr)
-    , user_input_topic_(nullptr)
-    , pub_(nullptr)
-    , sub_(nullptr)
-    , control_writer_(nullptr)
-    , user_input_writer_(nullptr)
     , node_proxies_({
                 nullptr,
                 nullptr,
@@ -684,8 +674,6 @@ types::ResponseType OrchestratorNode::configuration_request (
         {
             case NodeID::ID_APP_REQUIREMENTS:
             {
-                std::cout << "[RPC CLIENT] calling AppRequirementsService.update_configuration tx="
-                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->app_requirements_client, req.configuration(), cfg, terminate_))
                 {
                     return res; // Timeout or not ready
@@ -694,8 +682,6 @@ types::ResponseType OrchestratorNode::configuration_request (
             }
             case NodeID::ID_HW_CONSTRAINTS:
             {
-                std::cout << "[RPC CLIENT] calling HWConstraintsService.update_configuration tx="
-                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->hw_constraints_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
@@ -704,9 +690,6 @@ types::ResponseType OrchestratorNode::configuration_request (
             }
             case NodeID::ID_HW_RESOURCES:
             {
-                std::cout << "[RPC CLIENT] calling HWResourcesService.update_configuration tx="
-                          << req.transaction_id() << std::endl;
-
                 if (!rpc_update_configuration(*holder->hw_resources_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
@@ -715,8 +698,6 @@ types::ResponseType OrchestratorNode::configuration_request (
             }
             case NodeID::ID_CARBON_FOOTPRINT:
             {
-                std::cout << "[RPC CLIENT] calling CarbonFootprintService.update_configuration tx="
-                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->carbon_footprint_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
@@ -725,8 +706,6 @@ types::ResponseType OrchestratorNode::configuration_request (
             }
             case NodeID::ID_ML_MODEL_METADATA:
             {
-                std::cout << "[RPC CLIENT] calling MLModelMetadataService.update_configuration tx="
-                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->ml_model_metadata_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
@@ -735,8 +714,6 @@ types::ResponseType OrchestratorNode::configuration_request (
             }
             case NodeID::ID_ML_MODEL:
             {
-                std::cout << "[RPC CLIENT] calling MLModelService.update_configuration tx="
-                          << req.transaction_id() << std::endl;
                 if (!rpc_update_configuration(*holder->ml_model_client, req.configuration(), cfg, terminate_))
                 {
                     return res;
