@@ -64,7 +64,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
 
 .. code-block:: python
 
-    # Copyright 2023 SustainML Consortium
+    # Copyright 2026 SustainML Consortium
     #
     # Licensed under the Apache License, Version 2.0 (the "License");
     # you may not use this file except in compliance with the License.
