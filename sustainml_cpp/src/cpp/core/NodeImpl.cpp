@@ -188,8 +188,7 @@ bool NodeImpl::init(
         if (name == common::APP_REQUIREMENTS_NODE)
         {
             std::shared_ptr<AppRequirementsServiceServer_IServerImplementation> impl =
-                    std::make_shared<sustainml::core::AppRequirementsServiceNodeImpl>(*this,
-                            "APP_REQUIREMENTS");
+                    std::make_shared<sustainml::core::AppRequirementsServiceNodeImpl>(*this);
             rpc_impl_ = impl;
             rpc_service_name_ = "AppRequirementsService";
 
@@ -203,7 +202,7 @@ bool NodeImpl::init(
         else if (name == common::HW_CONSTRAINTS_NODE)
         {
             std::shared_ptr<HWConstraintsServiceServer_IServerImplementation> impl =
-                    std::make_shared<sustainml::core::HWConstraintsServiceNodeImpl>(*this, "HW_CONSTRAINTS");
+                    std::make_shared<sustainml::core::HWConstraintsServiceNodeImpl>(*this);
             rpc_impl_ = impl;
             rpc_service_name_ = "HWConstraintsService";
 
@@ -217,7 +216,7 @@ bool NodeImpl::init(
         else if (name == common::HW_RESOURCES_NODE)
         {
             std::shared_ptr<HWResourcesServiceServer_IServerImplementation> impl =
-                    std::make_shared<sustainml::core::HWResourcesServiceNodeImpl>(*this, "HW_RESOURCES");
+                    std::make_shared<sustainml::core::HWResourcesServiceNodeImpl>(*this);
             rpc_impl_ = impl;
             rpc_service_name_ = "HWResourcesService";
 
@@ -231,8 +230,7 @@ bool NodeImpl::init(
         else if (name == common::CARBON_FOOTPRINT_NODE)
         {
             std::shared_ptr<CarbonFootprintServiceServer_IServerImplementation> impl =
-                    std::make_shared<sustainml::core::CarbonFootprintServiceNodeImpl>(*this,
-                            "CARBON_FOOTPRINT");
+                    std::make_shared<sustainml::core::CarbonFootprintServiceNodeImpl>(*this);
             rpc_impl_ = impl;
             rpc_service_name_ = "CarbonFootprintService";
 
@@ -246,8 +244,7 @@ bool NodeImpl::init(
         else if (name == common::ML_MODEL_METADATA_NODE)
         {
             std::shared_ptr<MLModelMetadataServiceServer_IServerImplementation> impl =
-                    std::make_shared<sustainml::core::MLModelMetadataServiceNodeImpl>(*this,
-                            "ML_MODEL_METADATA");
+                    std::make_shared<sustainml::core::MLModelMetadataServiceNodeImpl>(*this);
             rpc_impl_ = impl;
             rpc_service_name_ = "MLModelMetadataService";
 
@@ -261,7 +258,7 @@ bool NodeImpl::init(
         else if (name == common::ML_MODEL_NODE)
         {
             std::shared_ptr<MLModelServiceServer_IServerImplementation> impl =
-                    std::make_shared<sustainml::core::MLModelServiceNodeImpl>(*this, "ML_MODEL");
+                    std::make_shared<sustainml::core::MLModelServiceNodeImpl>(*this);
             rpc_impl_ = impl;
             rpc_service_name_ = "MLModelService";
 
@@ -307,12 +304,7 @@ bool NodeImpl::init(
                         });
     }
 
-    // std::cout << "[DEBUG NodeImpl] RPC server created on node '"
-    //           << name
-    //           << "' with service '" << rpc_service_name_ << "'" << std::endl;
-
     // Register Common Types
-
     std::vector<eprosima::fastdds::dds::TypeSupport> sustainml_types;
     sustainml_types.reserve(common::Topics::MAX);
 
