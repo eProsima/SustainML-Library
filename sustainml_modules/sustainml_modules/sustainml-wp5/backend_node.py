@@ -472,6 +472,54 @@ def results_args():
     return jsonify({utils.string_node(node_id): orchestrator.get_results(node_id, task_id)}), 200
 
 
+# List the names of every save file that currently exists, for a Load picker.
+@server.route('/saved_files', methods=['GET', 'POST'])
+def saved_files():
+    return jsonify({'names': orchestrator.list_saved_files()}), 200
+
+
+# Explicitly save the given (currently open/live) tasks into a named file.
+@server.route('/save_tasks', methods=['POST'])
+def save_tasks():
+    data = request.json or {}
+    name = data.get('name')
+    tasks = data.get('tasks', [])
+    if not name or not tasks:
+        return jsonify({'error': 'name and at least one task are required'}), 400
+    orchestrator.save_tasks_to_file(name, tasks)
+    return jsonify({'message': f'Saved {len(tasks)} task(s) to "{name}".'}), 200
+
+
+# Load every task from a named save file. Each task is assigned a fresh problem_id
+# (returned to the caller) so loaded tasks always appear as new tasks.
+@server.route('/load_tasks', methods=['POST'])
+def load_tasks():
+    data = request.json or {}
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'name is required'}), 400
+    return jsonify({'tasks': orchestrator.load_tasks_from_file(name)}), 200
+
+
+# Delete a single named save file. Does not affect any other save or tasks
+# currently in progress.
+@server.route('/delete_saved_file', methods=['POST'])
+def delete_saved_file():
+    data = request.json or {}
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'name is required'}), 400
+    orchestrator.delete_saved_file(name)
+    return jsonify({'message': f'Deleted "{name}".'}), 200
+
+
+# Delete every save file. Does not affect tasks currently in progress.
+@server.route('/wipe_db', methods=['POST'])
+def wipe_db():
+    orchestrator.delete_all_saved_files()
+    return jsonify({'message': 'All save files deleted.'}), 200
+
+
 # Flask server shutdown route
 @server.route('/shutdown', methods=['GET'])
 def shutdown():
