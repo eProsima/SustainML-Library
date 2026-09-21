@@ -154,6 +154,8 @@ class Orchestrator:
         never waited on) and tasks previously loaded from a file (checked via
         _loaded_task_cache), so re-saving something you just loaded carries its data
         forward correctly instead of picking up an empty live placeholder.
+
+        Returns the absolute path of the file that was written.
         """
         result_nodes = (
             utils.node_id.ORCHESTRATOR,
@@ -189,7 +191,7 @@ class Orchestrator:
                 "results": results,
             })
 
-        persistence.save_tasks_to_file(name, payload)
+        return persistence.save_tasks_to_file(name, payload)
 
     def load_tasks_from_file(self, name):
         """Load every task from the named save file, assigning each a fresh problem_id

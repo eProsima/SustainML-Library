@@ -349,9 +349,9 @@ def hf_models_compare():
 
     token = os.getenv("HF_TOKEN")
     facts = [_model_facts(m, token) for m in models]
+    print(f"[COMPARE] models={[f['model_id'] for f in facts]}", flush=True)
 
     prompt = _build_compare_prompt(facts)
-    print(f"[COMPARE] prompt_len={len(prompt)}", flush=True)
 
     try:
         llm_text = _ollama_chat(prompt, model="llama3")
@@ -486,8 +486,8 @@ def save_tasks():
     tasks = data.get('tasks', [])
     if not name or not tasks:
         return jsonify({'error': 'name and at least one task are required'}), 400
-    orchestrator.save_tasks_to_file(name, tasks)
-    return jsonify({'message': f'Saved {len(tasks)} task(s) to "{name}".'}), 200
+    path = orchestrator.save_tasks_to_file(name, tasks)
+    return jsonify({'message': f'Saved {len(tasks)} task(s) to "{name}".', 'path': path}), 200
 
 
 # Load every task from a named save file. Each task is assigned a fresh problem_id

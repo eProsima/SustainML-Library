@@ -49,8 +49,13 @@ _save_dir_cache = None
 
 
 def _resolve_save_dir():
-    """Resolve (and cache) the save directory - computed and logged only once per
-    process, not on every save/load call.
+    """Resolve (and cache) the save directory - computed only once per process, not
+    on every save/load call.
+
+    Falling back from the default system path to the per-user one is the normal,
+    expected case for anyone without root (nothing is printed for it - it isn't an
+    error). Only a genuine failure - the fallback itself also being unusable - is
+    worth printing, since that means saving/loading can't work at all.
     """
     global _save_dir_cache
     if _save_dir_cache is not None:
@@ -65,13 +70,17 @@ def _resolve_save_dir():
     try:
         os.makedirs(_DEFAULT_SAVE_DIR, exist_ok=True)
         _save_dir_cache = _DEFAULT_SAVE_DIR
-    except OSError as e:
+    except OSError:
         fallback_dir = os.path.join(
             os.getenv("XDG_DATA_HOME", os.path.expanduser("~/.local/share")), "sustainml")
-        os.makedirs(fallback_dir, exist_ok=True)
-        print(f"[persistence] cannot use {_DEFAULT_SAVE_DIR} ({e}); "
-              f"falling back to {fallback_dir}")
-        _save_dir_cache = fallback_dir
+        try:
+            os.makedirs(fallback_dir, exist_ok=True)
+            _save_dir_cache = fallback_dir
+        except OSError as fallback_error:
+            print(f"[persistence] ERROR: cannot create a save directory at "
+                  f"{_DEFAULT_SAVE_DIR} or fall back to {fallback_dir} ({fallback_error}); "
+                  f"saving/loading will fail")
+            raise
     return _save_dir_cache
 
 
@@ -150,9 +159,13 @@ def save_tasks_to_file(name, tasks):
     tasks: list of dicts, each {"problem_id", "iteration_id", "display_name",
            "results": {node_id_int: json_dict, ...}}. Saving under a name that already
            exists replaces its entire previous content - it does not merge with it.
+
+    Returns the absolute path of the file that was written, so the caller can tell
+    the user where their save actually landed.
     """
+    path = _path_for(name)
     now = _now()
-    conn = _open(_path_for(name))
+    conn = _open(path)
     try:
         conn.execute("DELETE FROM tasks")
         conn.execute("DELETE FROM problems")
@@ -196,6 +209,7 @@ def save_tasks_to_file(name, tasks):
         conn.commit()
     finally:
         conn.close()
+    return path
 
 
 def load_tasks_from_file(name):
