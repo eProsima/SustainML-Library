@@ -29,6 +29,11 @@ from . import utils
 
 _DEFAULT_SAVE_DIR = "/opt/sustainml/db"
 _EXTENSION = ".sqlite3"
+# '/' is allowed in a save name but must never reach the filesystem as a literal
+# '/' (that would make it a path separator, i.e. a subfolder). It's swapped for
+# this visually similar but filesystem-harmless character on disk, and swapped
+# back whenever a name is read back out - round-tripping exactly what was typed.
+_SLASH_PLACEHOLDER = "∕"  # DIVISION SLASH
 
 _NODE_COLUMN = {
     utils.node_id.ORCHESTRATOR.value: "user_input_json",
@@ -84,25 +89,31 @@ def _resolve_save_dir():
     return _save_dir_cache
 
 
-def _sanitize_path(name):
-    """Keep save files inside the managed directory, while still allowing '/' to
-    organize saves into subfolders: sanitize each path segment independently (so a
-    segment that's just '..' - or anything else outside the allowed characters -
-    collapses to empty and is dropped), then rejoin. A name can therefore never
-    escape the managed directory via '..' or a leading absolute path.
+def _sanitize_name(name):
+    """Strip anything outside the allowed character set (letters, digits, space,
+    underscore, hyphen, '/'). '/' is allowed to appear in the name itself, but -
+    see _encode_filename() - never reaches the filesystem as a real path
+    separator, so a name always resolves to a single file directly under the
+    save directory (no subfolders), and can never escape it via '..' either
+    ('.' isn't in the allowed set at all).
     """
-    segments = []
-    for segment in str(name or "").split("/"):
-        clean = re.sub(r"[^A-Za-z0-9 _-]", "", segment).strip()
-        if clean:
-            segments.append(clean)
-    return "/".join(segments) or "sustainml_save"
+    clean = re.sub(r"[^A-Za-z0-9 _/-]", "", str(name or "")).strip()
+    return clean or "sustainml_save"
+
+
+def _encode_filename(name):
+    """Make a sanitized name safe to use as a single filesystem path component."""
+    return name.replace("/", _SLASH_PLACEHOLDER)
+
+
+def _decode_filename(name):
+    """Inverse of _encode_filename() - recovers the name as it was typed."""
+    return name.replace(_SLASH_PLACEHOLDER, "/")
 
 
 def _path_for(name):
-    path = os.path.join(_resolve_save_dir(), _sanitize_path(name) + _EXTENSION)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    return path
+    filename = _encode_filename(_sanitize_name(name))
+    return os.path.join(_resolve_save_dir(), filename + _EXTENSION)
 
 
 def _now():
@@ -111,15 +122,13 @@ def _now():
 
 def list_saved_files():
     """Return the names (without extension) of all save files that currently exist,
-    including ones organized into subfolders (e.g. "experiments/test1").
+    decoded back to how they were originally typed (see _decode_filename()).
     """
     save_dir = _resolve_save_dir()
-    names = []
-    for root, _dirs, files in os.walk(save_dir):
-        for f in files:
-            if f.endswith(_EXTENSION):
-                rel = os.path.relpath(os.path.join(root, f), save_dir)
-                names.append(rel[:-len(_EXTENSION)].replace(os.sep, "/"))
+    names = [
+        _decode_filename(f[:-len(_EXTENSION)]) for f in os.listdir(save_dir)
+        if f.endswith(_EXTENSION) and os.path.isfile(os.path.join(save_dir, f))
+    ]
     return sorted(names)
 
 
@@ -147,6 +156,16 @@ def _open(path):
         CREATE TABLE IF NOT EXISTS problems (
             problem_id INTEGER PRIMARY KEY,
             display_name TEXT,
+            updated_at TEXT NOT NULL
+        )
+    """)
+    # Holds the frontend's HF search/comparison history verbatim, as one opaque
+    # JSON blob per key - the backend never looks inside these, it's the exact
+    # shape the QML side already keeps in memory (searches/comparisons).
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS hf_state (
+            key TEXT PRIMARY KEY,
+            data_json TEXT NOT NULL,
             updated_at TEXT NOT NULL
         )
     """)
@@ -263,6 +282,57 @@ def load_tasks_from_file(name):
     return tasks
 
 
+def save_hf_state(name, hf_searches, hf_comparisons):
+    """Overwrite the named save file's HF search/comparison history - independent
+    of, and without touching, whatever tasks that file may already hold.
+
+    hf_searches/hf_comparisons: opaque lists as kept by the frontend - stored and
+    returned verbatim, never inspected here.
+
+    Returns the absolute path of the file that was written.
+    """
+    path = _path_for(name)
+    now = _now()
+    conn = _open(path)
+    try:
+        conn.execute("""
+            INSERT INTO hf_state (key, data_json, updated_at) VALUES ('searches', ?, ?)
+            ON CONFLICT(key) DO UPDATE SET data_json = excluded.data_json, updated_at = excluded.updated_at
+        """, (json.dumps(hf_searches), now))
+        conn.execute("""
+            INSERT INTO hf_state (key, data_json, updated_at) VALUES ('comparisons', ?, ?)
+            ON CONFLICT(key) DO UPDATE SET data_json = excluded.data_json, updated_at = excluded.updated_at
+        """, (json.dumps(hf_comparisons), now))
+        conn.commit()
+    finally:
+        conn.close()
+    return path
+
+
+def load_hf_state(name):
+    """Return {"searches": [...], "comparisons": [...]} from the named save file -
+    empty lists for either key not present (including when the file doesn't exist).
+    """
+    result = {"searches": [], "comparisons": []}
+    path = _path_for(name)
+    if not os.path.exists(path):
+        return result
+
+    conn = _open(path)
+    try:
+        rows = conn.execute("SELECT key, data_json FROM hf_state").fetchall()
+    finally:
+        conn.close()
+
+    for key, data_json in rows:
+        if key in result:
+            try:
+                result[key] = json.loads(data_json)
+            except (TypeError, ValueError):
+                pass
+    return result
+
+
 def delete_saved_file(name):
     """Delete a single named save file, if it exists. Does not touch live
     in-memory state or any other save file.
@@ -273,12 +343,9 @@ def delete_saved_file(name):
 
 
 def delete_all_saved_files():
-    """Delete every save file, including ones in subfolders. Does not touch live
-    in-memory state. Leaves now-empty subfolders behind (harmless - list/save/load
-    all ignore directories with no .sqlite3 files in them).
-    """
+    """Delete every save file. Does not touch live in-memory state."""
     save_dir = _resolve_save_dir()
-    for root, _dirs, files in os.walk(save_dir):
-        for f in files:
-            if f.endswith(_EXTENSION):
-                os.remove(os.path.join(root, f))
+    for f in os.listdir(save_dir):
+        path = os.path.join(save_dir, f)
+        if f.endswith(_EXTENSION) and os.path.isfile(path):
+            os.remove(path)

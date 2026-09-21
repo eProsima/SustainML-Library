@@ -230,6 +230,12 @@ class Orchestrator:
             })
         return loaded
 
+    def save_hf_state(self, name, hf_searches, hf_comparisons):
+        return persistence.save_hf_state(name, hf_searches, hf_comparisons)
+
+    def load_hf_state(self, name):
+        return persistence.load_hf_state(name)
+
     def get_all_status(self):
         json_output = {}
         for key, value in self.handler_.node_status_.items():

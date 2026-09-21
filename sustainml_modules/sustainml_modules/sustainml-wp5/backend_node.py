@@ -447,7 +447,14 @@ def results_args():
     node_id = data.get('node_id')
     json_task = data.get('task_id')
     if json_task is not None:
-        task_id = sustainml_swig.set_task_id(json_task.get('problem_id', 0), json_task.get('iteration_id', 0))
+        problem_id = json_task.get('problem_id', 0)
+        iteration_id = json_task.get('iteration_id', 0)
+        # problem_id/iteration_id map to uint32_t on the C++ side - a negative id
+        # (e.g. the frontend's -1 "no real problem yet" placeholder) would otherwise
+        # crash this whole request with an OverflowError.
+        if problem_id < 0 or iteration_id < 0:
+            return jsonify({'error': 'problem_id and iteration_id must be non-negative'}), 400
+        task_id = sustainml_swig.set_task_id(problem_id, iteration_id)
     else:
         task_id = None
 
@@ -499,6 +506,39 @@ def load_tasks():
     if not name:
         return jsonify({'error': 'name is required'}), 400
     return jsonify({'tasks': orchestrator.load_tasks_from_file(name)}), 200
+
+
+# Explicitly save the given tasks AND the given HF search/comparison history into
+# one named file in a single call - the "save everything" flow, as opposed to
+# /save_tasks which only ever touches the tasks/problems tables.
+@server.route('/save_all', methods=['POST'])
+def save_all():
+    data = request.json or {}
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'name is required'}), 400
+    tasks = data.get('tasks', [])
+    hf_searches = data.get('hf_searches', [])
+    hf_comparisons = data.get('hf_comparisons', [])
+    orchestrator.save_tasks_to_file(name, tasks)
+    path = orchestrator.save_hf_state(name, hf_searches, hf_comparisons)
+    return jsonify({'message': f'Saved everything to "{name}".', 'path': path}), 200
+
+
+# Load every task AND the HF search/comparison history from a named save file.
+@server.route('/load_all', methods=['POST'])
+def load_all():
+    data = request.json or {}
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'name is required'}), 400
+    tasks = orchestrator.load_tasks_from_file(name)
+    hf_state = orchestrator.load_hf_state(name)
+    return jsonify({
+        'tasks': tasks,
+        'hf_searches': hf_state.get('searches', []),
+        'hf_comparisons': hf_state.get('comparisons', []),
+    }), 200
 
 
 # Delete a single named save file. Does not affect any other save or tasks
