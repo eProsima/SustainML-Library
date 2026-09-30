@@ -583,7 +583,12 @@ class ServerThread(threading.Thread):
         self.orchestrator_thread = threading.Thread(target=orchestrator.run)
         # Create Flask server
         threading.Thread.__init__(self)
-        self.srv = make_server(server_ip_address, server_port, server)
+        # threaded=True: without it, Werkzeug serves one request at a time -
+        # a single slow /config_request (e.g. dataset_path, which runs a
+        # multi-minute LLM-based analysis pipeline synchronously) then blocks
+        # every other concurrent request (status polling, other config
+        # requests) on this same server for its entire duration.
+        self.srv = make_server(server_ip_address, server_port, server, threaded=True)
         self.ctx = server.app_context()
         self.ctx.push()
 
