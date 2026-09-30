@@ -14,6 +14,7 @@
 """SustainML Orchestrator Node API specification."""
 
 from . import utils
+from . import persistence
 import numpy as np
 
 from sustainml_swig import OrchestratorNodeHandle as cpp_OrchestratorNodeHandle
@@ -117,6 +118,12 @@ class Orchestrator:
         self._txn_lock = threading.Lock()
         self._txn_counter = 0
 
+        # Results for tasks loaded from a save file, keyed by string_task(new_task_id) ->
+        # {node_id: json_dict}. These task_ids are freshly minted on load (see
+        # load_tasks_from_file), never reused from the file, so they can never collide
+        # with a task_id created normally in this session, in either direction.
+        self._loaded_task_cache = {}
+
     # Proxy method to run the node
     def run(self):
 
@@ -129,6 +136,105 @@ class Orchestrator:
 
     def get_last_task_id(self):
         return self.handler_.last_task_id
+
+    def list_saved_files(self):
+        return persistence.list_saved_files()
+
+    def delete_saved_file(self, name):
+        persistence.delete_saved_file(name)
+
+    def delete_all_saved_files(self):
+        persistence.delete_all_saved_files()
+
+    def save_tasks_to_file(self, name, tasks):
+        """Save the given tasks (with their currently-known results) into a named file.
+
+        tasks: list of dicts {"problem_id", "iteration_id", "display_name"}. Works for
+        both live tasks (checked via result_status, skipping any node still pending -
+        never waited on) and tasks previously loaded from a file (checked via
+        _loaded_task_cache), so re-saving something you just loaded carries its data
+        forward correctly instead of picking up an empty live placeholder.
+
+        Returns the absolute path of the file that was written.
+        """
+        result_nodes = (
+            utils.node_id.ORCHESTRATOR,
+            utils.node_id.APP_REQUIREMENTS,
+            utils.node_id.CARBONTRACKER,
+            utils.node_id.HW_CONSTRAINTS,
+            utils.node_id.HW_PROVIDER,
+            utils.node_id.ML_MODEL_METADATA,
+            utils.node_id.ML_MODEL_PROVIDER,
+        )
+        payload = []
+        for task in tasks:
+            task_id = sustainml_swig.set_task_id(task["problem_id"], task["iteration_id"])
+            key = utils.string_task(task_id)
+            status = self.handler_.result_status.get(key, {})
+            cached = self._loaded_task_cache.get(key, {})
+
+            results = {}
+            for node in result_nodes:
+                is_live_user_input = node == utils.node_id.ORCHESTRATOR and key in self.handler_.result_status
+                if not (is_live_user_input or status.get(node.value, False) or node.value in cached):
+                    continue
+                try:
+                    results[node.value] = self.get_results(node.value, task_id)
+                except Exception as e:
+                    print(f"[persistence] failed to read {utils.string_node(node.value)} result for task "
+                          f"{utils.string_task(task_id)}: {e}")
+
+            payload.append({
+                "problem_id": task["problem_id"],
+                "iteration_id": task["iteration_id"],
+                "display_name": task.get("display_name"),
+                "results": results,
+            })
+
+        return persistence.save_tasks_to_file(name, payload)
+
+    def load_tasks_from_file(self, name):
+        """Load every task from the named save file, assigning each a fresh problem_id
+        so loaded tasks always appear as new tasks and can never collide with anything
+        already live or created afterward in this session.
+
+        Returns a list of dicts {"problem_id" (new), "iteration_id", "display_name"}.
+        """
+        loaded = []
+        for task in persistence.load_tasks_from_file(name):
+            # Only the problem_id needs to be fresh to avoid collisions; keep the
+            # original iteration_id for display continuity.
+            new_task_id, _ = self.node_.prepare_new_task()
+            new_problem_id = new_task_id.problem_id()
+            iteration_id = task["iteration_id"]
+            display_task_id = sustainml_swig.set_task_id(new_problem_id, iteration_id)
+            key = utils.string_task(display_task_id)
+
+            # Each saved node result still carries the *original* problem_id/iteration_id
+            # embedded in its own "task_id" field (from when it was first computed live).
+            # The frontend reads that embedded value - not the id it requested - to decide
+            # which tab a result belongs to, so it must be rewritten to the freshly
+            # assigned id here, or a loaded result silently reports as its old task
+            # instead of the new one.
+            rewritten_results = {}
+            for node_id, result in task["results"].items():
+                result = dict(result)
+                result["task_id"] = {"problem_id": new_problem_id, "iteration_id": iteration_id}
+                rewritten_results[node_id] = result
+            self._loaded_task_cache[key] = rewritten_results
+
+            loaded.append({
+                "problem_id": new_problem_id,
+                "iteration_id": iteration_id,
+                "display_name": task.get("display_name"),
+            })
+        return loaded
+
+    def save_hf_state(self, name, hf_searches, hf_comparisons):
+        return persistence.save_hf_state(name, hf_searches, hf_comparisons)
+
+    def load_hf_state(self, name):
+        return persistence.load_hf_state(name)
 
     def get_all_status(self):
         json_output = {}
@@ -325,6 +431,19 @@ class Orchestrator:
     def get_results(self, node_id, task_id):
         if task_id is None:
             task_id = self.get_last_task_id()
+
+        key = utils.string_task(task_id)
+        if key in self._loaded_task_cache:
+            # A task loaded from a save file never runs through the live pipeline, so a
+            # node missing from its cache (it was only partially complete when saved)
+            # will NEVER become available - return immediately instead of falling
+            # through to the live blocking wait below, which would hang forever and
+            # stall the single-threaded REST server for every other request too.
+            cached = self._loaded_task_cache[key]
+            if node_id in cached:
+                return cached[node_id]
+            message = utils.string_node(node_id) + " was not saved for this loaded task."
+            return {'message': message, 'task_id': utils.task_json(task_id)}
 
         if node_id == utils.node_id.APP_REQUIREMENTS.value:
             return self.get_app_requirements_task_data(task_id)

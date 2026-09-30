@@ -349,9 +349,9 @@ def hf_models_compare():
 
     token = os.getenv("HF_TOKEN")
     facts = [_model_facts(m, token) for m in models]
+    print(f"[COMPARE] models={[f['model_id'] for f in facts]}", flush=True)
 
     prompt = _build_compare_prompt(facts)
-    print(f"[COMPARE] prompt_len={len(prompt)}", flush=True)
 
     try:
         llm_text = _ollama_chat(prompt, model="llama3")
@@ -447,7 +447,14 @@ def results_args():
     node_id = data.get('node_id')
     json_task = data.get('task_id')
     if json_task is not None:
-        task_id = sustainml_swig.set_task_id(json_task.get('problem_id', 0), json_task.get('iteration_id', 0))
+        problem_id = json_task.get('problem_id', 0)
+        iteration_id = json_task.get('iteration_id', 0)
+        # problem_id/iteration_id map to uint32_t on the C++ side - a negative id
+        # (e.g. the frontend's -1 "no real problem yet" placeholder) would otherwise
+        # crash this whole request with an OverflowError.
+        if problem_id < 0 or iteration_id < 0:
+            return jsonify({'error': 'problem_id and iteration_id must be non-negative'}), 400
+        task_id = sustainml_swig.set_task_id(problem_id, iteration_id)
     else:
         task_id = None
 
@@ -470,6 +477,87 @@ def results_args():
         return jsonify(json), 200
 
     return jsonify({utils.string_node(node_id): orchestrator.get_results(node_id, task_id)}), 200
+
+
+# List the names of every save file that currently exists, for a Load picker.
+@server.route('/saved_files', methods=['GET', 'POST'])
+def saved_files():
+    return jsonify({'names': orchestrator.list_saved_files()}), 200
+
+
+# Explicitly save the given (currently open/live) tasks into a named file.
+@server.route('/save_tasks', methods=['POST'])
+def save_tasks():
+    data = request.json or {}
+    name = data.get('name')
+    tasks = data.get('tasks', [])
+    if not name or not tasks:
+        return jsonify({'error': 'name and at least one task are required'}), 400
+    path = orchestrator.save_tasks_to_file(name, tasks)
+    return jsonify({'message': f'Saved {len(tasks)} task(s) to "{name}".', 'path': path}), 200
+
+
+# Load every task from a named save file. Each task is assigned a fresh problem_id
+# (returned to the caller) so loaded tasks always appear as new tasks.
+@server.route('/load_tasks', methods=['POST'])
+def load_tasks():
+    data = request.json or {}
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'name is required'}), 400
+    return jsonify({'tasks': orchestrator.load_tasks_from_file(name)}), 200
+
+
+# Explicitly save the given tasks AND the given HF search/comparison history into
+# one named file in a single call - the "save everything" flow, as opposed to
+# /save_tasks which only ever touches the tasks/problems tables.
+@server.route('/save_all', methods=['POST'])
+def save_all():
+    data = request.json or {}
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'name is required'}), 400
+    tasks = data.get('tasks', [])
+    hf_searches = data.get('hf_searches', [])
+    hf_comparisons = data.get('hf_comparisons', [])
+    orchestrator.save_tasks_to_file(name, tasks)
+    path = orchestrator.save_hf_state(name, hf_searches, hf_comparisons)
+    return jsonify({'message': f'Saved everything to "{name}".', 'path': path}), 200
+
+
+# Load every task AND the HF search/comparison history from a named save file.
+@server.route('/load_all', methods=['POST'])
+def load_all():
+    data = request.json or {}
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'name is required'}), 400
+    tasks = orchestrator.load_tasks_from_file(name)
+    hf_state = orchestrator.load_hf_state(name)
+    return jsonify({
+        'tasks': tasks,
+        'hf_searches': hf_state.get('searches', []),
+        'hf_comparisons': hf_state.get('comparisons', []),
+    }), 200
+
+
+# Delete a single named save file. Does not affect any other save or tasks
+# currently in progress.
+@server.route('/delete_saved_file', methods=['POST'])
+def delete_saved_file():
+    data = request.json or {}
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'name is required'}), 400
+    orchestrator.delete_saved_file(name)
+    return jsonify({'message': f'Deleted "{name}".'}), 200
+
+
+# Delete every save file. Does not affect tasks currently in progress.
+@server.route('/wipe_db', methods=['POST'])
+def wipe_db():
+    orchestrator.delete_all_saved_files()
+    return jsonify({'message': 'All save files deleted.'}), 200
 
 
 # Flask server shutdown route
@@ -495,7 +583,12 @@ class ServerThread(threading.Thread):
         self.orchestrator_thread = threading.Thread(target=orchestrator.run)
         # Create Flask server
         threading.Thread.__init__(self)
-        self.srv = make_server(server_ip_address, server_port, server)
+        # threaded=True: without it, Werkzeug serves one request at a time -
+        # a single slow /config_request (e.g. dataset_path, which runs a
+        # multi-minute LLM-based analysis pipeline synchronously) then blocks
+        # every other concurrent request (status polling, other config
+        # requests) on this same server for its entire duration.
+        self.srv = make_server(server_ip_address, server_port, server, threaded=True)
         self.ctx = server.app_context()
         self.ctx.push()
 
