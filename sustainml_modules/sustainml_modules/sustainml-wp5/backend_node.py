@@ -455,6 +455,9 @@ def results_args():
         if problem_id < 0 or iteration_id < 0:
             return jsonify({'error': 'problem_id and iteration_id must be non-negative'}), 400
         task_id = sustainml_swig.set_task_id(problem_id, iteration_id)
+        # An unknown task would make the result waits fail with a KeyError
+        if not orchestrator.task_exists(task_id):
+            return jsonify({'error': f'task {{{problem_id}, {iteration_id}}} does not exist'}), 404
     else:
         task_id = None
 
@@ -480,9 +483,11 @@ def results_args():
 
 
 # List the names of every save file that currently exists, for a Load picker.
+# Optional "part" ("tasks", "searches" or "comparisons"): only the files holding it.
 @server.route('/saved_files', methods=['GET', 'POST'])
 def saved_files():
-    return jsonify({'names': orchestrator.list_saved_files()}), 200
+    data = request.get_json(silent=True) or {}
+    return jsonify({'names': orchestrator.list_saved_files(data.get('part') or None)}), 200
 
 
 # Explicitly save the given (currently open/live) tasks into a named file.
@@ -539,6 +544,38 @@ def load_all():
         'hf_searches': hf_state.get('searches', []),
         'hf_comparisons': hf_state.get('comparisons', []),
     }), 200
+
+
+# Request of /save_hf and /load_hf: (data, name, part), or None if name or part is missing
+def _hf_part_request():
+    data = request.json or {}
+    name = data.get('name')
+    part = data.get('part')
+    if not name or part not in ('searches', 'comparisons'):
+        return None
+    return data, name, part
+
+
+# Save only one part of the HF history ("searches" or "comparisons") into a named file,
+# leaving its tasks and the other part as they are.
+@server.route('/save_hf', methods=['POST'])
+def save_hf():
+    hf_request = _hf_part_request()
+    if hf_request is None:
+        return jsonify({'error': 'name and part ("searches" or "comparisons") are required'}), 400
+    data, name, part = hf_request
+    path = orchestrator.save_hf_part(name, part, data.get('data', []))
+    return jsonify({'message': f'Saved {part} to "{name}".', 'path': path}), 200
+
+
+# Load only one part of the HF history ("searches" or "comparisons") from a named file.
+@server.route('/load_hf', methods=['POST'])
+def load_hf():
+    hf_request = _hf_part_request()
+    if hf_request is None:
+        return jsonify({'error': 'name and part ("searches" or "comparisons") are required'}), 400
+    _, name, part = hf_request
+    return jsonify({'part': part, 'data': orchestrator.load_hf_state(name).get(part, [])}), 200
 
 
 # Delete a single named save file. Does not affect any other save or tasks

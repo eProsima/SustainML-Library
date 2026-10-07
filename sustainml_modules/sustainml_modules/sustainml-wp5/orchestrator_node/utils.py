@@ -17,7 +17,7 @@ from enum import Enum
 import json
 
 default_hw_requirement = "PIM_AI_1chip"
-default_mem_footprint = 100
+default_mem_footprint = 0  # MB, 0 means no limit
 
 class node_id(Enum):
     APP_REQUIREMENTS = 0

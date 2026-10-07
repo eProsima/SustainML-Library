@@ -120,16 +120,39 @@ def _now():
     return datetime.now(timezone.utc).isoformat()
 
 
-def list_saved_files():
+def list_saved_files(part=None):
     """Return the names (without extension) of all save files that currently exist,
     decoded back to how they were originally typed (see _decode_filename()).
+
+    part: if given ("tasks", "searches" or "comparisons"), only the files holding some
+    data of that part.
     """
     save_dir = _resolve_save_dir()
     names = [
         _decode_filename(f[:-len(_EXTENSION)]) for f in os.listdir(save_dir)
         if f.endswith(_EXTENSION) and os.path.isfile(os.path.join(save_dir, f))
     ]
+    if part:
+        names = [name for name in names if _file_has_part(name, part)]
     return sorted(names)
+
+
+def _file_has_part(name, part):
+    """Whether the named save file holds data of the part: "tasks", "searches" or
+    "comparisons". Opened read-only, so listing never adds tables to an older file."""
+    try:
+        conn = sqlite3.connect(f"file:{_path_for(name)}?mode=ro", uri=True)
+    except sqlite3.Error:
+        return False
+    try:
+        if part == "tasks":
+            return conn.execute("SELECT 1 FROM tasks LIMIT 1").fetchone() is not None
+        row = conn.execute("SELECT data_json FROM hf_state WHERE key = ?", (part,)).fetchone()
+        return row is not None and json.loads(row[0] or "[]") != []
+    except (sqlite3.Error, TypeError, ValueError):
+        return False
+    finally:
+        conn.close()
 
 
 def _open(path):
@@ -291,18 +314,30 @@ def save_hf_state(name, hf_searches, hf_comparisons):
 
     Returns the absolute path of the file that was written.
     """
+    return _save_hf_parts(name, {"searches": hf_searches, "comparisons": hf_comparisons})
+
+
+def save_hf_part(name, part, data):
+    """Overwrite only one part ("searches" or "comparisons") of the named save file's HF
+    history - without touching its tasks or the other part.
+
+    Returns the absolute path of the file that was written.
+    """
+    return _save_hf_parts(name, {part: data})
+
+
+def _save_hf_parts(name, parts):
+    """Write each {part: data} of parts into the named save file's hf_state, in one
+    transaction. Returns the absolute path of the file that was written."""
     path = _path_for(name)
     now = _now()
     conn = _open(path)
     try:
-        conn.execute("""
-            INSERT INTO hf_state (key, data_json, updated_at) VALUES ('searches', ?, ?)
-            ON CONFLICT(key) DO UPDATE SET data_json = excluded.data_json, updated_at = excluded.updated_at
-        """, (json.dumps(hf_searches), now))
-        conn.execute("""
-            INSERT INTO hf_state (key, data_json, updated_at) VALUES ('comparisons', ?, ?)
-            ON CONFLICT(key) DO UPDATE SET data_json = excluded.data_json, updated_at = excluded.updated_at
-        """, (json.dumps(hf_comparisons), now))
+        for part, data in parts.items():
+            conn.execute("""
+                INSERT INTO hf_state (key, data_json, updated_at) VALUES (?, ?, ?)
+                ON CONFLICT(key) DO UPDATE SET data_json = excluded.data_json, updated_at = excluded.updated_at
+            """, (part, json.dumps(data), now))
         conn.commit()
     finally:
         conn.close()
