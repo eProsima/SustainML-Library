@@ -23,6 +23,7 @@ from sustainml_swig import NodeStatus
 import sustainml_swig
 import threading
 import json
+import re
 
 class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
 
@@ -95,6 +96,9 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
                 if extra_data is not None and len(extra_data) > 0:
                     num_outputs = extra_data['num_outputs']
 
+                    if self.reiterate_for_constraints(task_id, extra_data):
+                        return
+
                     if num_outputs > 1:
                         print(f"Reiterating for multiple outputs")
                         user_json = self.orchestrator.get_user_input_data(task_id)
@@ -103,7 +107,27 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
                         user_json['previous_iteration'] = task_id.iteration_id()
                         user_json.get('extra_data', {})['previous_problem_id'] = task_id.problem_id()
                         user_json.get('extra_data', {})['model_restrains'] = extra_data['model_restrains']
+                        user_json.get('extra_data', {})['auto_attempt'] = 1
                         self.orchestrator.send_user_input(user_json)
+
+    # Auto carbon footprint optimization: the carbon footprint node flags a model that misses the
+    # desired carbon footprint or the max memory footprint, so discard it and search again
+    def reiterate_for_constraints(self, task_id, carbon_extra):
+        if not carbon_extra.get('auto_reiterate'):
+            return False
+
+        user_json = self.orchestrator.get_user_input_data(task_id)
+        user_extra = user_json.get('extra_data', {})
+        attempt = int(user_extra.get('auto_attempt') or 1)
+        print(f"Reiterating for carbon footprint optimization (attempt {attempt + 1})")
+        user_extra['goal'] = self.orchestrator.get_model_metadata_task_data(task_id).get('metadata', None)
+        user_extra['num_outputs'] = carbon_extra['num_outputs']
+        user_extra['previous_problem_id'] = task_id.problem_id()
+        user_extra['model_restrains'] = carbon_extra['model_restrains']
+        user_extra['auto_attempt'] = attempt + 1
+        user_json['previous_iteration'] = task_id.iteration_id()
+        self.orchestrator.send_user_input(user_json)
+        return True
 
     def results_available(self, task_id, node_id):
         with self.condition:
@@ -137,8 +161,26 @@ class Orchestrator:
     def get_last_task_id(self):
         return self.handler_.last_task_id
 
-    def list_saved_files(self):
-        return persistence.list_saved_files()
+    # Models already suggested in the finished iterations of a problem
+    def tried_models(self, problem_id):
+        with self.handler_.condition:
+            keys = set(self._loaded_task_cache) | set(self.handler_.result_status)
+        tried = []
+        for key in sorted(keys):
+            match = re.fullmatch(r"\{(\d+), (\d+)\}", key)
+            if not match or int(match.group(1)) != problem_id:
+                continue
+            task = sustainml_swig.set_task_id(int(match.group(1)), int(match.group(2)))
+            if key not in self._loaded_task_cache and not self.handler_.results_available(
+                    task, utils.node_id.CARBONTRACKER.value):
+                continue
+            result = self.get_results(utils.node_id.CARBONTRACKER.value, task)
+            if isinstance(result, dict):
+                tried += result.get('extra_data', {}).get('model_restrains', [])
+        return list(dict.fromkeys(tried))
+
+    def list_saved_files(self, part=None):
+        return persistence.list_saved_files(part)
 
     def delete_saved_file(self, name):
         persistence.delete_saved_file(name)
@@ -194,18 +236,22 @@ class Orchestrator:
         return persistence.save_tasks_to_file(name, payload)
 
     def load_tasks_from_file(self, name):
-        """Load every task from the named save file, assigning each a fresh problem_id
-        so loaded tasks always appear as new tasks and can never collide with anything
-        already live or created afterward in this session.
+        """Load every task from the named save file, assigning each saved problem a fresh
+        problem_id so loaded tasks always appear as new tasks and can never collide with
+        anything already live or created afterward in this session. The iterations of a
+        saved problem stay together under its new problem_id.
 
         Returns a list of dicts {"problem_id" (new), "iteration_id", "display_name"}.
         """
         loaded = []
+        new_problem_ids = {}
         for task in persistence.load_tasks_from_file(name):
             # Only the problem_id needs to be fresh to avoid collisions; keep the
             # original iteration_id for display continuity.
-            new_task_id, _ = self.node_.prepare_new_task()
-            new_problem_id = new_task_id.problem_id()
+            if task["problem_id"] not in new_problem_ids:
+                new_task_id, _ = self.node_.prepare_new_task()
+                new_problem_ids[task["problem_id"]] = new_task_id.problem_id()
+            new_problem_id = new_problem_ids[task["problem_id"]]
             iteration_id = task["iteration_id"]
             display_task_id = sustainml_swig.set_task_id(new_problem_id, iteration_id)
             key = utils.string_task(display_task_id)
@@ -235,6 +281,9 @@ class Orchestrator:
 
     def load_hf_state(self, name):
         return persistence.load_hf_state(name)
+
+    def save_hf_part(self, name, part, data):
+        return persistence.save_hf_part(name, part, data)
 
     def get_all_status(self):
         json_output = {}
@@ -428,6 +477,12 @@ class Orchestrator:
                    'extra_data': extra_data}
         return json_output
 
+    # Whether a task was run or loaded in this session
+    def task_exists(self, task_id):
+        key = utils.string_task(task_id)
+        with self.handler_.condition:
+            return key in self._loaded_task_cache or key in self.handler_.result_status
+
     def get_results(self, node_id, task_id):
         if task_id is None:
             task_id = self.get_last_task_id()
@@ -523,8 +578,19 @@ class Orchestrator:
         goal = extra.get('goal')
         model_selected = extra.get('model_selected', None)
         num_outputs = extra.get('num_outputs')
+        # A chosen model is evaluated once: more output models would only repeat it
+        if model_selected:
+            num_outputs = 1
         model_restrains = extra.get('model_restrains', [])
         hf_token = extra.get('hf_token')
+
+        # Carbon footprint optimization (Manual or Auto): a reiteration must not suggest a model
+        # already tried in any iteration of the problem
+        optimize = (json_data.get('optimize_carbon_footprint_manual') or
+                    json_data.get('optimize_carbon_footprint_auto'))
+        if optimize and json_data.get('previous_iteration') != 0 and not model_selected:
+            tried = self.tried_models(previous_task.problem_id())
+            model_restrains = list(dict.fromkeys(list(model_restrains) + tried))
         type = extra.get('type')
         dataset_metadata_description = extra.get('dataset_metadata_description', "")
         dataset_metadata_topic = extra.get('dataset_metadata_topic', "")
