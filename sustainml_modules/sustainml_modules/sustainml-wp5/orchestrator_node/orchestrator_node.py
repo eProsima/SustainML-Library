@@ -643,7 +643,7 @@ class Orchestrator:
 
         if "hardwares" in request_type.configuration():
             request_type.node_id(utils.node_id.HW_PROVIDER.value)
-        elif any(key in request_type.configuration() for key in ["modality", "in_out_modalities", "metrics", "model_info", "problem_from_modality", "dataset_path"]):
+        elif any(key in request_type.configuration() for key in ["modality", "model_info", "dataset_path"]):
             request_type.node_id(utils.node_id.ML_MODEL_METADATA.value)
         elif any(key in request_type.configuration() for key in ["goal", "model_from_goal", "hf_search"]):
             request_type.node_id(utils.node_id.ML_MODEL_PROVIDER.value)
