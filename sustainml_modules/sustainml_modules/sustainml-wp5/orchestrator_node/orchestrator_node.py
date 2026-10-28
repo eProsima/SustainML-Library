@@ -548,10 +548,14 @@ class Orchestrator:
             user_input.problem_short_description(json_data.get('problem_short_description'))
         if (json_data.get('problem_definition') is not None):
             user_input.problem_definition(json_data.get('problem_definition'))
-        if (json_data.get('inputs') is not None):
-            user_input.inputs(json_data.get('inputs'))
-        if (json_data.get('outputs') is not None):
-            user_input.outputs(json_data.get('outputs'))
+        # inputs/outputs are lists of words (the app splits its text on spaces), but a user input
+        # re-sent from get_user_input_data() (the multiple outputs and auto carbon footprint
+        # reiterations above) has them joined into one string, which SWIG would turn into a list
+        # of its characters ("text" read back as "t e x t"): split it the same way the app does
+        for key, setter in (('inputs', user_input.inputs), ('outputs', user_input.outputs)):
+            value = json_data.get(key)
+            if value is not None:
+                setter(value.split(' ') if isinstance(value, str) else value)
         if (json_data.get('minimum_samples') is not None):
             user_input.minimum_samples(json_data.get('minimum_samples'))
         if (json_data.get('maximum_samples') is not None):
