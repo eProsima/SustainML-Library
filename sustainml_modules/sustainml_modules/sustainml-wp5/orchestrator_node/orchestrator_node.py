@@ -645,8 +645,10 @@ class Orchestrator:
         request_type.transaction_id(txn_id)
         request_type.configuration(json_data.get('configuration'))
 
-        if "hardwares" in request_type.configuration():
+        if any(key in request_type.configuration() for key in ["hardwares", "yolo_models"]):
             request_type.node_id(utils.node_id.HW_PROVIDER.value)
+        elif "carbon_intensities" in request_type.configuration():
+            request_type.node_id(utils.node_id.CARBONTRACKER.value)
         elif any(key in request_type.configuration() for key in ["modality", "model_info", "dataset_path"]):
             request_type.node_id(utils.node_id.ML_MODEL_METADATA.value)
         elif any(key in request_type.configuration() for key in ["goal", "model_from_goal", "hf_search"]):
