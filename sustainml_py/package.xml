@@ -16,9 +16,6 @@
   <url type="repository">https://github.com/eProsima/SustainML</url>
 
   <depend>sustainml_swig</depend>
-  <depend>py_utils</depend>
-
-  <test_depend>python3-pytest</test_depend>
 
   <export>
     <build_type>ament_python</build_type>

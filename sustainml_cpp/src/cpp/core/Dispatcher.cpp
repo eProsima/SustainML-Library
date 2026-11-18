@@ -30,7 +30,6 @@ Dispatcher::Dispatcher(
         Node* node)
     : thread_pool_(N_THREADS_DEFAULT)
     , node_(node)
-    , stop_(false)
     , started_(false)
 {
     sample_queryables_.reserve(INITIAL_N_QUEUES);
@@ -39,11 +38,6 @@ Dispatcher::Dispatcher(
 Dispatcher::~Dispatcher()
 {
     stop();
-}
-
-bool Dispatcher::is_active()
-{
-    return started_.load(std::memory_order_relaxed);
 }
 
 void Dispatcher::start()
@@ -87,8 +81,8 @@ void Dispatcher::notify(
     else
     {
         EPROSIMA_LOG_ERROR(DISPATCHER,
-                node_->name() << " Dispatcher discarding sample with task_id " << task_id <<
-                ", not initialized");
+                node_->name() << " Dispatcher discarding sample with task_id " << task_id
+                              << ", not initialized");
     }
 }
 

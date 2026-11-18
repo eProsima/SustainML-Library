@@ -97,9 +97,6 @@ def string_task(task):
 def json_dict(dict):
     return json.dumps(dict, indent=4)
 
-def dict_from_json(json_obj):
-    return json.loads(json_obj)
-
 def response_json(response):
     return {
         "node_id": response.node_id(),

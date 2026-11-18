@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file TaskDB.hpp
+ * @file TaskDB.ipp
  */
 
 
@@ -35,7 +35,7 @@ namespace orchestrator {
 /**
  * @brief Class that represents the DataBase
  */
-template <typename ... Args>
+template<typename ... Args>
 class TaskDB
 {
 public:
@@ -46,7 +46,7 @@ public:
     /**
      * @brief Inserts new data in the DB.
      */
-    template <typename T>
+    template<typename T>
     bool insert_task_data_nts(
             const types::TaskId& task_id,
             const T& data);
@@ -55,7 +55,7 @@ public:
      * @brief Retrieves data from the DB given the task name
      * @warning Non thread safe
      */
-    template <typename T>
+    template<typename T>
     bool get_task_data_nts(
             const types::TaskId& task_id,
             T*&);
@@ -121,14 +121,14 @@ protected:
     std::map<uint32_t, std::map<uint32_t, std::tuple<Args...>>> db_;
 };
 
-template <typename ... Args>
+template<typename ... Args>
 TaskDB<Args...>::~TaskDB()
 {
     std::lock_guard<std::mutex> lock(mtx_);
 }
 
-template <typename ... Args>
-template <typename T>
+template<typename ... Args>
+template<typename T>
 bool TaskDB<Args...>::insert_task_data_nts(
         const types::TaskId& task_id,
         const T& data)
@@ -149,8 +149,8 @@ bool TaskDB<Args...>::insert_task_data_nts(
     return ret_code;
 }
 
-template <typename ... Args>
-template <typename T>
+template<typename ... Args>
+template<typename T>
 bool TaskDB<Args...>::get_task_data_nts(
         const types::TaskId& task_id,
         T*& data)
@@ -171,7 +171,7 @@ bool TaskDB<Args...>::get_task_data_nts(
     return ret_code;
 }
 
-template <typename ... Args>
+template<typename ... Args>
 bool TaskDB<Args...>::prepare_new_entry_nts(
         const types::TaskId& task_id,
         bool is_new_iteration)
@@ -191,7 +191,7 @@ bool TaskDB<Args...>::prepare_new_entry_nts(
     return ret_code;
 }
 
-template <typename ... Args>
+template<typename ... Args>
 bool TaskDB<Args...>::entry_exists_nts(
         const types::TaskId& task_id)
 {
@@ -220,7 +220,7 @@ void substitute_data(
     new_data.task_id(old_data.task_id());
 }
 
-template <typename ... Args>
+template<typename ... Args>
 bool TaskDB<Args...>::copy_data_nts(
         const types::TaskId& source,
         const types::TaskId& dest,

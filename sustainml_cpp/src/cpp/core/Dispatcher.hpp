@@ -71,11 +71,6 @@ public:
     void start();
 
     /**
-     * @brief Returns whether the Dispatcher has been started.
-     */
-    bool is_active();
-
-    /**
      * @brief Stops the Dispatcher execution.
      */
     void stop();
@@ -118,11 +113,7 @@ private:
 
     eprosima::utils::SlotThreadPool thread_pool_;
 
-    std::condition_variable pool_cv;
-
     std::mutex mtx_, taskid_mtx_;
-
-    std::function<void()> slot_;
 
     Node* node_;
 
@@ -136,8 +127,6 @@ private:
     std::map<types::TaskId, int> taskid_tracker_;
 
     std::vector<interfaces::SampleQueryable*> sample_queryables_;
-
-    std::atomic<bool> stop_;
 
     std::atomic<bool> started_;
 };

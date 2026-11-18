@@ -41,9 +41,6 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
             id: int,
             status : NodeStatus):
 
-        if id not in self.node_status_:
-            self.node_status_[id] = utils.node_status.INACTIVE.value
-
         self.node_status_[id] = status.node_status()
         print(utils.string_node(id), "node status", utils.string_status(status.node_status()), "received.")
 
@@ -81,11 +78,12 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
             self.result_status[utils.string_task(task_id)][node_id] = True
             self.condition.notify_all()
 
-            # If the node is CarbonTracker and its output extra_data is non-empty, print a message
+            # If the node is CarbonTracker and its output extra_data is non-empty, reiterate when
+            # the constraints are not met or more output models were asked for
             if node_id == utils.node_id.CARBONTRACKER.value:
                 carbon_data = sustainml_swig.get_carbontracker_task_data(self.orchestrator.node_, task_id)
                 try:
-                    extra_data_vector = carbon_data.extra_data()  # Vector de uint8_t
+                    extra_data_vector = carbon_data.extra_data()  # Vector of uint8_t
                     extra_data_list = [s for s in extra_data_vector]
                     extra_data_bytes = bytes(extra_data_list)
                     extra_data_str = extra_data_bytes.decode('utf-8')
@@ -100,7 +98,7 @@ class OrchestratorNodeHandle(cpp_OrchestratorNodeHandle):
                         return
 
                     if num_outputs > 1:
-                        print(f"Reiterating for multiple outputs")
+                        print("Reiterating for multiple outputs")
                         user_json = self.orchestrator.get_user_input_data(task_id)
                         user_json.get('extra_data', {})['goal'] = self.orchestrator.get_model_metadata_task_data(task_id).get('metadata', None) # Get the last model goal
                         user_json.get('extra_data', {})['num_outputs'] = num_outputs - 1
@@ -493,7 +491,7 @@ class Orchestrator:
             # node missing from its cache (it was only partially complete when saved)
             # will NEVER become available - return immediately instead of falling
             # through to the live blocking wait below, which would hang forever and
-            # stall the single-threaded REST server for every other request too.
+            # stall the REST request waiting for it.
             cached = self._loaded_task_cache[key]
             if node_id in cached:
                 return cached[node_id]
@@ -571,10 +569,6 @@ class Orchestrator:
         if (json_data.get('geo_location_region') is not None):
             user_input.geo_location_region(json_data.get('geo_location_region'))
 
-        #user_input.evaluation_metrics(evaluation_metrics)
-        #user_input.model(model)
-        # TODO add missing fields
-
         # Prepare extra data
         extra = json_data.get('extra_data', {})
         hw_req = extra.get('hardware_required', utils.default_hw_requirement)
@@ -649,16 +643,9 @@ class Orchestrator:
             request_type.node_id(utils.node_id.HW_PROVIDER.value)
         elif "carbon_intensities" in request_type.configuration():
             request_type.node_id(utils.node_id.CARBONTRACKER.value)
-        elif any(key in request_type.configuration() for key in ["modality", "model_info", "dataset_path"]):
+        elif any(key in request_type.configuration() for key in ["modality", "dataset_path"]):
             request_type.node_id(utils.node_id.ML_MODEL_METADATA.value)
-        elif any(key in request_type.configuration() for key in ["goal", "model_from_goal", "hf_search"]):
+        elif any(key in request_type.configuration() for key in ["model_from_goal", "hf_search"]):
             request_type.node_id(utils.node_id.ML_MODEL_PROVIDER.value)
 
-        if request_type.node_id() is None or request_type.transaction_id() is None or request_type.configuration() is None:
-            return None
-
-        res = self.node_.configuration_request(request_type)
-        if res.success:
-            return res
-        else:
-            return None
+        return self.node_.configuration_request(request_type)

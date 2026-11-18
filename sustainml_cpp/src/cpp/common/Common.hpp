@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file Common.h
+ * @file Common.hpp
  */
 
 #ifndef SUSTAINMLCPP_COMMON_COMMON_HPP
@@ -24,9 +24,12 @@
 
 #include <fastdds/dds/log/Log.hpp>
 
+#include <cctype>
+#include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <map>
+#include <string>
 #include <utility>
 
 namespace sustainml {
@@ -321,7 +324,7 @@ pair_queue_id_with_sample_type(
 }
 
 template<std::size_t I = 0, typename ... Tp>
-inline typename std::enable_if < I < sizeof...(Tp), void>::type
+inline typename std::enable_if < I<sizeof...(Tp), void>::type
 pair_queue_id_with_sample_type(
         const std::vector<std::pair<int, void*>>& input_samples,
         std::tuple<Tp...>& t_args,
@@ -347,6 +350,52 @@ pair_queue_id_with_sample_type(
         t_args,
         expected_samples,
         n_samples_retrieved);
+}
+
+/**
+ * @brief Reply of a node to a configuration request as it travels over the RPC service, whose
+ * result is a single string: "<success>;<err_code>;<configuration>". This way the orchestrator
+ * gets the success flag and the error code the node set, not only its configuration.
+ */
+inline std::string encode_configuration_reply(
+        bool success,
+        int32_t err_code,
+        const std::string& configuration)
+{
+    return std::string(success ? "1" : "0") + ";" + std::to_string(err_code) + ";" + configuration;
+}
+
+/**
+ * @brief Splits a reply made by encode_configuration_reply().
+ *
+ * @return false if the reply is not in that format (it is then a bare configuration)
+ */
+inline bool decode_configuration_reply(
+        const std::string& reply,
+        bool& success,
+        int32_t& err_code,
+        std::string& configuration)
+{
+    if (reply.size() < 4 || (reply[0] != '0' && reply[0] != '1') || reply[1] != ';')
+    {
+        return false;
+    }
+    const size_t end = reply.find(';', 2);
+    if (end == std::string::npos || end == 2 || end - 2 > 9)
+    {
+        return false;
+    }
+    for (size_t i = 2; i < end; ++i)
+    {
+        if (!std::isdigit(static_cast<unsigned char>(reply[i])))
+        {
+            return false;
+        }
+    }
+    success = reply[0] == '1';
+    err_code = static_cast<int32_t>(std::stol(reply.substr(2, end - 2)));
+    configuration = reply.substr(end + 1);
+    return true;
 }
 
 } //common

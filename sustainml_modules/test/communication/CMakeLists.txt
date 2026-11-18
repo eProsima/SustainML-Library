@@ -17,24 +17,6 @@ find_package(fastdds 3 REQUIRED)
 
 include_directories(${sustainml_cpp_INCLUDE_DIR})
 
-set(TYPES_SOURCE
-    types/typesImplPubSubTypes.cxx
-    types/typesImplTypeObjectSupport.cxx
-    )
-
-set(SIMPLE_TASK_PUBSUB_SOURCE ${TYPES_SOURCE}
-    SimpleTaskBase.cpp
-    SimpleTaskPublisher.cpp
-    SimpleTaskSubscriber.cpp
-    SimpleTaskPubSubMain.cpp
-    )
-
-add_executable(SimplePubSubTask ${SIMPLE_TASK_PUBSUB_SOURCE})
-target_link_libraries(SimplePubSubTask
-    fastdds
-    fastcdr
-    foonathan_memory)
-
 add_executable(SimpleOrchestratorNode SimpleOrchestratorNode.cpp)
 target_link_libraries(SimpleOrchestratorNode
     fastdds
@@ -51,27 +33,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/chained_nodes_validator.py
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/SimpleOrchestratorNode.py
     ${CMAKE_CURRENT_BINARY_DIR}/SimpleOrchestratorNode.py COPYONLY)
 
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/RequestOrchestratorNode.py
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/RequestOrchestratorNode.py
     ${CMAKE_CURRENT_BINARY_DIR}/RequestOrchestratorNode.py COPYONLY)
 
 if (Python3_FOUND)
-
-    # add_test(NAME SimpleCommunicationSixNodesChainedPython
-    #     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/chained_nodes_validator.py
-    #         -ps SimplePubSubTask
-    #         -tp /sustainml/user_input
-    #         -ts /sustainml/carbon_tracker/output
-    #         --baseline-topics /sustainml/ml_model_provider/baseline /sustainml/hw_resources/baseline /sustainml/carbon_tracker/baseline
-    #         --baseline-topic-types ml hw co2
-    #         -ttp ui
-    #         -tts co2
-    #         --samples 1
-    #         -mlm ml_model_metadata_node.py
-    #         -ml ml_model_provider_node.py
-    #         -hw hw_resources_provider_node.py
-    #         -co2 carbon_footprint_node.py
-    #         -hwc hw_constraints_node.py
-    #         -ap app_requirements_node.py)
 
     add_test(NAME SimpleCommunicationOrchestratorSixNodesPython
         COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/chained_nodes_validator.py

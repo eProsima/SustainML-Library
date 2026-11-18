@@ -66,7 +66,6 @@ class CdrSizeCalculator;
 
 class AppRequirementsImpl;
 class CO2FootprintImpl;
-class GeoLocationImpl;
 class HWConstraintsImpl;
 class HWResourceImpl;
 class MLModelImpl;

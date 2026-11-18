@@ -51,10 +51,6 @@
 #include <exception>
 %}
 
-// Macro delcarations
-// Any macro used on the header files will give an error if it is not redefined here
-#define SUSTAINML_CPP_DllAPI
-
 // SWIG helper modules
 %include cpointer.i
 %include stdint.i

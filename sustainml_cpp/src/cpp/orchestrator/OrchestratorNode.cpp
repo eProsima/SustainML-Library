@@ -729,8 +729,21 @@ types::ResponseType OrchestratorNode::configuration_request (
             }
         }
 
-        res.success(true);
-        res.configuration(cfg);
+        // The node's own success flag and error code travel inside the reply
+        bool success = true;
+        int32_t err_code = 0;
+        std::string configuration;
+        if (common::decode_configuration_reply(cfg, success, err_code, configuration))
+        {
+            res.success(success);
+            res.err_code(static_cast<ErrorCode>(err_code));
+            res.configuration(configuration);
+        }
+        else
+        {
+            res.success(true);
+            res.configuration(cfg);
+        }
 
     }
     catch (const std::exception& e)

@@ -16,13 +16,10 @@
   <url type="repository">https://github.com/eProsima/SustainML</url>
 
   <buildtool_depend>cmake</buildtool_depend>
-  <!-- <buildtool_depend>ament_cmake_python</buildtool_depend> -->
 
   <depend>cmake_utils</depend>
   <depend>cpp_utils</depend>
   <depend>sustainml_cpp</depend>
-
-  <test_depend>python3-pytest</test_depend>
 
   <export>
     <build_type>cmake</build_type>

@@ -16,7 +16,6 @@
   <url type="repository">https://github.com/eProsima/SustainML</url>
 
   <depend>sustainml_py</depend>
-  <depend>py_utils</depend>
 
   <export>
     <build_type>cmake</build_type>

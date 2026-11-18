@@ -189,7 +189,6 @@ protected:
     types::NodeStatus status_;
     std::shared_ptr<TaskDB_t> task_db_;
 
-    TypeSupport type_;
     Topic* node_output_topic_;
     Topic* baseline_topic_;
     ContentFilteredTopic* filtered_status_topic_;
