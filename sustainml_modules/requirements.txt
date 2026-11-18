@@ -1,6 +1,5 @@
 accelerate>=0.26.0
 annoy
-brevitas
 carbontracker
 datamart_profiler==0.11
 fastmcp==2.14.1

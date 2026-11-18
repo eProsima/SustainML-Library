@@ -364,7 +364,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
             co2.extra_data(json.dumps(output_extra_data).encode("utf-8"))
             return
 
-        # ONNX path (FPGA / RPTU) → use HW latency & power only
+        # ONNX path (FPGA) → use HW latency & power only
         model_path = ml_model.model_path()
         is_onnx = isinstance(model_path, str) and model_path.endswith(".onnx")
 
