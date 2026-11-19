@@ -25,6 +25,20 @@
    /rst/installation/framework
    /rst/installation/library
 
+.. _index_user_manual:
+
+.. toctree::
+   :caption: User Manual
+   :maxdepth: 2
+   :numbered:
+   :hidden:
+
+   /rst/user_manual/overview
+   /rst/user_manual/problem_definition
+   /rst/user_manual/results
+   /rst/user_manual/models
+   /rst/user_manual/node_status
+
 .. _index_developer_manual:
 
 .. toctree::

@@ -32,7 +32,10 @@ ML-Model-Provider Node
 .. raw:: html
    :file: ../../../../figures/sustainml_framework_arch.svg
 
-The :ref:`mlmodelprovider_node` is responsible for estimating the carbon footprint of the machine learning model on the selected hardware.
+The :ref:`mlmodelprovider_node` is responsible for choosing the machine learning model that solves the problem defined by the user, for the goal selected by the :ref:`mlmodelmetadata_node` and the hardware chosen by the user.
+It also answers the requests of the :ref:`frontend` for the list of models of a goal and for the search of models in the Hugging Face Hub.
+
+The node implementation is the ``ml_model_provider_node.py`` file of the WP1 module (``sustainml_modules/sustainml_modules/sustainml-wp1``).
 
 Inputs and Outputs
 ------------------
@@ -42,25 +45,168 @@ The following table summarizes the inputs and outputs of the :ref:`mlmodelprovid
 +--------------------------------+---------------------------+---------------------------+---------------------------+
 | Input                          | From Node                 | Output                    | To Node                   |
 +--------------------------------+---------------------------+---------------------------+---------------------------+
-|:ref:`mlmodelmetadata_type`     |:ref:`mlmodelmetadata_node`|:ref:`mlmodel_type`        |:ref:`mlmodelprovider_node`|
+|:ref:`mlmodelmetadata_type`     |:ref:`mlmodelmetadata_node`|:ref:`mlmodel_type`        |:ref:`hwprovider_node`     |
 +--------------------------------+---------------------------+---------------------------+---------------------------+
 |:ref:`hardware_constraints_type`|:ref:`hwconstraints_node`  |:ref:`mlmodel_type`        |:ref:`carbontracker_node`  |
 +--------------------------------+---------------------------+---------------------------+---------------------------+
 |:ref:`apprequirements_type`     |:ref:`appreqs_node`        |:ref:`mlmodel_type`        |:ref:`orchestrator`        |
 +--------------------------------+---------------------------+---------------------------+---------------------------+
-|:ref:`hardware_resource_type`   |:ref:`hwprovider_node`     |                           |                           |
+|:ref:`mlmodel_type` (baseline)  |:ref:`orchestrator`        |                           |                           |
 +--------------------------------+---------------------------+---------------------------+---------------------------+
-|:ref:`mlmodel_type`             |:ref:`mlmodelprovider_node`|                           |                           |
+|:ref:`hardware_resource_type`   |:ref:`orchestrator`        |                           |                           |
+|(baseline)                      |                           |                           |                           |
 +--------------------------------+---------------------------+---------------------------+---------------------------+
-|:ref:`carbonfootprint_type`     |:ref:`carbontracker_node`  |                           |                           |
+|:ref:`carbonfootprint_type`     |:ref:`orchestrator`        |                           |                           |
+|(baseline)                      |                           |                           |                           |
 +--------------------------------+---------------------------+---------------------------+---------------------------+
+
+The node only starts a task when it has received the six inputs of that task.
+The three baselines are published by the :ref:`orchestrator` when a task or a new iteration starts, and hold the outputs of this node, the :ref:`hwprovider_node` and the :ref:`carbontracker_node` in the previous iteration of the problem, if any.
+The current implementation does not use the :ref:`apprequirements_type` nor the baselines: it relies on the ``extra_data`` of the :ref:`mlmodelmetadata_type`, on the ``hardware_required`` and ``max_memory_footprint`` of the :ref:`hardware_constraints_type`, and on the ``model_restrains`` that the :ref:`orchestrator` carries between iterations.
+
+From the :ref:`mlmodelmetadata_type`, the node reads the goal (first element of ``ml_model_metadata``) and these keys of the ``extra_data`` JSON, written by the :ref:`mlmodelmetadata_node`:
+
+* ``problem_short_description``: used to search the model.
+* ``model_selected``: the model chosen by hand in the :ref:`frontend`, if any.
+* ``model_restrains``: the models that must not be suggested again.
+* ``type``: the model family (for instance ``Transformers`` or ``CNNs``).
+* ``hardware_required``: the hardware, used when the :ref:`hardware_constraints_type` has none.
+* ``yolo_preferences``: the requirements read from the problem description for the YOLO models of the Axelera board.
+
+In the :ref:`mlmodel_type` output, the node fills:
+
+* ``model``: the name of the chosen model (a Hugging Face model id, a YOLO model of the Axelera board or a U-Net model of the FPGA).
+* ``model_path``: the path to the ONNX file of the model, only for a U-Net model chosen by hand; ``""`` for any other model.
+* ``extra_data``: ``{"unsupported_models": [...]}``, the list of the ``unsupported_models.txt`` file of the WP1 module (``llama``, ``mistral``, ``qwen``, ``bloom``, ``t5``, ``phi3`` and ``idefics2``).
+  The :ref:`hwprovider_node` and the :ref:`carbontracker_node` refuse to load a model whose class name contains any of these words.
+
+If no model can be chosen, the output is ``model`` ``NO_MODEL``, ``model_path`` ``N/A`` and ``extra_data`` ``{"error_code": "NO_MODEL", "error": "No suitable model found for the given problem."}``.
+
+Model selection
+---------------
+
+The way the model is chosen depends on the model family and the hardware chosen by the user:
+
+**CNNs on the Axelera board**
+
+When the ``type`` is ``CNNs`` and the hardware (the first element of ``hardware_required`` in the :ref:`hardware_constraints_type`) is ``Axelera Edge 130p``, the model is one of the YOLO models of the board,
+listed in the YOLO catalog of the WP2 module (``sustainml-wp2/hw_provider_axelera/yolo_models.json``), with their accuracy and the latency, throughput, memory and power measured on the board.
+
+* If a model was chosen by hand, it is used, provided that it is in the catalog.
+* Otherwise, the YOLO models of the goal are ranked, and the first one is chosen.
+  The ranking leaves out the models in ``model_restrains`` and those whose memory exceeds the ``max_memory_footprint`` of the :ref:`hardware_constraints_type`,
+  keeps only the models that reach the ``min_fps`` and ``max_latency_ms`` of the ``yolo_preferences`` (if none does, the fastest one is chosen),
+  and orders them by the ``priority`` of the ``yolo_preferences``: the most accurate after the int8 quantization, the fastest, the one with the lowest energy per inference, or the best balance between accuracy and energy.
+
+**Model chosen by hand**
+
+For any other family or hardware, a model chosen by hand (``model_selected``) is used as it is.
+If it is the path to an existing ``.onnx`` file, or the name of one of the U-Net models of the FPGA, ``model_path`` is set to its ONNX file.
+The U-Net models are the ONNX files in the ``SUSTAINML_UNET_DIR`` directory if that environment variable is set, or else in ``sustainml-wp2/hw_provider_fpga/vendor/sustain_ml_predictor/unet_models``.
+
+**Automatic selection among the models of the graph**
+
+Otherwise, the model is chosen among the models that the Neo4j graph links to the goal:
+
+#. The models of the goal are retrieved from the graph, ordered by downloads.
+   For the ``summarization``, ``translation`` and ``text-generation`` goals, they are restricted to a whitelist of models defined in ``rdftool/rdfCode.py``.
+#. The models in ``model_restrains`` are left out, so that a model is not suggested twice for the same problem.
+#. The RAG back-end of the WP1 module (``rag/rag_backend.py``) picks one of the remaining models for the query ``Task <goal> with problem description: <problem_short_description>?``:
+   the query is embedded with the ``BAAI/bge-large-en`` sentence-transformers model and compared with the embeddings of the candidate models, stored in the ``models_index.ann`` Annoy index.
+   The model is drawn at random among the 20 nearest ones.
+#. The model is accepted if the graph links it to the goal.
+   Otherwise, or if no model is returned, it is added to the excluded models and the RAG is asked again, up to 10 times.
+
+In this case ``model_path`` is ``""``: the :ref:`hwprovider_node` and the :ref:`carbontracker_node` download the model from the Hugging Face Hub by its name.
+
+Reiterations
+^^^^^^^^^^^^
+
+Every iteration of a problem runs the selection again with the ``model_restrains`` of the :ref:`mlmodelmetadata_type`, so that a different model is suggested each time:
+
+* The :ref:`carbontracker_node` adds the evaluated model to the ``model_restrains`` of its output, and the :ref:`orchestrator` copies them to the user input of the next iteration when it reiterates by itself:
+  when the user asks for more than one output model, and when the automatic carbon footprint optimization discards a model that misses the desired carbon footprint or the maximum memory footprint.
+* When the user reiterates a problem with the manual or automatic carbon footprint optimization enabled (``optimize_carbon_footprint_manual`` or ``optimize_carbon_footprint_auto``)
+  and no model is chosen by hand, the :ref:`orchestrator` adds to ``model_restrains`` every model already suggested in the problem.
+* When a model is chosen by hand, the :ref:`orchestrator` sets the number of output models to 1, as more outputs would only repeat it.
+
+Configuration Requests
+----------------------
+
+The :ref:`orchestrator` routes to this node every :ref:`configuration request <node_config_service>` whose ``configuration`` string contains ``model_from_goal`` or ``hf_search``.
+The node answers the following requests:
+
++------------------------------------------+-----------------------------------------------------+---------------------------------------------+
+| Request ``configuration``                | Description                                         | Reply ``configuration``                     |
++==========================================+=====================================================+=============================================+
+| ``model_from_goal, <goal>[, <hardware>`` | List of the models that the user can choose for a   | ``{"models": "model_1, model_2, ..."}``     |
+| ``[, <family>]]``                        | goal, a hardware and a model family.                |                                             |
++------------------------------------------+-----------------------------------------------------+---------------------------------------------+
+| ``hf_search, <description>, <limit>``    | Search of the Hugging Face Hub for the models that  | ``{"models": [...], "task": "...",``        |
+|                                          | best match a description.                           | ``"pipeline_tag": "...", "candidates": N}`` |
++------------------------------------------+-----------------------------------------------------+---------------------------------------------+
+
+Any other request is answered with ``success`` set to ``false`` and ``{"models": ""}``.
+
+model_from_goal
+^^^^^^^^^^^^^^^
+
+The ``models`` of the reply are a single string with the model names separated by ``", "``.
+The list depends on the arguments of the request:
+
+* If the family is ``CNNs`` and the hardware is ``Axelera Edge 130p``: the YOLO models of the goal, in the order of the YOLO catalog.
+* Else, if the goal is ``U_NET_MODELS``, or the family is ``CNNs`` and the hardware contains ``FPGA``: the names, sorted and without the ``.onnx`` extension, of the U-Net models of the FPGA.
+  ``U_NET_MODELS`` is the value used by the :ref:`frontend` to ask for them.
+* Otherwise: the models that the Neo4j graph links to the goal (filtered by the whitelist of the goal, if any), sorted by name.
+
+``success`` is ``false`` when the list of YOLO or graph models is empty.
+
+hf_search
+^^^^^^^^^
+
+This request browses the Hugging Face Hub to show models to the user; the models found are not evaluated by the framework.
+The ``<description>`` may contain commas: the ``<limit>``, the maximum number of models returned (20 if it is missing or not a number), is taken after the last comma.
+
+The search is done by the ``hf_search_models`` tool of the Hugging Face MCP server of the WP1 module (``hf_mcp_server.py``), built with `FastMCP <https://gofastmcp.com/>`_.
+The node starts the server, as a subprocess that talks to it through ``stdio``, the first time it receives a request, and keeps it running until it terminates.
+The tool:
+
+#. Infers the goal of the description among ``summarization``, ``translation`` and ``text-generation`` with the ``llama3`` LLM served by Ollama (up to 3 attempts).
+   If it cannot, it returns ``{"models": [], "error": "could_not_infer_goal"}``.
+#. Gathers the candidates from the Hugging Face Hub: the models with that ``pipeline_tag`` with the most downloads, with the most likes and with the most recent changes (a third of ``max(3 * limit, 200)`` from each list), without repetitions.
+#. Ranks them by the similarity between the description and their model card, with ``BAAI/bge-large-en`` embeddings (the ``SUSTAINML_EMB_MODEL`` environment variable sets another sentence-transformers model).
+   The embeddings of the models are cached in ``~/.cache/sustainml/hf_model_emb_cache.jsonl``.
+   If the embedding model cannot be loaded, the candidates are ranked by downloads, likes and last change instead.
+#. Returns the first ``limit`` models, each one with its ``model_id``, ``author``, ``downloads``, ``likes``, ``pipeline_tag``, ``library_name``, ``tags``, ``cardData``, ``card_text``, ``sha``, ``lastModified``, ``url``, ``score`` (when the embedding model is available) and a ``tooltip`` text that summarizes its model card.
+
+When the ``<description>`` is ``__MODEL_CONFIG__:<model_id>``, the tool returns instead ``{"model_id": "...", "tooltip": "..."}``, a summary of the ``config.json`` file of that model (architecture, layers, hidden size, vocabulary, and so on).
+The :ref:`frontend` uses it for the tooltip shown when hovering a model.
+
+The node tries the call up to 3 times, with a timeout of 2 minutes each.
+If all of them fail, the reply is ``{"models": [], "error": "<error message>"}`` with ``success`` set to ``false``.
+An error returned by the tool itself, such as ``could_not_infer_goal``, is passed on in the reply with ``success`` set to ``true``.
+
+External dependencies
+---------------------
+
+* **Neo4j**: the knowledge graph of models and goals, reached at ``bolt://localhost:7687`` (user ``neo4j``, password ``12345678``).
+  The database is loaded from the dump files in ``sustainml-wp1/rag/neo4j_backup`` with ``neo4j-admin database load``, as explained in the :ref:`installation_framework`.
+  At start-up, the node waits up to 5 seconds for the graph to answer, and exits if it does not.
+* **RAG back-end**: loaded when the node starts, it needs the ``models_index.ann`` Annoy index with the embeddings of the models of the graph, and their names in ``rag/model_metadata.json``.
+  The index is looked for next to ``rag_backend.py`` and in ``~/.cache/sustainml``; if it is in neither, it is downloaded from Google Drive into ``~/.cache/sustainml``.
+  The ``BAAI/bge-large-en`` model is downloaded from the Hugging Face Hub the first time, and runs on the GPU if CUDA is available.
+* **Ollama**: the ``llama3`` model, served at ``http://localhost:11434``, used by the Hugging Face MCP server to infer the goal of a search.
+* **Hugging Face Hub**: queried by the MCP server for the ``hf_search`` request.
+* **WP2 module**: the ``hw_provider_axelera`` package of ``sustainml-wp2``, for the YOLO catalog and ranking, and the ``hw_provider_fpga`` package, which holds the U-Net models.
 
 Node Template
 -------------
 
 Following is the Python API provided for the :ref:`mlmodelprovider_node`.
-User is meant to implement the funcionality of the node within the ``test:callback()``.
+User is meant to implement the functionality of the node within the ``task_callback()``.
 And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
+
+The template below is a reduced version of the actual ``ml_model_provider_node.py``: it keeps its structure and the way it reads and writes the data, while the model selection is simplified to the most downloaded model of the goal that has not been suggested yet.
 
 .. code-block:: python
 
@@ -79,163 +225,18 @@ And inside ``configuration_callback()`` implement the response to the configurat
     # limitations under the License.
     """SustainML ML Model Provider Node Implementation."""
 
-    import asyncio
-    import json
-    import os
+    from sustainml_py.nodes.MLModelNode import MLModelNode
+
+    # Manage signaling
     import signal
-    import sys
     import threading
     import time
+    import json
 
-    HERE = os.path.dirname(__file__)
-    WP2_ROOT = os.path.abspath(os.path.join(HERE, "..", "sustainml-wp2"))
-
-    if WP2_ROOT not in sys.path:
-        sys.path.insert(0, WP2_ROOT)
-
-    import hw_provider_fpga
-
-    from rdftool.ModelONNXCodebase import model
-    from neo4j import GraphDatabase
     from rdftool.rdfCode import load_graph, get_models_for_problem
-    from rag.rag_backend import answer_question
-    from os.path import isdir, dirname, abspath, join
-    from os import listdir
-    from sustainml_py.nodes.MLModelNode import MLModelNode
-    from fastmcp import Client
-
-
-    MCP_SERVER_SCRIPT = os.path.abspath(os.path.expanduser(
-        "~/SustainML/SustainML_ws/src/sustainml_lib/sustainml_modules/sustainml_modules/sustainml-wp1/hf_mcp_server.py"
-    ))
-
-    _mcp_loop = None
-    _mcp_thread = None
-    _mcp_client = None
-    _mcp_client_ctx = None
-
-
-    def _start_asyncio_loop():
-        global _mcp_loop
-        _mcp_loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(_mcp_loop)
-        _mcp_loop.run_forever()
-
-
-    _mcp_thread = threading.Thread(target=_start_asyncio_loop, daemon=True)
-    _mcp_thread.start()
-
-
-    # Create (once) and return a persistent FastMCP client connected to the HF MCP server
-    async def _ensure_mcp_client():
-        global _mcp_client, _mcp_client_ctx
-
-        if _mcp_client is not None:
-            return _mcp_client
-
-        config = {
-            "mcpServers": {
-                "hf": {
-                    "command": sys.executable,
-                    "args": ["-u", MCP_SERVER_SCRIPT],
-                }
-            }
-        }
-
-        # Keep the context open forever
-        _mcp_client_ctx = Client(config)
-        _mcp_client = await _mcp_client_ctx.__aenter__()
-        return _mcp_client
-
-
-    # Calls a Hugging Face MCP tool asynchronously from the ML Model Provider node
-    def _mcp_call(tool_name: str, args: dict) -> dict:
-        async def _run():
-            c = await _ensure_mcp_client()
-            res = await c.call_tool(f"hf_{tool_name}", args)
-            return json.loads(res.content[0].text)
-
-        # Submit coroutine to background loop
-        fut = asyncio.run_coroutine_threadsafe(_run(), _mcp_loop)
-        return fut.result(timeout=120) # 2 minutes timeout for MCP call
-
-
-    # Neo4j config/driver for local checks (used by _model_has_goal)
-    NEO4J_URI = "bolt://localhost:7687"
-    NEO4J_USER = "neo4j"
-    NEO4J_PASSWORD = "12345678"
-    neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
-
-
-    # Return the directory containing vendored U-Net ONNX models
-    def _unet_models_dir():
-        env = os.environ.get("SUSTAINML_UNET_DIR")
-        if env:
-            return os.path.abspath(env)
-
-        return os.path.abspath(
-            os.path.join(os.path.dirname(hw_provider_fpga.__file__),
-                        "vendor", "sustain_ml_predictor", "unet_models")
-        )
-
-
-    # Lists available U-Net .onnx models from the vendor directory
-    def list_unet_onnx_models(basename_only=True):
-        d = _unet_models_dir()
-        if not os.path.isdir(d):
-            print(f"[WARN] U-Net directory not found: {d}")
-            return []
-        names = [f for f in os.listdir(d) if f.endswith(".onnx")]
-        return sorted([os.path.splitext(f)[0] for f in names]) if basename_only else \
-            sorted([os.path.join(d, f) for f in names])
-
-
-    # Checks in Neo4j whether a model node is linked to the given goal/problem
-    def _model_has_goal(neo4j_driver, model_name: str, goal: str) -> bool:
-        cypher = """
-        MATCH (m:Model {name: $model})-[:HAS_PROBLEM]->(p:Problem)
-        WHERE toLower(p.name) = toLower($goal)
-        RETURN COUNT(*) AS cnt
-        """
-        with neo4j_driver.session() as s:
-            r = s.run(cypher, model=model_name, goal=goal).single()
-            return bool(r and r["cnt"] > 0)
 
     # Whether to go on spinning or interrupt
     running = False
-
-
-    # Load the list of unsupported models
-    def load_unsupported_models(file_path):
-        try:
-            with open(file_path, 'r') as f:
-                return [line.strip().lower() for line in f if line.strip()]
-        except Exception as e:
-            print(f"[WARN] Could not load unsupported list: {e}")
-            return []
-
-
-    unsupported_models = load_unsupported_models(os.path.dirname(__file__) + "/unsupported_models.txt")
-
-
-    # Close the FastMCP client context and reset MCP globals
-    def _shutdown_mcp():
-        global _mcp_client_ctx, _mcp_client
-        async def _close():
-            global _mcp_client_ctx, _mcp_client
-            if _mcp_client_ctx is not None:
-                try:
-                    await _mcp_client_ctx.__aexit__(None, None, None)
-                except Exception:
-                    pass
-            _mcp_client_ctx = None
-            _mcp_client = None
-
-        if _mcp_loop:
-            try:
-                asyncio.run_coroutine_threadsafe(_close(), _mcp_loop).result(timeout=5)
-            except Exception:
-                pass
 
     # Signal handler
     def signal_handler(sig, frame):
@@ -243,149 +244,45 @@ And inside ``configuration_callback()`` implement the response to the configurat
         MLModelNode.terminate()
         global running
         running = False
-        _shutdown_mcp()
-
 
     # User Callback implementation
     # Inputs: ml_model_metadata, app_requirements, hw_constraints, ml_model_baseline, hw_baseline, carbonfootprint_baseline
     # Outputs: node_status, ml_model
     def task_callback(ml_model_metadata,
-                    app_requirements,
-                    hw_constraints,
-                    ml_model_baseline,
-                    hw_baseline,
-                    carbonfootprint_baseline,
-                    node_status,
-                    ml_model):
-
-        # Callback implementation here
-
-        print(f"Received Task: {ml_model_metadata.task_id().problem_id()},{ml_model_metadata.task_id().iteration_id()}")
+                      app_requirements,
+                      hw_constraints,
+                      ml_model_baseline,
+                      hw_baseline,
+                      carbonfootprint_baseline,
+                      node_status,
+                      ml_model):
 
         try:
-            chosen_model = None
-            # Model restriction after various outputs
-            restrained_models = []
-            type = None
-            extra_data_bytes = ml_model_metadata.extra_data()
-            if extra_data_bytes:
-                extra_data_str = ''.join(chr(b) for b in extra_data_bytes)
-                try:
-                    extra_data_dict = json.loads(extra_data_str)
-                except json.JSONDecodeError:
-                    print("[WARN] In model_provider node extra_data JSON is not valid.")
-                    extra_data_dict = {}
+            # The extra_data written by the ML Model Metadata node
+            extra_data_str = ''.join(chr(b) for b in ml_model_metadata.extra_data())
+            extra_data_dict = json.loads(extra_data_str) if extra_data_str else {}
 
-                if "type" in extra_data_dict:
-                    type = extra_data_dict["type"]
-
-                if "model_restrains" in extra_data_dict:
-                    restrained_models = extra_data_dict["model_restrains"]
-
-                if "model_selected" in extra_data_dict:
-                    chosen_model = extra_data_dict["model_selected"]
-                    print("Model already selected: ", chosen_model)
-
-                # If a model was manually selected, skip automatic selection
-                if chosen_model:
-
-                    # If user passed a full path to an .onnx, use it directly
-                    onnx_path = None
-                    if isinstance(chosen_model, str) and chosen_model.endswith(".onnx") and os.path.isfile(chosen_model):
-                        onnx_path = chosen_model
-
-                    # Else, try U-Net vendor dir: <basename>[.onnx]
-                    if onnx_path is None:
-                        unet_dir = _unet_models_dir()
-                        cand1 = os.path.join(unet_dir, chosen_model)          # maybe includes .onnx already
-                        cand2 = os.path.join(unet_dir, chosen_model + ".onnx")
-                        if os.path.isfile(cand1):
-                            onnx_path = cand1
-                        elif os.path.isfile(cand2):
-                            onnx_path = cand2
-
-                    # Else, fall back to graph name -> onnx path resolution
-                    if onnx_path is None:
-                        onnx_path = model(chosen_model)
-
-                    ml_model.model(chosen_model)
-                    ml_model.model_path(onnx_path)
-
-                    # Add unsupported_models information to extra_data in JSON format
-                    extra_data = {"unsupported_models": unsupported_models}
-                    encoded_data = json.dumps(extra_data).encode("utf-8")
-                    ml_model.extra_data(encoded_data)
-                    return
-
-                problem_short_description = extra_data_dict["problem_short_description"]
-
-            goal = ml_model_metadata.ml_model_metadata()[0]  # Goal selected by metadata node
-            print(f"Problem short description: {problem_short_description}")
-            print(f"Selected goal (metadata): {goal}")
-
-            # Build strictly goal-scoped allowed list (names only)
-            goal_models = get_models_for_problem(goal)   # [(model_name, downloads), ...]
-            allowed_names = [name for (name, _) in goal_models]
-            if not allowed_names:
-                raise Exception("No candidates in graph for the selected goal")
-
-            # Track models to avoid repeats across outputs
-            restrained_models = []
-            if extra_data_bytes:
-                try:
-                    if "model_restrains" in extra_data_dict:
-                        restrained_models = list(set(extra_data_dict["model_restrains"]))
-                except Exception:
-                    pass
-
-            # Try up to 10 candidates, skipping misfits transparently
-            chosen_model = None
-            for _ in range(10):
-                remaining = [n for n in allowed_names if n not in restrained_models]
-                if not remaining:
-                    break
-
-                candidate = answer_question(
-                    f"Task {goal} with problem description: {problem_short_description}?",
-                    allowed_models=remaining
-                )
-
-                if not candidate or candidate.strip().lower() == "none":
-                    # Mark and try again
-                    if candidate:
-                        restrained_models.append(candidate)
-                    continue
-
-                # Final safety: ensure candidate really belongs to goal
-                if not _model_has_goal(neo4j_driver, candidate, goal):
-                    restrained_models.append(candidate)
-                    continue
-
-                chosen_model = candidate
-                break
-
+            chosen_model = extra_data_dict.get("model_selected")
             if not chosen_model:
-                raise Exception("No suitable model after screening candidates")
-            print(f"ML Model chosen: {chosen_model}")
+                # Goal selected by the ML Model Metadata node
+                goal = ml_model_metadata.ml_model_metadata()[0]
+                restrained_models = extra_data_dict.get("model_restrains", [])
+                candidates = [name for (name, _) in get_models_for_problem(goal)
+                              if name not in restrained_models]
+                if not candidates:
+                    raise Exception("No candidates in graph for the selected goal")
+                chosen_model = candidates[0]
 
-            # Generate model code and keywords
-            onnx_path = model(chosen_model)     # TODO - Further development needed
             ml_model.model(chosen_model)
-            ml_model.model_path(onnx_path)
-            # Add unsupported_models information to extra_data in json format
-            extra_data = {"unsupported_models": unsupported_models}
-            encoded_data = json.dumps(extra_data).encode("utf-8")
-            ml_model.extra_data(encoded_data)
+            ml_model.model_path("")
+            ml_model.extra_data(json.dumps({"unsupported_models": []}).encode("utf-8"))
 
         except Exception as e:
             print(f"[WARN] No suitable model found for task {ml_model_metadata.task_id()}: {e}")
             ml_model.model("NO_MODEL")
             ml_model.model_path("N/A")
-            error_message = "No suitable model found for the given problem."
-            error_info = {"error_code": "NO_MODEL", "error": error_message}
-            encoded_error = json.dumps(error_info).encode("utf-8")
-            ml_model.extra_data(encoded_error)
-
+            error_info = {"error_code": "NO_MODEL", "error": "No suitable model found for the given problem."}
+            ml_model.extra_data(json.dumps(error_info).encode("utf-8"))
 
     # User Configuration Callback implementation
     # Inputs: req
@@ -396,110 +293,24 @@ And inside ``configuration_callback()`` implement the response to the configurat
         res.node_id(req.node_id())
         res.transaction_id(req.transaction_id())
 
-        # HF search (metadata-only browsing; no evaluation)
-        if raw.lower().startswith("hf_search"):
-            # Expected: "hf_search, <description>, <limit>"
-            rest = raw[len("hf_search"):].lstrip()
-            if rest.startswith(","):
-                rest = rest[1:].lstrip()
-
-            # Split from the RIGHT so commas inside description are allowed
-            description = rest
-            limit = 20
-
-            if "," in rest:
-                desc_part, limit_part = rest.rsplit(",", 1)
-                description = desc_part.strip()
-                try:
-                    limit = int(limit_part.strip())
-                except Exception:
-                    limit = 20
-            else:
-                description = rest.strip()
-
-            try:
-                resp = _mcp_call("search_models", {"description": description, "limit": limit})
-                res.success(True)
-                res.err_code(0)
-                res.configuration(json.dumps(resp))
-                return
-            except Exception as e:
-                res.success(False)
-                res.err_code(1)
-                res.configuration(json.dumps({"models": [], "error": str(e)}))
-                return
-
-        # Only handle the listing endpoint(s)
+        # "model_from_goal, <goal>[, <hardware>[, <family>]]"
         if raw.lower().startswith("model_from_goal"):
-            # Accept both forms:
-            #   "model_from_goal, <goal>, <hw>, <family>"
-            #   "model_from_goal, model_from_goal, <goal-or-sentinel>, <hw>, <family>" (buggy frontend)
-            s = raw.split(",", 1)
-            args_str = s[1] if len(s) > 1 else ""          # everything after first comma
-            parts = [p.strip() for p in args_str.split(",") if p is not None]
+            parts = [p.strip() for p in raw.split(",")[1:]]
+            goal = parts[0] if parts else ""
+            names = sorted(name for (name, _) in get_models_for_problem(goal))
+            res.success(bool(names))
+            res.err_code(0 if names else 1) # 0: No error || 1: Error
+            res.configuration(json.dumps({"models": ", ".join(names)}))
+            return
 
-            # Normalize arity (goal, hw, family)
-            goal   = parts[0] if len(parts) >= 1 else ""
-            hw     = parts[1] if len(parts) >= 2 else ""
-            family = parts[2] if len(parts) >= 3 else ""
-
-            fam_l = (family or "").lower()
-            hw_l  = (hw or "").lower()
-            is_cnn  = fam_l.lower() == "cnns"
-            is_fpga = "fpga" in hw_l
-
-            # U-Net fast path: allow sentinel goals like U_NET_MODELS or any goal when (FPGA+CNNs)
-            if (goal.upper() == "U_NET_MODELS") or (is_cnn and is_fpga):
-                try:
-                    try:
-                        vendored = abspath(join(dirname(hw_provider_fpga.__file__),
-                                                "vendor", "sustain_ml_predictor", "unet_models"))
-                    except Exception as e:
-                        print(f"[ML_MODEL_PROVIDER] hw_provider_fpga not importable: {e}")
-                        vendored = ""  # fall back to empty
-
-                    names = []
-                    if vendored and isdir(vendored):
-                        names = [f[:-5] for f in listdir(vendored) if f.endswith(".onnx")]
-
-                    csv = ", ".join(sorted(names))
-                    res.success(True)
-                    res.err_code(0)
-                    res.configuration(json.dumps({"models": csv}))
-                    return
-                except Exception as e:
-                    print(f"[ML_MODEL_PROVIDER] U-NET listing error: {e}")
-                    res.success(False)
-                    res.err_code(1)
-                    res.configuration(json.dumps({"models": ""}))
-                    return
-
-            # Default path: fetch by real goal from Neo4j
-            try:
-                models = get_models_for_problem(goal)  # [(name, downloads)]
-                names = [m for (m, _) in models]
-                csv = ", ".join(sorted(names))
-                res.success(bool(names))
-                res.err_code(0 if names else 1)
-                res.configuration(json.dumps({"models": csv}))
-                return
-            except Exception as e:
-                print(f"[ML_MODEL_PROVIDER] Neo4j listing error: {e}")
-                res.success(False)
-                res.err_code(1)
-                res.configuration(json.dumps({"models": ""}))
-                return
-
-        # Unsupported
-        msg = f"Unsupported configuration request: {raw}"
-        print(f"[ML_MODEL_PROVIDER] {msg}")
+        print(f"[ML_MODEL_PROVIDER] Unsupported configuration request: {raw}")
         res.success(False)
-        res.err_code(1)
+        res.err_code(1) # 0: No error || 1: Error
         res.configuration(json.dumps({"models": ""}))
-
 
     # Main workflow routine
     def run():
+        # Wait for the Neo4j graph
         start_time = time.time()
         loaded = False
         while time.time() - start_time < 5:
@@ -514,7 +325,6 @@ And inside ``configuration_callback()`` implement the response to the configurat
         global running
         running = True
         node.spin()
-
 
     # Call main in program execution
     if __name__ == '__main__':

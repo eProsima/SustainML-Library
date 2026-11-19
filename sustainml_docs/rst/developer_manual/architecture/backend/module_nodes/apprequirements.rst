@@ -32,7 +32,13 @@ Application-Requirements Node
 .. raw:: html
    :file: ../../../../figures/sustainml_framework_arch.svg
 
-The :ref:`appreqs_node` allows to specify certain rules for building the machine learning model from the information given by the user.
+The :ref:`appreqs_node` is meant to turn the information given by the user into application requirements, the rules that the rest of the nodes must follow when building and deploying the machine learning model.
+
+In the current version of the framework this node is a **placeholder**: it does not analyse the user input yet.
+For every task it publishes the same fixed list of requirements, ``["Im", "A", "New", "Requirement"]``, and the requirements are not used by any other node.
+It must be running anyway, because the :ref:`mlmodelprovider_node` and the :ref:`hwprovider_node` only start a task once they have received all their inputs, the :ref:`apprequirements_type` of this node included.
+
+The node implementation is the ``app_requirements_node.py`` file of the WP1 module (``sustainml_modules/sustainml_modules/sustainml-wp1``).
 
 Inputs and Outputs
 ------------------
@@ -46,12 +52,32 @@ The following table summarizes the inputs and outputs of the :ref:`appreqs_node`
 +----------------------+-------------------+---------------------------+---------------------------+
 |                      |                   |:ref:`apprequirements_type`|:ref:`hwprovider_node`     |
 +----------------------+-------------------+---------------------------+---------------------------+
+|                      |                   |:ref:`apprequirements_type`|:ref:`orchestrator`        |
++----------------------+-------------------+---------------------------+---------------------------+
+
+The node fills only the ``app_requirements`` list of the output; its ``extra_data`` is left empty.
+The :ref:`orchestrator` stores the output so that the :ref:`frontend` can show it with the rest of the task results.
+
+Configuration Requests
+----------------------
+
+The node answers every :ref:`configuration request <node_config_service>` with the same dummy JSON and ``success`` set to ``true``:
+
+.. code-block:: json
+
+    {"param1": "value1", "param2": "value2", "param3": "value3"}
+
+No configuration request of the :ref:`frontend` is meant for this node.
+However, the orchestrator of the back-end routes each request by the keywords found in its ``configuration`` string
+(``modality`` and ``dataset_path`` to the :ref:`mlmodelmetadata_node`, ``model_from_goal`` and ``hf_search`` to the :ref:`mlmodelprovider_node`, and so on),
+and a request that matches no keyword keeps the default ``node_id`` ``0``, which is the one of this node.
+Therefore, receiving the dummy reply above means that the request did not match any node.
 
 Node Template
 -------------
 
-Following is the Python API provided for the :ref:`appreqs_node`.
-User is meant to implement the funcionality of the node within the ``test:callback()``.
+Following is the Python API provided for the :ref:`appreqs_node`, which is also the complete current implementation of the node.
+User is meant to implement the functionality of the node within the ``task_callback()``, filling the ``app_requirements`` output from the ``user_input``.
 And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
 
 .. code-block:: python
@@ -69,7 +95,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
     # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     # See the License for the specific language governing permissions and
     # limitations under the License.
-    """SustainML Task Encoder Node Implementation."""
+    """SustainML App Requirements Node Implementation."""
 
     from sustainml_py.nodes.AppRequirementsNode import AppRequirementsNode
 

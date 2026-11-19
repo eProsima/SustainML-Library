@@ -32,7 +32,10 @@ ML-Model-Metadata Node
 .. raw:: html
    :file: ../../../../figures/sustainml_framework_arch.svg
 
-The :ref:`mlmodelmetadata_node` processes the problem description given by the user and generates the required metadata for generating the machine learning model.
+The :ref:`mlmodelmetadata_node` processes the problem description given by the user and selects the machine learning goal (the type of task, such as ``summarization`` or ``object-detection``) that the :ref:`mlmodelprovider_node` uses to choose the model.
+It also answers the requests of the :ref:`frontend` for the list of goals and for the description of a dataset.
+
+The node implementation is the ``ml_model_metadata_node.py`` file of the WP1 module (``sustainml_modules/sustainml_modules/sustainml-wp1``).
 
 Inputs and Outputs
 ------------------
@@ -44,13 +47,119 @@ The following table summarizes the inputs and outputs of the :ref:`mlmodelmetada
 +----------------------+-------------------+--------------------------------+---------------------------+
 |:ref:`user_input_type`|:ref:`orchestrator`|:ref:`mlmodelmetadata_type`     |:ref:`mlmodelprovider_node`|
 +----------------------+-------------------+--------------------------------+---------------------------+
+|                      |                   |:ref:`mlmodelmetadata_type`     |:ref:`orchestrator`        |
++----------------------+-------------------+--------------------------------+---------------------------+
+
+From the :ref:`user_input_type` the node reads ``problem_short_description``, ``problem_definition``, ``inputs``, ``outputs``, ``minimum_samples``, ``maximum_samples`` and the following keys of the ``extra_data`` JSON:
+
+* ``goal``: the goal chosen in the :ref:`frontend`.
+  The :ref:`orchestrator` also sets it, to the goal of the previous iteration, when it reiterates a problem by itself (more than one output model asked for, or the automatic carbon footprint optimization).
+* ``model_selected``: the model chosen by hand in the :ref:`frontend`, if any.
+* ``model_restrains``: the models that must not be suggested again.
+* ``type`` and ``model_family``: the model family chosen in the :ref:`frontend` (for instance ``Transformers`` or ``CNNs``).
+* ``hardware_required``: the hardware chosen in the :ref:`frontend`.
+* ``dataset_metadata_description``, ``dataset_metadata_topic``, ``dataset_metadata_profile``, ``dataset_metadata_keywords`` and ``dataset_metadata_applications``: the description of the dataset loaded by the user, as returned by the ``dataset_path`` request explained below.
+
+In the :ref:`mlmodelmetadata_type` output, the node fills:
+
+* ``ml_model_metadata``: a list with the selected goal as its only element.
+  It is left empty when a model was chosen by hand, as no goal is needed then, and when no goal could be selected.
+* ``extra_data``: a JSON object for the :ref:`mlmodelprovider_node` with the keys ``problem_short_description``, ``model_restrains``, ``model_selected``, ``type`` and ``hardware_required`` copied from the user input (each one only if present and not empty),
+  plus ``yolo_preferences`` for the YOLO models of the Axelera board (see below).
+  If no goal could be selected, the ``extra_data`` is replaced by ``{"error": "Failed to extract metadata due to invalid or incomplete input parameters."}``.
+
+The ``keywords`` field of the output is not filled.
+
+Goal selection
+--------------
+
+For each task, the node selects the goal as follows:
+
+#. If the user input carries a ``goal`` in its ``extra_data``, that goal is used as it is.
+#. Otherwise, if a model was chosen by hand (``model_selected``), no goal is selected and the ``ml_model_metadata`` list is left empty.
+#. Otherwise, the goal is inferred by the ``llama3`` LLM, served by `Ollama <https://ollama.com/>`_ at ``http://localhost:11434``.
+   The prompt contains the problem short description and definition, the known inputs and outputs, the minimum and maximum number of samples, the dataset metadata (if any) and the list of possible goals.
+   The answer must be one of the possible goals; otherwise the question is asked again, up to 3 times.
+
+The list of possible goals depends on the model family and the hardware:
+
+* **CNNs on the Axelera board**: when the model family (``model_family`` or ``type``) is ``CNNs`` and the hardware is ``Axelera Edge 130p``, the goals are the computer vision tasks of the YOLO models of the board:
+  ``object-detection``, ``oriented-object-detection``, ``instance-segmentation``, ``semantic-segmentation`` and ``keypoint-detection``.
+  They are read, with a description of each one that is added to the prompt, from the YOLO catalog of the WP2 module (``sustainml-wp2/hw_provider_axelera/yolo_models.json``).
+* **Any other case**: the ``Problem`` nodes of the Neo4j graph (see `External dependencies`_), minus a fixed list of goals that the framework does not support.
+  With the current graph, the supported goals are ``summarization``, ``text-generation`` and ``translation``.
+
+YOLO requirements
+^^^^^^^^^^^^^^^^^
+
+All the YOLO models of a goal do the same task on the same dataset, and only trade accuracy for speed and energy.
+So, for CNNs on the Axelera board, unless a model was chosen by hand, the node also reads from the problem description what matters most when choosing among them, whether the goal is chosen in the :ref:`frontend` or inferred.
+The ``llama3`` LLM is asked, with temperature 0 so that every iteration of a problem reads the same requirements, whether the problem asks for accuracy, speed or energy, quoting the words of the problem that show each need,
+and for the frame rate and the latency per image that it states, if any.
+A need is only accepted when its quote is found in the problem and talks about that criterion.
+The result is added to the ``extra_data`` of the output as ``yolo_preferences``:
+
+.. code-block:: json
+
+    {
+        "priority": "speed",
+        "min_fps": 120.0,
+        "max_latency_ms": null,
+        "reason": "speed: \"4 cameras at 30 fps\""
+    }
+
+* ``priority``: ``accuracy``, ``speed`` or ``energy`` when exactly one need is found, ``balanced`` otherwise.
+* ``min_fps``: the total frames per second to process, only when the problem talks about a frame rate.
+* ``max_latency_ms``: the maximum time per image in milliseconds, only when the problem states a time.
+* ``reason``: the quotes that support the priority.
+
+The :ref:`mlmodelprovider_node` uses these preferences to rank the YOLO models of the goal.
+
+Configuration Requests
+----------------------
+
+The :ref:`orchestrator` routes to this node every :ref:`configuration request <node_config_service>` whose ``configuration`` string contains ``modality`` or ``dataset_path``.
+The node answers the following requests:
+
++----------------------------+--------------------------------------------------------------+----------------------------------------------------------+
+| Request ``configuration``  | Description                                                  | Reply ``configuration``                                  |
++============================+==============================================================+==========================================================+
+| ``modality``               | List of the goals that the user can choose in the            | ``{"goals": "summarization, text-generation, ..."}``     |
+|                            | :ref:`frontend`. The name of the request is kept for         |                                                          |
+|                            | compatibility; the modalities are no longer used.            |                                                          |
++----------------------------+--------------------------------------------------------------+----------------------------------------------------------+
+| ``dataset_path, <path>``   | Description of the dataset stored in ``<path>``, a ``.csv``  | ``{"description": "...", "profile": "...",``             |
+|                            | or ``.json`` file readable by the node.                      | ``"topic": "...", "keywords": [...],``                   |
+|                            |                                                              | ``"applications": [...]}``                               |
++----------------------------+--------------------------------------------------------------+----------------------------------------------------------+
+
+* ``modality`` must be the whole ``configuration`` string.
+  The reply lists, sorted and separated by ``", "``, the supported goals of the Neo4j graph (the YOLO goals of the Axelera board are not included; the :ref:`frontend` gets them from the :ref:`hwprovider_node`).
+  ``success`` is ``false`` when the list is empty.
+* ``dataset_path`` uses the *AutoDDG* package of the WP1 module: it takes a sample of 10 rows of the dataset, profiles its columns and asks the ``llama3`` LLM (through Ollama) for a semantic profile and then for a description of the dataset.
+  The :ref:`frontend` sends the fields of the reply back in the ``dataset_metadata_*`` keys of the ``extra_data`` of the user input, so that they are added to the goal selection prompt.
+  This request can take a long time, as it runs several LLM queries.
+  ``success`` is ``false`` if the file cannot be read or described.
+
+Any other request is answered with ``success`` set to ``false`` and ``{"error": "Unsupported configuration request: <request>"}``.
+
+External dependencies
+---------------------
+
+* **Neo4j**: the knowledge graph of models and goals, reached at ``bolt://localhost:7687`` (user ``neo4j``, password ``12345678``) by the ``rdftool/rdfCode.py`` helpers of the WP1 module.
+  The database is loaded from the dump files in ``sustainml-wp1/rag/neo4j_backup`` with ``neo4j-admin database load``, as explained in the :ref:`installation_framework`.
+  At start-up, the node waits up to 5 seconds for the graph to answer, and exits if it does not.
+* **Ollama**: the ``llama3`` model, served at ``http://localhost:11434``, for the goal selection, the YOLO requirements and the dataset description.
+* **WP2 module**: the ``hw_provider_axelera`` package of ``sustainml-wp2``, for the YOLO goals and the normalization of the YOLO preferences.
 
 Node Template
 -------------
 
 Following is the Python API provided for the :ref:`mlmodelmetadata_node`.
-User is meant to implement the funcionality of the node within the ``test:callback()``.
+User is meant to implement the functionality of the node within the ``task_callback()``.
 And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
+
+The template below is a reduced version of the actual ``ml_model_metadata_node.py``: it keeps its structure and the way it reads and writes the data, while the goal selection is simplified to a single LLM query among the goals of the graph.
 
 .. code-block:: python
 
@@ -67,83 +176,22 @@ And inside ``configuration_callback()`` implement the response to the configurat
     # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     # See the License for the specific language governing permissions and
     # limitations under the License.
-    """SustainML Task Encoder Node Implementation."""
+    """SustainML ML Model Metadata Node Implementation."""
 
     from sustainml_py.nodes.MLModelMetadataNode import MLModelMetadataNode
 
     # Manage signaling
-    import os
     import signal
     import threading
     import time
     import json
-    import pandas as pd
 
-    from rdftool.rdfCode import (
-        load_graph, get_problems, get_cover_tags, search_metrics_by_modalities, get_models_for_problem, get_models_for_problem_and_tag,
-        find_metrics_by_model, get_model_details, get_problems_for_cover_tag, get_all_metrics, get_modalities_input,
-        get_modalities_output, search_metrics_by_cover_tag
-    )
-
-    from AutoDDG.generate_description import SemanticProfiler, DatasetDescriptionGenerator
-    from AutoDDG.utils import get_sample, json_to_dataframe
-    from AutoDDG.data_process import dataset_profiler
+    from rdftool.rdfCode import load_graph, get_problems
 
     from ollama import Client
 
     # Whether to go on spinning or interrupt
     running = False
-
-    unsupported_goals = [
-                    "any-to-any",
-                    "audio-classification",
-                    "audio-text-to-text",
-                    "audio-to-audio",
-                    "automatic-speech-recognition",
-                    "depth-estimation",
-                    "document-question-answering",
-                    "feature-extraction",
-                    "fill-mask",
-                    "graph-ml",
-                    "image-classification",
-                    "image-feature-extraction",
-                    "image-segmentation",
-                    "image-text-to-text",
-                    "image-to-3d",
-                    "image-to-image",
-                    "image-to-text",
-                    "image-to-video",
-                    "keypoint-detection",
-                    "mask-generation",
-                    "object-detection",
-                    "question-answering",
-                    "reinforcement-learning",
-                    "robotics",
-                    "sentence-similarity",
-                    "table-question-answering",
-                    "tabular-classification",
-                    "tabular-regression",
-                    "text-classification",
-                    "text-ranking",
-                    "text-to-3d",
-                    "text-to-audio",
-                    "text-to-image",
-                    "text-to-speech",
-                    "text-to-video",
-                    "text2text-generation",
-                    "time-series-forecasting",
-                    "token-classification",
-                    "unconditional-image-generation",
-                    "video-classification",
-                    "video-text-to-text",
-                    "video-to-video",
-                    "visual-document-retrieval",
-                    "visual-question-answering",
-                    "voice-activity-detection",
-                    "zero-shot-classification",
-                    "zero-shot-image-classification",
-                    "zero-shot-object-detection"
-                ]
 
     # Signal handler
     def signal_handler(sig, frame):
@@ -152,440 +200,84 @@ And inside ``configuration_callback()`` implement the response to the configurat
         global running
         running = False
 
-    def get_llm_response(client, model_version, problem_definition, prompt):
-        """Get a response from the Ollama API."""
-        prompt = f"Given the following Information: \"{problem_definition}\". {prompt}"
-        try:
-            response = client.chat(model=model_version, messages=[
-                {
-                    'role': 'user',
-                    'content': prompt,
-                }
-            ])
-            return response['message']['content']
-        except Exception as e:
-            print(f"Error in getting response from Ollama: {e}")
-            return None
-
     # User Callback implementation
     # Inputs: user_input
     # Outputs: node_status, ml_model_metadata
     def task_callback(user_input, node_status, ml_model_metadata):
-        # Callback implementation here
-        print(f"Received Task: {user_input.task_id().problem_id()},{user_input.task_id().iteration_id()}")
-        client = Client(host='http://localhost:11434')
-        dataset_metadata = {}
 
+        # The extra_data of the user input is a JSON object sent as a sequence of bytes
+        extra_data_str = ''.join(chr(b) for b in user_input.extra_data())
         try:
-            extra_data_bytes = user_input.extra_data()
-            extra_data_str = ''.join(chr(b) for b in extra_data_bytes)
-            try:
-                extra_data_dict = json.loads(extra_data_str)
-            except json.JSONDecodeError:
-                print("[WARN] In model_metadata node extra_data JSON is not valid.")
-                extra_data_dict = {}
+            extra_data_dict = json.loads(extra_data_str)
+        except json.JSONDecodeError:
+            extra_data_dict = {}
 
-            accumulated_data = {}
+        # Pass to the ML Model Provider node what it needs
+        accumulated_data = {"problem_short_description": user_input.problem_short_description()}
+        if "model_restrains" in extra_data_dict:
+            accumulated_data["model_restrains"] = extra_data_dict["model_restrains"]
+        if extra_data_dict.get("model_selected"):
+            accumulated_data["model_selected"] = extra_data_dict["model_selected"]
+        ml_model_metadata.extra_data(json.dumps(accumulated_data).encode("utf-8"))
 
-            if "model_restrains" in extra_data_dict:
-                accumulated_data["model_restrains"] = extra_data_dict["model_restrains"]
-
-            if "model_selected" in extra_data_dict and extra_data_dict["model_selected"] != "":
-                accumulated_data["model_selected"] = extra_data_dict["model_selected"]
-
-            if "type" in extra_data_dict and extra_data_dict["type"] != "":
-                accumulated_data["type"] = extra_data_dict["type"]
-
-            problem = user_input.problem_short_description()
-            accumulated_data["problem_short_description"] = problem
-
-            # Persist what we’ve gathered so downstream nodes see it
-            encoded_data = json.dumps(accumulated_data).encode("utf-8")
-            ml_model_metadata.extra_data(encoded_data)
-
-            ui_goal = (extra_data_dict.get("goal") or "").strip()
-            if ui_goal:
-                # Ensure the metadata list contains exactly this goal
-                try:
-                    lst = ml_model_metadata.ml_model_metadata()
-                    lst.clear()
-                    lst.append(ui_goal)
-                except Exception:
-                    # Fallback in case the API expects direct assignment
-                    ml_model_metadata.ml_model_metadata([ui_goal])
-                print(f"[ML_MODEL_METADATA] Using UI-provided goal: {ui_goal}")
-                return
-
-            # If a specific model is chosen, bypass goal inference entirely
-            if extra_data_dict.get("model_selected"):
-                print(f"[ML_MODEL_METADATA] Skipping goal inference; model_selected='{extra_data_dict['model_selected']}'")
-                # Optional: explicitly clear to show blank for the CNN+FPGA U-Net fast path
-                try:
-                    ml_model_metadata.ml_model_metadata().clear()
-                except Exception:
-                    ml_model_metadata.ml_model_metadata([])
-                return
-
-            # Collect optional dataset metadata (used only to enrich the prompt)
-            if "dataset_metadata_description" in extra_data_dict:
-                dataset_metadata["description"] = extra_data_dict["dataset_metadata_description"]
-            if "dataset_metadata_topic" in extra_data_dict:
-                dataset_metadata["topic"] = extra_data_dict["dataset_metadata_topic"]
-            if "dataset_metadata_profile" in extra_data_dict:
-                dataset_metadata["profile"] = extra_data_dict["dataset_metadata_profile"]
-            if "dataset_metadata_keywords" in extra_data_dict:
-                dataset_metadata["keywords"] = extra_data_dict["dataset_metadata_keywords"]
-            if "dataset_metadata_applications" in extra_data_dict:
-                dataset_metadata["applications"] = extra_data_dict["dataset_metadata_applications"]
-
-        except Exception as e:
-            print(f"No extra data was found: {e}")
-
-        # Retrieve Possible ML Goals from graph
-        try:
-            raw_goals = get_problems()
-            inputs = [str(g) for g in raw_goals]
-            goals = [goal for goal in inputs if goal not in unsupported_goals]
-        except Exception as e:
-            print(f"Error in getting problems from MLModel graph: {e}")
+        # Goal chosen in the GUI (or by the orchestrator when it reiterates)
+        ui_goal = (extra_data_dict.get("goal") or "").strip()
+        if ui_goal:
+            ml_model_metadata.ml_model_metadata().append(ui_goal)
             return
 
-        # Select MLGoal Using Ollama llama 3
-        prompt = (
-            f"Which of the following machine learning Goals can be used to solve this problem: {goals}?. "
-            f"Answer with only one of the Machine learning goals and nothing more, just the goal name without \"\" or ''. "
-            f"If you are not sure, answer with 'None'."
-        )
-        if (user_input.modality() != ""):
-            prompt = f"{prompt} Using the modality {user_input.modality()}."
-        if (user_input.inputs()):
-            prompt = f"{prompt} The user inputs known are {', '.join(user_input.inputs())}."
-        if (user_input.outputs()):
-            prompt = f"{prompt} The user outputs known are {', '.join(user_input.outputs())}."
-        if isinstance(user_input.minimum_samples(), int) and user_input.minimum_samples() > 0:
-            prompt = f"{prompt} Have into account that needs to have {user_input.minimum_samples()} minimum samples."
-        if isinstance(user_input.maximum_samples(), int) and user_input.maximum_samples() > 0:
-            prompt = f"{prompt} Have into account that needs to have {user_input.maximum_samples()} maximum samples."
-        if dataset_metadata:
-            prompt = f"{prompt} The dataset that must be analyzed with the chosen Goal has the following metadata {json.dumps(dataset_metadata)}."
+        # A model chosen by hand needs no goal
+        if extra_data_dict.get("model_selected"):
+            return
 
-        problem = user_input.problem_short_description()
-        if (user_input.problem_definition() != ""):
-            problem = f"{problem}. {user_input.problem_definition()}."
+        # Infer the goal with an LLM among the goals of the graph
+        goals = [str(g) for g in get_problems()]
+        client = Client(host='http://localhost:11434')
+        prompt = (f"Given the following Information: \"{user_input.problem_short_description()}\". "
+                  f"Which of the following machine learning Goals can be used to solve this problem: {goals}?. "
+                  f"Answer with only one of the Machine learning goals and nothing more.")
+        try:
+            response = client.chat(model="llama3", messages=[{'role': 'user', 'content': prompt}])
+            mlgoal = response['message']['content'].strip().lower()
+        except Exception as e:
+            print(f"Error in getting response from Ollama: {e}")
+            mlgoal = None
 
-        mlgoal = None
-        max_attempts = 3
-        attempt = 0
-        while attempt < max_attempts:
-            mlgoal = get_llm_response(client, "llama3", problem, prompt)
-            if mlgoal:
-                mlgoal = mlgoal.strip().lower()
-            if mlgoal is not None and mlgoal in goals:
-                break
-            attempt += 1
-            prompt = f"Your previous answer '{mlgoal}' was not valid. {prompt}"
-            print(f"Retry {attempt}: Response '{mlgoal}' is not among available goals. Retrying...")
-
-        if mlgoal is not None and mlgoal in goals:
+        if mlgoal in goals:
             ml_model_metadata.ml_model_metadata().append(mlgoal)
-            print(f"Selected ML Goal: {mlgoal}")
         else:
-            print(f"Failed to determine ML goal for task {user_input.task_id()}.")
-            ml_model_metadata.ml_model_metadata().clear()
-            error_message = "Failed to extract metadata due to invalid or incomplete input parameters."
-            error_info = {"error": error_message}
-            encoded_error = json.dumps(error_info).encode("utf-8")
-            ml_model_metadata.extra_data(encoded_error)
-
+            error_info = {"error": "Failed to extract metadata due to invalid or incomplete input parameters."}
+            ml_model_metadata.extra_data(json.dumps(error_info).encode("utf-8"))
 
     # User Configuration Callback implementation
     # Inputs: req
     # Outputs: res
     def configuration_callback(req, res):
 
-        # Callback for configuration implementation here
+        res.node_id(req.node_id())
+        res.transaction_id(req.transaction_id())
+
         if req.configuration() == "modality":
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
-            try:
-                # Retrieve Possible Ml Goals from graph
-                raw_modality = get_cover_tags()
-                inputs = [str(m) for m in raw_modality]
-                unsupported_modality = [
-                    "audio",
-                    "cv",
-                    "multimodal",
-                    "other",
-                    "rl",
-                    "tabular"
-                ]
-                supported_modality = [modality for modality in inputs if modality not in unsupported_modality]
-                sorted_modalities = ', '.join(sorted(supported_modality))
-
-                if sorted_modalities == "":
-                    res.success(False)
-                    res.err_code(1) # 0: No error || 1: Error
-                else:
-                    res.success(True)
-                    res.err_code(0) # 0: No error || 1: Error
-                # print(f"Available Modalities: {sorted_modalities}") #debug
-
-                raw_goals = get_problems()
-                inputs = [str(g) for g in raw_goals]
-                supported_goals = [goal for goal in inputs if goal not in unsupported_goals]
-                sorted_goals = ', '.join(sorted(supported_goals))  # TODO: fix overflow bug sending goals response to request
-
-                if sorted_goals == "":
-                    res.success(False)
-                    res.err_code(1) # 0: No error || 1: Error
-                else:
-                    res.success(True)
-                    res.err_code(0) # 0: No error || 1: Error
-                # print(f"Available Goals: {sorted_goals}")   #debug
-
-                # json_str = json.dumps(dict(modalities=sorted_modalities, goals=sorted_goals))
-                # print(len(json_str))    #debug
-
-                res.configuration(json.dumps(dict(modalities=sorted_modalities, goals=sorted_goals)))
-            except Exception as e:
-                print(f"Error getting goals and modalities from request: {e}")
-                res.success(False)
-                res.err_code(1) # 0: No error || 1: Error
-
-        elif "in_out_modalities" in req.configuration():
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
-            try:
-                # Retrieve Possible Ml Inputs and Outputs modalities
-                inputs = get_modalities_input()
-                sorted_inputs = ', '.join(sorted(inputs))
-                outputs = get_modalities_output()
-                sorted_outputs = ', '.join(sorted(outputs))
-
-                if sorted_inputs == "" or sorted_outputs == "":
-                    res.success(False)
-                    res.err_code(1) # 0: No error || 1: Error
-                else:
-                    res.success(True)
-                    res.err_code(0) # 0: No error || 1: Error
-                # print(f"Available Input Modalities: {sorted_inputs}") #debug
-                # print(f"Available Output Modalities: {sorted_outputs}") #debug
-
-                res.configuration(json.dumps(dict(inputs=sorted_inputs, outputs=sorted_outputs)))
-
-            except Exception as e:
-                print(f"Error getting inputs and outputs modalities from request: {e}")
-                res.success(False)
-                res.err_code(1) # 0: No error || 1: Error
-
-        elif "metrics" in req.configuration():
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
-
-            # Extracts datas for metrics reception
-            config_content = req.configuration()[len("metrics, "):]  # "metrics, <metric_req_type>: <req_type_values>"
-
-            try:
-                metric_req_type, req_type_values = config_content.split(":", 1)
-                metric_req_type = metric_req_type.strip()
-                req_type_values = req_type_values.strip()
-
-                if metric_req_type == "cover_tag":
-                    parts = req_type_values.split(',')
-                    if len(parts) >= 2:
-                        cover_tag = parts[0].strip()
-                        tag = parts[1].strip()
-                        metrics = search_metrics_by_cover_tag(cover_tag)
-                    else:
-                        cover_tag = req_type_values.strip()
-                        metrics = search_metrics_by_cover_tag(cover_tag)
-
-                    all_metrics = []
-                    for problem, metrics_list in metrics.items():
-                        for model, m in metrics_list.items():
-                            if isinstance(m, list):
-                                for metric in m:
-                                    if metric not in all_metrics:
-                                        all_metrics.append(metric)
-                            else:
-                                if m not in all_metrics:
-                                    all_metrics.append(m)
-                    sorted_metrics = ', '.join(sorted(all_metrics))
-
-                elif metric_req_type == "modality":
-                    input_modality, output_modality = req_type_values.split(",", 1)
-                    input_modality = input_modality.strip()
-                    output_modality = output_modality.strip()
-                    metrics = search_metrics_by_modalities(input_modality, output_modality)
-                    all_metrics = []
-                    for problem, metrics_list in metrics.items():
-                        for model, m in metrics_list.items():
-                            if isinstance(m, list):
-                                for metric in m:
-                                    if metric not in all_metrics:
-                                        all_metrics.append(metric)
-                            else:
-                                if m not in all_metrics:
-                                    all_metrics.append(m)
-                    sorted_metrics = ', '.join(sorted(all_metrics))
-
-                elif metric_req_type == "problem":
-                    parts = req_type_values.split(',')
-                    if len(parts) >= 2:
-                        problem_name = parts[0].strip()
-                        tag = parts[1].strip()
-                        models = get_models_for_problem_and_tag(problem_name, tag)
-                    else:
-                        problem_name = req_type_values.strip()
-                        models = get_models_for_problem(problem_name)
-
-                    # Pass problem name and tag
-                    all_metrics = []
-
-                    for model,downloads in models:
-                        metrics = find_metrics_by_model(model)
-                        if isinstance(metrics, list):
-                            all_metrics.extend(metrics)
-                        else:
-                            all_metrics.append(metrics)
-
-                    sorted_metrics = ', '.join(sorted(all_metrics))
-
-                elif metric_req_type == "all":
-                    metrics = get_all_metrics()
-                    sorted_metrics = ', '.join(sorted(metrics))
-
-                else:
-                    res.success(False)
-                    res.err_code(1) # 0: No error || 1: Error
-
-            except Exception as e:
-                print(f"Error getting metrics from request: {e}")
-                res.success(False)
-                res.err_code(1) # 0: No error || 1: Error
-
-            if sorted_metrics == "":
-                res.success(False)
-                res.err_code(1) # 0: No error || 1: Error
-            else:
-                res.success(True)
-                res.err_code(0) # 0: No error || 1: Error
-            # print(f"Available Metrics: {sorted_metrics}")   #debug
-
-            res.configuration(json.dumps(dict(metrics=sorted_metrics)))
-
-        elif 'mode_info' in req.configuration():
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
-
-            try:
-                model = req.configuration()[len("mode_info, "):]
-                details = get_model_details(model)
-
-                if not details:
-                    res.success(False)
-                    res.err_code(1)  # 0: No error || 1: Error
-                else:
-                    res.success(True)
-                    res.err_code(0)  # 0: No error || 1: Error
-
-                # print(f"Model details for {model}: {details}")  #debug
-                res.configuration(json.dumps(details))
-            except Exception as e:
-                print(f"Error getting model details from request: {e}")
-                res.success(False)
-                res.err_code(1)
-
-        elif 'problem_from_modality' in req.configuration():
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
-
-            try:
-                modality = req.configuration()[len("problem_from_modality, "):]
-                goals = get_problems_for_cover_tag(modality)
-                sorted_goals = ', '.join(sorted(goals))
-
-                if not sorted_goals:
-                    res.success(False)
-                    res.err_code(1)  # 0: No error || 1: Error
-                else:
-                    res.success(True)
-                    res.err_code(0)  # 0: No error || 1: Error
-
-                # print(f"Problems for {modality}: {goals}")  #debug
-                res.configuration(json.dumps(dict(goals=sorted_goals)))
-
-            except Exception as e:
-                print(f"Error getting problems for the modality from request: {e}")
-                res.success(False)
-                res.err_code(1)
-
-        elif 'dataset_path' in req.configuration():
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
-
-            client = Client(host='http://localhost:11434')
-            try:
-                dataset_path = req.configuration()[len("dataset_path, "):]
-                # print(f"Dataset path received: {dataset_path}")  #debug
-
-                if dataset_path.endswith('.csv'):
-                    # Load the CSV file
-                    df = pd.read_csv(dataset_path)
-                elif dataset_path.endswith('.json'):
-                    # Load the JSON file
-                    with open(dataset_path) as f:
-                        data = json.load(f)
-                    df = json_to_dataframe(data)
-
-                sample_df, dataset_sample = get_sample(df, sample_size=10)
-
-                # Load the semantic profiler
-                semantic_profiler = SemanticProfiler(client=client, model_name="llama3")
-
-                # Generate the basic and semantic profiles
-                basic_profile, semantic_profile_part1 = dataset_profiler(df)
-                semantic_profile_part2 = semantic_profiler.analyze_dataframe(sample_df)
-                semantic_profile = semantic_profile_part1+'\n'+semantic_profile_part2
-
-                # We use the basic and semantic profiles, and the dataset topic to generate the dataset description
-                description_generator = DatasetDescriptionGenerator(client=client, model_name="llama3")
-                _, description = description_generator.generate_description(
-                                    dataset_sample=dataset_sample,
-                                    dataset_profile=basic_profile,
-                                    use_profile=True,
-                                    semantic_profile=semantic_profile,
-                                    use_semantic_profile=True,
-                                    data_topic=None,
-                                    use_topic=False
-                                )
-
-                res.success(True)
-                res.configuration(json.dumps(json.loads(description)))
-            except Exception as e:
-                res.success(False)
-                res.err_code(1)  # 0: No error || 1: Error
-                print(f"Error processing dataset path from request: {e}")
-
+            goals = ', '.join(sorted(str(g) for g in get_problems()))
+            res.configuration(json.dumps(dict(goals=goals)))
+            res.success(goals != "")
+            res.err_code(0 if goals != "" else 1) # 0: No error || 1: Error
         else:
-            res.node_id(req.node_id())
-            res.transaction_id(req.transaction_id())
             error_msg = f"Unsupported configuration request: {req.configuration()}"
             res.configuration(json.dumps({"error": error_msg}))
             res.success(False)
             res.err_code(1) # 0: No error || 1: Error
-            print(error_msg)
-
 
     # Main workflow routine
     def run():
+        # Wait for the Neo4j graph
         start_time = time.time()
         loaded = False
-        while time.time() - start_time < 30:
+        while time.time() - start_time < 5:
             if load_graph():
                 loaded = True
                 break
-            time.sleep(0.5)
+            time.sleep(0.1)
         if not loaded:
             print("[Error][ml_model_metadata] Graph not available")
             exit(1)
