@@ -39,42 +39,6 @@ class ParseOptions():
                 'Script to test the communication among different SustainML Python Nodes'),
         )
         parser.add_argument(
-            '-ps',
-            '--pub-sub',
-            type=str,
-            help='Path to the SimpleTaskPubSub executable.'
-        )
-        parser.add_argument(
-            '-tp',
-            '--topic-pub',
-            type=str,
-            help='String identifying the publisher topic.'
-        )
-        parser.add_argument(
-            '-ttp',
-            '--topic-type-pub',
-            type=str,
-            help='String identifying the publisher topic type [ui, task, ml, hw, co2].'
-        )
-        parser.add_argument(
-            '-ts',
-            '--topic-sub',
-            type=str,
-            help='String identifying the subscriber topic.'
-        )
-        parser.add_argument(
-            '-tts',
-            '--topic-type-sub',
-            type=str,
-            help='String identifying the publisher topic type [ui, task, ml, hw, co2].'
-        )
-        parser.add_argument(
-            '-a',
-            '--samples',
-            type=int,
-            help='Number of samples sent by the publisher and received by the subscriber.'
-        )
-        parser.add_argument(
             '-mlm',
             '--ml-metadata',
             type=str,
@@ -111,22 +75,6 @@ class ParseOptions():
             help='Executable name of a AppRequirements in the sustainml-wp1 directory'
         )
         parser.add_argument(
-            '-bt',
-            '--baseline-topics',
-            nargs='+',
-            action='store',
-            required=False,
-            help='List of baseline topic names.'
-        )
-        parser.add_argument(
-            '-btt',
-            '--baseline-topic-types',
-            nargs='+',
-            action='store',
-            required=False,
-            help='List of baseline topic types.'
-        )
-        parser.add_argument(
             '-orc',
             '--orchestrator',
             type=str,
@@ -150,52 +98,15 @@ def run(args):
 
     :return: The return code resulting. It is the number of failed processes.
     """
-    pub_commands = []
-    sub_command = []
     node_commands = []
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
     nodes_base_dir = script_dir+'/../../lib/sustainml_modules/'
     print (nodes_base_dir)
 
-    if args.pub_sub and not os.path.isfile(args.pub_sub):
-        print(f'PublisherSubscriber executable file does not exists: {args.pub}')
+    if not (args.orchestrator or args.python_orchestrator):
+        print('Not provided an orchestrator executable name.')
         sys.exit(1)
-
-    if args.pub_sub and not os.access(args.pub_sub, os.X_OK):
-        print(
-            'PublisherSubscriber executable does not have execution permissions:'
-            f'{args.pub_sub}')
-
-    pub_command = []
-    if args.pub_sub:
-        pub_command.append(os.path.join(script_dir, args.pub_sub))
-        sub_command.append(os.path.join(script_dir, args.pub_sub))
-
-    if args.topic_pub and args.topic_sub:
-        pub_command.append('publisher')
-        pub_command.extend(['--topic', str(args.topic_pub)])
-        sub_command.append('subscriber')
-        sub_command.extend(['--topic', str(args.topic_sub)])
-
-    if not args.topic_pub and not args.topic_sub and not (args.orchestrator or args.python_orchestrator):
-        print('Not provided basic executable names.')
-        sys.exit(1)
-
-    if args.topic_type_pub and args.topic_type_sub:
-        pub_command.append(str('--'+ str(args.topic_type_pub)))
-        sub_command.append(str('--'+ str(args.topic_type_sub)))
-
-    if not args.topic_type_pub and not args.topic_type_sub and not (args.orchestrator or args.python_orchestrator):
-        print('Not provided basic topic types.')
-        sys.exit(1)
-
-    if args.samples:
-        pub_command.extend(['--samples', str(args.samples)])
-        sub_command.extend(['--samples', str(args.samples)])
-
-    if args.topic_pub:
-        pub_commands.append(pub_command)
 
     if args.ml_metadata or args.machine_learning or args.hardware or args.co2_footprint or args.app_requirements or args.hw_constraints:
 
@@ -204,7 +115,7 @@ def run(args):
             te_exec_file = os.path.join(nodes_base_dir, 'sustainml-wp1/' + args.ml_metadata)
 
             if not os.path.isfile(te_exec_file):
-                print(f'TaskEncoder executable file does not exists: {te_exec_file}')
+                print(f'ML Model Metadata executable file does not exist: {te_exec_file}')
                 sys.exit(1)
 
             te_command.extend([te_exec_file])
@@ -265,19 +176,6 @@ def run(args):
             app_reqs_command.extend([app_reqs_exec_file])
             node_commands.append(app_reqs_command)
 
-    if args.baseline_topics and args.baseline_topic_types and len(args.baseline_topics) == len(args.baseline_topic_types):
-        for i_baseline in range(0, len(args.baseline_topics)):
-            baseline_cmd = []
-            baseline_cmd.append(os.path.join(script_dir, args.pub_sub))
-            baseline_cmd.append('publisher')
-            baseline_cmd.extend(['--topic', str(args.baseline_topics[i_baseline])])
-            baseline_cmd.append(str('--') + str(args.baseline_topic_types[i_baseline]))
-            baseline_cmd.extend(['--samples', str(args.samples)])
-            pub_commands.append(baseline_cmd)
-    elif args.baseline_topics and (not args.baseline_topic_types and not len(args.baseline_topics) == len(args.baseline_topic_types)):
-        print('Not provided simple task pubsub topic names.')
-        sys.exit(1)
-
     node_procs = []
     for node_cmd in node_commands:
 
@@ -288,11 +186,7 @@ def run(args):
         node_procs.append(node_proc)
         sleep(1)
 
-    if args.topic_sub:
-        listener_proc = subprocess.Popen(sub_command)
-        print(
-            f'Running Subscriber - commmand:  ' + str(sub_command))
-    elif args.orchestrator:
+    if args.orchestrator:
         orch_exec = os.path.join(script_dir, args.orchestrator)
 
         if not os.path.isfile(orch_exec):
@@ -315,22 +209,11 @@ def run(args):
             f'Running Python Orchestrator - commmand:  ' + str(py_orch_exec))
         sleep(1)
 
-    pub_procs = []
-    for pub_cmd in pub_commands:
-
-        pub_proc = subprocess.Popen(pub_cmd)
-        print(
-           'Running Publisher - commmand:  ' + str(pub_cmd))
-
-        pub_procs.append(pub_proc)
-        sleep(1)
-
     try:
         outs, errs = listener_proc.communicate(timeout=500)
     except subprocess.TimeoutExpired:
-        print('Subscriber process timed out, terminating...')
+        print('Orchestrator process timed out, terminating...')
         listener_proc.kill()
-        [pub_proc.kill() for pub_proc in pub_procs]
         [node_proc.kill() for node_proc in node_procs]
         try:
             sys.exit(os.EX_SOFTWARE)
@@ -338,18 +221,11 @@ def run(args):
             sys.exit(1)
 
 
-    [pub_proc.kill() for pub_proc in pub_procs]
     listener_proc.kill()
     [node_proc.kill() for node_proc in node_procs]
 
-    listener_returncode = listener_proc.returncode
-    pub_returncodes = [pub_proc.returncode for pub_proc in pub_procs]
-
-    if listener_returncode != 0:
+    if listener_proc.returncode != 0:
         sys.exit(1)
-    for idx, code in enumerate(pub_returncodes):
-        if code != 0:
-            sys.exit(1)
 
     try:
         sys.exit(os.EX_OK)

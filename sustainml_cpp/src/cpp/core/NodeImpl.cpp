@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file Node.cpp
+ * @file NodeImpl.cpp
  */
 
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
@@ -462,7 +462,7 @@ void NodeImpl::NodeControlListener::on_subscription_matched(
 void NodeImpl::NodeControlListener::on_data_available(
         eprosima::fastdds::dds::DataReader* reader)
 {
-    EPROSIMA_LOG_INFO(NODE, "NodeStatus has a new status ");
+    EPROSIMA_LOG_INFO(NODE, "NodeControl has a new command ");
 }
 
 } // namespace core

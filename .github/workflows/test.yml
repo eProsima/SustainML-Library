@@ -3,12 +3,6 @@ name: test
 on:
 
   workflow_dispatch:
-    inputs:
-
-      dependencies_artifact_postfix:
-        description: 'Postfix name to add to artifact name to download dependencies. This is use to download a specific artifact version from eProsima-CI.'
-        required: true
-        default: '_nightly'
 
   pull_request:
   push:
@@ -19,7 +13,6 @@ on:
 
 env:
   code_packages_names: 'sustainml_cpp sustainml_py sustainml_docs sustainml_modules'
-  default_dependencies_artifact_postfix: '_nightly'
 
 jobs:
 

@@ -44,22 +44,12 @@ for idl_file in "${idl_files[@]}"; do
     # Detect if needs output directory.
     od_src=""
     for od_entry in ${files_needing_output_dir[@]}; do
-        echo od_entry
-        echo $od_entry
-        echo idl_file
-        echo "$idl_file\|*"
         if [[ $od_entry = $idl_file\|* ]]; then
-            echo "HERE"
             od_entry_split=(${od_entry//\|/ })
-            echo $od_entry_split
-            echo ${od_entry_split[1]}
             od_src=${od_entry_split[1]}
             break
         fi
     done
-
-    echo $file_from_gen
-    echo $od_src
 
     if [[ -z "$od_src" ]]; then
         fastddsgen -replace "$file_from_gen"

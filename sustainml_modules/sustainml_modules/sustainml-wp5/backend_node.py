@@ -235,8 +235,6 @@ def hello_world():
 # Send user input data to orchestrator
 @server.route('/user_input', methods=['POST'])
 def user_input():
-    global hf_token
-
     data = request.json
 
     # 1) Read the model family coming from QML ("Transformers" by default).
@@ -279,8 +277,6 @@ def user_input():
 def config_request():
     data = request.json
     res = orchestrator.send_request(data)
-    if res is None:
-        return jsonify({'error': 'Invalid input data'}), 400
     response_data = utils.response_json(res)
     response_data['request_id'] = data.get('request_id', 0)
     return jsonify({'message': 'Configuration request sent successfully.',
@@ -334,8 +330,6 @@ def hf_models_compare():
     Expects:
     {
       "models": [ ... ]   # output items from /hf_models_info
-      OR
-      "model_ids": [ ... ] # optional: you can implement fetch here too
     }
     """
     data = request.json or {}
@@ -597,16 +591,6 @@ def wipe_db():
     return jsonify({'message': 'All save files deleted.'}), 200
 
 
-# Flask server shutdown route
-@server.route('/shutdown', methods=['GET'])
-def shutdown():
-    shutdown_func = request.environ.get('werkzeug.server.shutdown')
-    if shutdown_func is None:
-        return jsonify({'message': 'Use "/terminate" route to stop Back-end node.<br>'}), 200
-    shutdown_func()
-    return jsonify({'message': 'Terminating...<br>'}), 200
-
-
 # Flask server terminate route
 @server.route('/terminate', methods=['GET'])
 def terminate():
@@ -658,7 +642,6 @@ if __name__ == '__main__':
     hf_token = os.getenv("HF_TOKEN")
     if hf_token is None:
         print("Error: The HF_TOKEN environment variable is missing. Please set it before starting the node.")
-        # sys.exit(0)
     print("Back-end Node running, use Ctrl+C to terminate. Server listening at http://" + server_ip_address + ":" + str(server_port) + "/")
     flask_server_thread = ServerThread()
     flask_server_thread.start()  # Start the Flask server with the orchestrator

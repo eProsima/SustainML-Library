@@ -106,6 +106,7 @@ TEST(OrchestratorNode, OrchestratorConfigurationService)
     types::ResponseType res = orchestrator.configuration_request(req);
 
     ASSERT_TRUE(res.success());
+    ASSERT_EQ(res.configuration(), "Test");
     orchestrator.destroy();
 }
 

@@ -107,11 +107,11 @@ TEST(BlackboxTestsRPCResponseNodes, MLModelMetadataNode)
 
     wait_ready_or_fail(fut, "MLModelMetadataService.update_configuration");
 
-    // If it’s ready, it must return the same config (same intent as old test)
+    // If it’s ready, it must return the same config, after the node's success flag and error code
     try
     {
         const auto value = fut.get();
-        EXPECT_EQ(value, "TestConfig");
+        EXPECT_EQ(value, "1;0;TestConfig");  // success;err_code;configuration
     }
     catch (const std::exception& e)
     {
@@ -177,7 +177,7 @@ TEST(BlackboxTestsRPCResponseNodes, AppRequirementsNode)
     try
     {
         const auto value = fut.get();
-        EXPECT_EQ(value, "TestConfig");
+        EXPECT_EQ(value, "1;0;TestConfig");  // success;err_code;configuration
     }
     catch (const std::exception& e)
     {
@@ -237,7 +237,7 @@ TEST(BlackboxTestsRPCResponseNodes, CarbonFootprintNode)
     try
     {
         const auto value = fut.get();
-        EXPECT_EQ(value, "TestConfig");
+        EXPECT_EQ(value, "1;0;TestConfig");  // success;err_code;configuration
     }
     catch (const std::exception& e)
     {
@@ -297,7 +297,7 @@ TEST(BlackboxTestsRPCResponseNodes, HWConstraintsNode)
     try
     {
         const auto value = fut.get();
-        EXPECT_EQ(value, "TestConfig");
+        EXPECT_EQ(value, "1;0;TestConfig");  // success;err_code;configuration
     }
     catch (const std::exception& e)
     {
@@ -357,7 +357,7 @@ TEST(BlackboxTestsRPCResponseNodes, HWResourcesNode)
     try
     {
         const auto value = fut.get();
-        EXPECT_EQ(value, "TestConfig");
+        EXPECT_EQ(value, "1;0;TestConfig");  // success;err_code;configuration
     }
     catch (const std::exception& e)
     {
@@ -417,7 +417,7 @@ TEST(BlackboxTestsRPCResponseNodes, MLModelNodeService)
     try
     {
         const auto value = fut.get();
-        EXPECT_EQ(value, "TestConfig");
+        EXPECT_EQ(value, "1;0;TestConfig");  // success;err_code;configuration
     }
     catch (const std::exception& e)
     {

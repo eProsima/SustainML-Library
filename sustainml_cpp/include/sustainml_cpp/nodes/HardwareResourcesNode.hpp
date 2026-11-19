@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file MLModelNode.hpp
+ * @file HardwareResourcesNode.hpp
  */
 
 

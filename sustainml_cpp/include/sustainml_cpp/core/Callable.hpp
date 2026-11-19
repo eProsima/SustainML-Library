@@ -33,24 +33,17 @@ namespace sustainml {
 namespace core {
 namespace helper {
 
-template<typename T>
-void see_type(
-        T)
-{
-    EPROSIMA_LOG_INFO(CALLABLE, __PRETTY_FUNCTION__);
-}
-
 #ifndef SWIG_WRAPPER
 //! Expand the parameter pack in runtime
 //! It is mainly used before invoking user callback
-template <std::size_t... Ts>
+template<std::size_t... Ts>
 struct index {};
 
-template <std::size_t N, std::size_t... Ts>
+template<std::size_t N, std::size_t... Ts>
 struct gen_seq : gen_seq<N - 1, N - 1, Ts...> {};
 
-template <std::size_t... Ts>
-struct gen_seq<0, Ts...> : index<Ts...> {};
+template<std::size_t... Ts>
+struct gen_seq<0, Ts...>: index<Ts...> {};
 #endif //SWIG_WRAPPER
 
 } // namespace helper
@@ -61,15 +54,12 @@ struct gen_seq<0, Ts...> : index<Ts...> {};
  *
  * It is meant to be inherited by the actual SustainML nodes.
  */
-template <typename ... _TYPES>
+template<typename ... _TYPES>
 class Callable
 {
 
 #ifndef SWIG_WRAPPER
     using tuple = std::tuple<_TYPES*...>;
-
-    template <size_t N>
-    using get = typename std::tuple_element<N, tuple>::type;
 
 public:
 
@@ -80,12 +70,12 @@ public:
      * @brief User callback
      */
     virtual void on_new_task_available(
-            _TYPES& ... fn) = 0;
+        _TYPES & ... fn) = 0;
 
     /**
      * @brief Invokes the user callback with the arguments stored in user_cb_args_
      */
-    template <std::size_t... Is>
+    template<std::size_t... Is>
     void invoke_user_cb(
             types::TaskId task_id,
             helper::index<Is...>)
@@ -135,7 +125,7 @@ public:
      * @brief user's callback to be implemented by the user
      */
     SUSTAINML_CPP_DLL_API virtual void on_new_task_available(
-            _TYPES& ... fn) = 0;
+        _TYPES & ... fn) = 0;
 
 #endif //SWIG_WRAPPER
 

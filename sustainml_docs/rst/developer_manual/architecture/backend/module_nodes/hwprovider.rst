@@ -74,7 +74,6 @@ And inside ``configuration_callback()`` implement the response to the configurat
     """SustainML HW Resources Provider Node Implementation."""
 
     from sustainml_py.nodes.HardwareResourcesNode import HardwareResourcesNode
-    from rptu_framework import integration as rptu_integration
     from transformers import (AutoConfig, AutoModel, AutoModelForCausalLM, AutoModelForSeq2SeqLM)
 
     import onnx
@@ -240,9 +239,6 @@ And inside ``configuration_callback()`` implement the response to the configurat
     # Outputs: node_status, hw
     def task_callback(ml_model, app_requirements, hw_constraints, node_status, hw):
 
-        # Variable to store RPTU default model
-        rptu_model = os.path.dirname(__file__)+'/rptu_framework/model.onnx'
-
         latency = 0.0
         power_consumption = 0.0
 
@@ -285,22 +281,8 @@ And inside ``configuration_callback()`` implement the response to the configurat
         mf = (model_family or '').strip().lower()
         is_cnn = mf.lower() == 'cnns'
 
-        # Use RPTU hw predictor for their devices
-        if hw_selected in ["Zynq UltraScale+ ZCU102", "Zynq UltraScale+ ZCU104", "Ultra96-V2", "TySOM-3A-ZU19EG"]:
-            print("Using ONNX model path")
-            try:
-                # Use RPTU
-                results = rptu_integration.onnx_ml_resource_estimation(rptu_model, hw_selected) # TODO: hw_selected should affect predictor
-                print(f"RPTU latency results: {results['Latency']}")
-                print(f"RPTU power consumption results: {results['Run_power']}")
-                latency = results['Latency']
-                power_consumption = results['Run_power']
-
-            except Exception as e:
-                print(f"[ERROR] Failed to load/run ONNX at '{model_path}': {e}.")
-
         # Use DFKI predictor for xczu19eg target (only when user selected CNNs)
-        elif is_cnn and hw_selected == "FPGA (xczu19eg-ffvb1517-2-i)":
+        if is_cnn and hw_selected == "FPGA (xczu19eg-ffvb1517-2-i)":
             try:
                 # 1) Pick an ONNX to use
                 candidates = []
@@ -314,10 +296,6 @@ And inside ``configuration_callback()`` implement the response to the configurat
                     for f in os.listdir(vendored_dir):
                         if f.endswith(".onnx"):
                             candidates.append(os.path.join(vendored_dir, f))
-
-                # Fallback to the existing rptu sample ONNX if available
-                if os.path.isfile(rptu_model):
-                    candidates.append(rptu_model)
 
                 if not candidates:
                     raise FileNotFoundError("No ONNX file available for FPGA prediction. "
@@ -471,11 +449,9 @@ And inside ``configuration_callback()`` implement the response to the configurat
                 # Retrieve Hardwares from sim_architectures.yaml
                 with open(os.path.dirname(__file__)+'/upmem_llm_framework/sim_architectures.yaml', 'r') as file:
                     upmem_devices = yaml.safe_load(file)
-                with open(os.path.dirname(__file__)+'/rptu_framework/rptu_devices.yaml', 'r') as file:
-                    rptu_devices = yaml.safe_load(file)
 
                 # Extract the hardware names
-                hardware_names = list(upmem_devices.keys()) + list(rptu_devices.keys())
+                hardware_names = list(upmem_devices.keys())
                 hardware_names.append("FPGA (xczu19eg-ffvb1517-2-i)")  # Expose the DFKI FPGA predictor device
 
                 if not hardware_names:
@@ -485,8 +461,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
                     res.success(True)
                     res.err_code(0)  # 0: No error || 1: Error
                 sorted_architectures = sorted(list(upmem_devices.keys()))
-                sorted_rptu_devices = sorted(list(rptu_devices.keys()))
-                sorted_hardware_names = ', '.join(sorted_architectures + sorted_rptu_devices + ["FPGA (xczu19eg-ffvb1517-2-i)"])
+                sorted_hardware_names = ', '.join(sorted_architectures + ["FPGA (xczu19eg-ffvb1517-2-i)"])
                 print(f"Available Hardwares: {sorted_hardware_names}")
                 res.configuration(json.dumps(dict(hardwares=sorted_hardware_names)))
 

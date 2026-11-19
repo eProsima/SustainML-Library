@@ -21,6 +21,7 @@
 
 #include <string>
 
+#include <common/Common.hpp>
 #include <core/NodeImpl.hpp>
 #include <types/types.hpp>
 #include <types/SustainMLServiceServer.hpp>
@@ -72,7 +73,9 @@ public:
             throw ::InternalError(std::string("update_configuration: ") + e.what());
         }
 
-        return res.configuration();
+        // With the node's success flag and error code, which the RPC result has no field for
+        return common::encode_configuration_reply(
+            res.success(), static_cast<int32_t>(res.err_code()), res.configuration());
     }
 
 private:

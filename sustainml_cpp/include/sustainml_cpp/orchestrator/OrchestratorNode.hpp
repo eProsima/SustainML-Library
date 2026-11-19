@@ -208,7 +208,7 @@ public:
     }
 
     /**
-     * @brief Used to retrieve the associated OrchestratorNodeHandle.
+     * @brief Prints the contents of the task database.
      */
     void print_db();
 
