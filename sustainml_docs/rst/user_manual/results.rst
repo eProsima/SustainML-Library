@@ -11,6 +11,13 @@ Each problem has its own tab, and each model evaluated for it is an *iteration* 
 one per output model, plus the extra ones of an **Auto** carbon footprint optimization.
 Results are added as the framework nodes deliver them.
 
+.. figure:: /rst/figures/user_manual/results_running.png
+    :align: center
+    :alt: Results screen while a task is running, with the first iteration still without results
+
+    The *Results* screen just after **Submit**: the model of the first iteration is known, its hardware and footprint are
+    still being computed.
+
 .. _user_manual_results_header:
 
 Header buttons
@@ -32,10 +39,11 @@ Header buttons
     * - **Stop**
       - Stops following the running task (see :ref:`user_manual_results_stop`). Enabled only while a task is running.
     * - **Save**
-      - Saves the results of the open tabs into a named file. Enabled once a problem has the results of all six nodes.
-        See :ref:`user_manual_node_status_save_load`.
+      - Saves only the results of the open tabs into a named file. Enabled once a problem has the results of all six
+        nodes. To save the Hugging Face searches and comparisons too, use **Save** on the *Node status* screen
+        (activity icon). See :ref:`user_manual_node_status_save_load`.
     * - **Load**
-      - Loads results from a saved file. Each loaded problem opens in a new tab.
+      - Loads only the results of a saved file. Each loaded problem opens in a new tab.
 
 While a task is running, the header shows **Working on task, please wait**, and **Home**, the back arrow,
 **New problem** and the Node status icon are disabled.
@@ -98,6 +106,13 @@ footprint, the rows are ranked: first the models within the limits (lowest carbo
 how far they are over the limits. A line above the table names the result:
 *Best model within the limits (...)* or, when no model meets them, *No model has met the limits (...) yet. Closest: ...*.
 
+.. figure:: /rst/figures/user_manual/results_overview.png
+    :align: center
+    :alt: Overview tab with three summarization models ranked against the limits, and the best one named above the table
+
+    The **Overview** of the example, in a tab renamed *Support emails*: the only model within the limits comes first,
+    then the two models over the carbon footprint target, the closest one first.
+
 .. _user_manual_results_iteration_info:
 
 Iteration info view
@@ -112,6 +127,12 @@ that iteration was run with. It shows only the fields that applied to it:
 The *Previous Results* panel on the right repeats the results of the iteration: iteration number, problem kind,
 suggested model, suggested hardware, power consumption, carbon footprint, carbon intensity and memory footprint.
 Click **Results** in the header to go back to the *Results* screen.
+
+.. figure:: /rst/figures/user_manual/results_iteration_info.png
+    :align: center
+    :alt: Iteration inputs screen with the read-only form on the left and the Previous Results panel on the right
+
+    The iteration info view of the second iteration of the example.
 
 .. _user_manual_results_iteration:
 
@@ -141,6 +162,13 @@ It shows the checked iterations with more metrics than the **Overview**:
       - Memory the model needs: weights plus working memory.
 
 The columns **Iteration**, **Problem**, **ML Model** and **Hardware** are shown too.
+
+.. figure:: /rst/figures/user_manual/results_iteration.png
+    :align: center
+    :alt: Iteration tab with the three iterations of the example and all their metrics
+
+    The **Iteration** tab with the three iterations of the example checked.
+
 Right-click the table for more:
 
 * On a metric column header: **Compare** opens a comparison tab for that metric
@@ -148,7 +176,27 @@ Right-click the table for more:
 * On an iteration number: **More info** opens a panel with every output of the six nodes for that iteration.
 * On a model name: **More on HF** opens the page of the model on the Hugging Face website.
 
-The tab on the right edge of the table opens the **VISIBLE COLUMNS** panel, where columns can be hidden or shown.
+.. figure:: /rst/figures/user_manual/results_compare_menu.png
+    :align: center
+    :alt: Menu with Compare and More info, opened on the Carbon Footprint column header
+
+    Right-click on the **Carbon Footprint** header.
+
+.. figure:: /rst/figures/user_manual/results_more_info.png
+    :align: center
+    :alt: Panel with the outputs of the six nodes for iteration 2, with the Carbon Footprint node expanded
+
+    **More info** on iteration 2, with the outputs of the *Carbon Footprint* node expanded.
+
+The tab on the right edge of the table opens the **VISIBLE COLUMNS** panel, where columns can be hidden or shown:
+**Problem**, **ML Model**, **Hardware**, **Latency**, **Power Consumption**, **Carbon Footprint**, **Carbon Intensity**,
+**Energy Consumption** and **Memory Footprint**. Uncheck a column to hide it; the **Iteration** column is always shown.
+
+.. figure:: /rst/figures/user_manual/results_visible_columns.png
+    :align: center
+    :alt: Visible columns panel with a check box for each metric column of the Iteration tab
+
+    The **VISIBLE COLUMNS** panel, opened with the tab on the right edge of the table.
 
 .. _user_manual_results_comparison:
 
@@ -158,6 +206,12 @@ Metric comparison
 A comparison tab, named after its metric (for example *Carbon Footprint*), draws a bar chart of that metric with one
 bar per checked iteration. Right-click a bar and choose **More info** to see the outputs of the six nodes for that
 iteration.
+
+.. figure:: /rst/figures/user_manual/results_comparison.png
+    :align: center
+    :alt: Bar chart of the carbon footprint of the three iterations of the example
+
+    The *Carbon Footprint* comparison of the example.
 
 The comparison tabs can be closed with their cross, and they all close when fewer than two iterations remain checked.
 
@@ -179,6 +233,18 @@ the centre and the worst on the outer ring, so a smaller shape is a greener mode
 * Checked iterations without a result (an error, or still running) are left out, and listed below the radars.
 
 With a single model on a radar, the tab asks you to select another iteration to compare with.
+
+.. figure:: /rst/figures/user_manual/results_fingerprint.png
+    :align: center
+    :alt: Radar chart of the three Hugging Face models of the example
+
+    *Other models*: the three summarization models of the example.
+
+.. figure:: /rst/figures/user_manual/results_fingerprint_yolo.png
+    :align: center
+    :alt: Radar chart of three YOLO models of the Axelera board, with an Accuracy gap axis
+
+    *Axelera YOLO models*: three object detection models, with the **Accuracy gap** axis.
 
 .. _user_manual_results_stop:
 
@@ -207,8 +273,15 @@ When a node fails, an error dialog explains it:
     * - *Error in node ML Model Provider. Please check the logs for more details.*
       - The model search failed.
     * - *Error in node HW Resource. Please check the logs for more details.*
-      - The model could not be evaluated on the hardware (for example, it could not be loaded).
+      - The model could not be evaluated on the hardware (for example, it could not be loaded, or the ONNX file of a
+        U-Net model for the FPGA was not found).
     * - *Error in node Carbon Footprint. Please check the logs for more details.*
       - The carbon footprint could not be computed (no carbon intensity).
 
 The details are in the output of the framework nodes, in the terminal where the framework was started.
+
+.. figure:: /rst/figures/user_manual/results_error.png
+    :align: center
+    :alt: Error dialog saying that no suitable model was found, over iterations with NO_MODEL
+
+    The error shown when no model is found: the iterations of the problem show ``NO_MODEL``.

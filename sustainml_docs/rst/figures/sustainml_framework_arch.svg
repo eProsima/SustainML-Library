@@ -41,7 +41,22 @@
        id="style1854">svg.ge-export-svg-dark { filter: invert(100%) hue-rotate(180deg); }
 svg.ge-export-svg-dark foreignObject img,
 svg.ge-export-svg-dark image:not(svg.ge-export-svg-dark switch image),
-svg.ge-export-svg-dark svg { filter: invert(100%) hue-rotate(180deg) }</style>
+svg.ge-export-svg-dark svg { filter: invert(100%) hue-rotate(180deg) }
+/* Dark theme of the docs (furo): the black lines, arrow heads and the "User" label drawn on the
+   page background would not be visible, so they are drawn light. Text inside the boxes keeps
+   its colour, as the boxes stay light. */
+body[data-theme="dark"] #svg1850 path[stroke="#000000"],
+body[data-theme="dark"] #svg1850 path[stroke="#1a1a1a"] { stroke: #d0d0d0; }
+body[data-theme="dark"] #svg1850 path[fill="#000000"],
+body[data-theme="dark"] #svg1850 path[fill="#1a1a1a"] { fill: #d0d0d0; }
+body[data-theme="dark"] #g2256 * { color: #d0d0d0 !important; fill: #d0d0d0; }
+@media (prefers-color-scheme: dark) {
+  body:not([data-theme="light"]) #svg1850 path[stroke="#000000"],
+  body:not([data-theme="light"]) #svg1850 path[stroke="#1a1a1a"] { stroke: #d0d0d0; }
+  body:not([data-theme="light"]) #svg1850 path[fill="#000000"],
+  body:not([data-theme="light"]) #svg1850 path[fill="#1a1a1a"] { fill: #d0d0d0; }
+  body:not([data-theme="light"]) #g2256 * { color: #d0d0d0 !important; fill: #d0d0d0; }
+}</style>
   </defs>
   <g
      inkscape:label="SustainML"

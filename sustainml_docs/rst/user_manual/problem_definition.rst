@@ -41,9 +41,17 @@ Form fields
 -----------
 
 The form has three cards.
+The screenshots of this manual follow an example: summarizing the emails that customers send to the support team of
+an online shop, run in Spain.
 
 Problem
 ^^^^^^^
+
+.. figure:: /rst/figures/user_manual/problem_definition_problem.png
+    :align: center
+    :alt: Problem card of the Problem definition screen, filled in for a summarization problem
+
+    The *Problem* card of the example.
 
 .. list-table::
     :header-rows: 1
@@ -93,6 +101,14 @@ extracted from it (only the ones that are not empty). You can edit them before s
 Sustainability targets
 ^^^^^^^^^^^^^^^^^^^^^^
 
+.. figure:: /rst/figures/user_manual/problem_definition_targets.png
+    :align: center
+    :alt: Model and data and Sustainability targets cards, with Manual optimization, a memory limit and Spain as the country
+
+    The *Model and data* and *Sustainability targets* cards of the example: no goal (the framework infers it),
+    three output models, **Manual** optimization with a target of 0.00001 gCO2e per inference, a memory limit of
+    3000 MB, and Spain as the country.
+
 .. list-table::
     :header-rows: 1
     :widths: 25 75
@@ -116,6 +132,8 @@ The country sets the carbon intensity of the electricity grid used to compute th
 (the latest yearly value from Our World in Data).
 When no country is chosen, the *Carbon Footprint* node uses the country detected from the IP address of the machine,
 or the world average when that country is unknown or not in its list.
+
+The lists that can be filtered show a search field: typing *Spa* leaves *Spain*.
 
 .. _user_manual_problem_definition_modes:
 
@@ -154,6 +172,13 @@ model has to favour (accuracy, speed or energy) to pick it.
 **Nº output models** also stays editable: more output models are the next ones of that ranking.
 Models over the **Max memory footprint** are not suggested.
 
+.. figure:: /rst/figures/user_manual/problem_definition_axelera.png
+    :align: center
+    :alt: Model and data card with CNNs on the Axelera Edge 130p, object detection as the goal and three output models
+
+    CNNs on the Axelera board, for a problem that counts the vehicles of a traffic camera: the **object-detection** goal,
+    no model selected (the framework picks it) and three output models.
+
 .. _user_manual_problem_definition_disabled:
 
 Disabled fields
@@ -176,6 +201,13 @@ Some fields are disabled (greyed out) when they no longer apply:
 * **Geo location: country** is disabled until a continent is chosen.
 
 To change a disabled goal, first set **Model selection** back to **(empty)**.
+
+.. figure:: /rst/figures/user_manual/problem_definition_fpga.png
+    :align: center
+    :alt: Problem definition form with CNNs on the FPGA, where most fields are disabled
+
+    CNNs on the FPGA: only the hardware, the U-Net model and the location can be set, and **Submit** stays disabled until
+    a U-Net model is selected.
 
 Values kept when switching
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -232,11 +264,24 @@ A dataset helps the framework understand the problem: its metadata is used to in
 
 #. Click **Upload dataset** in the header of the *Problem definition* screen.
    The *Dataset selector* screen opens.
+
+   .. figure:: /rst/figures/user_manual/dataset_selector.png
+       :align: center
+       :alt: Dataset selector screen with an empty Dataset path field and the Browse button
+
+       The *Dataset selector* screen.
+
 #. Click **Browse** and choose a CSV (``.csv``) or JSON (``.json``) file.
    Its path is shown in the **Dataset path** field.
 #. Wait while **Extracting metadata, please wait** is shown.
    The *ML Model Metadata* node profiles the data and describes it with the ``llama3`` model (served by Ollama).
 #. The application returns to the *Problem definition* screen, with the dataset metadata filled in
    (see the **UPLOADED DATASET** section above).
+
+   .. figure:: /rst/figures/user_manual/problem_definition_uploaded_dataset.png
+       :align: center
+       :alt: Uploaded dataset section of the form, with the description, topic, keywords and applications of a dataset of customer emails
+
+       The metadata of a small CSV file of customer support emails, filled in by the framework.
 
 Only CSV and JSON files are processed. **Clear all** removes the dataset metadata.

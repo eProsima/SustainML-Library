@@ -64,7 +64,8 @@ In the :ref:`mlmodelmetadata_type` output, the node fills:
 
 * ``ml_model_metadata``: a list with the selected goal as its only element.
   It is left empty when a model was chosen by hand, as no goal is needed then, and when no goal could be selected.
-* ``extra_data``: a JSON object for the :ref:`mlmodelprovider_node` with the keys ``problem_short_description``, ``model_restrains``, ``model_selected``, ``type`` and ``hardware_required`` copied from the user input (each one only if present and not empty),
+* ``extra_data``: a JSON object for the :ref:`mlmodelprovider_node` with the keys ``problem_short_description``, ``model_restrains``, ``model_selected``, ``type`` and ``hardware_required`` copied from the user input
+  (``problem_short_description`` always, even when empty; ``model_restrains`` whenever present, even when empty; the others only if present and not empty),
   plus ``yolo_preferences`` for the YOLO models of the Axelera board (see below).
   If no goal could be selected, the ``extra_data`` is replaced by ``{"error": "Failed to extract metadata due to invalid or incomplete input parameters."}``.
 
@@ -79,7 +80,7 @@ For each task, the node selects the goal as follows:
 #. Otherwise, if a model was chosen by hand (``model_selected``), no goal is selected and the ``ml_model_metadata`` list is left empty.
 #. Otherwise, the goal is inferred by the ``llama3`` LLM, served by `Ollama <https://ollama.com/>`_ at ``http://localhost:11434``.
    The prompt contains the problem short description and definition, the known inputs and outputs, the minimum and maximum number of samples, the dataset metadata (if any) and the list of possible goals.
-   The answer must be one of the possible goals; otherwise the question is asked again, up to 3 times.
+   The answer must be one of the possible goals; otherwise the question is asked again, up to 3 times in total.
 
 The list of possible goals depends on the model family and the hardware:
 
@@ -159,7 +160,14 @@ Following is the Python API provided for the :ref:`mlmodelmetadata_node`.
 User is meant to implement the functionality of the node within the ``task_callback()``.
 And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
 
-The template below is a reduced version of the actual ``ml_model_metadata_node.py``: it keeps its structure and the way it reads and writes the data, while the goal selection is simplified to a single LLM query among the goals of the graph.
+The template below is a shortened version of ``sustainml-wp1/ml_model_metadata_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp1/blob/main/ml_model_metadata_node.py>`__).
+It keeps the structure of the node and the way it reads and writes its data. It leaves out, as described above:
+
+* the goals of the YOLO models for CNNs on the Axelera board, and the ``yolo_preferences`` read from the description;
+* the full prompt of the goal inference (with the problem definition, inputs, outputs, samples and dataset metadata, not only the short description) and its three attempts;
+* the ``type`` and ``hardware_required`` keys copied into the ``extra_data``;
+* the filter of the unsupported goals in the reply to ``modality``;
+* the ``dataset_path`` request, which describes a dataset with AutoDDG and ``llama3``.
 
 .. code-block:: python
 

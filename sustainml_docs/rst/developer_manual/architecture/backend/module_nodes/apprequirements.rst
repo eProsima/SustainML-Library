@@ -76,7 +76,7 @@ Therefore, receiving the dummy reply above means that the request did not match 
 Node Template
 -------------
 
-Following is the Python API provided for the :ref:`appreqs_node`, which is also the complete current implementation of the node.
+Following is the Python API provided for the :ref:`appreqs_node`, which is also the complete current implementation of the node, ``sustainml-wp1/app_requirements_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp1/blob/main/app_requirements_node.py>`__).
 User is meant to implement the functionality of the node within the ``task_callback()``, filling the ``app_requirements`` output from the ``user_input``.
 And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
 

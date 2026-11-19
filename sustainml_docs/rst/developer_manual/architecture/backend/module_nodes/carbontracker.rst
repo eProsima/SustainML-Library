@@ -165,7 +165,8 @@ Dependencies
 Besides ``sustainml_py``, the node uses:
 
 * ``geocoder``, to detect the country from the public IP address (it needs Internet access).
-* ``carbontracker``, ``torch`` and ``transformers``, only for the CarbonTracker fallback.
+* ``carbontracker``, ``torch`` and ``transformers``, for the CarbonTracker fallback.
+  The node imports them when it starts, so they are needed even when the fallback is not used.
 
 Node Template
 -------------
@@ -174,7 +175,14 @@ Following is the Python API provided for the :ref:`carbontracker_node`.
 The functionality of the node is implemented within ``task_callback()``, which receives the :ref:`mlmodel_type`, the :ref:`user_input_type` and the :ref:`hardware_resource_type`, and fills the :ref:`carbonfootprint_type` output.
 The response to the configuration requests forwarded by the orchestrator is implemented within ``configuration_callback()``.
 
-The template below is a reduced version of the actual ``sustainml-wp3/carbon_footprint_node.py``: it keeps its structure and the way it reads and writes the data, while the carbon intensity is read from ``carbon_intensities.csv`` for the chosen country only (no IP detection) and the CarbonTracker fallback is left out.
+The template below is a shortened version of ``sustainml-wp3/carbon_footprint_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp3/blob/main/carbon_footprint_node.py>`__).
+It keeps the structure of the node and the way it reads and writes its data, with the carbon intensity of the chosen country read from ``carbon_intensities.csv``. It leaves out, as described above:
+
+* the other sources of the carbon intensity (the country detected from the IP address, then the world average) and the ``grid_ci_source`` key of the ``extra_data``;
+* the early exit for ``NO_MODEL`` and the error outputs;
+* the ``num_outputs`` and ``model_restrains`` of the user input merged into the ``extra_data``, and the ``auto_reiterate`` flag of the **Auto** carbon footprint optimization;
+* the CarbonTracker fallback, for a Hugging Face model without energy from the HW Resources node;
+* the ``carbon_intensities`` request, which returns the intensity of every country for the *YOLO models* screen.
 
 .. code-block:: python
 

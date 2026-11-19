@@ -45,6 +45,13 @@ Start screen
 
 The application opens on the start screen, which presents SustainML and the project partners
 (click a partner logo to open its website).
+
+.. figure:: /rst/figures/user_manual/start_screen.png
+    :align: center
+    :alt: Start screen of the SustainML Framework application
+
+    The start screen.
+
 Click **Start now** to go to the :ref:`Problem definition <user_manual_problem_definition>` screen.
 The start screen is shown only once, at launch.
 

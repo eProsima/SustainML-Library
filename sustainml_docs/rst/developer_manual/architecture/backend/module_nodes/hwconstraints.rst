@@ -87,7 +87,7 @@ Any request it receives is answered with ``success`` set to ``false``, ``err_cod
 Node Template
 -------------
 
-Following is the current implementation of the :ref:`hwconstraints_node` (``sustainml-wp2/hw_constraints_node.py``), built on the Python API of ``sustainml_py``.
+Following is the current implementation of the :ref:`hwconstraints_node` (``sustainml-wp2/hw_constraints_node.py``, `full file on GitHub <https://github.com/eProsima/sustainml-wp2/blob/main/hw_constraints_node.py>`__), built on the Python API of ``sustainml_py``.
 The functionality of the node is implemented within ``task_callback()``, which receives the :ref:`user_input_type` and fills the :ref:`hardware_constraints_type` output.
 The response to the configuration requests forwarded by the orchestrator is implemented within ``configuration_callback()``.
 

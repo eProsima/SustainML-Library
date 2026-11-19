@@ -205,7 +205,8 @@ The save files are explained in :ref:`orchestrator`.
 * Reply: ``{"comparison_summary": <string>, "model_cards": [{"model_id", "purpose", "best_for", "watch_out_for"}, ...],
   "comparison_table": [{"model_id", "license", "model_family", "architectures", "languages"}, ...]}``, with one card
   and one table row per model.
-  If the LLM fails or does not answer with JSON, the reply has status ``500`` and an ``error`` field.
+  If the LLM fails, does not answer within 500 seconds (the timeout of the request to Ollama, ``_ollama_chat()`` in
+  ``sustainml-wp5/backend_node.py``) or does not answer with JSON, the reply has status ``500`` and an ``error`` field.
 
 ``/status``
 ^^^^^^^^^^^

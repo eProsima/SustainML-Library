@@ -115,7 +115,8 @@ Otherwise, the model is chosen among the models that the Neo4j graph links to th
    the query is embedded with the ``BAAI/bge-large-en`` sentence-transformers model and compared with the embeddings of the candidate models, stored in the ``models_index.ann`` Annoy index.
    The model is drawn at random among the 20 nearest ones.
 #. The model is accepted if the graph links it to the goal.
-   Otherwise, or if no model is returned, it is added to the excluded models and the RAG is asked again, up to 10 times.
+   Otherwise it is added to the excluded models and the RAG is asked again; if no model is returned, the RAG is asked again
+   without excluding any model. The RAG is asked up to 10 times in total.
 
 In this case ``model_path`` is ``""``: the :ref:`hwprovider_node` and the :ref:`carbontracker_node` download the model from the Hugging Face Hub by its name.
 
@@ -206,7 +207,14 @@ Following is the Python API provided for the :ref:`mlmodelprovider_node`.
 User is meant to implement the functionality of the node within the ``task_callback()``.
 And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
 
-The template below is a reduced version of the actual ``ml_model_provider_node.py``: it keeps its structure and the way it reads and writes the data, while the model selection is simplified to the most downloaded model of the goal that has not been suggested yet.
+The template below is a shortened version of ``sustainml-wp1/ml_model_provider_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp1/blob/main/ml_model_provider_node.py>`__).
+It keeps the structure of the node and the way it reads and writes its data, and picks the most downloaded model of the goal that has not been suggested yet. It leaves out, as described above:
+
+* CNNs on the Axelera board: the YOLO model picked for the goal and the description, or the selected one checked against the catalog;
+* the ONNX file of a selected U-Net model (``model_path``), looked up in the ``unet_models`` folder or ``SUSTAINML_UNET_DIR``;
+* the automatic selection with the RAG back-end (embeddings, nearest models, up to 10 attempts, and the check that the graph links the model to the goal);
+* the unsupported model architectures, read from ``unsupported_models.txt``;
+* the replies to ``model_from_goal`` for the YOLO models and for the U-Net models of the FPGA (``U_NET_MODELS``), and the ``hf_search`` request, served by the MCP server.
 
 .. code-block:: python
 

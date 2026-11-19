@@ -97,7 +97,7 @@ vendored in ``sustainml-wp2/hw_provider_fpga/vendor/sustain_ml_predictor`` and w
 It works on U-Net models in ONNX format:
 
 * The model evaluated is the ONNX file given in ``model_path`` of the :ref:`mlmodel_type`.
-  If ``model_path`` is not an existing ``.onnx`` file, the node falls back to the first ``.onnx`` file found in the vendored ``unet_models`` folder.
+  If ``model_path`` is not an existing ``.onnx`` file, the node evaluates nothing and reports an error (see the outputs below).
 * ``unet_models`` holds the 217 U-Nets that DFKI measured on the board (``xczu19eg-ffvb1517-2-i/measurements.jsonl``).
   When the model is one of them (same file name and same SHA-256 hash), the node returns DFKI's measurement.
 * Otherwise, the latency, the dynamic energy and the board runtime energy are predicted with DFKI's predictor models
@@ -134,7 +134,7 @@ Output
 
 The node fills the :ref:`hardware_resource_type` output as follows:
 
-* ``hw_description``: the name of the hardware evaluated, or ``Error`` when the UPMEM simulator could not evaluate the model.
+* ``hw_description``: the name of the hardware evaluated, or ``Error`` when the model could not be evaluated (see the errors below).
 * ``latency``: latency of one inference, in **hours** (the :ref:`carbontracker_node` multiplies it by the power).
 * ``power_consumption``: power that the model draws on the hardware, in W, without the idle power of the hardware.
 * ``memory_footprint_of_ml_model``: memory footprint of the model, in MB, as its weights plus the working memory of one input
@@ -152,9 +152,11 @@ The node fills the :ref:`hardware_resource_type` output as follows:
   * UPMEM simulator: nothing on success.
   * Errors: ``{"error_code": "NO_MODEL", "error": "..."}`` when the :ref:`mlmodelprovider_node` returned no model (``NO_MODEL``),
     ``{"error_code": "UNKNOWN_MODEL", "error": "..."}`` when the model is not one of the YOLO models of the Axelera board,
+    ``{"error_code": "MODEL_FILE_NOT_FOUND", "error": "..."}`` when the ``model_path`` of a U-Net model for the FPGA is not
+    an existing ``.onnx`` file, ``{"error": "Failed to evaluate the model on the FPGA: ..."}`` when DFKI's predictor fails,
     and ``{"error": "Failed to test model on hardware: ..."}`` when the UPMEM simulator could not evaluate the model.
     In all these cases the latency and power are ``0``.
-    When DFKI's predictor fails, the latency and power are ``0`` too and the error is only printed.
+    For the last three, ``hw_description`` is ``Error``, so that the :ref:`frontend` shows an error dialog.
 
 Configuration Requests
 ----------------------
@@ -227,7 +229,13 @@ The functionality of the node is implemented within ``task_callback()``, which r
 The response to the configuration requests forwarded by the orchestrator is implemented within ``configuration_callback()``.
 A new hardware evaluation can be added as another branch of ``task_callback()``, and its hardware name added to the reply to the ``hardwares`` request.
 
-The template below is a reduced version of the actual ``sustainml-wp2/hw_resources_provider_node.py``: it keeps its structure and the way it reads and writes the data, while the three evaluation paths (UPMEM simulator, FPGA predictor and Axelera measurements) are replaced by a single ``evaluate()`` function to implement.
+The template below is a shortened version of ``sustainml-wp2/hw_resources_provider_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp2/blob/main/hw_resources_provider_node.py>`__).
+It keeps the structure of the node and the way it reads and writes its data, with a single ``evaluate()`` function to implement. It leaves out, as described above:
+
+* the three evaluations it replaces: the UPMEM simulator for Transformers, DFKI's predictor for the U-Net models of the FPGA, and the measurements of the Axelera board;
+* the memory footprint of the model (weights plus working memory);
+* the error outputs (``NO_MODEL``, ``UNKNOWN_MODEL``, ``MODEL_FILE_NOT_FOUND``), and the ``extra_data`` of each evaluation;
+* the ``yolo_models`` request.
 
 .. code-block:: python
 

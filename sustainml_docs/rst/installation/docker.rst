@@ -26,7 +26,7 @@ SustainML Framework dependencies
 
 To run the *SustainML Framework* using Docker, three files from the ``docker`` folder of the `SustainML Framework repository <https://github.com/eProsima/SustainML-Framework>`_ are used:
 
-* ``Dockerfile``: builds an Ubuntu 24.04 image with all the dependencies (including Java 21 and Neo4j), the *SustainML* workspace built with colcon, the ANN index of the models knowledge base and the Neo4j database already loaded.
+* ``Dockerfile``: builds an Ubuntu 24.04 image with all the dependencies, the *SustainML* workspace built with colcon, the ANN index of the models knowledge base and the Neo4j database already loaded.
 * ``run.bash``: entrypoint of the image, which starts the node selected by the ``SUSTAINML_NODE`` environment variable.
 * ``docker-compose.yaml``: deploys one container per node, plus the GUI, using the previous Docker image.
 

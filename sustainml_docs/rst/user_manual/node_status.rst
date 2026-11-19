@@ -36,6 +36,12 @@ The **Framework nodes** card lists the six nodes with their current state, updat
 
 The application is ready to submit problems when all six nodes are **Idle**.
 
+.. figure:: /rst/figures/user_manual/node_status.png
+    :align: center
+    :alt: Node status screen with the six framework nodes Idle
+
+    The *Node status* screen, with every node ready.
+
 .. _user_manual_node_status_save_load:
 
 Saving and loading
@@ -74,6 +80,12 @@ Saving
    To replace an existing save, click its name in the **Existing saves** list instead.
 #. Click **Save**.
 
+.. figure:: /rst/figures/user_manual/save_dialog.png
+    :align: center
+    :alt: Save Results dialog with a new name typed and one existing save listed
+
+    Saving the results of the example as *support emails*, next to an existing save.
+
 Saving into an existing file replaces only the parts that screen saves, and keeps the others.
 For example, saving from the *Search results* screen replaces the searches of the file but keeps its results and
 comparisons.
@@ -89,6 +101,12 @@ Loading
 #. Click **Load**.
 #. Click a saved file in the list. **No saved files yet.** is shown when there is none.
 #. Click **Load**.
+
+.. figure:: /rst/figures/user_manual/load_dialog.png
+    :align: center
+    :alt: Load Results dialog with two saves, the first one selected
+
+    The **Load** dialog, with a save selected and its trash icon on the right.
 
 Loading never replaces what is open:
 

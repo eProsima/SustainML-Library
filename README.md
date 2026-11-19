@@ -10,7 +10,7 @@
         <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
         <a href="https://sustainml.eu/showroom/news">News</a>
         <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-        <a href="https://twitter.com/EProsima">Twitter</a>
+        <a href="https://www.linkedin.com/company/eprosima/">LinkedIn</a>
         <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
         <a href="mailto:info@eprosima.com">Contact Us</a>
     </strong>
@@ -25,7 +25,7 @@
     <a href="https://github.com/eProsima/SustainML/issues"><img alt="Issues" src="https://img.shields.io/github/issues/eProsima/SustainML.svg"/></a>
     <a href="https://github.com/eProsima/SustainML/network/members"><img alt="Forks" src="https://img.shields.io/github/forks/eProsima/SustainML.svg"/></a>
     <a href="https://github.com/eProsima/SustainML/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/eProsima/SustainML.svg"/></a>
-    <a href="https://SustainML.readthedocs.io/en/latest/"><img alt="Documentation Status" src="https://readthedocs.org/projects/sustainml/badge/?version=latest&style=flat"/></a>
+    <a href="https://SustainML.readthedocs.io/en/latest/"><img alt="Documentation Status" src="https://img.shields.io/readthedocs/sustainml/latest"/></a>
 </div>
 
 <br><br>
