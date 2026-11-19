@@ -1,0 +1,16 @@
+/* Title page: the SustainML logo replaces the page title, which is kept for the sidebar and screen readers. */
+section.sustainml-title-page > h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+img.sustainml-title-logo {
+    display: block;
+    width: 100%;
+    max-width: 36rem;
+    margin: 1rem auto 2rem;
+}

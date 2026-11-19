@@ -1,13 +1,16 @@
-.. raw:: html
-
-  <h1>
-    eProsima SustainML Documentation
-  </h1>
-
-.. image:: /rst/figures/SustainML_GitHub.png
+.. image:: /rst/figures/sustainml-title-green.png
+  :class: only-light sustainml-title-logo
   :align: center
   :alt: SustainML
   :target: http://www.sustainml.eu/
+
+.. image:: /rst/figures/sustainml-title-white.png
+  :class: only-dark sustainml-title-logo
+  :align: center
+  :alt: SustainML
+  :target: http://www.sustainml.eu/
+
+.. rst-class:: sustainml-title-page
 
 SustainML
 *********

@@ -50,3 +50,12 @@
    /rst/developer_manual/architecture/architecture
    /rst/developer_manual/configuration_request/configuration_request
    /rst/developer_manual/data_model/data_model
+
+.. _index_release_notes:
+
+.. toctree::
+   :caption: Release Notes
+   :maxdepth: 1
+   :hidden:
+
+   /rst/notes/release_notes

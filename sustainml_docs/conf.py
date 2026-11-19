@@ -412,6 +412,9 @@ html_theme = 'furo'
 html_theme_options = {}
 html_theme_options.update(download_json())
 html_theme_options["sidebar_hide_name"] = True
+# Sidebar logo: green in light mode, white with green leaves in dark mode (relative to html_static_path)
+html_theme_options["light_logo"] = "sustainml-logo.png"
+html_theme_options["dark_logo"] = "sustainml-logo-white.png"
 
 # html_title = f'<center><i>{project}</i></center>'
 
@@ -436,7 +439,7 @@ html_theme_options["sidebar_hide_name"] = True
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-html_logo = 'rst/_static/sustainml-logo.png'
+# Not set: the sidebar logos are the light_logo and dark_logo theme options (see html_theme_options).
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs. This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -466,7 +469,7 @@ html_static_path = ['rst/_static']
 #
 html_use_smartypants = True
 
-html_css_files = [select_css(project_source_docs_dir)]
+html_css_files = [select_css(project_source_docs_dir), 'css/sustainml.css']
 
 # Custom sidebar templates, maps document names to template names.
 #

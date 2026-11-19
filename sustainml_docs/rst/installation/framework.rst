@@ -169,5 +169,5 @@ This command:
 
 The first run needs Internet access: the nodes download the Hugging Face models they analyze, and the Carbon Footprint node detects the country of the machine from its public IP address (with `geocoder <https://geocoder.readthedocs.io/>`_) when the user does not choose one.
 
-The Axelera YOLO models catalog, the FPGA U-Net predictor and the UPMEM simulator are part of the ``sustainml-wp2`` sources, and the Hugging Face MCP server is part of the ``sustainml-wp1`` sources (the ML Model Provider node starts it as a subprocess).
+The Axelera YOLO models catalog, the FPGA U-Net measurements and predictor and the UPMEM simulator are part of the ``sustainml-wp2`` sources, and the Hugging Face MCP server is part of the ``sustainml-wp1`` sources (the ML Model Provider node starts it as a subprocess).
 They are installed with the steps above and need no extra setup, hardware or token of their own.

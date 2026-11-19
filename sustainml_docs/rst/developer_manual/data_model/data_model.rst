@@ -323,7 +323,7 @@ To represent that information, the ``HWResourceImpl`` data structure is defined 
 * ``latency``: The latency of one inference of the model on the hardware, in hours.
 * ``memory_footprint_of_ml_model``: The memory footprint of the model on the hardware, in MB.
 * ``max_hw_memory_footprint``: The maximum memory footprint set by the user, in MB (``0`` means no limit).
-* ``extra_data``: The figures of the FPGA predictor for the FPGA, ``{"axelera": ..., "accuracy": ...}`` with the
+* ``extra_data``: DFKI's measurement or prediction for the FPGA, ``{"axelera": ..., "accuracy": ...}`` with the
   measured resources and the accuracy of the YOLO models on the Axelera board, nothing for the simulator
   architectures, or an object with an ``error`` key when the resources could not be computed.
 * ``task_id``: The identifier of the task.
