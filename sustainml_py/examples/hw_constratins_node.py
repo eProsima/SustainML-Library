@@ -14,7 +14,6 @@
 """SustainML Example Python Node API."""
 
 from sustainml_py.nodes.HardwareConstraintsNode import HardwareConstraintsNode
-from sustainml_swig import ErrorCode
 
 
 # Manage signaling
@@ -49,7 +48,7 @@ def configuration_callback(req, res):
     res.transaction_id(req.transaction_id())
     res.configuration(req.configuration())
     res.success(True)
-    res.err_code(ErrorCode.NO_ERROR)
+    res.err_code(0)  # 0: no error (NO_ERROR), 1: error (INTERNAL_ERROR)
 
 # Main workflow routine
 def run():

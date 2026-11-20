@@ -206,7 +206,7 @@ Facts:
 """.strip()
 
 
-def _ollama_chat(prompt: str, model: str = "llama3", timeout: int = 450) -> str:
+def _ollama_chat(prompt: str, model: str = "llama3", timeout: int = 500) -> str:
     url = "http://localhost:11434/api/chat"
     payload = {
         "model": model,

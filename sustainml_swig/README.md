@@ -2,7 +2,8 @@
 
 This package contains the SWIG interface files and CMake configuration used to generate the Python bindings for the SustainML C++ library.
 
-SWIG is used to expose the public C++ API defined in `sustainml_cpp` to Python, producing the `sustainml_py` package.
+SWIG is used to expose the public C++ API defined in `sustainml_cpp` to Python, producing the `sustainml_swig` Python module.
+The `sustainml_py` package wraps this module in the Python API used by the module nodes.
 
 ## Scope
 
