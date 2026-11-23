@@ -16,7 +16,7 @@ Each of the modules conforms a **Node**, which imports its corresponding Python 
 The communication is performed through `DDS (Data Distribution Service) protocol <https://www.omg.org/omg-dds-portal/>`_, using the `eProsima Fast DDS <https://fast-dds.docs.eprosima.com/>`_ library.
 During the installation process, some of the `Fast DDS requirements <https://fast-dds.docs.eprosima.com/en/latest/installation/sources/sources_linux.html#requirements>`_ will need to be addressed.
 
-The following sections describe the steps to install the *SustainML Library* on **Ubuntu** (the continuous integration of the library builds it on Ubuntu 22.04).
+The following sections describe the steps to install the *SustainML Library* on **Ubuntu** (the continuous integration of the library builds it on Ubuntu 24.04).
 The Python dependencies (for example, ``torch==2.4.1``) require Python 3.10, 3.11 or 3.12.
 
 .. _installation_library_dependencies:
@@ -146,6 +146,8 @@ The backend node is started first, and the module nodes once it listens on port 
     python3 sustainml-wp2/hw_constraints_node.py &
     python3 sustainml-wp2/hw_resources_provider_node.py &
     python3 sustainml-wp3/carbon_footprint_node.py &
+
+Internet access is needed while the framework runs: the nodes download the ``BAAI/bge-large-en`` embedding model the first time and each Hugging Face model they evaluate (the ``HF_TOKEN`` token lets them load gated models), the Hugging Face search and comparison query the Hugging Face Hub, and the Carbon Footprint node detects the country of the machine from its public IP address (with `geocoder <https://geocoder.readthedocs.io/>`_) when the user does not choose one.
 
 These are the same steps that the ``sustainml-framework`` launcher of the *SustainML Framework* runs before opening its GUI (see :ref:`installation_framework_deployment`).
 Clients, such as that GUI, interact with the nodes through the REST API of the backend node.

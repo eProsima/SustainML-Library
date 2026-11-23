@@ -64,7 +64,7 @@ The energy of one inference is computed in the same way for every model and hard
     carbon footprint (gCO2e) = energy (kWh) x carbon intensity (gCO2/kWh)
 
 The power is the power that the model draws on the selected hardware, without the idle power of the hardware:
-measured on the Axelera board, measured by DFKI (or estimated with its predictor) on the FPGA, and from the UPMEM LLM simulator for Hugging Face models (see :ref:`hwprovider_node`).
+measured on the Axelera board, predicted with DFKI's predictor on the FPGA, and from the UPMEM LLM simulator for Hugging Face models (see :ref:`hwprovider_node`).
 
 The node fills the :ref:`carbonfootprint_type` output as follows:
 

@@ -157,7 +157,7 @@ The first card is a matrix of the models:
   keypoint (pose) detection) and architecture (YOLO11 and YOLO26);
 * one column per model size: **n**, **s**, **m**, **l** and **x**.
 
-Each cell shows the CO2 per accuracy point (``g/pt``), the CO2 per million inferences and the accuracy of the model
+Each cell shows the CO2 per million inferences per accuracy point (``g/pt``), the CO2 per million inferences and the accuracy of the model
 after int8 quantization, and is coloured from light (less CO2 per accuracy point, better) to dark.
 A ``×N`` marker shows where the CO2 is multiplied by 1.8 or more from the previous size.
 Hover a cell to see the details of the model, including its accuracy before quantization (fp32) and the change from the

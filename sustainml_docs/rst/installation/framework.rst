@@ -16,7 +16,7 @@ Each of the modules conforms a **Node**, which imports its corresponding Python 
 The communication is performed through `DDS (Data Distribution Service) protocol <https://www.omg.org/omg-dds-portal/>`_, using the `eProsima Fast DDS <https://fast-dds.docs.eprosima.com/>`_ library.
 During the installation process, some of the `Fast DDS requirements <https://fast-dds.docs.eprosima.com/en/latest/installation/sources/sources_linux.html#requirements>`_ will need to be addressed.
 
-The following sections describe the steps to install the *SustainML Framework* on **Ubuntu** (the continuous integration of the SustainML Library builds on Ubuntu 22.04, and the Docker image is based on Ubuntu 24.04).
+The following sections describe the steps to install the *SustainML Framework* on **Ubuntu** (the continuous integration of the SustainML Library builds on Ubuntu 24.04, and the Docker image is based on Ubuntu 24.04).
 The Python dependencies (for example, ``torch==2.4.1``) require Python 3.10, 3.11 or 3.12.
 
 .. important::
@@ -167,7 +167,7 @@ This command:
 
     The *SustainML Framework* GUI application alone is run with the ``sustainml`` command.
 
-The first run needs Internet access: the nodes download the Hugging Face models they analyze, and the Carbon Footprint node detects the country of the machine from its public IP address (with `geocoder <https://geocoder.readthedocs.io/>`_) when the user does not choose one.
+Internet access is needed while the framework runs: the nodes download the ``BAAI/bge-large-en`` embedding model the first time and each Hugging Face model they evaluate (the ``HF_TOKEN`` token lets them load gated models), the Hugging Face search and comparison query the Hugging Face Hub, and the Carbon Footprint node detects the country of the machine from its public IP address (with `geocoder <https://geocoder.readthedocs.io/>`_) when the user does not choose one.
 
-The Axelera YOLO models catalog, the FPGA U-Net measurements and predictor and the UPMEM simulator are part of the ``sustainml-wp2`` sources, and the Hugging Face MCP server is part of the ``sustainml-wp1`` sources (the ML Model Provider node starts it as a subprocess).
+The Axelera YOLO models catalog, the FPGA U-Net models and predictor and the UPMEM simulator are part of the ``sustainml-wp2`` sources, and the Hugging Face MCP server is part of the ``sustainml-wp1`` sources (the ML Model Provider node starts it as a subprocess).
 They are installed with the steps above and need no extra setup, hardware or token of their own.

@@ -33,10 +33,12 @@ See :ref:`installation_framework` for the installation and the requirements of t
 
 Some features need more than the nodes:
 
-* Uploading a dataset and comparing Hugging Face models use the ``llama3`` model served by `Ollama <https://ollama.com/>`_
-  on the same machine.
-* Searching and comparing Hugging Face models need an Internet connection and a Hugging Face access token
-  (the ``HF_TOKEN`` environment variable).
+* The ``llama3`` model served by `Ollama <https://ollama.com/>`_ on the same machine is used to find the ML goal of a
+  Transformers problem when the user does not choose one, to search and compare Hugging Face models, and to describe an
+  uploaded dataset.
+* Evaluating Transformers models and searching and comparing Hugging Face models need an Internet connection.
+  The Hugging Face access token (the ``HF_TOKEN`` environment variable) is used to load gated models and to read the
+  information of the models to compare; the search does not need it.
 
 .. _user_manual_start_screen:
 

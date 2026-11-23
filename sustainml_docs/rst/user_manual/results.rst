@@ -93,7 +93,7 @@ The **Overview** tab has one row per iteration of the problem, with these column
       - Power of the model on the hardware.
     * - **Carbon Footprint [gCO2e]**
       - Carbon emissions of the use of the model on the hardware.
-    * - **Carbon Intensity [gCO2/kW]**
+    * - **Carbon Intensity [gCO2/kWh]**
       - Carbon intensity of the electricity grid of the chosen (or detected) country, in grams of CO2 per kWh.
     * - **Memory Footprint [MB]**
       - Memory the model needs: its weights plus the working memory to process the longest input it accepts.
@@ -154,7 +154,7 @@ It shows the checked iterations with more metrics than the **Overview**:
       - Power consumed while the model runs on the hardware.
     * - **Carbon Footprint [gCO2e]**
       - Carbon emissions of the use of the model on the hardware.
-    * - **Carbon Intensity [gCO2/kW]**
+    * - **Carbon Intensity [gCO2/kWh]**
       - Emissions per unit of energy of the electricity grid.
     * - **Energy Consumption [kWh]**
       - Energy used by the execution.
@@ -174,7 +174,8 @@ Right-click the table for more:
 * On a metric column header: **Compare** opens a comparison tab for that metric
   (see :ref:`user_manual_results_comparison`), and **More info** explains the metric.
 * On an iteration number: **More info** opens a panel with every output of the six nodes for that iteration.
-* On a model name: **More on HF** opens the page of the model on the Hugging Face website.
+* On the name of a Hugging Face model: **More on HF** opens the page of the model on the Hugging Face website.
+  The U-Net and YOLO models have no such menu.
 
 .. figure:: /rst/figures/user_manual/results_compare_menu.png
     :align: center

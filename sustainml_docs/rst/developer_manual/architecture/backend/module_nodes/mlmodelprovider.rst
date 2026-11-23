@@ -113,10 +113,10 @@ Otherwise, the model is chosen among the models that the Neo4j graph links to th
 #. The models in ``model_restrains`` are left out, so that a model is not suggested twice for the same problem.
 #. The RAG back-end of the WP1 module (``rag/rag_backend.py``) picks one of the remaining models for the query ``Task <goal> with problem description: <problem_short_description>?``:
    the query is embedded with the ``BAAI/bge-large-en`` sentence-transformers model and compared with the embeddings of the candidate models, stored in the ``models_index.ann`` Annoy index.
-   The model is drawn at random among the 20 nearest ones.
+   The nearest of them is proposed, so the same query always gives the same model.
 #. The model is accepted if the graph links it to the goal.
-   Otherwise it is added to the excluded models and the RAG is asked again; if no model is returned, the RAG is asked again
-   without excluding any model. The RAG is asked up to 10 times in total.
+   Otherwise it is added to the excluded models and the RAG is asked again, also when no model is returned.
+   The RAG is asked up to 10 times in total.
 
 In this case ``model_path`` is ``""``: the :ref:`hwprovider_node` and the :ref:`carbontracker_node` download the model from the Hugging Face Hub by its name.
 

@@ -55,12 +55,12 @@ Build the SustainML Framework Docker image
 
 The Dockerfile defines the set of dependencies and configurations required to build an image with the *SustainML Framework*.
 It clones the repositories listed in the ``sustainml.repos`` file of the ``main`` branch of the *SustainML Framework*.
-The following command builds the Docker image from the ``~/SustainML`` folder (which must contain ``run.bash``), setting the image name as *sustainml* and the tag as **v0.2.0**, which is the image that ``docker-compose.yaml`` uses:
+The following command builds the Docker image from the ``~/SustainML`` folder (which must contain ``run.bash``), setting the image name as *sustainml* and the tag as **v1.0.0**, which is the image that ``docker-compose.yaml`` uses:
 
 .. code-block:: bash
 
     cd ~/SustainML && \
-    docker build -f Dockerfile -t sustainml:v0.2.0 .
+    docker build -f Dockerfile -t sustainml:v1.0.0 .
 
 .. note::
 
@@ -69,7 +69,7 @@ The following command builds the Docker image from the ``~/SustainML`` folder (w
 
     .. code-block:: bash
 
-        docker build -f Dockerfile -t sustainml:v0.2.0 --build-arg sustainml_lib_branch=<branch> .
+        docker build -f Dockerfile -t sustainml:v1.0.0 --build-arg sustainml_lib_branch=<branch> .
 
 .. _installation_framework_docker_deployment:
 
@@ -93,6 +93,8 @@ SustainML Framework Docker deployment
     .. code-block:: bash
 
         export SUSTAINML_DOMAIN_ID=<domain_id>
+
+Internet access is needed while the framework runs: the nodes download the ``BAAI/bge-large-en`` embedding model the first time and each Hugging Face model they evaluate (the ``HF_TOKEN`` token lets them load gated models), the Hugging Face search and comparison query the Hugging Face Hub, and the Carbon Footprint node detects the country of the machine from its public IP address (with `geocoder <https://geocoder.readthedocs.io/>`_) when the user does not choose one.
 
 The ``docker-compose.yaml`` file deploys the following containers:
 

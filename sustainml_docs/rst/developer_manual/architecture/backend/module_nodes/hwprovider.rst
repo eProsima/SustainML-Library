@@ -62,8 +62,7 @@ Supported Hardware
 
 The node evaluates the model in one of three ways, depending on the model family chosen by the user (``model_family`` in the ``extra_data`` forwarded by the :ref:`hwconstraints_node`, ``Transformers`` by default) and on the hardware:
 
-* ``CNNs`` on ``FPGA (xczu19eg-ffvb1517-2-i)``: the U-Net models measured by DFKI on the FPGA, or DFKI's latency and
-  energy predictor for other U-Net models.
+* ``CNNs`` on ``FPGA (xczu19eg-ffvb1517-2-i)``: U-Net models, evaluated with DFKI's latency and energy predictor.
 * ``CNNs`` on ``Axelera Edge 130p``: the YOLO models measured on the Axelera board.
 * Any other combination: the UPMEM LLM simulator.
 
@@ -90,27 +89,26 @@ The hardware that can be simulated is:
 ``PIM_AI_1chip``, ``PIM_AI_4chip``, ``PIM_AI_1dimm``, ``PIM_AI_2dimm``, ``PIM_AI_4dimm``, ``PIM_AI_6dimm``, ``PIM_AI_8dimm``, ``PIM_AI_10dimm``, ``PIM_AI_12dimm``, ``PIM_AI_16dimm``, ``PIM_AI_24dimm``,
 ``SAM_LPDDR5PIM``, ``Snapdragon8gen3`` and ``V100``.
 
-FPGA with DFKI's U-Net measurements and predictor
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FPGA with DFKI's U-Net predictor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For ``CNNs`` on ``FPGA (xczu19eg-ffvb1517-2-i)``, the FPGA device on which DFKI measured its models, the node uses DFKI's measurements and the latency and energy predictor developed by DFKI,
+For ``CNNs`` on ``FPGA (xczu19eg-ffvb1517-2-i)``, the FPGA device on which DFKI measured its models, the node uses the latency and energy predictor developed by DFKI,
 vendored in ``sustainml-wp2/hw_provider_fpga/vendor/sustain_ml_predictor`` and wrapped by ``hw_provider_fpga/fpga_predictor_adapter.py``.
 It works on U-Net models in ONNX format:
 
 * The model evaluated is the ONNX file given in ``model_path`` of the :ref:`mlmodel_type`.
   If ``model_path`` is not an existing ``.onnx`` file, the node evaluates nothing and reports an error (see the outputs below).
-* ``unet_models`` holds the 217 U-Nets that DFKI measured on the board (``xczu19eg-ffvb1517-2-i/measurements.jsonl``).
-  When the model is one of them (same file name and same SHA-256 hash), the node returns DFKI's measurement.
-  These are the U-Nets that the *SustainML Framework* application offers by default, so their figures are always measured.
-* Otherwise (a U-Net of the ``SUSTAINML_UNET_DIR`` directory that DFKI did not measure, or the path of another
-  ``.onnx`` file), the latency, the dynamic energy and the board runtime energy are predicted with DFKI's predictor models
+* ``unet_models`` holds the 217 U-Nets that DFKI measured on the board (``xczu19eg-ffvb1517-2-i/measurements.jsonl``),
+  on which the predictor models were trained. They are the U-Nets that the *SustainML Framework* application offers by default.
+* For every U-Net, whether one of these, one of the ``SUSTAINML_UNET_DIR`` directory or the path of another
+  ``.onnx`` file, the latency, the dynamic energy and the board runtime energy are predicted with DFKI's predictor models
   (``predictor_model_latency.onnx``, ``predictor_model_energy_dynamic.onnx`` and ``predictor_model_energy_board_runtime.onnx``), run with ``onnxruntime``
   on the graph of the U-Net extracted from its ONNX file.
 * The power of the model is its dynamic energy (the board's energy while running the model minus its idle energy) divided by the latency.
   The idle power of the board, about 18 to 21 W in DFKI's measurements, is left out because it does not depend on the model.
   A negative predicted dynamic energy is counted as 0.
 
-The whole result, measured or predicted, is attached to the ``extra_data`` of the output (see below).
+The whole result is attached to the ``extra_data`` of the output (see below).
 
 Axelera board with YOLO models
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -146,10 +144,11 @@ The node fills the :ref:`hardware_resource_type` output as follows:
   For the YOLO models of the Axelera board it is the value stored in ``yolo_models.json``.
   It is ``0`` when it cannot be computed.
 * ``max_hw_memory_footprint``: the ``max_memory_footprint`` of the :ref:`hardware_constraints_type`, in MB (``0`` means no limit).
+  It is not set (``0``) when the evaluation fails.
 * ``extra_data``: a JSON object that depends on the evaluation:
 
-  * FPGA: DFKI's measurement or prediction, with the keys ``device``, ``latency_s``, ``latency_h``, ``power_w``, ``energy_J``, ``energy_Wh``, ``energy_dynamic_Wh``,
-    ``power_board_runtime_w``, ``energy_board_runtime_Wh`` and ``provenance`` (whether the values were measured or predicted, the predictor files used and the SHA-256 hash of the model).
+  * FPGA: DFKI's prediction, with the keys ``device``, ``latency_s``, ``latency_h``, ``power_w``, ``energy_J``, ``energy_Wh``, ``energy_dynamic_Wh``,
+    ``power_board_runtime_w``, ``energy_board_runtime_Wh`` and ``provenance`` (the source of the values, the predictor files used and the SHA-256 hash of the model).
   * Axelera board: ``{"axelera": {...}, "accuracy": {...}}``, with the latency, full-load FPS, power, energy per inference and memory of the model and where each value comes from,
     and the accuracy of the model as listed in ``yolo_models.json``.
   * UPMEM simulator: nothing on success.
@@ -235,7 +234,7 @@ A new hardware evaluation can be added as another branch of ``task_callback()``,
 The template below is a shortened version of ``sustainml-wp2/hw_resources_provider_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp2/blob/main/hw_resources_provider_node.py>`__).
 It keeps the structure of the node and the way it reads and writes its data, with a single ``evaluate()`` function to implement. It leaves out, as described above:
 
-* the three evaluations it replaces: the UPMEM simulator for Transformers, DFKI's measurements and predictor for the U-Net models of the FPGA, and the measurements of the Axelera board;
+* the three evaluations it replaces: the UPMEM simulator for Transformers, DFKI's predictor for the U-Net models of the FPGA, and the measurements of the Axelera board;
 * the memory footprint of the model (weights plus working memory);
 * the error outputs (``NO_MODEL``, ``UNKNOWN_MODEL``, ``MODEL_FILE_NOT_FOUND``), and the ``extra_data`` of each evaluation;
 * the ``yolo_models`` request.
