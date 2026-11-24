@@ -57,7 +57,7 @@ TEST(BlackboxTestsCallbackProcessing, TasksCorrectlyFinishDespiteDifferentProces
     appr_node.start();
     hwc_node.start();
 
-    ui_inj.wait_discovery(2);
+    ui_inj.wait_discovery(4);
     ml_model_baseline_inj.wait_discovery(1);
     hw_res_baseline_inj.wait_discovery(1);
     co2_baseline_inj.wait_discovery(1);

@@ -32,8 +32,9 @@ Hardware-Constraints Node
 .. raw:: html
    :file: ../../../../figures/sustainml_framework_arch.svg
 
-
-The :ref:`hwconstraints_node` is responsible for imposing hardware constraints for the generation of the machine learning model proposal.
+The :ref:`hwconstraints_node` turns the hardware constraints chosen by the user when defining the problem into a :ref:`hardware_constraints_type` sample:
+the hardware on which the machine learning model must run and the maximum memory footprint allowed for it.
+It is implemented in ``hw_constraints_node.py`` of the ``sustainml-wp2`` module.
 
 Inputs and Outputs
 ------------------
@@ -47,13 +48,48 @@ The following table summarizes the inputs and outputs of the :ref:`hwconstraints
 +----------------------+-------------------+--------------------------------+---------------------------+
 |                      |                   |:ref:`hardware_constraints_type`|:ref:`hwprovider_node`     |
 +----------------------+-------------------+--------------------------------+---------------------------+
+|                      |                   |:ref:`hardware_constraints_type`|:ref:`orchestrator`        |
++----------------------+-------------------+--------------------------------+---------------------------+
+
+Node Behavior
+-------------
+
+The hardware constraints are not read from the regular fields of the :ref:`user_input_type`, but from the JSON object carried in its ``extra_data`` field.
+The orchestrator fills this JSON object with the data of the problem definition sent by the frontend.
+The node reads the following keys:
+
+* ``hardware_required``: name of the hardware on which the model will be evaluated.
+  It is one of the names returned by the :ref:`hwprovider_node` for the ``hardwares`` configuration request.
+  If it is missing, ``PIM_AI_1chip`` is used.
+* ``max_memory_footprint``: maximum memory footprint of the model, in MB.
+  If it is missing, ``0`` is used, which means that there is no limit.
+
+The node then fills the :ref:`hardware_constraints_type` output as follows:
+
+* ``hardware_required``: a sequence with the single hardware name read above.
+* ``max_memory_footprint``: the maximum memory footprint read above (MB, ``0`` means no limit).
+* ``extra_data``: a copy of the whole JSON object received in the ``extra_data`` of the :ref:`user_input_type`.
+  This forwards to the following nodes the rest of the problem definition, such as the model family (``model_family``, ``Transformers`` or ``CNNs``) and the Hugging Face token (``hf_token``),
+  which the :ref:`hwprovider_node` uses to choose how to evaluate the model and to download it.
+
+The node does not check the hardware name: the :ref:`hwprovider_node` is the one that evaluates the model on it.
+
+Configuration Requests
+----------------------
+
+The :ref:`hwconstraints_node` does not answer any configuration request.
+Any request it receives is answered with ``success`` set to ``false``, ``err_code`` set to ``1`` and the following ``configuration`` JSON:
+
+.. code-block:: json
+
+    {"error": "Unsupported configuration request: <request>"}
 
 Node Template
 -------------
 
-Following is the Python API provided for the :ref:`hwconstraints_node`.
-User is meant to implement the funcionality of the node within the ``test:callback()``.
-And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
+Following is the current implementation of the :ref:`hwconstraints_node` (``sustainml-wp2/hw_constraints_node.py``, `full file on GitHub <https://github.com/eProsima/sustainml-wp2/blob/main/hw_constraints_node.py>`__), built on the Python API of ``sustainml_py``.
+The functionality of the node is implemented within ``task_callback()``, which receives the :ref:`user_input_type` and fills the :ref:`hardware_constraints_type` output.
+The response to the configuration requests forwarded by the orchestrator is implemented within ``configuration_callback()``.
 
 .. code-block:: python
 
@@ -70,7 +106,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
     # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     # See the License for the specific language governing permissions and
     # limitations under the License.
-    """SustainML HW Resources Provider Node Implementation."""
+    """SustainML HW Constraints Node Implementation."""
 
     from sustainml_py.nodes.HardwareConstraintsNode import HardwareConstraintsNode
 
@@ -99,7 +135,7 @@ And inside ``configuration_callback()`` implement the response to the configurat
 
         # Default values
         hw_req = "PIM_AI_1chip"
-        mem_footprint = 100
+        mem_footprint = 0  # MB, 0 means no limit
 
         # Check if extra data has been sent and preserve ALL fields (hf_token, model_family, …)
         incoming = {}
@@ -118,25 +154,15 @@ And inside ``configuration_callback()`` implement the response to the configurat
         # Pull values (use defaults if missing)
         mem_footprint = int(incoming.get("max_memory_footprint", mem_footprint))
         hw_req = incoming.get("hardware_required", hw_req)
-        hf_token = incoming.get("hf_token")
-        model_family = incoming.get("model_family")
 
         # Build outgoing extra_data preserving everything we received
         out_extra = dict(incoming)  # copy
-        if hf_token is not None:
-            out_extra["hf_token"] = hf_token
-        if model_family is not None:
-            out_extra["model_family"] = model_family
 
         # Forward the full extra_data downstream so HW_RESOURCES can read model_family
         try:
             hw_constraints.extra_data(json.dumps(out_extra).encode("utf-8"))
-            print("[HW_CONSTRAINTS] forwarding extra_data ->", out_extra)
         except Exception as e:
             print("[HW_CONSTRAINTS] WARN: cannot set hw_constraints.extra_data:", e)
-
-        # TODO parse other possible data hidden in the extra_data field, if any
-        # TODO populate the hw_constraints object with the required data
 
         hw_constraints.max_memory_footprint(mem_footprint)
         hw_constraints.hardware_required([hw_req])

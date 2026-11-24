@@ -206,7 +206,7 @@ Facts:
 """.strip()
 
 
-def _ollama_chat(prompt: str, model: str = "llama3", timeout: int = 450) -> str:
+def _ollama_chat(prompt: str, model: str = "llama3", timeout: int = 500) -> str:
     url = "http://localhost:11434/api/chat"
     payload = {
         "model": model,
@@ -640,8 +640,8 @@ def signal_handler(sig, frame):
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
     hf_token = os.getenv("HF_TOKEN")
-    if hf_token is None:
-        print("Error: The HF_TOKEN environment variable is missing. Please set it before starting the node.")
+    if not hf_token:
+        print("Error: The HF_TOKEN environment variable is missing or empty. Please set it before starting the node.")
     print("Back-end Node running, use Ctrl+C to terminate. Server listening at http://" + server_ip_address + ":" + str(server_port) + "/")
     flask_server_thread = ServerThread()
     flask_server_thread.start()  # Start the Flask server with the orchestrator
