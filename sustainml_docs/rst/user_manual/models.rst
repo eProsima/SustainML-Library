@@ -26,7 +26,7 @@ Searching models
 ^^^^^^^^^^^^^^^^
 
 The *Hugging Face models* screen lists the *Hugging Face suggestions* for the query, shown below the card title.
-**Searching Hugging Face...** is shown while the search runs.
+While the search runs, the screen shows **Searching Hugging Face...**.
 Up to ten models are listed, best first, each with its **score** (how close the model is to the description).
 If the search fails or finds nothing, the screen shows **No suggestions yet**.
 
@@ -182,7 +182,7 @@ Where extra CO2 stops buying accuracy
 The second card needs at least ten selected models.
 It plots each selected model against its own task: the CO2 per inference as a multiple of the smallest model of the
 same task (log scale), against the share of the best accuracy of that task.
-The curve is split in zones by the accuracy points gained per doubling of CO2:
+The curve is split into zones by the accuracy points gained per doubling of CO2:
 
 * **Steep**: 10 or more points; accuracy climbs fast.
 * **Flattening**: between 3 and 10 points.
@@ -208,7 +208,7 @@ U-Net models (FPGA)
 The **U-Net models** button of the *Problem definition* screen opens the *U-Net models* screen: the CNN
 architectures available for the FPGA. Each row shows the model name and a description: input size and channels, depth,
 initial feature channels, kernel sizes, MFLOPs and millions of parameters.
-**No U-Net models yet** is shown until the framework sends the list.
+The screen shows **No U-Net models yet** until the framework sends the list.
 
 .. figure:: /rst/figures/user_manual/unet_list.png
     :align: center

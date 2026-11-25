@@ -31,10 +31,10 @@ The *SustainML Framework* takes the description of a machine learning problem gi
 to solve it, estimates the resources (latency, power consumption and memory footprint) that model needs on the hardware
 selected by the user, and estimates the energy consumption and the carbon footprint of running it.
 
-Within the *SustainML Architecture*, a ``Node`` refers to each one of the software modules that performs
-a particular task, conforms a single executable unit and can be locally or remotely deployed.
+Within the *SustainML Architecture*, a ``Node`` is a software module that performs a particular task, forms a single
+executable unit and can be deployed locally or remotely.
 The nodes communicate through the `eProsima Fast DDS middleware <https://www.eprosima.com/index.php/products-all/eprosima-fast-dds>`_,
-which provides this decoupling and modularity.
+which keeps them decoupled and modular.
 All of them join the DDS domain ``0``, or the one set in the ``SUSTAINML_DOMAIN_ID`` environment variable.
 
 The framework is made of three parts:
@@ -52,7 +52,7 @@ The framework is made of three parts:
   execution of the tasks and gathers the data of the nodes for the Front-End.
 * The :ref:`module_nodes`, six Python processes that specialize in particular tasks of the solution.
 
-The software is split in the following packages of the ``sustainml_lib`` repository:
+The software is split into the following packages of the ``sustainml_lib`` repository:
 
 * ``sustainml_cpp``: the C++ library with the DDS types (see :ref:`data_model`), the base class of each module node,
   the ``OrchestratorNode`` and the configuration service (see :ref:`node_config_service`).

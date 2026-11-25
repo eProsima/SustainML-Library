@@ -7,9 +7,9 @@ The *Results* screen shows the model, hardware and footprint of every evaluated 
 It opens on its own when a problem is submitted, and can be opened at any time with the **Results** button of the
 *Problem definition* screen.
 
-Each problem has its own tab, and each model evaluated for it is an *iteration* of the problem:
-one per output model, plus the ones of a carbon footprint optimization: those you add with **Reiterate**
-(see :ref:`user_manual_results_iteration_info`), and those an **Auto** optimization adds on its own.
+Each problem has its own tab, and each model evaluated for it is an *iteration* of the problem.
+There is one iteration per output model, plus those of a carbon footprint optimization: the ones you add with
+**Reiterate** (see :ref:`user_manual_results_iteration_info`) and the ones an **Auto** optimization adds on its own.
 Results are added as the framework nodes deliver them.
 
 .. figure:: /rst/figures/user_manual/results_running.png
@@ -138,8 +138,9 @@ screen opens to follow it:
   goes on searching on its own, up to three models;
 * one click adds one iteration, even when the problem asked for several output models.
 
-There is no **Reiterate** without an optimization, for a selected model or for a U-Net model: the same model would be
-evaluated again.
+**Reiterate** is not available without an optimization, or for a selected model or a U-Net model, because the same model
+would be evaluated again. It is not available for a problem loaded from a save file either: the framework keeps only
+its results, so it cannot run new iterations of it.
 
 .. figure:: /rst/figures/user_manual/results_iteration_info.png
     :align: center
@@ -182,7 +183,7 @@ The columns **Iteration**, **Problem**, **ML Model** and **Hardware** are shown 
 
     The **Iteration** tab with the three iterations of the example checked.
 
-Right-click the table for more:
+Right-click the table to open a context menu:
 
 * On a metric column header: **Compare** opens a comparison tab for that metric
   (see :ref:`user_manual_results_comparison`), and **More info** explains the metric.

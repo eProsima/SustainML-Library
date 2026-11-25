@@ -3,7 +3,7 @@
 SustainML Framework Data Model
 ==============================
 
-Following are the Data Structures definitions using the `Interface Definition Language specification <https://www.omg.org/spec/IDL/4.2/About-IDL>`_.
+The following data structure definitions use the `Interface Definition Language specification <https://www.omg.org/spec/IDL/4.2/About-IDL>`_.
 All of them are defined in ``sustainml_cpp/include/sustainml_cpp/idl/typesImpl.idl``, and the interfaces of the
 configuration service in ``sustainml_cpp/include/sustainml_cpp/idl/SustainMLService.idl``.
 
@@ -17,8 +17,8 @@ In the current nodes, ``extra_data`` always carries a JSON object encoded in UTF
 other the data that has no field of its own.
 The keys used by each node are listed in the sections below.
 
-Every node in the *SustainML Framework* needs to provide a continuous feedback status to the :ref:`orchestrator`.
-This is modeled with the ``NodeStatusImpl`` data structure.
+Every node in the *SustainML Framework* must continuously report its status to the :ref:`orchestrator`, with the
+``NodeStatusImpl`` data structure.
 
 .. _task_id_type:
 
@@ -46,7 +46,7 @@ Node Status Type
 
 Each node publishes its ``NodeStatusImpl`` in the ``/sustainml/status`` topic when it starts, and before and after
 each task.
-It is comprised of the following fields:
+It has the following fields:
 
 * ``node_status``: The status of the node.
   A node is ``NODE_INITIALIZING`` and then ``NODE_IDLE`` when it starts, ``NODE_RUNNING`` while it processes a task,
@@ -136,12 +136,12 @@ User Input Type
 
 The ``UserInputImpl`` data structure carries the input from the user when describing a new task (Machine Learning
 problem), which the :ref:`orchestrator` publishes in the ``/sustainml/user_input`` topic.
-It is comprised of the following fields:
+It has the following fields:
 
 * ``modality``: The modality of the input data.
   The Front-End no longer sends it, so it is empty.
 * ``problem_short_description``: The description of the problem, written by the user.
-* ``problem_definition``: The type of problem to solve e.g classification, regression, clustering,...
+* ``problem_definition``: The type of problem to solve, for instance classification, regression or clustering.
 * ``inputs``: The words of the description of the input data.
 * ``outputs``: The words of the description of the output data.
 * ``minimum_samples``: The minimum number of samples (``0`` when not specified).
@@ -206,7 +206,7 @@ ML Model Metadata Type
 ----------------------
 
 The ``MLModelMetadataImpl`` data structure represents the output from the :ref:`mlmodelmetadata_node`.
-It is composed by:
+It has the following fields:
 
 * ``keywords``: A sequence of keywords of the problem.
   The current node does not fill it.
@@ -235,7 +235,8 @@ It is composed by:
 Application Requirements Type
 -----------------------------
 
-The ``AppRequirementsImpl`` data structure depicts the output from the :ref:`appreqs_node` and consists on:
+The ``AppRequirementsImpl`` data structure represents the output from the :ref:`appreqs_node` and has the following
+fields:
 
 * ``app_requirements``: A sequence of application-level requirements, modeled as a sequence of strings, to be
   considered in the selection of the machine learning model.
@@ -258,7 +259,8 @@ The ``AppRequirementsImpl`` data structure depicts the output from the :ref:`app
 Hardware Constraints Type
 -------------------------
 
-The ``HWConstraintsImpl`` represents the group of constraints defined (or not) by the user when describing the problem.
+The ``HWConstraintsImpl`` data structure represents the constraints that the user can define when describing the
+problem.
 It is the output from the :ref:`hwconstraints_node`.
 
 * ``max_memory_footprint``: The maximum memory footprint allowed for the ML model, in MB (``0`` means no limit).
@@ -282,7 +284,7 @@ ML Model Type
 -------------
 
 The ``MLModelImpl`` data structure represents the output from the :ref:`mlmodelprovider_node`.
-It is divided in the following fields:
+It has the following fields:
 
 * ``model_path``: The path to the ONNX file of the model, for the U-Net models, or empty for the other ones.
 * ``model``: The name of the model (for instance, a Hugging Face model id), or ``NO_MODEL`` when no model was found.
@@ -318,7 +320,7 @@ Hardware Resource Type
 ----------------------
 
 The :ref:`hwprovider_node` estimates the resources the ML model needs on the hardware selected by the user.
-To represent that information, the ``HWResourceImpl`` data structure is defined containing the following fields:
+The ``HWResourceImpl`` data structure holds that information in the following fields:
 
 * ``hw_description``: The name of the hardware.
 * ``power_consumption``: The power consumption of the model on the hardware, in ``W``.
@@ -348,8 +350,8 @@ To represent that information, the ``HWResourceImpl`` data structure is defined 
 Carbon Footprint Type
 ---------------------
 
-Finally, the output from the :ref:`carbontracker_node` is modeled by the ``CO2FootprintImpl`` data structure,
-consisting in the following fields:
+The output from the :ref:`carbontracker_node` is modeled by the ``CO2FootprintImpl`` data structure, which has
+the following fields:
 
 * ``carbon_footprint``: The carbon footprint of one inference, in ``gCO2e``.
 * ``energy_consumption``: The energy consumption of one inference, in ``kWh``.
@@ -387,13 +389,13 @@ Service Types
 They are not sent over DDS as such: the orchestrator and the nodes use them in their APIs, while the RPC carries the
 ``configuration`` string and returns the encoded reply.
 
-The ``RequestTypeImpl`` structure includes the following fields:
+The ``RequestTypeImpl`` structure has the following fields:
 
 * ``node_id``: The identifier of the target node, a value of the ``NodeID`` enum (see :ref:`node_ids`).
 * ``transaction_id``: A unique counter internal to the orchestrator.
 * ``configuration``: The request string.
 
-The ``ResponseTypeImpl`` structure includes the following fields:
+The ``ResponseTypeImpl`` structure has the following fields:
 
 * ``node_id``: The identifier of the node, copied from the request.
 * ``transaction_id``: The transaction identifier, copied from the request.

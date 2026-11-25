@@ -9,7 +9,7 @@ The Front-End uses it to fill its lists (ML goals, hardware, models of a goal, Y
 country carbon intensities), to search Hugging Face models and to describe a dataset.
 Although the remote method is called ``update_configuration()``, no node changes its configuration with it in the
 current implementation: every request is a query, answered from the data of the node.
-For the data types of the service, please refer to the :ref:`Service Types <service_types>`.
+The data types of the service are described in :ref:`Service Types <service_types>`.
 
 Request path
 ^^^^^^^^^^^^
@@ -82,7 +82,7 @@ Reply encoding
 
 The remote method returns a single string, which has no room for the success flag and the error code that the node
 sets in its ``ResponseType``.
-So ``GenericServiceNodeImpl`` encodes the three of them in the returned string with ``encode_configuration_reply()``
+``GenericServiceNodeImpl`` therefore encodes all three in the returned string with ``encode_configuration_reply()``
 (``sustainml_cpp/src/cpp/common/Common.hpp``):
 
 .. code-block:: text
@@ -140,7 +140,7 @@ No request reaches the :ref:`hwconstraints_node`, which would answer any of them
 Requests
 ^^^^^^^^
 
-These are all the requests that the nodes answer.
+The following table lists every request that the nodes answer.
 Unless stated otherwise, the reply ``configuration`` is a JSON object encoded as a string, and ``err_code`` is ``0``
 when ``success`` is ``true`` and ``1`` when it is ``false``.
 

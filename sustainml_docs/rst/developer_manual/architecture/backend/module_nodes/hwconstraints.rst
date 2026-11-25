@@ -54,7 +54,7 @@ The following table summarizes the inputs and outputs of the :ref:`hwconstraints
 Node Behavior
 -------------
 
-The hardware constraints are not read from the regular fields of the :ref:`user_input_type`, but from the JSON object carried in its ``extra_data`` field.
+The node reads the hardware constraints from the JSON object carried in the ``extra_data`` field of the :ref:`user_input_type`, not from its regular fields.
 The orchestrator fills this JSON object with the data of the problem definition sent by the frontend.
 The node reads the following keys:
 
@@ -69,10 +69,10 @@ The node then fills the :ref:`hardware_constraints_type` output as follows:
 * ``hardware_required``: a sequence with the single hardware name read above.
 * ``max_memory_footprint``: the maximum memory footprint read above (MB, ``0`` means no limit).
 * ``extra_data``: a copy of the whole JSON object received in the ``extra_data`` of the :ref:`user_input_type`.
-  This forwards to the following nodes the rest of the problem definition, such as the model family (``model_family``, ``Transformers`` or ``CNNs``) and the Hugging Face token (``hf_token``),
+  This way the following nodes receive the rest of the problem definition, such as the model family (``model_family``, ``Transformers`` or ``CNNs``) and the Hugging Face token (``hf_token``),
   which the :ref:`hwprovider_node` uses to choose how to evaluate the model and to download it.
 
-The node does not check the hardware name: the :ref:`hwprovider_node` is the one that evaluates the model on it.
+The node does not check the hardware name; the :ref:`hwprovider_node` evaluates the model on it.
 
 Configuration Requests
 ----------------------
@@ -87,9 +87,9 @@ Any request it receives is answered with ``success`` set to ``false``, ``err_cod
 Node Template
 -------------
 
-Following is the current implementation of the :ref:`hwconstraints_node` (``sustainml-wp2/hw_constraints_node.py``, `full file on GitHub <https://github.com/eProsima/sustainml-wp2/blob/main/hw_constraints_node.py>`__), built on the Python API of ``sustainml_py``.
-The functionality of the node is implemented within ``task_callback()``, which receives the :ref:`user_input_type` and fills the :ref:`hardware_constraints_type` output.
-The response to the configuration requests forwarded by the orchestrator is implemented within ``configuration_callback()``.
+The following is the current implementation of the :ref:`hwconstraints_node` (``sustainml-wp2/hw_constraints_node.py``, `full file on GitHub <https://github.com/eProsima/sustainml-wp2/blob/main/hw_constraints_node.py>`__), built on the Python API of ``sustainml_py``.
+The functionality of the node is implemented in ``task_callback()``, which receives the :ref:`user_input_type` and fills the :ref:`hardware_constraints_type` output.
+The response to the configuration requests forwarded by the orchestrator is implemented in ``configuration_callback()``.
 
 .. code-block:: python
 

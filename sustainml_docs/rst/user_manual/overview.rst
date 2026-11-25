@@ -4,8 +4,8 @@ Getting started
 ===============
 
 The *SustainML Framework* application is the graphical interface of the framework.
-You describe a machine learning problem in it, and the framework nodes suggest a model and a hardware to run it on,
-together with the power, energy, carbon footprint and memory that the model needs there.
+You describe a machine learning problem in it, and the framework nodes suggest a model and the hardware to run it on,
+with the power, energy, carbon footprint and memory that the model needs on that hardware.
 This manual describes every screen of the application and how to use it.
 
 .. _user_manual_launch:
@@ -28,7 +28,7 @@ This command, installed from the ``framework_run.sh`` script of the *SustainML F
    *HW Resources* and *Carbon Footprint*.
 #. Opens the application (the ``sustainml`` command).
 
-Closing the application stops every node and the Neo4j database again.
+Closing the application stops every node and the Neo4j database.
 See :ref:`installation_framework` for the installation and the requirements of the framework.
 
 Some features need more than the nodes:
@@ -66,7 +66,7 @@ Every screen has a header with its title, a short description and its buttons.
 
 * **Home** goes to the *Problem definition* screen, which is the starting point of every task (not to the start screen).
 * The back arrow returns to the previous screen.
-  Its tooltip tells where it leads when it is a fixed screen (for example, *Go to Problem Definition screen*).
+  When it leads to a fixed screen, its tooltip names that screen (for example, *Go to Problem Definition screen*).
 * The activity icon (a pulse line) at the right end of every header opens the :ref:`Node status <user_manual_node_status>`
   screen. It is disabled while a task is running, and hidden in the iteration info view.
 

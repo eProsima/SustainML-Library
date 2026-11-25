@@ -32,9 +32,9 @@ Front-End Node
 .. raw:: html
    :file: ../../../figures/sustainml_framework_arch.svg
 
-The Front-End component within the software architecture of the *SustainML Framework* is the user-facing software component.
-It is responsible for displaying information, receiving user input for defining a new task, and providing a
-means for users to interact with the underlying functionality of the *SustainML Framework* in synchronization with the :ref:`orchestrator`.
+The Front-End is the user-facing component of the *SustainML Framework* software architecture.
+It displays information, receives the user input that defines a new task, and lets users interact with the underlying
+functionality of the *SustainML Framework* in synchronization with the :ref:`orchestrator`.
 
 The Front-End is the ``sustainml`` desktop application of the ``sustainml_framework`` repository, written in C++ and
 QML with Qt 5.15.

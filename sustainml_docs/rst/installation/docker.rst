@@ -3,26 +3,26 @@
 SustainML Framework using Dockers
 =================================
 
-The instructions for installing the :ref:`SustainML Framework <index_introduction>` using Dockers are provided in this page.
-It is organized as follows:
+This page explains how to install the :ref:`SustainML Framework <index_introduction>` using Docker.
+It has the following sections:
 
 * :ref:`installation_framework_docker_dependencies`
 * :ref:`installation_framework_docker_build`
 * :ref:`installation_framework_docker_deployment`
 
-The *SustainML Framework* is composed of different software modules, each one related to a specific task, which are specialized in solving the different parts of the framework.
-Each of the modules conforms a **Node**, which imports its corresponding Python library, so that each node can be abstracted from the communication between other nodes.
-With Docker, every node and the GUI run in their own container, all of them created from the same *SustainML* Docker image.
+The *SustainML Framework* consists of several software modules, each one specialized in a specific task, which together solve the different parts of the framework.
+Each module is a **Node** that imports its corresponding Python library, so that the node is abstracted from the communication with the other nodes.
+With Docker, every node and the GUI run in their own container, and all the containers are created from the same *SustainML* Docker image.
 
-The following sections describe the steps to install the *SustainML Framework* using Dockers on an **Ubuntu** host.
+The following sections describe the steps to install the *SustainML Framework* using Docker on an **Ubuntu** host.
 
 .. _installation_framework_docker_dependencies:
 
 SustainML Framework dependencies
 --------------------------------
 
-`Docker <https://www.docker.com/>`_ is a platform that allows to develop and run applications in virtual containers.
-**Install Docker Engine and its Compose plugin** (the ``docker compose`` command) following the installation instructions of the `Docker documentation <https://docs.docker.com/engine/install/ubuntu/>`_.
+`Docker <https://www.docker.com/>`_ is a platform for developing and running applications in virtual containers.
+Install Docker Engine and its Compose plugin (the ``docker compose`` command) following the installation instructions of the `Docker documentation <https://docs.docker.com/engine/install/ubuntu/>`_.
 
 To run the *SustainML Framework* using Docker, three files from the ``docker`` folder of the `SustainML Framework repository <https://github.com/eProsima/SustainML-Framework>`_ are used:
 
@@ -55,7 +55,7 @@ Build the SustainML Framework Docker image
 
 The Dockerfile defines the set of dependencies and configurations required to build an image with the *SustainML Framework*.
 It clones the repositories listed in the ``sustainml.repos`` file of the ``main`` branch of the *SustainML Framework*.
-The following command builds the Docker image from the ``~/SustainML`` folder (which must contain ``run.bash``), setting the image name as *sustainml* and the tag as **v1.0.0**, which is the image that ``docker-compose.yaml`` uses:
+The following command builds the Docker image from the ``~/SustainML`` folder (which must contain ``run.bash``), with the image name *sustainml* and the tag **v1.0.0**, which is the image that ``docker-compose.yaml`` uses:
 
 .. code-block:: bash
 
@@ -94,7 +94,10 @@ SustainML Framework Docker deployment
 
         export SUSTAINML_DOMAIN_ID=<domain_id>
 
-Internet access is needed while the framework runs: the nodes download the ``BAAI/bge-large-en`` embedding model the first time and each Hugging Face model they evaluate (the ``HF_TOKEN`` token lets them load gated models), the Hugging Face search and comparison query the Hugging Face Hub, and the Carbon Footprint node detects the country of the machine from its public IP address (with `geocoder <https://geocoder.readthedocs.io/>`_) when the user does not choose one.
+The framework needs Internet access while it runs.
+The nodes download the ``BAAI/bge-large-en`` embedding model the first time, and each Hugging Face model they evaluate (the ``HF_TOKEN`` token lets them load gated models).
+The Hugging Face search and comparison query the Hugging Face Hub.
+When the user does not choose a country, the Carbon Footprint node detects the country of the machine from its public IP address (with `geocoder <https://geocoder.readthedocs.io/>`_).
 
 The ``docker-compose.yaml`` file deploys the following containers:
 
@@ -105,9 +108,9 @@ The ``docker-compose.yaml`` file deploys the following containers:
   The ``carbon_tracker`` container mounts ``/sys`` read-only to measure the energy consumption.
 * ``front_end``: the web front end of work package 4, which the GUI does not use.
 
-To run your own version of a node instead, comment its entry in ``docker-compose.yaml``.
+To run your own version of a node instead, comment out its entry in ``docker-compose.yaml``.
 
-Provide privileges to the X localhost server and deploy the *SustainML Framework* using Docker compose, from the folder that contains ``docker-compose.yaml``:
+Provide privileges to the X localhost server and deploy the *SustainML Framework* with Docker Compose, from the folder that contains ``docker-compose.yaml``:
 
 .. code-block:: bash
 

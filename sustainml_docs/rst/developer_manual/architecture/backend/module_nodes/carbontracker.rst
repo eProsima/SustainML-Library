@@ -63,8 +63,8 @@ The energy of one inference is computed in the same way for every model and hard
     energy (kWh)           = power_consumption (W) x latency (h) / 1000
     carbon footprint (gCO2e) = energy (kWh) x carbon intensity (gCO2/kWh)
 
-The power is the power that the model draws on the selected hardware, without the idle power of the hardware:
-measured on the Axelera board, predicted with DFKI's predictor on the FPGA, and from the UPMEM LLM simulator for Hugging Face models (see :ref:`hwprovider_node`).
+The power is what the model draws on the selected hardware, not counting the idle power of the hardware.
+It is measured on the Axelera board, predicted with DFKI's predictor on the FPGA, and taken from the UPMEM LLM simulator for Hugging Face models (see :ref:`hwprovider_node`).
 
 The node fills the :ref:`carbonfootprint_type` output as follows:
 
@@ -83,10 +83,10 @@ CarbonTracker fallback
 ^^^^^^^^^^^^^^^^^^^^^^
 
 When a Hugging Face model has a latency but no power from the :ref:`hwprovider_node`, the node falls back to `CarbonTracker <https://github.com/lfwa/carbontracker>`_.
-In a child process, it builds the model from its Hugging Face configuration and runs it repeatedly for ``CT_TARGET_SECONDS`` seconds (environment variable, 3 seconds by default)
+In a child process, it builds the model from its Hugging Face configuration and runs it repeatedly for ``CT_TARGET_SECONDS`` seconds (an environment variable, 3 seconds by default)
 while CarbonTracker measures the energy of the machine that runs the node, with a timeout of 75 seconds.
 The energy of one inference is the measured energy divided by the number of inferences of the given latency that fit in the measured time.
-CarbonTracker is made to use the same grid carbon intensity as the rest of the node instead of looking up its own.
+The node makes CarbonTracker use the same grid carbon intensity as the rest of the node, instead of looking up its own.
 
 This energy is that of the machine running the node, not of the selected hardware, and it includes the idle power of that machine and CarbonTracker's data center factor (PUE),
 so it cannot be compared with the other results.
@@ -130,14 +130,14 @@ The ``extra_data`` of the :ref:`carbonfootprint_type` output is a JSON object th
 When the automatic carbon footprint optimization is enabled (``optimize_carbon_footprint_auto`` of the :ref:`user_input_type`) and the user did not select a model,
 ``auto_reiterate`` is ``true`` when the model misses the desired carbon footprint (``desired_carbon_footprint``, if greater than ``0``),
 exceeds the maximum memory footprint (``max_memory_footprint`` in the ``extra_data`` of the :ref:`user_input_type`, if greater than ``0``), or could not be evaluated.
-It is ``false`` from the third model tried for the same output on (``auto_attempt``), so the search stops there.
+It is ``false`` for the third and later models tried for the same output (``auto_attempt``), so the search stops there.
 
 Configuration Requests
 ----------------------
 
 The :ref:`carbontracker_node` answers the ``carbon_intensities`` configuration request.
-The frontend sends it to the backend, and the Python orchestrator (``sustainml-wp5/orchestrator_node/orchestrator_node.py``) addresses to this node (``node_id`` ``1``, ``CARBONTRACKER``)
-any request whose ``configuration`` string contains ``carbon_intensities``.
+The frontend sends it to the backend, and the Python orchestrator (``sustainml-wp5/orchestrator_node/orchestrator_node.py``) routes any request whose ``configuration`` string contains ``carbon_intensities``
+to this node (``node_id`` ``1``, ``CARBONTRACKER``).
 See :ref:`node_config_service` for the request and response types.
 
 ``carbon_intensities``
@@ -171,9 +171,9 @@ Besides ``sustainml_py``, the node uses:
 Node Template
 -------------
 
-Following is the Python API provided for the :ref:`carbontracker_node`.
-The functionality of the node is implemented within ``task_callback()``, which receives the :ref:`mlmodel_type`, the :ref:`user_input_type` and the :ref:`hardware_resource_type`, and fills the :ref:`carbonfootprint_type` output.
-The response to the configuration requests forwarded by the orchestrator is implemented within ``configuration_callback()``.
+The following is the Python API of the :ref:`carbontracker_node`.
+The functionality of the node is implemented in ``task_callback()``, which receives the :ref:`mlmodel_type`, the :ref:`user_input_type` and the :ref:`hardware_resource_type`, and fills the :ref:`carbonfootprint_type` output.
+The response to the configuration requests forwarded by the orchestrator is implemented in ``configuration_callback()``.
 
 The template below is a shortened version of ``sustainml-wp3/carbon_footprint_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp3/blob/main/carbon_footprint_node.py>`__).
 It keeps the structure of the node and the way it reads and writes its data, with the carbon intensity of the chosen country read from ``carbon_intensities.csv``. It leaves out, as described above:

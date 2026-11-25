@@ -100,8 +100,8 @@ It works on U-Net models in ONNX format:
   If ``model_path`` is not an existing ``.onnx`` file, the node evaluates nothing and reports an error (see the outputs below).
 * ``unet_models`` holds the 217 U-Nets that DFKI measured on the board (``xczu19eg-ffvb1517-2-i/measurements.jsonl``),
   on which the predictor models were trained. They are the U-Nets that the *SustainML Framework* application offers by default.
-* For every U-Net, whether one of these, one of the ``SUSTAINML_UNET_DIR`` directory or the path of another
-  ``.onnx`` file, the latency, the dynamic energy and the board runtime energy are predicted with DFKI's predictor models
+* For every U-Net, whether it is one of these, one in the ``SUSTAINML_UNET_DIR`` directory or another
+  ``.onnx`` file given by its path, the latency, the dynamic energy and the board runtime energy are predicted with DFKI's predictor models
   (``predictor_model_latency.onnx``, ``predictor_model_energy_dynamic.onnx`` and ``predictor_model_energy_board_runtime.onnx``), run with ``onnxruntime``
   on the graph of the U-Net extracted from its ONNX file.
 * The power of the model is its dynamic energy (the board's energy while running the model minus its idle energy) divided by the latency.
@@ -118,7 +118,7 @@ They are listed in ``sustainml-wp2/hw_provider_axelera/yolo_models.json``: 36 mo
 ``object-detection``, ``oriented-object-detection``, ``instance-segmentation``, ``semantic-segmentation`` and ``keypoint-detection``.
 The board's specifications, taken from Axelera's datasheet, are in ``hw_provider_axelera/axelera_devices.yaml``.
 
-Nothing is loaded or run for these models.
+The node does not load or run these models.
 For each one, ``yolo_models.json`` holds the accuracy published by Axelera (FP32, and INT8 after the quantization loss), the frames per second published by Axelera,
 and the values measured on an Axelera Edge 130p board or computed from the model's ONNX file:
 
@@ -164,7 +164,7 @@ Configuration Requests
 ----------------------
 
 The :ref:`hwprovider_node` answers the following configuration requests.
-The frontend sends them to the backend, and the Python orchestrator (``sustainml-wp5/orchestrator_node/orchestrator_node.py``) addresses to this node (``node_id`` ``3``, ``HW_PROVIDER``)
+The frontend sends them to the backend, and the Python orchestrator (``sustainml-wp5/orchestrator_node/orchestrator_node.py``) routes to this node (``node_id`` ``3``, ``HW_PROVIDER``)
 any request whose ``configuration`` string contains ``hardwares`` or ``yolo_models``.
 See :ref:`node_config_service` for the request and response types.
 
@@ -226,7 +226,7 @@ Besides ``sustainml_py``, the node uses:
 Node Template
 -------------
 
-Following is the Python API provided for the :ref:`hwprovider_node`.
+The following is the Python API provided for the :ref:`hwprovider_node`.
 The functionality of the node is implemented within ``task_callback()``, which receives the :ref:`mlmodel_type`, the :ref:`apprequirements_type` and the :ref:`hardware_constraints_type`, and fills the :ref:`hardware_resource_type` output.
 The response to the configuration requests forwarded by the orchestrator is implemented within ``configuration_callback()``.
 A new hardware evaluation can be added as another branch of ``task_callback()``, and its hardware name added to the reply to the ``hardwares`` request.

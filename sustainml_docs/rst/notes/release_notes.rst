@@ -46,13 +46,14 @@ This release includes the following **improvements**:
 
 This release includes the following **bug fixes**:
 
-* The inputs and outputs of the problem are sent correctly, also in the re-iterations, where they were split into
-  single letters.
+* The inputs and outputs of the problem are sent correctly, including in the re-iterations, where they used to be split
+  into single letters.
 * Long model names are no longer cut or overlapped in the lists and tables.
 * The upload of a dataset no longer fails when the ``llama3`` answer is not in the expected format.
 * The *YOLO models* screen starts with the country chosen in the *Problem definition* form, or with the world average
   when none is chosen.
-* The filter of the lists that can be filtered is emptied each time a list is opened.
+* The filter of a filterable list is emptied each time the list is opened.
+* After loading a save file, the results of each problem are shown in the tab of that problem.
 * The names of the models in the table of a Hugging Face comparison no longer show stray spaces.
 * The Python examples of the *SustainML Library* (``sustainml_py/examples``) no longer fail on an ``ErrorCode`` import
   that the Python bindings do not provide.
