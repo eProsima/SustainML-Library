@@ -12,8 +12,8 @@ Version 1.0.0
 
 This release includes the following **features**:
 
-* Support for the **Axelera Edge 130p** board: the YOLO models of the board, with the latency, power and memory
-  measured on it. The model is chosen for the goal and for what the problem description asks for (accuracy, speed or
+* Support for the **Axelera Edge 130p** board: the YOLO models of the board, with the latency and power measured on
+  it and the memory computed from the model. The model is chosen for the goal and for what the problem description asks for (accuracy, speed or
   energy), or selected by hand.
 * Support for the **FPGA** ``xczu19eg-ffvb1517-2-i``: the 217 U-Net models that DFKI measured on the board, and any other
   U-Net model, with the latency and energy predicted by DFKI's predictor.
@@ -24,8 +24,9 @@ This release includes the following **features**:
   model found on the chosen hardware.
 * **Comparison of Hugging Face models**, written by the ``llama3`` LLM from their Hugging Face facts.
 * **Saving and loading** of results, Hugging Face searches and comparisons, in named save files.
-* **Sustainability targets**: carbon footprint optimization (**Manual** and **Auto**), maximum memory footprint and
-  location of the deployment. The carbon footprint uses the carbon intensity of the chosen country.
+* **Sustainability targets**: desired carbon footprint and maximum memory footprint, against which the results are
+  ranked, carbon footprint optimization (**Manual**, with a **Reiterate** button in the iteration info view, and
+  **Auto**), and location of the deployment. The carbon footprint uses the carbon intensity of the chosen country.
 * Memory footprint of the suggested models.
 * *Fingerprint* tab: radar charts that compare the CO2, energy, latency, memory and power of the checked iterations.
 * **Stop** button to stop following a running task.

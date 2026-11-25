@@ -8,7 +8,8 @@ It opens on its own when a problem is submitted, and can be opened at any time w
 *Problem definition* screen.
 
 Each problem has its own tab, and each model evaluated for it is an *iteration* of the problem:
-one per output model, plus the extra ones of an **Auto** carbon footprint optimization.
+one per output model, plus the ones of a carbon footprint optimization: those you add with **Reiterate**
+(see :ref:`user_manual_results_iteration_info`), and those an **Auto** optimization adds on its own.
 Results are added as the framework nodes deliver them.
 
 .. figure:: /rst/figures/user_manual/results_running.png
@@ -101,8 +102,8 @@ The **Overview** tab has one row per iteration of the problem, with these column
 
 Drag the separators of the header to resize the columns.
 
-When the problem has a desired carbon footprint (with **Manual** or **Auto** optimization) or a maximum memory
-footprint, the rows are ranked: first the models within the limits (lowest carbon footprint first), then the others by
+When the problem has a desired carbon footprint or a maximum memory footprint (with any carbon footprint
+optimization, or with none), the rows are ranked: first the models within the limits (lowest carbon footprint first), then the others by
 how far they are over the limits. A line above the table names the result:
 *Best model within the limits (...)* or, when no model meets them, *No model has met the limits (...) yet. Closest: ...*.
 
@@ -127,6 +128,18 @@ that iteration was run with. It shows only the fields that applied to it:
 The *Previous Results* panel on the right repeats the results of the iteration: iteration number, problem kind,
 suggested model, suggested hardware, power consumption, carbon footprint, carbon intensity and memory footprint.
 Click **Results** in the header to go back to the *Results* screen.
+
+When the iteration searched its model with the **Manual** or **Auto** carbon footprint optimization, the **Reiterate**
+button at the bottom of the form runs the same inputs again as one new iteration of the problem, and the *Results*
+screen opens to follow it:
+
+* the new iteration suggests a model that was not tried yet in any iteration of the problem;
+* with **Auto**, when that model misses the desired carbon footprint or the maximum memory footprint, the framework
+  goes on searching on its own, up to three models;
+* one click adds one iteration, even when the problem asked for several output models.
+
+There is no **Reiterate** without an optimization, for a selected model or for a U-Net model: the same model would be
+evaluated again.
 
 .. figure:: /rst/figures/user_manual/results_iteration_info.png
     :align: center

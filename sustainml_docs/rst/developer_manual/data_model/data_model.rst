@@ -146,13 +146,15 @@ It is comprised of the following fields:
 * ``outputs``: The words of the description of the output data.
 * ``minimum_samples``: The minimum number of samples (``0`` when not specified).
 * ``maximum_samples``: The maximum number of samples (``0`` when not specified).
-* ``optimize_carbon_footprint_manual``: Whether the user reiterates the problem by hand to get models with a lower
-  carbon footprint, so that the models already tried are not proposed again.
+* ``optimize_carbon_footprint_manual``: Whether the user reiterates the problem by hand (the **Reiterate** button of
+  the GUI) to get models with a lower carbon footprint, so that the models already tried are not proposed again.
 * ``previous_iteration``: ``0`` for a new problem, or the iteration of the problem from which this one is a
   reiteration.
 * ``optimize_carbon_footprint_auto``: Whether the framework reiterates the problem on its own until a model meets the
   desired carbon footprint and the maximum memory footprint.
-* ``desired_carbon_footprint``: The desired carbon footprint, in ``gCO2e``.
+* ``desired_carbon_footprint``: The desired carbon footprint per inference, in ``gCO2e`` (``0`` for no target).
+  It is sent with or without an optimization: the GUI ranks the results against it in any case, and the automatic
+  optimization also searches again when a model misses it.
 * ``geo_location_continent``: The continent where the ML model is going to run.
 * ``geo_location_region``: The country where the ML model is going to run, as an ISO 3166-1 alpha-2 code, used to get
   the carbon intensity of its electricity grid.

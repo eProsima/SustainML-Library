@@ -118,8 +118,8 @@ Sustainability targets
     * - **Carbon footprint optimization**
       - **(empty)** (no optimization), **Manual** or **Auto**. See :ref:`user_manual_problem_definition_optimization`.
     * - **Desired carbon footprint**
-      - The target carbon footprint per inference, in gCO2e.
-        Enabled only when **Manual** or **Auto** optimization is chosen.
+      - The target carbon footprint per inference, in gCO2e. Leave it empty for no target.
+        The results are ranked against it with any **Carbon footprint optimization**, or with none.
     * - **Max memory footprint**
       - The maximum memory of the model, in MB. Leave it empty for no limit.
     * - **Geo location: continent**
@@ -197,7 +197,6 @@ Some fields are disabled (greyed out) when they no longer apply:
   output model.
 * **Model selection** is disabled until a goal is chosen (except for CNNs on the FPGA), and for CNNs until a hardware
   is chosen. Its placeholder says what is missing.
-* **Desired carbon footprint** is disabled until **Manual** or **Auto** optimization is chosen.
 * **Geo location: country** is disabled until a continent is chosen.
 
 To change a disabled goal, first set **Model selection** back to **(empty)**.
@@ -223,10 +222,15 @@ Values kept when switching
 Carbon footprint optimization
 -----------------------------
 
-* **(empty)**: no optimization. The framework suggests the models it finds for the problem.
-* **Manual**: the **Desired carbon footprint** becomes a target.
-  The *Overview* of the results ranks the iterations against it (and against the **Max memory footprint**)
-  and names the best one. The framework does not search again on its own.
+The **Desired carbon footprint** and the **Max memory footprint** are limits: whatever the optimization, the *Overview*
+of the results ranks the iterations against them and names the best one (see :ref:`user_manual_results`).
+The optimization decides who runs further iterations of the problem:
+
+* **(empty)**: no optimization. The framework suggests the models it finds for the problem, and the problem cannot be
+  reiterated.
+* **Manual**: you decide. The **Reiterate** button of the *Iteration inputs* screen
+  (see :ref:`user_manual_results_iteration_info`) runs one more iteration of the problem, with a model that was not
+  tried yet in it.
 * **Auto**: as **Manual**, and in addition, when a model misses the desired carbon footprint or the maximum memory
   footprint (or cannot be measured), the framework discards it and searches another model automatically,
   up to three models for each output model.

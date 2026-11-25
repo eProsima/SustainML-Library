@@ -163,7 +163,8 @@ The save files are explained in :ref:`orchestrator`.
 * Request: the user input of the task, with the fields of :ref:`user_input_type` (``task_id`` excluded).
   The Front-End sends ``problem_short_description``, ``problem_definition``, ``inputs`` and ``outputs`` (lists of
   words), ``minimum_samples``, ``maximum_samples``, ``optimize_carbon_footprint_auto``,
-  ``optimize_carbon_footprint_manual``, ``previous_iteration`` (``0`` for a new problem), ``desired_carbon_footprint``,
+  ``optimize_carbon_footprint_manual``, ``previous_iteration`` (``0`` for a new problem, or the iteration reiterated
+  with the **Reiterate** button, with ``num_outputs`` set to ``1``), ``desired_carbon_footprint``,
   ``geo_location_continent``, ``geo_location_region`` (a country code) and an ``extra_data`` object with
   ``hardware_required``, ``max_memory_footprint``, ``goal``, ``previous_problem_id``, ``num_outputs``,
   ``model_selected``, ``type`` (the model family), the ``dataset_metadata_*`` fields, and ``model_restrains`` and
