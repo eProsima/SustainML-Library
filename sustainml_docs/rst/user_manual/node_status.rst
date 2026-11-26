@@ -49,7 +49,7 @@ Saving and loading
 
 Results and Hugging Face history live only while the application is open.
 To keep them, save them into a *named save file*, and load it in a later session.
-The same save files are used everywhere, and each one can hold three parts:
+All screens use the same save files, and each one can hold three parts:
 the results of the problems, the Hugging Face searches and the Hugging Face comparisons.
 
 .. list-table::
@@ -99,7 +99,7 @@ Loading
 ^^^^^^^
 
 #. Click **Load**.
-#. Click a saved file in the list. **No saved files yet.** is shown when there is none.
+#. Click a saved file in the list. When there is none, the dialog shows **No saved files yet.**
 #. Click **Load**.
 
 .. figure:: /rst/figures/user_manual/load_dialog.png
@@ -111,6 +111,7 @@ Loading
 Loading never replaces what is open:
 
 * Each loaded problem opens in a new tab of the *Results* screen, with its saved results and tab name.
+  Loaded problems can be viewed and compared, but not reiterated.
 * Loaded searches and comparisons are added to the current ones. Up to ten comparisons are kept.
 
 To delete a single save file, click the trash icon next to its name in the **Load** dialog.

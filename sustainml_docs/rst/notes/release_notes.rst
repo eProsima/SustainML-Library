@@ -12,8 +12,8 @@ Version 1.0.0
 
 This release includes the following **features**:
 
-* Support for the **Axelera Edge 130p** board: the YOLO models of the board, with the latency, power and memory
-  measured on it. The model is chosen for the goal and for what the problem description asks for (accuracy, speed or
+* Support for the **Axelera Edge 130p** board: the YOLO models of the board, with the latency and power measured on
+  it and the memory computed from the model. The model is chosen for the goal and for what the problem description asks for (accuracy, speed or
   energy), or selected by hand.
 * Support for the **FPGA** ``xczu19eg-ffvb1517-2-i``: the 217 U-Net models that DFKI measured on the board, and any other
   U-Net model, with the latency and energy predicted by DFKI's predictor.
@@ -24,8 +24,9 @@ This release includes the following **features**:
   model found on the chosen hardware.
 * **Comparison of Hugging Face models**, written by the ``llama3`` LLM from their Hugging Face facts.
 * **Saving and loading** of results, Hugging Face searches and comparisons, in named save files.
-* **Sustainability targets**: carbon footprint optimization (**Manual** and **Auto**), maximum memory footprint and
-  location of the deployment. The carbon footprint uses the carbon intensity of the chosen country.
+* **Sustainability targets**: desired carbon footprint and maximum memory footprint, against which the results are
+  ranked, carbon footprint optimization (**Manual**, with a **Reiterate** button in the iteration info view, and
+  **Auto**), and location of the deployment. The carbon footprint uses the carbon intensity of the chosen country.
 * Memory footprint of the suggested models.
 * *Fingerprint* tab: radar charts that compare the CO2, energy, latency, memory and power of the checked iterations.
 * **Stop** button to stop following a running task.
@@ -45,13 +46,14 @@ This release includes the following **improvements**:
 
 This release includes the following **bug fixes**:
 
-* The inputs and outputs of the problem are sent correctly, also in the re-iterations, where they were split into
-  single letters.
+* The inputs and outputs of the problem are sent correctly, including in the re-iterations, where they used to be split
+  into single letters.
 * Long model names are no longer cut or overlapped in the lists and tables.
 * The upload of a dataset no longer fails when the ``llama3`` answer is not in the expected format.
 * The *YOLO models* screen starts with the country chosen in the *Problem definition* form, or with the world average
   when none is chosen.
-* The filter of the lists that can be filtered is emptied each time a list is opened.
+* The filter of a filterable list is emptied each time the list is opened.
+* After loading a save file, the results of each problem are shown in the tab of that problem.
 * The names of the models in the table of a Hugging Face comparison no longer show stray spaces.
 * The Python examples of the *SustainML Library* (``sustainml_py/examples``) no longer fail on an ``ErrorCode`` import
   that the Python bindings do not provide.

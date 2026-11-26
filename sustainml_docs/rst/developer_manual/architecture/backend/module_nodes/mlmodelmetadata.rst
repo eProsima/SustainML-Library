@@ -53,7 +53,7 @@ The following table summarizes the inputs and outputs of the :ref:`mlmodelmetada
 From the :ref:`user_input_type` the node reads ``problem_short_description``, ``problem_definition``, ``inputs``, ``outputs``, ``minimum_samples``, ``maximum_samples`` and the following keys of the ``extra_data`` JSON:
 
 * ``goal``: the goal chosen in the :ref:`frontend`.
-  The :ref:`orchestrator` also sets it, to the goal of the previous iteration, when it reiterates a problem by itself (more than one output model asked for, or the automatic carbon footprint optimization).
+  The :ref:`orchestrator` also sets it to the goal of the previous iteration when it reiterates a problem by itself (more than one output model asked for, or the automatic carbon footprint optimization).
 * ``model_selected``: the model chosen by hand in the :ref:`frontend`, if any.
 * ``model_restrains``: the models that must not be suggested again.
 * ``type`` and ``model_family``: the model family chosen in the :ref:`frontend` (for instance ``Transformers`` or ``CNNs``).
@@ -63,7 +63,7 @@ From the :ref:`user_input_type` the node reads ``problem_short_description``, ``
 In the :ref:`mlmodelmetadata_type` output, the node fills:
 
 * ``ml_model_metadata``: a list with the selected goal as its only element.
-  It is left empty when a model was chosen by hand, as no goal is needed then, and when no goal could be selected.
+  It is left empty when a model was chosen by hand (no goal is needed then) and when no goal could be selected.
 * ``extra_data``: a JSON object for the :ref:`mlmodelprovider_node` with the keys ``problem_short_description``, ``model_restrains``, ``model_selected``, ``type`` and ``hardware_required`` copied from the user input
   (``problem_short_description`` always, even when empty; ``model_restrains`` whenever present, even when empty; the others only if present and not empty),
   plus ``yolo_preferences`` for the YOLO models of the Axelera board (see below).
@@ -86,17 +86,18 @@ The list of possible goals depends on the model family and the hardware:
 
 * **CNNs on the Axelera board**: when the model family (``model_family`` or ``type``) is ``CNNs`` and the hardware is ``Axelera Edge 130p``, the goals are the computer vision tasks of the YOLO models of the board:
   ``object-detection``, ``oriented-object-detection``, ``instance-segmentation``, ``semantic-segmentation`` and ``keypoint-detection``.
-  They are read, with a description of each one that is added to the prompt, from the YOLO catalog of the WP2 module (``sustainml-wp2/hw_provider_axelera/yolo_models.json``).
+  They are read from the YOLO catalog of the WP2 module (``sustainml-wp2/hw_provider_axelera/yolo_models.json``), together with a description of each goal that is added to the prompt.
 * **Any other case**: the ``Problem`` nodes of the Neo4j graph (see `External dependencies`_), minus a fixed list of goals that the framework does not support.
   With the current graph, the supported goals are ``summarization``, ``text-generation`` and ``translation``.
 
 YOLO requirements
 ^^^^^^^^^^^^^^^^^
 
-All the YOLO models of a goal do the same task on the same dataset, and only trade accuracy for speed and energy.
-So, for CNNs on the Axelera board, unless a model was chosen by hand, the node also reads from the problem description what matters most when choosing among them, whether the goal is chosen in the :ref:`frontend` or inferred.
-The ``llama3`` LLM is asked, with temperature 0 so that every iteration of a problem reads the same requirements, whether the problem asks for accuracy, speed or energy, quoting the words of the problem that show each need,
-and for the frame rate and the latency per image that it states, if any.
+All the YOLO models of a goal do the same task on the same dataset; they differ only in how they trade accuracy for speed and energy.
+For CNNs on the Axelera board, unless a model was chosen by hand, the node therefore also reads from the problem description what matters most when choosing among them, whether the goal is chosen in the :ref:`frontend` or inferred.
+The node asks the ``llama3`` LLM whether the problem asks for accuracy, speed or energy, with a quote of the words of the problem that show each need,
+and for the frame rate and the latency per image that the problem states, if any.
+The LLM runs with temperature 0, so that every iteration of a problem reads the same requirements.
 A need is only accepted when its quote is found in the problem and talks about that criterion.
 The result is added to the ``extra_data`` of the output as ``yolo_preferences``:
 
@@ -156,9 +157,9 @@ External dependencies
 Node Template
 -------------
 
-Following is the Python API provided for the :ref:`mlmodelmetadata_node`.
-User is meant to implement the functionality of the node within the ``task_callback()``.
-And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
+The following is the Python API of the :ref:`mlmodelmetadata_node`.
+The user implements the functionality of the node in ``task_callback()``,
+and the response to the configuration request from the orchestrator in ``configuration_callback()``.
 
 The template below is a shortened version of ``sustainml-wp1/ml_model_metadata_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp1/blob/main/ml_model_metadata_node.py>`__).
 It keeps the structure of the node and the way it reads and writes its data. It leaves out, as described above:

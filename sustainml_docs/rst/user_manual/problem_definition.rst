@@ -89,7 +89,7 @@ Model and data
       - The hardware the model will run on. The list can be filtered by typing.
         Choosing **(empty)** leaves no hardware, and the problem cannot be submitted.
     * - **Model selection**
-      - Optionally, a specific model to evaluate, instead of letting the framework search one.
+      - Optionally, a specific model to evaluate, instead of letting the framework search for one.
         The list can be filtered by typing. Choose **(empty)** to go back to no model.
     * - **Nº output models**
       - How many models the framework suggests for the problem, one iteration each. Default: 1.
@@ -118,8 +118,8 @@ Sustainability targets
     * - **Carbon footprint optimization**
       - **(empty)** (no optimization), **Manual** or **Auto**. See :ref:`user_manual_problem_definition_optimization`.
     * - **Desired carbon footprint**
-      - The target carbon footprint per inference, in gCO2e.
-        Enabled only when **Manual** or **Auto** optimization is chosen.
+      - The target carbon footprint per inference, in gCO2e. Leave it empty for no target.
+        The results are ranked against it with any **Carbon footprint optimization**, or with none.
     * - **Max memory footprint**
       - The maximum memory of the model, in MB. Leave it empty for no limit.
     * - **Geo location: continent**
@@ -154,7 +154,7 @@ The hardware list offers only the hardware that runs the chosen type.
       - The architectures simulated by the *HW Resources* node (UPMEM LLM framework simulator): GPUs (such as
         ``H100`` or ``A6000``), mobile SoCs (such as ``Snapdragon8gen3``) and processing-in-memory devices (such as
         ``SAM_LPDDR5PIM``, ``PIM_AI_1chip`` or ``CXL_PIM_BC``). Default: ``PIM-AI-1chip``.
-      - The framework searches a Transformers model for the problem (or evaluates the selected one), and simulates
+      - The framework searches for a Transformers model for the problem (or evaluates the selected one), and simulates
         its latency and power on the chosen hardware.
     * - **CNNs**
       - ``FPGA (xczu19eg-ffvb1517-2-i)`` (default for CNNs)
@@ -167,9 +167,9 @@ The hardware list offers only the hardware that runs the chosen type.
         instance segmentation, semantic segmentation and keypoint detection), and **Model selection** its YOLO models
         (optional: without one, the framework picks the best model for the goal).
 
-With YOLO models, the problem descriptions stay editable after choosing a goal: the framework reads in them what the
-model has to favour (accuracy, speed or energy) to pick it.
-**Nº output models** also stays editable: more output models are the next ones of that ranking.
+With YOLO models, the problem descriptions stay editable after choosing a goal: the framework reads from them what the
+model has to favour (accuracy, speed or energy), and ranks the models by it to pick one.
+**Nº output models** also stays editable: further output models are the next ones in that ranking.
 Models over the **Max memory footprint** are not suggested.
 
 .. figure:: /rst/figures/user_manual/problem_definition_axelera.png
@@ -195,9 +195,8 @@ Some fields are disabled (greyed out) when they no longer apply:
   **Max memory footprint**.
   What you typed in them is kept but not sent: the task is sent without optimization or memory limit, and with one
   output model.
-* **Model selection** is disabled until a goal is chosen (except for CNNs on the FPGA), and for CNNs until a hardware
+* **Model selection** is disabled until a goal is chosen (except for CNNs on the FPGA), and for CNNs until the hardware
   is chosen. Its placeholder says what is missing.
-* **Desired carbon footprint** is disabled until **Manual** or **Auto** optimization is chosen.
 * **Geo location: country** is disabled until a continent is chosen.
 
 To change a disabled goal, first set **Model selection** back to **(empty)**.
@@ -223,10 +222,15 @@ Values kept when switching
 Carbon footprint optimization
 -----------------------------
 
-* **(empty)**: no optimization. The framework suggests the models it finds for the problem.
-* **Manual**: the **Desired carbon footprint** becomes a target.
-  The *Overview* of the results ranks the iterations against it (and against the **Max memory footprint**)
-  and names the best one. The framework does not search again on its own.
+The **Desired carbon footprint** and the **Max memory footprint** are limits: whatever the optimization, the *Overview*
+of the results ranks the iterations against them and names the best one (see :ref:`user_manual_results`).
+The optimization decides who runs further iterations of the problem:
+
+* **(empty)**: no optimization. The framework suggests the models it finds for the problem, and the problem cannot be
+  reiterated.
+* **Manual**: you decide. The **Reiterate** button of the *Iteration inputs* screen
+  (see :ref:`user_manual_results_iteration_info`) runs one more iteration of the problem, with a model that was not
+  tried yet in it.
 * **Auto**: as **Manual**, and in addition, when a model misses the desired carbon footprint or the maximum memory
   footprint (or cannot be measured), the framework discards it and searches another model automatically,
   up to three models for each output model.
@@ -260,7 +264,7 @@ except the goal and the selected model, which are left empty so that every field
 Uploading a dataset
 -------------------
 
-A dataset helps the framework understand the problem: its metadata is used to infer the goal.
+The framework uses the metadata of an uploaded dataset to infer the goal of the problem.
 
 #. Click **Upload dataset** in the header of the *Problem definition* screen.
    The *Dataset selector* screen opens.

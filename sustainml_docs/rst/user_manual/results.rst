@@ -7,8 +7,9 @@ The *Results* screen shows the model, hardware and footprint of every evaluated 
 It opens on its own when a problem is submitted, and can be opened at any time with the **Results** button of the
 *Problem definition* screen.
 
-Each problem has its own tab, and each model evaluated for it is an *iteration* of the problem:
-one per output model, plus the extra ones of an **Auto** carbon footprint optimization.
+Each problem has its own tab, and each model evaluated for it is an *iteration* of the problem.
+There is one iteration per output model, plus those of a carbon footprint optimization: the ones you add with
+**Reiterate** (see :ref:`user_manual_results_iteration_info`) and the ones an **Auto** optimization adds on its own.
 Results are added as the framework nodes deliver them.
 
 .. figure:: /rst/figures/user_manual/results_running.png
@@ -101,8 +102,8 @@ The **Overview** tab has one row per iteration of the problem, with these column
 
 Drag the separators of the header to resize the columns.
 
-When the problem has a desired carbon footprint (with **Manual** or **Auto** optimization) or a maximum memory
-footprint, the rows are ranked: first the models within the limits (lowest carbon footprint first), then the others by
+When the problem has a desired carbon footprint or a maximum memory footprint (with any carbon footprint
+optimization, or with none), the rows are ranked: first the models within the limits (lowest carbon footprint first), then the others by
 how far they are over the limits. A line above the table names the result:
 *Best model within the limits (...)* or, when no model meets them, *No model has met the limits (...) yet. Closest: ...*.
 
@@ -127,6 +128,19 @@ that iteration was run with. It shows only the fields that applied to it:
 The *Previous Results* panel on the right repeats the results of the iteration: iteration number, problem kind,
 suggested model, suggested hardware, power consumption, carbon footprint, carbon intensity and memory footprint.
 Click **Results** in the header to go back to the *Results* screen.
+
+When the iteration searched its model with the **Manual** or **Auto** carbon footprint optimization, the **Reiterate**
+button at the bottom of the form runs the same inputs again as one new iteration of the problem, and the *Results*
+screen opens to follow it:
+
+* the new iteration suggests a model that was not tried yet in any iteration of the problem;
+* with **Auto**, when that model misses the desired carbon footprint or the maximum memory footprint, the framework
+  goes on searching on its own, up to three models;
+* one click adds one iteration, even when the problem asked for several output models.
+
+**Reiterate** is not available without an optimization, or for a selected model or a U-Net model, because the same model
+would be evaluated again. It is not available for a problem loaded from a save file either: the framework keeps only
+its results, so it cannot run new iterations of it.
 
 .. figure:: /rst/figures/user_manual/results_iteration_info.png
     :align: center
@@ -169,7 +183,7 @@ The columns **Iteration**, **Problem**, **ML Model** and **Hardware** are shown 
 
     The **Iteration** tab with the three iterations of the example checked.
 
-Right-click the table for more:
+Right-click the table to open a context menu:
 
 * On a metric column header: **Compare** opens a comparison tab for that metric
   (see :ref:`user_manual_results_comparison`), and **More info** explains the metric.

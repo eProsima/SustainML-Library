@@ -34,7 +34,7 @@ Application-Requirements Node
 
 The :ref:`appreqs_node` is meant to turn the information given by the user into application requirements, the rules that the rest of the nodes must follow when building and deploying the machine learning model.
 
-In the current version of the framework this node is a **placeholder**: it does not analyse the user input yet.
+In the current version of the framework this node is a placeholder: it does not analyse the user input yet.
 For every task it publishes the same fixed list of requirements, ``["Im", "A", "New", "Requirement"]``, and the requirements are not used by any other node.
 It must be running anyway, because the :ref:`mlmodelprovider_node` and the :ref:`hwprovider_node` only start a task once they have received all their inputs, the :ref:`apprequirements_type` of this node included.
 
@@ -70,15 +70,15 @@ The node answers every :ref:`configuration request <node_config_service>` with t
 No configuration request of the :ref:`frontend` is meant for this node.
 However, the orchestrator of the back-end routes each request by the keywords found in its ``configuration`` string
 (``modality`` and ``dataset_path`` to the :ref:`mlmodelmetadata_node`, ``model_from_goal`` and ``hf_search`` to the :ref:`mlmodelprovider_node`, and so on),
-and a request that matches no keyword keeps the default ``node_id`` ``0``, which is the one of this node.
-Therefore, receiving the dummy reply above means that the request did not match any node.
+and a request that matches no keyword keeps the default ``node_id`` ``0``, which is the ID of this node.
+So receiving the dummy reply above means that the request did not match any node.
 
 Node Template
 -------------
 
-Following is the Python API provided for the :ref:`appreqs_node`, which is also the complete current implementation of the node, ``sustainml-wp1/app_requirements_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp1/blob/main/app_requirements_node.py>`__).
-User is meant to implement the functionality of the node within the ``task_callback()``, filling the ``app_requirements`` output from the ``user_input``.
-And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
+The following is the Python API of the :ref:`appreqs_node`, which is also the complete current implementation of the node, ``sustainml-wp1/app_requirements_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp1/blob/main/app_requirements_node.py>`__).
+The user implements the functionality of the node in ``task_callback()``, filling the ``app_requirements`` output from the ``user_input``,
+and the response to the configuration request from the orchestrator in ``configuration_callback()``.
 
 .. code-block:: python
 

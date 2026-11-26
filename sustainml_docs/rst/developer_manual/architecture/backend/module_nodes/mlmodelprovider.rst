@@ -32,7 +32,7 @@ ML-Model-Provider Node
 .. raw:: html
    :file: ../../../../figures/sustainml_framework_arch.svg
 
-The :ref:`mlmodelprovider_node` is responsible for choosing the machine learning model that solves the problem defined by the user, for the goal selected by the :ref:`mlmodelmetadata_node` and the hardware chosen by the user.
+The :ref:`mlmodelprovider_node` chooses the machine learning model that solves the problem defined by the user, for the goal selected by the :ref:`mlmodelmetadata_node` and the hardware chosen by the user.
 It also answers the requests of the :ref:`frontend` for the list of models of a goal and for the search of models in the Hugging Face Hub.
 
 The node implementation is the ``ml_model_provider_node.py`` file of the WP1 module (``sustainml_modules/sustainml_modules/sustainml-wp1``).
@@ -61,8 +61,8 @@ The following table summarizes the inputs and outputs of the :ref:`mlmodelprovid
 +--------------------------------+---------------------------+---------------------------+---------------------------+
 
 The node only starts a task when it has received the six inputs of that task.
-The three baselines are published by the :ref:`orchestrator` when a task or a new iteration starts, and hold the outputs of this node, the :ref:`hwprovider_node` and the :ref:`carbontracker_node` in the previous iteration of the problem, if any.
-The current implementation does not use the :ref:`apprequirements_type` nor the baselines: it relies on the ``extra_data`` of the :ref:`mlmodelmetadata_type`, on the ``hardware_required`` and ``max_memory_footprint`` of the :ref:`hardware_constraints_type`, and on the ``model_restrains`` that the :ref:`orchestrator` carries between iterations.
+The :ref:`orchestrator` publishes the three baselines when a task or a new iteration starts. They hold the outputs of this node, the :ref:`hwprovider_node` and the :ref:`carbontracker_node` in the previous iteration of the problem, if any.
+The current implementation does not use the :ref:`apprequirements_type` or the baselines: it relies on the ``extra_data`` of the :ref:`mlmodelmetadata_type`, on the ``hardware_required`` and ``max_memory_footprint`` of the :ref:`hardware_constraints_type`, and on the ``model_restrains`` that the :ref:`orchestrator` carries between iterations.
 
 From the :ref:`mlmodelmetadata_type`, the node reads the goal (first element of ``ml_model_metadata``) and these keys of the ``extra_data`` JSON, written by the :ref:`mlmodelmetadata_node`:
 
@@ -85,7 +85,7 @@ If no model can be chosen, the output is ``model`` ``NO_MODEL``, ``model_path`` 
 Model selection
 ---------------
 
-The way the model is chosen depends on the model family and the hardware chosen by the user:
+How the model is chosen depends on the model family and the hardware chosen by the user:
 
 **CNNs on the Axelera board**
 
@@ -115,7 +115,7 @@ Otherwise, the model is chosen among the models that the Neo4j graph links to th
    the query is embedded with the ``BAAI/bge-large-en`` sentence-transformers model and compared with the embeddings of the candidate models, stored in the ``models_index.ann`` Annoy index.
    The nearest of them is proposed, so the same query always gives the same model.
 #. The model is accepted if the graph links it to the goal.
-   Otherwise it is added to the excluded models and the RAG is asked again, also when no model is returned.
+   Otherwise it is added to the excluded models and the RAG is asked again. The RAG is also asked again when it returns no model.
    The RAG is asked up to 10 times in total.
 
 In this case ``model_path`` is ``""``: the :ref:`hwprovider_node` and the :ref:`carbontracker_node` download the model from the Hugging Face Hub by its name.
@@ -165,11 +165,11 @@ The list depends on the arguments of the request:
 hf_search
 ^^^^^^^^^
 
-This request browses the Hugging Face Hub to show models to the user; the models found are not evaluated by the framework.
+This request browses the Hugging Face Hub to show models to the user; the framework does not evaluate the models found.
 The ``<description>`` may contain commas: the ``<limit>``, the maximum number of models returned (20 if it is missing or not a number), is taken after the last comma.
 
 The search is done by the ``hf_search_models`` tool of the Hugging Face MCP server of the WP1 module (``hf_mcp_server.py``), built with `FastMCP <https://gofastmcp.com/>`_.
-The node starts the server, as a subprocess that talks to it through ``stdio``, the first time it receives a request, and keeps it running until it terminates.
+The first time the node receives a request, it starts the server as a subprocess that talks to it through ``stdio``, and keeps it running until it terminates.
 The tool:
 
 #. Infers the goal of the description among ``summarization``, ``translation`` and ``text-generation`` with the ``llama3`` LLM served by Ollama (up to 3 attempts).
@@ -180,8 +180,8 @@ The tool:
    If the embedding model cannot be loaded, the candidates are ranked by downloads, likes and last change instead.
 #. Returns the first ``limit`` models, each one with its ``model_id``, ``author``, ``downloads``, ``likes``, ``pipeline_tag``, ``library_name``, ``tags``, ``cardData``, ``card_text``, ``sha``, ``lastModified``, ``url``, ``score`` (when the embedding model is available) and a ``tooltip`` text that summarizes its model card.
 
-When the ``<description>`` is ``__MODEL_CONFIG__:<model_id>``, the tool returns instead ``{"model_id": "...", "tooltip": "..."}``, a summary of the ``config.json`` file of that model (architecture, layers, hidden size, vocabulary, and so on).
-The :ref:`frontend` uses it for the tooltip shown when hovering a model.
+When the ``<description>`` is ``__MODEL_CONFIG__:<model_id>``, the tool instead returns ``{"model_id": "...", "tooltip": "..."}``, a summary of the ``config.json`` file of that model (architecture, layers, hidden size, vocabulary, and so on).
+The :ref:`frontend` uses it for the tooltip shown when hovering over a model.
 
 The node tries the call up to 3 times, with a timeout of 2 minutes each.
 If all of them fail, the reply is ``{"models": [], "error": "<error message>"}`` with ``success`` set to ``false``.
@@ -203,9 +203,9 @@ External dependencies
 Node Template
 -------------
 
-Following is the Python API provided for the :ref:`mlmodelprovider_node`.
-User is meant to implement the functionality of the node within the ``task_callback()``.
-And inside ``configuration_callback()`` implement the response to the configuration request from the orchestrator.
+The following is the Python API provided for the :ref:`mlmodelprovider_node`.
+The user implements the functionality of the node within ``task_callback()``,
+and the response to the configuration request from the orchestrator within ``configuration_callback()``.
 
 The template below is a shortened version of ``sustainml-wp1/ml_model_provider_node.py`` (`full file on GitHub <https://github.com/eProsima/sustainml-wp1/blob/main/ml_model_provider_node.py>`__).
 It keeps the structure of the node and the way it reads and writes its data, and picks the most downloaded model of the goal that has not been suggested yet. It leaves out, as described above:

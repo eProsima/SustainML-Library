@@ -3,17 +3,17 @@
 SustainML Stand-alone library installation
 ==========================================
 
-The instructions for installing the :ref:`SustainML Library <index_introduction>` from sources, without the GUI of the *SustainML Framework*, are provided in this page.
-It is organized as follows:
+This page explains how to install the :ref:`SustainML Library <index_introduction>` from sources, without the GUI of the *SustainML Framework*.
+It has the following sections:
 
 * :ref:`installation_library_dependencies`
 * :ref:`installation_library_build`
 * :ref:`installation_library_run`
 
-The *SustainML Library* is composed of different software modules, each one related to a specific task, which are specialized in solving the different parts of the framework.
-Each of the modules conforms a **Node**, which imports its corresponding Python library, so that each node can be abstracted from the communication between other nodes.
+The *SustainML Library* consists of several software modules, each one specialized in a specific task, which together solve the different parts of the framework.
+Each module is a **Node** that imports its corresponding Python library, so that the node is abstracted from the communication with the other nodes.
 
-The communication is performed through `DDS (Data Distribution Service) protocol <https://www.omg.org/omg-dds-portal/>`_, using the `eProsima Fast DDS <https://fast-dds.docs.eprosima.com/>`_ library.
+The nodes communicate through the `DDS (Data Distribution Service) protocol <https://www.omg.org/omg-dds-portal/>`_, using the `eProsima Fast DDS <https://fast-dds.docs.eprosima.com/>`_ library.
 During the installation process, some of the `Fast DDS requirements <https://fast-dds.docs.eprosima.com/en/latest/installation/sources/sources_linux.html#requirements>`_ will need to be addressed.
 
 The following sections describe the steps to install the *SustainML Library* on **Ubuntu** (the continuous integration of the library builds it on Ubuntu 24.04).
@@ -24,7 +24,7 @@ The Python dependencies (for example, ``torch==2.4.1``) require Python 3.10, 3.1
 SustainML Library dependencies
 ------------------------------
 
-The following packages provide the tools required to install SustainML and its dependencies from command line.
+The following packages provide the tools required to install SustainML and its dependencies from the command line.
 General and build tools such as `curl <https://curl.se/>`_, `wget <https://www.gnu.org/software/wget/>`_, `git <https://git-scm.com/>`_, `CMake <https://cmake.org/>`_, `g++ <https://gcc.gnu.org/>`_, `Python3 <https://www.python.org/>`_ and `SWIG <https://www.swig.org/>`_ are required.
 `Fast DDS dependencies <https://fast-dds.docs.eprosima.com/en/latest/notes/versions.html#library-dependencies>`_ such as `OpenSSL <https://www.openssl.org/>`_, `Asio <https://think-async.com/Asio/>`_, `TinyXML2 <https://github.com/leethomason/tinyxml2>`_, `LibP11 <https://github.com/OpenSC/libp11/>`_, and `SoftHSM2 <https://www.opendnssec.org/softhsm/>`_ are also needed.
 
@@ -36,7 +36,7 @@ General and build tools such as `curl <https://curl.se/>`_, `wget <https://www.g
         libssl-dev libasio-dev libtinyxml2-dev libp11-dev libengine-pkcs11-openssl softhsm2
 
 The ML Model Metadata and ML Model Provider nodes query a `Neo4j <https://neo4j.com/>`_ graph database with the models knowledge base.
-Install Java 21, required by Neo4j, and add it to the path (the ``JAVA_HOME`` below is the one of ``amd64`` machines):
+Install Java 21, required by Neo4j, and add it to the path (the ``JAVA_HOME`` below is the path for ``amd64`` machines):
 
 .. code-block:: bash
 
@@ -105,7 +105,7 @@ Build and install the workspace with `colcon <https://colcon.readthedocs.io/>`_,
     source ~/SustainML/SustainML_ws/install/setup.bash
 
 Finally, load the Neo4j database dumps shipped in ``sustainml-wp1/rag/neo4j_backup``.
-Both the ``system`` database (which holds the user credentials the nodes connect with) and the ``neo4j`` database (the knowledge base) are loaded, with Neo4j stopped:
+The following commands stop Neo4j and load both the ``system`` database (which holds the user credentials the nodes connect with) and the ``neo4j`` database (the knowledge base):
 
 .. code-block:: bash
 
@@ -117,7 +117,7 @@ Both the ``system`` database (which holds the user credentials the nodes connect
 
 .. _installation_library_run:
 
-Run SustainML Modules and Backend
+Run SustainML modules and backend
 ---------------------------------
 
 Before running the backend, set the ``HF_TOKEN`` environment variable to your personal `Hugging Face access token <https://huggingface.co/settings/tokens>`_.
@@ -129,7 +129,7 @@ Optionally, set ``SUSTAINML_DOMAIN_ID`` to use a DDS domain other than the defau
     export SUSTAINML_DOMAIN_ID=<domain_id>
 
 The following commands start Neo4j, the backend node (which hosts the orchestrator and serves a REST API on ``http://127.0.0.1:5001``) and the module nodes.
-The backend node is started first, and the module nodes once it listens on port ``5001``, so that it does not miss the status that each node publishes when it becomes ready:
+The backend node starts first, and the module nodes start once it listens on port ``5001``, so that the backend does not miss the status that each node publishes when it becomes ready:
 
 .. code-block:: bash
 
@@ -147,7 +147,10 @@ The backend node is started first, and the module nodes once it listens on port 
     python3 sustainml-wp2/hw_resources_provider_node.py &
     python3 sustainml-wp3/carbon_footprint_node.py &
 
-Internet access is needed while the framework runs: the nodes download the ``BAAI/bge-large-en`` embedding model the first time and each Hugging Face model they evaluate (the ``HF_TOKEN`` token lets them load gated models), the Hugging Face search and comparison query the Hugging Face Hub, and the Carbon Footprint node detects the country of the machine from its public IP address (with `geocoder <https://geocoder.readthedocs.io/>`_) when the user does not choose one.
+The framework needs Internet access while it runs.
+The nodes download the ``BAAI/bge-large-en`` embedding model the first time, and each Hugging Face model they evaluate (the ``HF_TOKEN`` token lets them load gated models).
+The Hugging Face search and comparison query the Hugging Face Hub.
+When the user does not choose a country, the Carbon Footprint node detects the country of the machine from its public IP address (with `geocoder <https://geocoder.readthedocs.io/>`_).
 
 These are the same steps that the ``sustainml-framework`` launcher of the *SustainML Framework* runs before opening its GUI (see :ref:`installation_framework_deployment`).
 Clients, such as that GUI, interact with the nodes through the REST API of the backend node.

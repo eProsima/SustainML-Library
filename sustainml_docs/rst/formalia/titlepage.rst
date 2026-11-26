@@ -36,9 +36,9 @@ The user can ask for several models at once, compare them, and reiterate a probl
 other models, either manually or automatically until a desired carbon footprint and memory footprint are met.
 The framework can also search Hugging Face models, compare them, and describe a dataset given by the user.
 
-The framework follows a human-centric, interactive and transparent design: every intermediate result (ML goal,
-model, hardware figures and carbon footprint) is shown to the user, who makes the decisions, instead of the common
-black-box and fully automated optimization approaches of AutoML.
+The framework follows a human-centric, interactive and transparent design: it shows every intermediate result (ML goal,
+model, hardware figures and carbon footprint) to the user, who makes the decisions.
+The common optimization approaches of AutoML, by contrast, are black-box and fully automated.
 
 .. raw:: html
 
