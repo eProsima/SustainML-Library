@@ -16,8 +16,12 @@ https://sustainml.readthedocs.io/en/latest/
 
 ## Build
 
-This package is a colcon package and is built automatically as part of the SustainML workspace.
+This package is a colcon package of the SustainML workspace. The documentation is only built when `BUILD_DOCS` is
+enabled, with the Python requirements of this folder installed:
 
-For development and verification purposes, it can be built independently:
+```bash
+pip install -r sustainml_docs/requirements.txt
+colcon build --packages-select sustainml_docs --cmake-args -DBUILD_DOCS=ON
+```
 
-`colcon build --packages-select sustainml_docs`
+To build the HTML pages directly with Sphinx, from this folder: `sphinx-build -b html . _build/html`.

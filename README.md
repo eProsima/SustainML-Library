@@ -1,4 +1,4 @@
-[![SustainML](sustainml_docs/rst/figures/SustainML_GitHub.png)](https://sustainml.eu/)
+[![SustainML](.figures/SustainML_GitHub.png)](https://sustainml.eu/)
 
 <br>
 
@@ -50,8 +50,9 @@ Each node is a Python program built on the Python API of this library, which hid
 
 ### Library
 
-This repository contains the library and the module nodes. It is not intended to be used or installed independently:
-it is consumed by the SustainML Framework, which uses the library API to deploy the SustainML modules.
+This repository contains the library and the module nodes. It is normally used through the SustainML Framework, which
+uses the library API to deploy the SustainML modules, and it can also be installed on its own (see the stand-alone
+library installation in the documentation).
 Information exchanged between modules is transmitted over DDS.
 
 ### Framework

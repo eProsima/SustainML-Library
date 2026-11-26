@@ -14,10 +14,10 @@ Results are added as the framework nodes deliver them.
 
 .. figure:: /rst/figures/user_manual/results_running.png
     :align: center
-    :alt: Results screen while a task is running, with the first iteration still without results
+    :alt: Results screen while a task is running, with the second iteration still without results
 
-    The *Results* screen just after **Submit**: the model of the first iteration is known, its hardware and footprint are
-    still being computed.
+    The *Results* screen while the example runs: the first iteration has its results, and the model of the second one is
+    known, its hardware and footprint are still being computed.
 
 .. _user_manual_results_header:
 
@@ -62,7 +62,7 @@ A tab named *Problem N* is opened for each problem.
   When every tab is closed, an empty *New Tab* remains.
 
 Inside a problem tab there are further tabs: **Overview**, and, once iterations are selected in it,
-**Iteration**, **Fingerprint** and one tab per metric comparison.
+**Iteration**, **Fingerprint** (from two selected iterations) and one tab per metric comparison.
 
 .. _user_manual_results_overview:
 
@@ -80,7 +80,7 @@ The **Overview** tab has one row per iteration of the problem, with these column
     * - Info icon
       - Opens the iteration info view (see :ref:`user_manual_results_iteration_info`).
     * - Check box
-      - Selects the iteration for the **Iteration**, **Fingerprint** and comparison tabs.
+      - Selects the iteration for the **Iteration**, **Fingerprint** (at least two) and comparison tabs.
         Disabled while a task is running.
     * - **Iteration**
       - Number of the iteration.
@@ -111,8 +111,8 @@ how far they are over the limits. A line above the table names the result:
     :align: center
     :alt: Overview tab with three summarization models ranked against the limits, and the best one named above the table
 
-    The **Overview** of the example, in a tab renamed *Support emails*: the only model within the limits comes first,
-    then the two models over the carbon footprint target, the closest one first.
+    The **Overview** of the example, in a tab renamed *Support emails*: the three models are within the limits, so they
+    are ranked by carbon footprint, the lowest first.
 
 .. _user_manual_results_iteration_info:
 
@@ -235,7 +235,8 @@ The comparison tabs can be closed with their cross, and they all close when fewe
 Fingerprint
 -----------
 
-The **Fingerprint** tab opens and closes with the **Iteration** tab.
+The **Fingerprint** tab opens when at least two iterations are checked, and closes when fewer than two are: a single
+model has no other one to compare it with.
 It draws the *Model fingerprint* of the checked iterations as radar charts: on every axis the best of them sits near
 the centre and the worst on the outer ring, so a smaller shape is a greener model.
 
@@ -297,6 +298,6 @@ The details are in the output of the framework nodes, in the terminal where the 
 
 .. figure:: /rst/figures/user_manual/results_error.png
     :align: center
-    :alt: Error dialog saying that no suitable model was found, over iterations with NO_MODEL
+    :alt: Error dialog saying that no suitable model was found, over an iteration with NO_MODEL
 
-    The error shown when no model is found: the iterations of the problem show ``NO_MODEL``.
+    The error shown when no model is found: the iteration of the problem shows ``NO_MODEL``.

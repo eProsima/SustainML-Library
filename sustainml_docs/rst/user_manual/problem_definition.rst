@@ -159,7 +159,8 @@ The hardware list offers only the hardware that runs the chosen type.
     * - **CNNs**
       - ``FPGA (xczu19eg-ffvb1517-2-i)`` (default for CNNs)
       - A U-Net model chosen by hand in **Model selection** (required), with the latency and power predicted for it on the FPGA
-        by DFKI's predictor. There is no search: the goal, description and optimization fields do not apply.
+        by DFKI's predictor, for a design at 35 FPS with the skip connections off-chip. There is no search: the goal,
+        description and optimization fields do not apply.
     * - **CNNs**
       - ``Axelera Edge 130p``
       - One of the YOLO models of the Axelera board, with the latency and power measured on it.
