@@ -42,11 +42,11 @@ def get_version(version_file='VERSION'):
         with open(version_file, 'r') as f:
             for line in f:
                 if re.search('VERSION_MAJOR', line):
-                    version['major'] = line.split()[1][:-1]
+                    version['major'] = line.split()[1].rstrip(')')
                 if re.search('VERSION_MINOR', line):
-                    version['minor'] = line.split()[1][:-1]
+                    version['minor'] = line.split()[1].rstrip(')')
                 if re.search('VERSION_PATCH', line):
-                    version['patch'] = line.split()[1][:-1]
+                    version['patch'] = line.split()[1].rstrip(')')
                 if 'major' in version and 'minor' in version and 'patch' in version:
                     break
     except EnvironmentError:
@@ -74,11 +74,11 @@ def get_version_from_cmakelists(cmakelists):
     with open(cmakelists, 'r') as f:
         for line in f:
             if re.search('PRODUCT_MAJOR_VERSION', line):
-                version['major'] = line.split()[1][:-1]
+                version['major'] = line.split()[1].rstrip(')')
             if re.search('PRODUCT_MINOR_VERSION', line):
-                version['minor'] = line.split()[1][:-1]
+                version['minor'] = line.split()[1].rstrip(')')
             if re.search('PRODUCT_PATCH_VERSION', line):
-                version['patch'] = line.split()[1][:-1]
+                version['patch'] = line.split()[1].rstrip(')')
             if 'major' in version and 'minor' in version and 'patch' in version:
                 break
     return version
