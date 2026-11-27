@@ -76,7 +76,7 @@ Create a SustainML workspace and a Python virtual environment, and download the 
     python3 -m venv SustainML_venv && source SustainML_venv/bin/activate && \
     pip3 install -U colcon-common-extensions vcstool gdown && \
     cd ~/SustainML/SustainML_ws && \
-    wget https://raw.githubusercontent.com/eProsima/SustainML-Library/main/sustainml.repos && \
+    wget https://raw.githubusercontent.com/eProsima/SustainML-Library/v1.0.0/sustainml.repos && \
     vcs import src < sustainml.repos
 
 The nodes of work packages 1, 2 and 3 are git submodules of the *SustainML Library*.

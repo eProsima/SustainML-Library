@@ -35,9 +35,9 @@ The following command downloads the three files:
 .. code-block:: bash
 
     mkdir -p ~/SustainML && cd ~/SustainML && \
-    wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/Dockerfile && \
-    wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/docker-compose.yaml && \
-    wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/main/docker/run.bash
+    wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/v1.0.0/docker/Dockerfile && \
+    wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/v1.0.0/docker/docker-compose.yaml && \
+    wget https://raw.githubusercontent.com/eProsima/SustainML-Framework/v1.0.0/docker/run.bash
 
 The containers do not include `Ollama <https://ollama.com/>`_.
 The nodes reach the Ollama server of the host at ``http://localhost:11434`` (all the containers use the host network), and use its ``llama3`` model.
@@ -54,7 +54,7 @@ Build the SustainML Framework Docker image
 ------------------------------------------
 
 The Dockerfile defines the set of dependencies and configurations required to build an image with the *SustainML Framework*.
-It clones the repositories listed in the ``sustainml.repos`` file of the ``main`` branch of the *SustainML Framework*.
+It clones the repositories listed in the ``sustainml.repos`` file of the ``v1.0.0`` tag of the *SustainML Framework*.
 The following command builds the Docker image from the ``~/SustainML`` folder (which must contain ``run.bash``), with the image name *sustainml* and the tag **v1.0.0**, which is the image that ``docker-compose.yaml`` uses:
 
 .. code-block:: bash
