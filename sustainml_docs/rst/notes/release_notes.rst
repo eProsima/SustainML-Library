@@ -15,8 +15,8 @@ This release includes the following **features**:
 * Support for the **Axelera Edge 130p** board: the YOLO models of the board, with the latency and power measured on
   it and the memory computed from the model. The model is chosen for the goal and for what the problem description asks for (accuracy, speed or
   energy), or selected by hand.
-* Support for the **FPGA** ``xczu19eg-ffvb1517-2-i``: the 217 U-Net models that DFKI measured on the board, and any other
-  U-Net model, with the latency and energy predicted by DFKI's predictor.
+* Support for the **FPGA** ``xczu19eg-ffvb1517-2-i``: U-Net models, with the latency, energy and FPGA resources
+  predicted by DFKI's predictor.
 * *YOLO models* screen: the CO2 per accuracy point of every YOLO model of the Axelera board in a chosen country, and the
   curve that shows where extra CO2 stops buying accuracy.
 * *U-Net models* screen, with a graph of the architecture of each model.
@@ -57,8 +57,6 @@ This release includes the following **bug fixes**:
 * The names of the models in the table of a Hugging Face comparison no longer show stray spaces.
 * The Python examples of the *SustainML Library* (``sustainml_py/examples``) no longer fail on an ``ErrorCode`` import
   that the Python bindings do not provide.
-* On the FPGA, a U-Net model whose ONNX file is not found is reported as an error, instead of another model being
-  evaluated.
 * A Hugging Face comparison waits up to 500 seconds for the ``llama3`` answer.
 
 This release includes the following **documentation** updates:

@@ -98,15 +98,26 @@ It works on U-Net models in ONNX format:
 
 * The model evaluated is the ONNX file given in ``model_path`` of the :ref:`mlmodel_type`.
   If ``model_path`` is not an existing ``.onnx`` file, the node evaluates nothing and reports an error (see the outputs below).
-* ``unet_models`` holds the 217 U-Nets that DFKI measured on the board (``xczu19eg-ffvb1517-2-i/measurements.jsonl``),
-  on which the predictor models were trained. They are the U-Nets that the *SustainML Framework* application offers by default.
+* ``unet_models`` holds the 394 U-Nets that DFKI measured on the board, on which the predictor models were trained.
+  They are the U-Nets that the *SustainML Framework* application offers by default.
+* The FPGA design of a U-Net targets a frame rate, 18 or 35 FPS, and keeps its skip connections in the memory of the chip
+  (on-chip) or outside it (off-chip). The node uses ``fpga_fps`` (``18`` or ``35``) and ``fpga_implementation``
+  (``"on_chip"`` or ``"off_chip"``) from the ``extra_data`` of the :ref:`hardware_constraints_type` when they are set,
+  and else DFKI's default: 35 FPS, off-chip.
+  DFKI measured each U-Net only under the designs where it fitted on the FPGA, one file per design
+  (``xczu19eg-ffvb1517-2-i/measurements_<fps>fps_<implementation>.jsonl``), and the node logs a warning for a U-Net that
+  was not measured under the design used.
 * For every U-Net, whether it is one of these, one in the ``SUSTAINML_UNET_DIR`` directory or another
-  ``.onnx`` file given by its path, the latency, the dynamic energy and the board runtime energy are predicted with DFKI's predictor models
-  (``predictor_model_latency.onnx``, ``predictor_model_energy_dynamic.onnx`` and ``predictor_model_energy_board_runtime.onnx``), run with ``onnxruntime``
+  ``.onnx`` file given by its path, the latency, the total and dynamic energy and the FPGA resources of the design are
+  predicted with DFKI's predictor models (one graph neural network per value, in ``predictors``), run with ``onnxruntime``
   on the graph of the U-Net extracted from its ONNX file.
+  The U-Net must be in the design space of the predictor (depth 1 to 4; 8, 16, 32 or 64 initial channels; a square
+  input of 64, 128, 256 or 512 pixels with 3 channels; kernel size 3 or 5 per level) and exported like the U-Nets of
+  ``unet_models``. Otherwise the evaluation fails (see the outputs below).
+* The latency is the time per frame of the design (1 / achieved FPS).
 * The power of the model is its dynamic energy (the board's energy while running the model minus its idle energy) divided by the latency.
   The idle power of the board, about 18 to 21 W in DFKI's measurements, is left out because it does not depend on the model.
-  A negative predicted dynamic energy is counted as 0.
+  A negative predicted energy is counted as 0.
 
 The whole result is attached to the ``extra_data`` of the output (see below).
 
@@ -147,8 +158,11 @@ The node fills the :ref:`hardware_resource_type` output as follows:
   It is not set (``0``) when the evaluation fails.
 * ``extra_data``: a JSON object that depends on the evaluation:
 
-  * FPGA: DFKI's prediction, with the keys ``device``, ``latency_s``, ``latency_h``, ``power_w``, ``energy_J``, ``energy_Wh``, ``energy_dynamic_Wh``,
-    ``power_board_runtime_w``, ``energy_board_runtime_Wh`` and ``provenance`` (the source of the values, the predictor files used and the SHA-256 hash of the model).
+  * FPGA: DFKI's prediction, with the keys ``device``, ``fps``, ``implementation``, ``latency_s``, ``latency_h``, ``power_w``, ``energy_J``, ``energy_Wh``, ``energy_dynamic_Wh``,
+    ``power_board_runtime_w``, ``energy_board_runtime_Wh``, ``fpga_resources`` (BRAM36 tiles, LUTs, flip-flops and DSP blocks of the design),
+    ``energy_efficiency_mflop_per_J`` (MFLOPs per joule of total and of dynamic energy), ``measured_by_dfki`` (whether DFKI measured the U-Net under that design),
+    ``outside_trained_range`` (the predicted values outside the range the predictor models were trained on) and ``provenance``
+    (the source of the values, the predictor files used, the design and the SHA-256 hash of the model).
   * Axelera board: ``{"axelera": {...}, "accuracy": {...}}``, with the latency, full-load FPS, power, energy per inference and memory of the model and where each value comes from,
     and the accuracy of the model as listed in ``yolo_models.json``.
   * UPMEM simulator: nothing on success.
@@ -220,7 +234,7 @@ Besides ``sustainml_py``, the node uses:
 
 * ``transformers``, ``torch`` and ``Pillow`` to load the Hugging Face models and build their inputs, and access to Hugging Face to download them.
 * ``PyYAML`` to read the simulated hardware and the Axelera board specifications.
-* ``onnx``, ``onnxruntime``, ``networkx`` and ``numpy`` for DFKI's predictor and to compute the memory footprint of ONNX models.
+* ``onnx``, ``onnxruntime`` and ``numpy`` for DFKI's predictor and to compute the memory footprint of ONNX models.
 * The vendored UPMEM LLM Framework (``upmem_llm_framework``) and DFKI's predictor (``hw_provider_fpga/vendor/sustain_ml_predictor``), shipped with the module.
 
 Node Template
